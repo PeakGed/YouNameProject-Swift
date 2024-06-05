@@ -26,6 +26,15 @@ class CustomViewController: UIViewController, FloatingPanelControllerDelegate {
         element.layout = MyFloatingPanelLayout()
         element.contentMode = .fitToBounds // make contentView scalable
         
+        // make surfaceView top left-right round cornor
+        element.surfaceView.backgroundColor = .brown
+        element.surfaceView.layer.cornerRadius = 20
+        element.surfaceView.clipsToBounds = true
+        element.surfaceView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        
+        
+//        self.view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        
         // init contentVC
         element.set(contentViewController: contentVC)
 
@@ -110,18 +119,33 @@ class MyFloatingPanelLayout: FloatingPanelLayout {
                                          referenceGuide: .safeArea),
     ]
     
+    // return 1 to make backdrop visible to touch
     func backdropAlpha(for state: FloatingPanelState) -> CGFloat {
         1
     }
 
 }
 
+//class CustomSurfaceView: FloatingPanelSurfaceView {
+//    override func layoutSubviews() {
+//        super.layoutSubviews()
+//        
+//        // Apply the rounded corners to the top left and top right
+//        let maskPath = UIBezierPath(roundedRect: self.bounds,
+//                                    byRoundingCorners: [.topLeft, .topRight],
+//                                    cornerRadii: CGSize(width: 16.0, height: 16.0)) // Adjust corner radius as needed
+//        let maskLayer = CAShapeLayer()
+//        maskLayer.path = maskPath.cgPath
+//        self.layer.mask = maskLayer
+//    }
+//}
+
 class ContentViewController: UIViewController {
     
     //header view
     lazy var headerView: UIView = {
         let element = UIView()
-        element.backgroundColor = .yellow
+        //element.backgroundColor = .yellow
         return element
     }()
     
@@ -170,6 +194,10 @@ class ContentViewController: UIViewController {
     
     private func initViews() {
         self.view.backgroundColor = .red
+        self.view.clipsToBounds = true
+        self.view.layer.cornerRadius = 20
+        self.view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        
                 
         headerView.addSubview(closeButton)
         
@@ -212,3 +240,5 @@ class ContentViewController: UIViewController {
         
     }
 }
+
+
