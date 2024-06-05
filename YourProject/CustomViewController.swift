@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import FloatingPanel
 
-class CustomViewController: UIViewController, FloatingPanelControllerDelegate {
+class CustomViewController: UIViewController, UIScrollViewDelegate {
     
     // contentVC to insert in FloatingPanel
     let contentVC = ContentViewController()
@@ -24,6 +24,7 @@ class CustomViewController: UIViewController, FloatingPanelControllerDelegate {
 
         element.delegate = self // optional
         element.layout = MyFloatingPanelLayout()
+        element.behavior = CustomPanelBehavior()
         element.contentMode = .fitToBounds // make contentView scalable
         
         // make surfaceView top left-right round cornor
@@ -38,6 +39,8 @@ class CustomViewController: UIViewController, FloatingPanelControllerDelegate {
         
         // init contentVC
         element.set(contentViewController: contentVC)
+        
+        element.trackingScrollView?.delegate = self
 
         return element
     }()
@@ -106,6 +109,24 @@ class CustomViewController: UIViewController, FloatingPanelControllerDelegate {
         }
     }
     
+}
+
+extension CustomViewController: FloatingPanelControllerDelegate {
+
+    // prevent to scroll bouncing over frame
+    func floatingPanelDidMove(_ vc: FloatingPanelController) {
+        if vc.isAttracting == false {
+            let loc = vc.surfaceLocation
+            let minY = vc.surfaceLocation(for: .full).y - 6.0
+            let maxY = vc.surfaceLocation(for: .half).y + 6.0
+            vc.surfaceLocation = CGPoint(x: loc.x, y: min(max(loc.y, minY), maxY))
+        }
+    }
+    
+    // enable / disable for draging
+//    func floatingPanelShouldBeginDragging(_ vc: FloatingPanelController) -> Bool {
+//        return aCondition ?  false : true
+//    }
     
 }
 
@@ -149,6 +170,20 @@ class MyFloatingPanelLayout: FloatingPanelLayout {
         1
     }
 
+}
+
+class CustomPanelBehavior: FloatingPanelBehavior {
+    func shouldProjectMomentum(_ fpc: FloatingPanelController, to proposedState: FloatingPanelState) -> Bool {
+        return true
+    }
+
+    func interactionAnimator(_ fpc: FloatingPanelController, to targetState: FloatingPanelState, with velocity: CGPoint) -> UIViewPropertyAnimator {
+        return UIViewPropertyAnimator(duration: 0.25, dampingRatio: 1.0) // Adjust dampingRatio as needed
+    }
+    
+    func removalInteractionAnimator(_ fpc: FloatingPanelController, with velocity: CGPoint) -> UIViewPropertyAnimator {
+        return UIViewPropertyAnimator(duration: 0.25, dampingRatio: 1.0) // Adjust dampingRatio as needed
+    }
 }
 
 class ContentViewController: UIViewController {
@@ -247,7 +282,7 @@ class ContentViewController: UIViewController {
     }
     
     private func initViews() {
-        self.view.backgroundColor = .red
+        self.view.backgroundColor = .white
         self.view.clipsToBounds = true
         self.view.layer.cornerRadius = 20
         self.view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
