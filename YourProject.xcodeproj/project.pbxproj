@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		367AE0342C104F8100DD5A48 /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = 367AE0332C104F8100DD5A48 /* FloatingPanel */; };
+		367AE03C2C10632C00DD5A48 /* GradientViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367AE0382C10632C00DD5A48 /* GradientViewController.swift */; };
+		367AE03D2C10632C00DD5A48 /* UIView+rket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367AE0392C10632C00DD5A48 /* UIView+rket.swift */; };
+		367AE03E2C10632C00DD5A48 /* RKBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367AE03A2C10632C00DD5A48 /* RKBase.swift */; };
+		367AE03F2C10632C00DD5A48 /* SKGradientLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367AE03B2C10632C00DD5A48 /* SKGradientLayer.swift */; };
 		36B587C32BF73F1600D523D0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B587C22BF73F1600D523D0 /* AppDelegate.swift */; };
 		36B587C52BF73F1600D523D0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B587C42BF73F1600D523D0 /* SceneDelegate.swift */; };
 		36B587C72BF73F1600D523D0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B587C62BF73F1600D523D0 /* ViewController.swift */; };
@@ -39,6 +43,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		367AE0382C10632C00DD5A48 /* GradientViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientViewController.swift; sourceTree = "<group>"; };
+		367AE0392C10632C00DD5A48 /* UIView+rket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+rket.swift"; sourceTree = "<group>"; };
+		367AE03A2C10632C00DD5A48 /* RKBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RKBase.swift; sourceTree = "<group>"; };
+		367AE03B2C10632C00DD5A48 /* SKGradientLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKGradientLayer.swift; sourceTree = "<group>"; };
 		36B587BF2BF73F1600D523D0 /* YourProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YourProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36B587C22BF73F1600D523D0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		36B587C42BF73F1600D523D0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -89,6 +97,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		367AE0372C10631A00DD5A48 /* GradientView */ = {
+			isa = PBXGroup;
+			children = (
+				367AE0382C10632C00DD5A48 /* GradientViewController.swift */,
+				367AE03A2C10632C00DD5A48 /* RKBase.swift */,
+				367AE03B2C10632C00DD5A48 /* SKGradientLayer.swift */,
+				367AE0392C10632C00DD5A48 /* UIView+rket.swift */,
+			);
+			path = GradientView;
+			sourceTree = "<group>";
+		};
 		36B587B62BF73F1600D523D0 = {
 			isa = PBXGroup;
 			children = (
@@ -116,6 +135,7 @@
 				36B587C22BF73F1600D523D0 /* AppDelegate.swift */,
 				36B587C42BF73F1600D523D0 /* SceneDelegate.swift */,
 				36B587F22BF73F4900D523D0 /* CustomViewController.swift */,
+				367AE0372C10631A00DD5A48 /* GradientView */,
 				36B587C62BF73F1600D523D0 /* ViewController.swift */,
 				36B587C82BF73F1600D523D0 /* Main.storyboard */,
 				36B587CB2BF73F1800D523D0 /* Assets.xcassets */,
@@ -282,8 +302,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				36B587C72BF73F1600D523D0 /* ViewController.swift in Sources */,
+				367AE03F2C10632C00DD5A48 /* SKGradientLayer.swift in Sources */,
 				36B587C32BF73F1600D523D0 /* AppDelegate.swift in Sources */,
+				367AE03E2C10632C00DD5A48 /* RKBase.swift in Sources */,
+				367AE03C2C10632C00DD5A48 /* GradientViewController.swift in Sources */,
 				36B587C52BF73F1600D523D0 /* SceneDelegate.swift in Sources */,
+				367AE03D2C10632C00DD5A48 /* UIView+rket.swift in Sources */,
 				36B587F32BF73F4900D523D0 /* CustomViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

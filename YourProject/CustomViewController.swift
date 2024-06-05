@@ -32,8 +32,9 @@ class CustomViewController: UIViewController, FloatingPanelControllerDelegate {
         element.surfaceView.clipsToBounds = true
         element.surfaceView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         
-        
-//        self.view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        // set grabberHandleView color
+        let grabberViewColor = UIColor.from(hex: "#3C3C43").withAlphaComponent(0.3)
+        element.surfaceView.grabberHandle.backgroundColor = grabberViewColor
         
         // init contentVC
         element.set(contentViewController: contentVC)
@@ -105,6 +106,30 @@ class CustomViewController: UIViewController, FloatingPanelControllerDelegate {
         }
     }
     
+    
+}
+
+extension UIColor {
+    static func from(hex: String) -> UIColor {
+        var cString = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+
+        if cString.hasPrefix("#") {
+            cString.remove(at: cString.startIndex)
+        }
+
+        if cString.count != 6 {
+            return UIColor.gray
+        }
+
+        var rgbValue: UInt64 = 0
+        Scanner(string: cString).scanHexInt64(&rgbValue)
+
+        let red = CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0
+        let green = CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0
+        let blue = CGFloat(rgbValue & 0x0000FF) / 255.0
+
+        return UIColor(red: red, green: green, blue: blue, alpha: 1.0)
+    }
 }
 
 class MyFloatingPanelLayout: FloatingPanelLayout {
@@ -126,25 +151,14 @@ class MyFloatingPanelLayout: FloatingPanelLayout {
 
 }
 
-//class CustomSurfaceView: FloatingPanelSurfaceView {
-//    override func layoutSubviews() {
-//        super.layoutSubviews()
-//        
-//        // Apply the rounded corners to the top left and top right
-//        let maskPath = UIBezierPath(roundedRect: self.bounds,
-//                                    byRoundingCorners: [.topLeft, .topRight],
-//                                    cornerRadii: CGSize(width: 16.0, height: 16.0)) // Adjust corner radius as needed
-//        let maskLayer = CAShapeLayer()
-//        maskLayer.path = maskPath.cgPath
-//        self.layer.mask = maskLayer
-//    }
-//}
-
 class ContentViewController: UIViewController {
     
     //header view
     lazy var headerView: UIView = {
         let element = UIView()
+        //show broder
+        element.layer.borderWidth = 1
+        element.layer.borderColor = UIColor.red.cgColor
         //element.backgroundColor = .yellow
         return element
     }()
@@ -152,7 +166,9 @@ class ContentViewController: UIViewController {
     //content view
     lazy var contentView: UIView = {
         let element = UIView()
-        element.backgroundColor = .green
+        element.layer.borderWidth = 1
+        element.layer.borderColor = UIColor.red.cgColor
+        //element.backgroundColor = .green
         return element
     }()
     
@@ -163,7 +179,7 @@ class ContentViewController: UIViewController {
                          for: .normal)
         element.setTitleColor(.white,
                               for: .normal)
-        element.backgroundColor = .darkGray
+        //element.backgroundColor = .darkGray
         element.isEnabled = true
         element.addTarget(self,
                           action: #selector(closePanelVC),
@@ -175,8 +191,12 @@ class ContentViewController: UIViewController {
         let element = UILabel()
         element.text = "Footer Label"
         element.textAlignment = .center
+        element.layer.borderWidth = 1
+        element.layer.borderColor = UIColor.red.cgColor
         return element
     }()
+    
+    private let gradientView = UIView()
     
     @objc
     func closePanelVC() {
@@ -187,9 +207,43 @@ class ContentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        initGAView()
+        
         initViews()
         initConstriantLayout()
-                
+    }
+    
+    func initGAView() {
+        // Create the gradient view
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [
+            UIColor.systemRed.cgColor,
+            UIColor.systemBlue.cgColor,
+            UIColor.systemTeal.cgColor
+        ]
+        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 1, y: 1)
+        gradientView.layer.addSublayer(gradientLayer)
+        //backgroundView.addSubview(gradientView)
+        self.view.addSubview(gradientView)
+        gradientView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        gradientView.layoutIfNeeded()
+        gradientLayer.frame = gradientView.bounds
+        
+        if let gradientLayer = gradientView.layer.sublayers?.first as? CAGradientLayer {
+            gradientLayer.frame = gradientView.bounds
+        }
+    }
+   
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        // ignore for re-rendering
+//        if let gradientLayer = gradientView.layer.sublayers?.first as? CAGradientLayer {
+//            gradientLayer.frame = gradientView.bounds
+//        }
     }
     
     private func initViews() {
@@ -204,11 +258,6 @@ class ContentViewController: UIViewController {
         self.view.addSubview(headerView)
         self.view.addSubview(contentView)
         self.view.addSubview(footerLabel)
-    }
-    
-    override func viewDidLayoutSubviews() {
-        print(#function)
-        print(view.bounds)
     }
     
     private func initConstriantLayout() {
