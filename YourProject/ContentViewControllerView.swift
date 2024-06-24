@@ -32,6 +32,11 @@ class MyCollectionView: UIViewController {
         element.dataSource = self
         element.register(MyCollectionViewCell.self,
                          forCellWithReuseIdentifier: "MyCollectionViewCell")
+        
+        element.contentInset = .init(top: 244,
+                                     left: 0,
+                                     bottom: 0,
+                                     right: 0)
         return element
     }()
     

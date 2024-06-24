@@ -19,7 +19,6 @@ class CustomViewController: UIViewController {
         return element
     }()
     
-    
     lazy var menuViewController: PagingMenuViewController = {
         let element = PagingMenuViewController()
         element.dataSource = self
@@ -41,7 +40,7 @@ class CustomViewController: UIViewController {
         element.delegate = self
         element.dataSource = self
         element.scrollView.bounces = true
-        //element.view.backgroundColor = .red
+        element.view.backgroundColor = .red
         return element
     }()
         
@@ -119,9 +118,9 @@ class CustomViewController: UIViewController {
     private func initViews() {
         self.view.backgroundColor = .white
         
-        self.view.addSubview(topParallexView)
         self.view.addSubview(contentViewController.view)
         self.view.addSubview(menuViewController.view)
+        self.view.addSubview(topParallexView)
     }
     
     private func initConstriantLayout() {
@@ -139,7 +138,8 @@ class CustomViewController: UIViewController {
         }
         
         contentViewController.view.snp.makeConstraints { make in
-            make.top.equalTo(menuViewController.view.snp.bottom)
+            //make.top.equalTo(menuViewController.view.snp.bottom)
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
             make.left.bottom.right.equalToSuperview()
         }
     }
@@ -157,7 +157,7 @@ class CustomViewController: UIViewController {
 }
 
 extension CustomViewController: PagingMenuViewControllerDataSource {
-    func menuViewController(viewController: PagingMenuViewController, 
+    func menuViewController(viewController: PagingMenuViewController,
                             cellForItemAt index: Int) -> PagingMenuViewCell {
         //let typo = Styles.Typography.captionBold
         let cell = viewController.dequeueReusableCell(withReuseIdentifier: "MenuView",
@@ -275,17 +275,39 @@ extension CustomViewController: MyCollectionViewDelegate {
     
     func myCollectionViewDidScroll(_ scrollView: UIScrollView) {
         
-        // move topParallexView size up or down but limit minHeight at 100pt , maxHeight at 200pt
-        let y = scrollView.contentOffset.y
-        let height = topParallexView.frame.height - y
         let minHeight: CGFloat = 50
         let maxHeight: CGFloat = 200
         
-        let topViewHeight: CGFloat = min(max(minHeight, height), maxHeight)
+        // move topParallexView size up or down but limit minHeight at 100pt , maxHeight at 200pt
+        let y = scrollView.contentOffset.y
+        let topOffset: CGFloat = 244 // top offset of collectionView
+        let diff = y + topOffset
         
-        topParallexView.snp.updateConstraints { make in
-            make.height.equalTo(topViewHeight)
+        //let topParallexViewHeight = topParallexView.frame.height
+        let changedHeight = maxHeight - diff
+        
+        print("y : \(y)")
+        print("topOffset : \(topOffset)")
+        print("diff : \(diff)")
+        print("changedHeight : \(changedHeight)")
+        
+        if changedHeight <= minHeight {
+            topParallexView.snp.updateConstraints { make in
+                make.height.equalTo(minHeight)
+            }
         }
+        else if changedHeight > minHeight && changedHeight <= maxHeight {
+            topParallexView.snp.updateConstraints { make in
+                make.height.equalTo(changedHeight)
+            }
+        }
+        else if changedHeight > maxHeight {
+            topParallexView.snp.updateConstraints { make in
+                make.height.equalTo(maxHeight)
+            }
+        }
+        
+        //let topViewHeight: CGFloat = min(max(minHeight, height), maxHeight)
         
         // access to other vc in contentViewController and sync scrollView contentoffset
         syncScrollOffsetY(offsetY: scrollView.contentOffset.y)
