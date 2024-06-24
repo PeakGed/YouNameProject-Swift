@@ -1,6 +1,15 @@
 {
-  "originHash" : "4cdad746817ac9ed37e44dbe90a2ff25fc018954899b7d513e41a4bfc70f065a",
+  "originHash" : "a2ebcc0a849d533b6bc8c0f81528cb4f994730aaf5a393734adb31c77624d926",
   "pins" : [
+    {
+      "identity" : "pagingkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ava-global/PagingKit",
+      "state" : {
+        "branch" : "master",
+        "revision" : "7f74f46f2aa7265b4b17a5f1def3c166ac5edfe0"
+      }
+    },
     {
       "identity" : "snapkit",
       "kind" : "remoteSourceControl",

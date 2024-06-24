@@ -18,6 +18,9 @@
 		36B587E62BF73F1900D523D0 /* YourProjectUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B587E52BF73F1900D523D0 /* YourProjectUITestsLaunchTests.swift */; };
 		36B587F32BF73F4900D523D0 /* CustomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B587F22BF73F4900D523D0 /* CustomViewController.swift */; };
 		36B587F62BF73FF800D523D0 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 36B587F52BF73FF800D523D0 /* SnapKit */; };
+		36D1FFA62C294DCB00AD46E5 /* PagingKit in Frameworks */ = {isa = PBXBuildFile; productRef = 36D1FFA52C294DCB00AD46E5 /* PagingKit */; };
+		36D1FFA82C294EB200AD46E5 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D1FFA72C294EB200AD46E5 /* MenuView.swift */; };
+		36D1FFAA2C29541800AD46E5 /* ContentViewControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D1FFA92C29541800AD46E5 /* ContentViewControllerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +55,8 @@
 		36B587E32BF73F1900D523D0 /* YourProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourProjectUITests.swift; sourceTree = "<group>"; };
 		36B587E52BF73F1900D523D0 /* YourProjectUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourProjectUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		36B587F22BF73F4900D523D0 /* CustomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViewController.swift; sourceTree = "<group>"; };
+		36D1FFA72C294EB200AD46E5 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		36D1FFA92C29541800AD46E5 /* ContentViewControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewControllerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +65,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				36B587F62BF73FF800D523D0 /* SnapKit in Frameworks */,
+				36D1FFA62C294DCB00AD46E5 /* PagingKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,6 +93,7 @@
 				36B587D82BF73F1900D523D0 /* YourProjectTests */,
 				36B587E22BF73F1900D523D0 /* YourProjectUITests */,
 				36B587C02BF73F1600D523D0 /* Products */,
+				36D1FFA42C294DCB00AD46E5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -106,6 +113,8 @@
 				36B587C22BF73F1600D523D0 /* AppDelegate.swift */,
 				36B587C42BF73F1600D523D0 /* SceneDelegate.swift */,
 				36B587F22BF73F4900D523D0 /* CustomViewController.swift */,
+				36D1FFA92C29541800AD46E5 /* ContentViewControllerView.swift */,
+				36D1FFA72C294EB200AD46E5 /* MenuView.swift */,
 				36B587C62BF73F1600D523D0 /* ViewController.swift */,
 				36B587C82BF73F1600D523D0 /* Main.storyboard */,
 				36B587CB2BF73F1800D523D0 /* Assets.xcassets */,
@@ -132,6 +141,13 @@
 			path = YourProjectUITests;
 			sourceTree = "<group>";
 		};
+		36D1FFA42C294DCB00AD46E5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -150,6 +166,7 @@
 			name = YourProject;
 			packageProductDependencies = (
 				36B587F52BF73FF800D523D0 /* SnapKit */,
+				36D1FFA52C294DCB00AD46E5 /* PagingKit */,
 			);
 			productName = YourProject;
 			productReference = 36B587BF2BF73F1600D523D0 /* YourProject.app */;
@@ -225,6 +242,7 @@
 			mainGroup = 36B587B62BF73F1600D523D0;
 			packageReferences = (
 				36B587F42BF73FF800D523D0 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				36D1FFA32C294B8200AD46E5 /* XCRemoteSwiftPackageReference "PagingKit" */,
 			);
 			productRefGroup = 36B587C02BF73F1600D523D0 /* Products */;
 			projectDirPath = "";
@@ -270,9 +288,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				36B587C72BF73F1600D523D0 /* ViewController.swift in Sources */,
+				36D1FFA82C294EB200AD46E5 /* MenuView.swift in Sources */,
 				36B587C32BF73F1600D523D0 /* AppDelegate.swift in Sources */,
 				36B587C52BF73F1600D523D0 /* SceneDelegate.swift in Sources */,
 				36B587F32BF73F4900D523D0 /* CustomViewController.swift in Sources */,
+				36D1FFAA2C29541800AD46E5 /* ContentViewControllerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -629,6 +649,14 @@
 				minimumVersion = 5.7.1;
 			};
 		};
+		36D1FFA32C294B8200AD46E5 /* XCRemoteSwiftPackageReference "PagingKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ava-global/PagingKit";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -636,6 +664,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 36B587F42BF73FF800D523D0 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		36D1FFA52C294DCB00AD46E5 /* PagingKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36D1FFA32C294B8200AD46E5 /* XCRemoteSwiftPackageReference "PagingKit" */;
+			productName = PagingKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
