@@ -169,34 +169,34 @@ extension CustomViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
     //draw frame around face
 //    func handleFaceDetectionResults(_ results: [VNFaceObservation]) {
 //        DispatchQueue.main.async {
-//            
+//
 //            // Remove all previous face views
 //            self.view.subviews.filter { $0 is RectView }.forEach { $0.removeFromSuperview() }
-//            
+//
 //            let faceRects = self.createFaceRects(result: results)
 //            faceRects.forEach { self.view.addSubview($0) }
-//            
-//            
+//
+//
 //            // Capture the current frame as an image
 //            guard let currentFrameImage = self.captureCurrentFrameAsImage() else { return }
-//            
+//
 //            // Crop the image using the bounding boxes
 //            let croppedImages = results.map { faceObservation -> UIImage? in
 //                let boundingBox = faceObservation.boundingBox
-//                return self.cropImage(image: currentFrameImage, 
+//                return self.cropImage(image: currentFrameImage,
 //                                      boundingBox: boundingBox)
 //            }.compactMap { $0 }
-//            
+//
 //            // Perform family classification on the cropped images
 //            croppedImages.forEach { croppedImage in
 //                let handler = VNImageRequestHandler(cgImage: croppedImage.cgImage!,
 //                                                    options: [:])
 //                try? handler.perform([self.familyClassificationRequest])
 //            }
-//            
+//
 //            // when get result update on RectView.titleLabel.text with the result
-//            
-//            
+//
+//
 //        }
 //    }
     
@@ -234,12 +234,12 @@ extension CustomViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
 //            let width = self.view.frame.width
 //            let height = self.view.frame.height
 //            let boundingBox = $0.boundingBox
-//            
+//
 //            let size = CGSize(width: boundingBox.width * width,
 //                              height: boundingBox.height * height)
 //            let origin = CGPoint(x: boundingBox.minX * width,
 //                                 y: (1 - boundingBox.minY) * height - size.height)
-//            
+//
 //            let image = self.cropImage(image: self.currentImage, rect: CGRect(origin: origin, size: size))
 //            return image
 //        })]
@@ -253,7 +253,7 @@ extension CustomViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
 //                       didOutput sampleBuffer: CMSampleBuffer,
 //                       from connection: AVCaptureConnection) {
 //        guard let pixelBuffer: CVImageBuffer? = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
-//        
+//
 //        let famlilyMemberClassifier = try! FamlilyMemberClassifier_v1()
 //        let request = VNCoreMLRequest(model: try! VNCoreMLModel(for: famlilyMemberClassifier.model)) { (request, error) in
 //            if let results = request.results as? [VNClassificationObservation], let topResult = results.first {
@@ -295,11 +295,13 @@ extension CustomViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
                    let pixelBuffer = self.pixelBufferFromImage(image: croppedImage) {
                     self.runFamilyClassifyRequest(pixelBuffer: pixelBuffer) { [weak self]
                         classificationResult in
+                        
+                        guard let result = classificationResult else { return }
+                        
                         DispatchQueue.main.async {
-                            faceRects[index].titleLabel.text = classificationResult?.identifier ?? "N/A"
-                            faceRects[index].confidentLabel.text = classificationResult?.confidence.description ?? "N/A"
+                            faceRects[index].titleLabel.text = result.identifier
+                            faceRects[index].confidentLabel.text = result.confidence.description
                             //self?.view.addSubview(faceRects[index])
-                            
                         }
                     }
                 }
@@ -307,21 +309,39 @@ extension CustomViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
         }
     }
 
-    private func runFamilyClassifyRequest(pixelBuffer: CVPixelBuffer, 
+    private func runFamilyClassifyRequest(pixelBuffer: CVPixelBuffer,
                                           completion: @escaping (VNClassificationObservation?) -> Void) {
         let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:])
         let ml = try! FamlilyMemberClassifier_v1()
         let model = try! VNCoreMLModel(for: ml.model)
         let request = VNCoreMLRequest(model: model) { (request, error) in
-            let results = request.results as? [VNClassificationObservation]
+                 
+            print("count : \(request.results?.count ?? 0)")
             
-            results?.forEach({
+            let r = request.results
+            r?.forEach({
+                print($0)
+                let c = $0.confidence
+            })
+            
+            let results = request.results?.first(where: {
+                $0.confidence > 0.5
+            }) as? [VNClassificationObservation] ?? []
+            
+            guard results.count > 0 else {
+                completion(nil)
+                return
+            }
+            
+            results.forEach({
                 print("##################")
                 print("### \($0.identifier)")
                 print("### \($0.confidence.description)")
             })
             
-            if let topResult = results?.first {
+            if let topResult = results.sorted(by: {
+                $0.confidence > $1.confidence
+            }).first {
                 
                 // topResult.identifier , topResult.confidence
                 completion(topResult)
