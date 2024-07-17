@@ -16,7 +16,7 @@ import CoreVideo
 class CustomViewController: UIViewController {
     
     private var lastProcessedTime: CFTimeInterval = 0
-    private let frameProcessingInterval: CFTimeInterval = 0.2 // Process every 0.2 seconds (5 FPS)
+    private let frameProcessingInterval: CFTimeInterval = 1.0 / 10.0 // 10 FPS
     
     private var captureSession: AVCaptureSession!
     private var videoPreviewLayer: AVCaptureVideoPreviewLayer!
@@ -127,7 +127,6 @@ class CustomViewController: UIViewController {
         videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         videoPreviewLayer.frame = view.layer.bounds
         videoPreviewLayer.videoGravity = .resizeAspectFill
-        //videoPreviewLayer.connection?.videoRotationAngle = 270 //.portrait
         
         view.layer.insertSublayer(videoPreviewLayer, at: 0)
         
@@ -211,7 +210,7 @@ extension CustomViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
     }
     
     func createFaceRects(result: [VNFaceObservation]) -> [RectView] {
-        var faceRects: [RectView] = result.map({
+        let faceRects: [RectView] = result.map({
             let width = self.view.frame.width
             let height = self.view.frame.height
             let boundingBox = $0.boundingBox
@@ -226,20 +225,6 @@ extension CustomViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
             //faceView.confidentLabel.text = String(format: "%.2f", $0.confidence)
             return faceView
         })
-        
-//        let corpImages: [UIImage?] = result.map({
-//            let width = self.view.frame.width
-//            let height = self.view.frame.height
-//            let boundingBox = $0.boundingBox
-//
-//            let size = CGSize(width: boundingBox.width * width,
-//                              height: boundingBox.height * height)
-//            let origin = CGPoint(x: boundingBox.minX * width,
-//                                 y: (1 - boundingBox.minY) * height - size.height)
-//
-//            let image = self.cropImage(image: self.currentImage, rect: CGRect(origin: origin, size: size))
-//            return image
-//        })]
         
         return faceRects
     }
@@ -261,6 +246,7 @@ extension CustomViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
 
             // Create face rectangles and add them to the view
             let faceRects = self.createFaceRects(result: results)
+            
             //faceRects.forEach { self.view.addSubview($0) }
             
             // Crop the image using the bounding boxes and classify each face
