@@ -242,6 +242,21 @@ extension CustomViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
         }
     }
     
+    func faceRect(result: [VNFaceObservation]) -> [CGRect] {
+        return result.map({
+            let width = self.view.frame.width
+            let height = self.view.frame.height
+            let boundingBox = $0.boundingBox
+            
+//            let size = CGSize(width: boundingBox.width * width,
+//                              height: boundingBox.height * height)
+//            let origin = CGPoint(x: boundingBox.minX * width,
+//                                 y: (1 - boundingBox.minY) * height - size.height)
+            
+            return boundingBox //(size, origin)
+        })
+    }
+    
     func createFaceRects(result: [VNFaceObservation]) -> [RectView] {
         let faceRects: [RectView] = result.map({
             let width = self.view.frame.width
@@ -253,10 +268,8 @@ extension CustomViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
             let origin = CGPoint(x: boundingBox.minX * width,
                                  y: (1 - boundingBox.minY) * height - size.height)
             
-            let faceView = RectView(frame: CGRect(origin: origin,
-                                                  size: size))
-            //faceView.confidentLabel.text = String(format: "%.2f", $0.confidence)
-            return faceView
+            return RectView(frame: CGRect(origin: origin,
+                                          size: size))
         })
         
         return faceRects
@@ -277,6 +290,9 @@ extension CustomViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
             // retrive late image
             guard let currentFrameImage = self.lastImage else { return }
 
+            // set focus on face
+            self.focusOnMostProminentFace(faces: results)
+            
             // Create face rectangles and add them to the view
             let faceRects = self.createFaceRects(result: results)
             
@@ -351,6 +367,29 @@ extension CustomViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
         try? handler.perform([request])
     }
 
+    private func focusOnMostProminentFace(faces: [VNFaceObservation]) {
+        guard 
+            let videoCaptureDevice = AVCaptureDevice.default(for: .video),
+            faces.count > 0 else { return }
+                
+        // Find the face with the highest confidence
+        let prominentFace = faces.max { a, b in a.confidence < b.confidence }
+        guard let face = prominentFace else { return }
+        
+        // Convert face bounding box to camera coordinates
+        let faceBoundingBox = face.boundingBox
+        let cameraRect = videoPreviewLayer.layerRectConverted(fromMetadataOutputRect: faceBoundingBox)
+        let focusPoint = CGPoint(x: cameraRect.midX / videoPreviewLayer.bounds.width,
+                                 y: cameraRect.midY / videoPreviewLayer.bounds.height)
+        
+        if videoCaptureDevice.isFocusPointOfInterestSupported {
+            try? videoCaptureDevice.lockForConfiguration()
+            videoCaptureDevice.focusPointOfInterest = focusPoint
+            videoCaptureDevice.focusMode = .continuousAutoFocus
+            videoCaptureDevice.unlockForConfiguration()
+        }
+    }
+    
 }
 
 extension CustomViewController {
