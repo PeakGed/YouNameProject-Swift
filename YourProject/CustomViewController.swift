@@ -240,22 +240,7 @@ extension CustomViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
                 print("\(topResult.identifier) (\(topResult.confidence * 100)%)")
             }
         }
-    }
-    
-    func faceRect(result: [VNFaceObservation]) -> [CGRect] {
-        return result.map({
-            let width = self.view.frame.width
-            let height = self.view.frame.height
-            let boundingBox = $0.boundingBox
-            
-//            let size = CGSize(width: boundingBox.width * width,
-//                              height: boundingBox.height * height)
-//            let origin = CGPoint(x: boundingBox.minX * width,
-//                                 y: (1 - boundingBox.minY) * height - size.height)
-            
-            return boundingBox //(size, origin)
-        })
-    }
+    }    
     
     func createFaceRects(result: [VNFaceObservation]) -> [RectView] {
         let faceRects: [RectView] = result.map({
