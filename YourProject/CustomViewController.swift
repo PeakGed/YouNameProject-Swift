@@ -33,6 +33,8 @@ class CustomViewController: UIViewController {
         let label = UILabel()
         label.textAlignment = .center
         label.text = "Result"
+        label.textColor = .white
+        label.backgroundColor = .black
         return label
     }()
     
@@ -82,6 +84,19 @@ class CustomViewController: UIViewController {
             captureSession.addOutput(videoOutput)
         } else {
             return
+        }
+        
+        // Configure autofocus and auto exposure
+        if videoCaptureDevice.isFocusModeSupported(.continuousAutoFocus) {
+            try? videoCaptureDevice.lockForConfiguration()
+            videoCaptureDevice.focusMode = .continuousAutoFocus
+            videoCaptureDevice.unlockForConfiguration()
+        }
+        
+        if videoCaptureDevice.isExposureModeSupported(.continuousAutoExposure) {
+            try? videoCaptureDevice.lockForConfiguration()
+            videoCaptureDevice.exposureMode = .continuousAutoExposure
+            videoCaptureDevice.unlockForConfiguration()
         }
         
         videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
