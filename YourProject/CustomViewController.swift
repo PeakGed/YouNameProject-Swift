@@ -45,6 +45,10 @@ class CustomViewController: UIViewController {
         setupView()
         setupCaptureSession()
         setupVision()
+        
+        let tapGesture = UITapGestureRecognizer(target: self, 
+                                                action: #selector(handleTapToFocus(_:)))
+        view.addGestureRecognizer(tapGesture)
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -79,6 +83,35 @@ class CustomViewController: UIViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-50)
         }
         
+    }
+    
+    @objc func handleTapToFocus(_ gesture: UITapGestureRecognizer) {
+        let tapPoint = gesture.location(in: view)
+        focus(at: tapPoint)
+    }
+
+    func focus(at point: CGPoint) {
+        guard let device = AVCaptureDevice.default(for: .video) else { return }
+        
+        let focusPoint = videoPreviewLayer.captureDevicePointConverted(fromLayerPoint: point)
+        
+        do {
+            try device.lockForConfiguration()
+            
+            if device.isFocusPointOfInterestSupported {
+                device.focusPointOfInterest = focusPoint
+                device.focusMode = .autoFocus
+            }
+            
+            if device.isExposurePointOfInterestSupported {
+                device.exposurePointOfInterest = focusPoint
+                device.exposureMode = .autoExpose
+            }
+            
+            device.unlockForConfiguration()
+        } catch {
+            print("Error focusing on point: \(error)")
+        }
     }
     
     private func setupCaptureSession() {
