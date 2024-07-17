@@ -15,11 +15,16 @@ import CoreVideo
 
 class CustomViewController: UIViewController {
     
+    private var lastProcessedTime: CFTimeInterval = 0
+    private let frameProcessingInterval: CFTimeInterval = 0.2 // Process every 0.2 seconds (5 FPS)
+    
     private var captureSession: AVCaptureSession!
     private var videoPreviewLayer: AVCaptureVideoPreviewLayer!
     private var videoOutput: AVCaptureVideoDataOutput!
     var faceDetectionRequest: VNDetectFaceRectanglesRequest!
     var familyClassificationRequest: VNCoreMLRequest!
+    
+    private var lastImage: UIImage?
     
     private var isCapturingVideo = false
     
@@ -35,21 +40,34 @@ class CustomViewController: UIViewController {
         return button
     }()
     
-//    lazy var resultLabel: UILabel = {
-//        let label = UILabel()
-//        label.textAlignment = .center
-//        label.text = "Result"
-//        label.textColor = .white
-//        label.backgroundColor = .black
-//        return label
-//    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
         setupCaptureSession()
         setupVision()
     }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        let orientation = UIDevice.current.orientation
+        switch orientation {
+            // Home button on top
+        case UIDeviceOrientation.portraitUpsideDown:
+            self.videoPreviewLayer.connection?.videoRotationAngle = 270
+            // Home button on right
+        case UIDeviceOrientation.landscapeLeft:
+            self.videoPreviewLayer.connection?.videoRotationAngle = 0
+            // Home button on left
+        case UIDeviceOrientation.landscapeRight:
+            self.videoPreviewLayer.connection?.videoRotationAngle = 180
+            // Home button at bottom
+        case UIDeviceOrientation.portrait:
+            self.videoPreviewLayer.connection?.videoRotationAngle = 90
+        default:
+            self.videoPreviewLayer.connection?.videoRotationAngle = 90
+        }
+        self.videoPreviewLayer.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+    }
+    
     
     private func setupView() {
         view.backgroundColor = .white
@@ -61,11 +79,6 @@ class CustomViewController: UIViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-50)
         }
         
-//        view.addSubview(resultLabel)
-//        resultLabel.snp.makeConstraints { make in
-//            make.centerX.equalToSuperview()
-//            make.bottom.equalTo(toggleButton.snp.top).offset(-20)
-//        }
     }
     
     private func setupCaptureSession() {
@@ -89,6 +102,8 @@ class CustomViewController: UIViewController {
         
         videoOutput = AVCaptureVideoDataOutput()
         videoOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "videoQueue"))
+        videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA]
+           
         
         if (captureSession.canAddOutput(videoOutput)) {
             captureSession.addOutput(videoOutput)
@@ -112,6 +127,8 @@ class CustomViewController: UIViewController {
         videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         videoPreviewLayer.frame = view.layer.bounds
         videoPreviewLayer.videoGravity = .resizeAspectFill
+        //videoPreviewLayer.connection?.videoRotationAngle = 270 //.portrait
+        
         view.layer.insertSublayer(videoPreviewLayer, at: 0)
         
     }
@@ -153,8 +170,22 @@ extension CustomViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput,
                        didOutput sampleBuffer: CMSampleBuffer,
                        from connection: AVCaptureConnection) {
+        let currentTime = CACurrentMediaTime()
+        
+        // Check if the required interval has passed since the last frame processing
+        if currentTime - lastProcessedTime < frameProcessingInterval {
+            return
+        }
+        
+        lastProcessedTime = currentTime
         
         guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
+        
+        // image from buffer and rotate 90 degree on lastImage
+        let img = self.imageFromCVImageBuffer(buffer: pixelBuffer)?.rotated(by: 90)
+        
+        //store image
+        self.lastImage = img
         
         let requestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer,
                                                    orientation: .right,
@@ -165,40 +196,6 @@ extension CustomViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
             print(error)
         }
     }
-    
-    //draw frame around face
-//    func handleFaceDetectionResults(_ results: [VNFaceObservation]) {
-//        DispatchQueue.main.async {
-//
-//            // Remove all previous face views
-//            self.view.subviews.filter { $0 is RectView }.forEach { $0.removeFromSuperview() }
-//
-//            let faceRects = self.createFaceRects(result: results)
-//            faceRects.forEach { self.view.addSubview($0) }
-//
-//
-//            // Capture the current frame as an image
-//            guard let currentFrameImage = self.captureCurrentFrameAsImage() else { return }
-//
-//            // Crop the image using the bounding boxes
-//            let croppedImages = results.map { faceObservation -> UIImage? in
-//                let boundingBox = faceObservation.boundingBox
-//                return self.cropImage(image: currentFrameImage,
-//                                      boundingBox: boundingBox)
-//            }.compactMap { $0 }
-//
-//            // Perform family classification on the cropped images
-//            croppedImages.forEach { croppedImage in
-//                let handler = VNImageRequestHandler(cgImage: croppedImage.cgImage!,
-//                                                    options: [:])
-//                try? handler.perform([self.familyClassificationRequest])
-//            }
-//
-//            // when get result update on RectView.titleLabel.text with the result
-//
-//
-//        }
-//    }
     
     func handleFamilyClassificationResults(_ results: [VNClassificationObservation]) {
         DispatchQueue.main.async {
@@ -247,51 +244,39 @@ extension CustomViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
         return faceRects
     }
     
-    
-    // use family classify model
-//    func captureOutput(_ output: AVCaptureOutput,
-//                       didOutput sampleBuffer: CMSampleBuffer,
-//                       from connection: AVCaptureConnection) {
-//        guard let pixelBuffer: CVImageBuffer? = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
-//
-//        let famlilyMemberClassifier = try! FamlilyMemberClassifier_v1()
-//        let request = VNCoreMLRequest(model: try! VNCoreMLModel(for: famlilyMemberClassifier.model)) { (request, error) in
-//            if let results = request.results as? [VNClassificationObservation], let topResult = results.first {
-//                DispatchQueue.main.async {
-//                    self.resultLabel.text = "\(topResult.identifier) (\(topResult.confidence * 100)%)"
-//                }
-//            }
-//        }
-//
-//        let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:])
-//        try? handler.perform([request])
-//    }
-    
     func runFamilyClassifyRequest(pixelBuffer: CVImageBuffer) {
         let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer,
                                             options: [:])
         try? handler.perform([familyClassificationRequest])
     }
-    
-    
-    // new
+        
     func handleFaceDetectionResults(_ results: [VNFaceObservation]) {
         DispatchQueue.main.async {
+            
             // Remove all previous face views
             self.view.subviews.filter { $0 is RectView }.forEach { $0.removeFromSuperview() }
 
-            // Capture the current frame as an image
-            guard let currentFrameImage = self.captureCurrentFrameAsImage() else { return }
+            // retrive late image
+            guard let currentFrameImage = self.lastImage else { return }
 
             // Create face rectangles and add them to the view
             let faceRects = self.createFaceRects(result: results)
-            faceRects.forEach { self.view.addSubview($0) }
+            //faceRects.forEach { self.view.addSubview($0) }
             
             // Crop the image using the bounding boxes and classify each face
             for (index, faceObservation) in results.enumerated() {
                 let boundingBox = faceObservation.boundingBox
+                // scale boundingBox to fix human head
+                let scale = 1.5
+                let width = boundingBox.width * CGFloat(scale)
+                let height = boundingBox.height * CGFloat(scale)
+                let x = boundingBox.minX - (width - boundingBox.width) / 2
+                let y = boundingBox.minY - (height - boundingBox.height) / 2
+                let newBoundingBox = CGRect(x: x, y: y, width: width, height: height)
+                
                 if let croppedImage = self.cropImage(image: currentFrameImage,
-                                                     boundingBox: boundingBox),
+                                                     boundingBox: newBoundingBox),
+                   
                    let pixelBuffer = self.pixelBufferFromImage(image: croppedImage) {
                     self.runFamilyClassifyRequest(pixelBuffer: pixelBuffer) { [weak self]
                         classificationResult in
@@ -299,6 +284,8 @@ extension CustomViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
                         guard let result = classificationResult else { return }
                         
                         DispatchQueue.main.async {
+                            self?.view.addSubview(faceRects[index])
+                            
                             faceRects[index].titleLabel.text = result.identifier
                             faceRects[index].confidentLabel.text = result.confidence.description
                             //self?.view.addSubview(faceRects[index])
@@ -318,17 +305,10 @@ extension CustomViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
                  
             print("count : \(request.results?.count ?? 0)")
             
-            let r = request.results
-            r?.forEach({
-                print($0)
-                let c = $0.confidence
-            })
-            
-            let results = request.results?.first(where: {
-                $0.confidence > 0.5
-            }) as? [VNClassificationObservation] ?? []
-            
-            guard results.count > 0 else {
+            guard
+                let results = request.results as? [VNClassificationObservation],
+                results.count > 0
+            else {
                 completion(nil)
                 return
             }
@@ -355,6 +335,25 @@ extension CustomViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
 }
 
 extension CustomViewController {
+    
+    func imageFromPixelBuffer(pixelBuffer: CVPixelBuffer) -> UIImage? {
+        let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
+        let context = CIContext(options: nil)
+        if let cgImage = context.createCGImage(ciImage, from: ciImage.extent) {
+            return UIImage(cgImage: cgImage)
+        }
+        return nil
+    }
+    
+    func imageFromCVImageBuffer(buffer: CVImageBuffer) -> UIImage? {
+        let ciImage = CIImage(cvImageBuffer: buffer)
+        let context = CIContext(options: nil)
+        if let cgImage = context.createCGImage(ciImage, from: ciImage.extent) {
+            return UIImage(cgImage: cgImage)
+        }
+        return nil
+    }
+    
     private func captureCurrentFrameAsImage() -> UIImage? {
         UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, 0.0)
         view.drawHierarchy(in: view.bounds, afterScreenUpdates: true)
@@ -485,5 +484,26 @@ class RectView: UIView {
             make.height.equalTo(23)
         })
         
+    }
+}
+
+extension UIImage {
+    func rotated(by degrees: CGFloat) -> UIImage? {
+        let radians = degrees * CGFloat.pi / 180
+        var newSize = CGRect(origin: CGPoint.zero, size: self.size).applying(CGAffineTransform(rotationAngle: radians)).size
+        newSize.width = floor(newSize.width)
+        newSize.height = floor(newSize.height)
+        
+        UIGraphicsBeginImageContext(newSize)
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+        
+        context.translateBy(x: newSize.width / 2, y: newSize.height / 2)
+        context.rotate(by: radians)
+        self.draw(in: CGRect(x: -self.size.width / 2, y: -self.size.height / 2, width: self.size.width, height: self.size.height))
+        
+        let rotatedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return rotatedImage
     }
 }
