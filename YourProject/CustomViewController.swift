@@ -197,14 +197,14 @@ extension CustomViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
                 print("\($0.identifier) \($0.confidence)")
             })
             
-            let filterResults = results.filter({ $0.confidence > 0.1 })
+            let filterResults = results.filter({ $0.confidence > 0.3 })
             guard filterResults.count > 0 else { return }
             
             let description = self.describeResults(results: filterResults)
                         
             DispatchQueue.main.async {
                 self.resultLabel.text = description
-            }            
+            }
         }
         
         let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:])
