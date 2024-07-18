@@ -36,7 +36,7 @@ class CustomViewController: UIViewController {
     
     lazy var resultLabel: UILabel = {
         let label = UILabel()
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.text = "Result"
         label.textColor = .white
         label.backgroundColor = .black
