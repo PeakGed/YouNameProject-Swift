@@ -70,6 +70,7 @@ class PopUpMenu {
         guard let menuView = menuView else { return }
         
         rootView.addSubview(placeHolderView)
+        rootView.bringSubviewToFront(targetView)
         rootView.addSubview(menuView)
         
         placeHolderView.snp.makeConstraints { make in
