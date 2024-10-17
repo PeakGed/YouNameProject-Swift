@@ -39,7 +39,13 @@ class MenuView: UIView {
         self.layer.borderWidth = 1
         self.layer.borderColor = UIColor.systemGray.cgColor
         self.isUserInteractionEnabled = true
-        self.clipsToBounds = true
+        self.clipsToBounds = false  // Allow shadow to be visible
+
+        // Add shadow properties
+        self.layer.shadowColor = UIColor.black.cgColor
+        self.layer.shadowOpacity = 0.2
+        self.layer.shadowOffset = CGSize(width: 0, height: 2)
+        self.layer.shadowRadius = 4
     }
 
     func setupLayout() {
@@ -117,4 +123,8 @@ class MenuView: UIView {
     func setupButtonConstraint(make: ConstraintMaker) {
         make.height.equalTo(44)
     }
+}
+
+class MenuViewBackground: UIView {
+    
 }

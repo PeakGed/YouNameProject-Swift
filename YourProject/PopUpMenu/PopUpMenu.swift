@@ -17,8 +17,8 @@ class PopUpMenu {
     
     var menuView: MenuView? // Updated to use MenuView
     
-    lazy var placeHolderView: UIView = {
-        let view = UIView()
+    lazy var placeHolderView: MenuViewBackground = {
+        let view = MenuViewBackground()
         view.backgroundColor = .gray
         view.alpha = 0.5
         return view
@@ -52,14 +52,18 @@ class PopUpMenu {
         }
         
         // remove all previous MenuView
+        let subViews = rootView.subviews
         rootView.subviews.forEach { subview in
             if subview is MenuView {
+                subview.snp.removeConstraints()
                 subview.removeFromSuperview()
             }
-            if subview === placeHolderView {
+            if subview is MenuViewBackground {
+                subview.snp.removeConstraints()
                 subview.removeFromSuperview()
             }
         }
+        let asfterSubViews = rootView.subviews
 
         self.actions = actions
 
@@ -101,9 +105,12 @@ class PopUpMenu {
     }
     
     func dismissMenu() {
-        //rootView.subviews.removeAll(where: { $0 === menuView })
-        menuView?.removeFromSuperview() // Updated to explicitly remove menuView from superview
+        menuView?.snp.removeConstraints()
+        menuView?.removeFromSuperview()
+        
+        placeHolderView.snp.removeConstraints()
         placeHolderView.removeFromSuperview()
+        
         didDismiss?()
 
         if let tapToDismissGesture {
