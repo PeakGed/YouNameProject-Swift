@@ -11,20 +11,28 @@ class PopUpMenu {
     
     private var rootView: UIView
     private var actions: [PopUpMenuAction] = []
-    
-    var dismissOnTapOutside: Bool = true
+        
     var didDismiss: (() -> Void)? = nil
     
     var menuView: MenuView? // Updated to use MenuView
     
-    lazy var placeHolderView: MenuViewBackground = {
-        let view = MenuViewBackground()
-        view.backgroundColor = .gray
-        view.alpha = 0.5
-        return view
-    }()
+    var dismissOnTapOutside: Bool = true {
+        didSet {
+            placeHolderView.isUserInteractionEnabled = dismissOnTapOutside
+        }
+    }
     
-    private var tapToDismissGesture: UITapGestureRecognizer? = nil
+    lazy var placeHolderView: MenuViewBackground = {
+        let elment = MenuViewBackground()
+        elment.backgroundColor = .gray
+        elment.alpha = 0.5
+        
+        let tapToDismissGesture = UITapGestureRecognizer(target: self,
+                                                     action: #selector(handleTapOutside))
+        elment.addGestureRecognizer(tapToDismissGesture)
+        elment.isUserInteractionEnabled = true
+        return elment
+    }()
     
     init(rootView: UIView) {
         self.rootView = rootView
@@ -52,7 +60,6 @@ class PopUpMenu {
         }
         
         // remove all previous MenuView
-        let subViews = rootView.subviews
         rootView.subviews.forEach { subview in
             if subview is MenuView {
                 subview.snp.removeConstraints()
@@ -63,7 +70,6 @@ class PopUpMenu {
                 subview.removeFromSuperview()
             }
         }
-        let asfterSubViews = rootView.subviews
 
         self.actions = actions
 
@@ -88,14 +94,6 @@ class PopUpMenu {
                            position: position,
                            targetView: targetView,
                            rootView: rootView)
-
-        // Dismiss on tap outside
-        if dismissOnTapOutside {
-            tapToDismissGesture = UITapGestureRecognizer(target: self,
-                                                         action: #selector(handleTapOutside))
-            placeHolderView.addGestureRecognizer(tapToDismissGesture!)
-            placeHolderView.isUserInteractionEnabled = true
-        }
     }
     
     @objc
@@ -112,11 +110,6 @@ class PopUpMenu {
         placeHolderView.removeFromSuperview()
         
         didDismiss?()
-
-        if let tapToDismissGesture {
-            placeHolderView.removeGestureRecognizer(tapToDismissGesture)
-        }
-        tapToDismissGesture = nil
     }
     
 

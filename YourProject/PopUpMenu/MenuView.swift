@@ -39,7 +39,7 @@ class MenuView: UIView {
         self.layer.borderWidth = 1
         self.layer.borderColor = UIColor.systemGray.cgColor
         self.isUserInteractionEnabled = true
-        self.clipsToBounds = false  // Allow shadow to be visible
+        self.clipsToBounds = true 
 
         // Add shadow properties
         self.layer.shadowColor = UIColor.black.cgColor
