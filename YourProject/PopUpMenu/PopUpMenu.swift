@@ -15,6 +15,7 @@ class PopUpMenu {
     var didDismiss: (() -> Void)? = nil
     
     var menuView: MenuView? // Updated to use MenuView
+    var selectedIndex: Int?
     
     var dismissOnTapOutside: Bool = true {
         didSet {
@@ -44,7 +45,8 @@ class PopUpMenu {
                                          height: 1000),
                  direction: PermitDirectiton = .up,
                  position: Position = .right,
-                 actions: [PopUpMenuAction]) {
+                 actions: [PopUpMenuAction],
+                 selectedIndex: Int? = nil) {
 
         let identifiers = actions.map { $0.identifier }
         let uniqueIdentifiers = Set(identifiers)
@@ -53,30 +55,15 @@ class PopUpMenu {
             fatalError("Duplicate identifiers found in actions.")
         }
         
-        guard menuView == nil else {
-            print("Menu is already presented, skipping.")
-            dismissMenu()
-            return
-        }
-        
-        // remove all previous MenuView
-        rootView.subviews.forEach { subview in
-            if subview is MenuView {
-                subview.snp.removeConstraints()
-                subview.removeFromSuperview()
-            }
-            if subview is MenuViewBackground {
-                subview.snp.removeConstraints()
-                subview.removeFromSuperview()
-            }
-        }
+        removePreviousMenu()
 
         self.actions = actions
 
         menuView = MenuView()
         menuView?.didDismiss = { [weak self] in
-            self?.dismissMenu() // remove placeholder view
+            self?.dismissMenu()
         }
+        
         guard let menuView = menuView else { return }
         
         rootView.addSubview(placeHolderView)
@@ -93,7 +80,21 @@ class PopUpMenu {
                            direction: direction,
                            position: position,
                            targetView: targetView,
-                           rootView: rootView)
+                           rootView: rootView,
+                           selectedIndex: selectedIndex)
+    }
+    
+    func removePreviousMenu() {
+        rootView.subviews.forEach { subview in
+            if subview is MenuView {
+                subview.snp.removeConstraints()
+                subview.removeFromSuperview()
+            }
+            if subview is MenuViewBackground {
+                subview.snp.removeConstraints()
+                subview.removeFromSuperview()
+            }
+        }
     }
     
     @objc

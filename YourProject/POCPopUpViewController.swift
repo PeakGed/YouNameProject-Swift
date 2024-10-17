@@ -79,6 +79,7 @@ class POCPopUpViewController: UIViewController {
     
     // tmp
     var pMenu: PopUpMenu?
+    var selectedIdentifier: String?
     
     func showMenu(btn: UIButton,
                   position: PopUpMenu.Position = .right) {
@@ -90,40 +91,24 @@ class POCPopUpViewController: UIViewController {
             print("Dismissed")
         }
         
-        let actions: [PopUpMenuAction] = [
-            .init(identifier: "1",
-                  title: "1 Day",
-                  style: .unselected,
-                  closure: { [weak self] (identifier) in
-                      print("\(identifier) selected")
-                      self?.selectedLabel.text = "\(identifier) selected"
-                  },dismiss: {
-                      print("1 Day dismissed")
-                  }),
-            .init(identifier: "2",
-                  title: "3 Month",
-                  style: .unselected,
-                  closure: { [weak self] (identifier) in
-                      print("\(identifier) selected")
-                      self?.selectedLabel.text = "\(identifier) selected"
-                  },dismiss: {
-                      print("3 Month dismissed")
-                  }),
-            .init(identifier: "3",
-                  title: "6 Month",
-                  style: .unselected,
-                  closure: { [weak self] (identifier) in
-                      print("\(identifier) selected")
-                      self?.selectedLabel.text = "\(identifier) selected"
-                  },dismiss: {
-                      print("6 Month dismissed")
-                  })
-        ]
-
+        let menuList = ["1 Day", "3 Month", "6 Month"]
+        
+        let actions: [PopUpMenuAction] = menuList.enumerated().map({
+            PopUpMenuAction(identifier: "\($0)",
+                            title: $1,
+                            closure: { [weak self] (identifier) in
+                                print("\(identifier) selected")
+                                self?.selectedIdentifier = identifier
+                                self?.selectedLabel.text = "\(self?.selectedIdentifier) selected"
+                            })
+        })
+        
+        let selectedIndex: Int? = selectedIdentifier != nil ? Int(selectedIdentifier!) : nil
         menu.present(targetView: btn,
                      minSize: CGSize(width: 100, height: 100),
                      position: position,
-                     actions: actions)
+                     actions: actions,
+                     selectedIndex: selectedIndex)
     }
     
     

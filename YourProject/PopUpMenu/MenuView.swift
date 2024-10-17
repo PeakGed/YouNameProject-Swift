@@ -17,7 +17,7 @@ class MenuView: UIView {
     lazy var stackView: UIStackView = {
         let view = UIStackView()
         view.axis = .vertical
-        view.spacing = 1
+        view.spacing = 8
         view.translatesAutoresizingMaskIntoConstraints = false
         view.alignment = .fill
         view.distribution = .fillEqually
@@ -39,7 +39,7 @@ class MenuView: UIView {
         self.layer.borderWidth = 1
         self.layer.borderColor = UIColor.systemGray.cgColor
         self.isUserInteractionEnabled = true
-        self.clipsToBounds = true 
+        self.clipsToBounds = true
 
         // Add shadow properties
         self.layer.shadowColor = UIColor.black.cgColor
@@ -50,7 +50,7 @@ class MenuView: UIView {
 
     func setupLayout() {
         stackView.snp.makeConstraints { make in
-            make.top.bottom.left.right.equalToSuperview()
+            make.top.bottom.left.right.equalToSuperview().inset(8)
         }
     }
 
@@ -65,16 +65,25 @@ class MenuView: UIView {
         direction: PopUpMenu.PermitDirectiton,
         position: PopUpMenu.Position,
         targetView: UIView,
-        rootView: UIView
+        rootView: UIView,
+        selectedIndex: Int? = nil
     ) {
 
-        for action in popupActions {
+        for (index, action) in popupActions.enumerated() {
             action.dismiss = { [weak self] in
                 self?.didDismiss?()
                 self?.removeFromSuperview()  // Dismiss the menu
             }
-            let button = action.toButton()
+            let isSelected = (index == selectedIndex)
+            let button = action.toButton(style: isSelected ? .selected : .unselected)
             button.snp.makeConstraints(setupButtonConstraint)
+
+            // Set the button as selected if it matches the selectedIndex
+            if isSelected {
+                button.isSelected = true
+                button.backgroundColor = UIColor.systemBlue // Example color for selected state
+            }
+
             stackView.addArrangedSubview(button)
         }
 
@@ -82,7 +91,6 @@ class MenuView: UIView {
         let targetFrame = targetView.convert(targetView.bounds, to: rootView)
 
         // Calculate the size of the menu view
-        //let menuWidth = min(maxSize.width, max(minSize.width, maxSize.width))
         let menuHeight = min(maxSize.height, max(minSize.height, maxSize.height))
 
         // Use SnapKit to set constraints instead of manually setting the frame
@@ -125,6 +133,4 @@ class MenuView: UIView {
     }
 }
 
-class MenuViewBackground: UIView {
-    
-}
+class MenuViewBackground: UIView {}

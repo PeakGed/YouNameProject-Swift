@@ -13,23 +13,35 @@ import UIKit
 struct PopUpMenuActionStyle {
     let normalTextColor: UIColor
     let highlightedTextColor: UIColor
+    let disabledTextColor: UIColor
+    
     let normalBackgroundColor: UIColor
     let highlightedBackgroundColor: UIColor
+    let disabledBackgroundColor: UIColor
+    
     let normalFont: UIFont
     let highlightedFont: UIFont
+    let disabledFont: UIFont
 
     static let unselected = PopUpMenuActionStyle(normalTextColor: .black,
-                                                highlightedTextColor: .white,
-                                                normalBackgroundColor: .white,
-                                                highlightedBackgroundColor: .black,
-                                                normalFont: .systemFont(ofSize: 16),
-                                                highlightedFont: .systemFont(ofSize: 16))
+                                                 highlightedTextColor: .white,
+                                                 disabledTextColor: .gray,
+                                                 normalBackgroundColor: .white,
+                                                 highlightedBackgroundColor: .black,
+                                                 disabledBackgroundColor: .gray,
+                                                 normalFont: .systemFont(ofSize: 16),
+                                                 highlightedFont: .systemFont(ofSize: 16),
+                                                 disabledFont: .systemFont(ofSize: 16))
+    
     static let selected = PopUpMenuActionStyle(normalTextColor: .white,
-                                                highlightedTextColor: .black,
-                                                normalBackgroundColor: .black,
-                                                highlightedBackgroundColor: .white,
-                                                normalFont: .systemFont(ofSize: 16),
-                                                highlightedFont: .systemFont(ofSize: 16))
+                                               highlightedTextColor: .black,
+                                               disabledTextColor: .gray,
+                                               normalBackgroundColor: .black,
+                                               highlightedBackgroundColor: .white,
+                                               disabledBackgroundColor: .gray,
+                                               normalFont: .systemFont(ofSize: 16),
+                                               highlightedFont: .systemFont(ofSize: 16),
+                                               disabledFont: .systemFont(ofSize: 16))
 }
 
 
@@ -37,7 +49,6 @@ public class PopUpMenuAction {
     
     var identifier: String
     var title: String
-    var style: PopUpMenuActionStyle = .unselected
     var closure: ((_ identifier: String) -> Void)?
     var autoDismissWhenTakeAction: Bool = true
     var accessibilityIdentifier: String?
@@ -45,14 +56,12 @@ public class PopUpMenuAction {
 
     init(identifier: String,
          title: String,
-         style: PopUpMenuActionStyle = .unselected,
          autoDismissWhenTakeAction: Bool = true,
          accessibilityIdentifier: String? = nil,
          closure: ((_ identifier: String) -> Void)?,
          dismiss: (() -> Void)? = nil) {
         self.identifier = identifier
         self.title = title
-        self.style = style
         self.autoDismissWhenTakeAction = autoDismissWhenTakeAction
         self.closure = closure
         self.accessibilityIdentifier = accessibilityIdentifier
@@ -76,17 +85,30 @@ public class PopUpMenuAction {
         }
     }
     
-    func toButton() -> UIButton {
+    func toButton(style: PopUpMenuActionStyle) -> UIButton {
         let element = UIButton()
         element.setTitle(title, for: .normal)
-        element.setTitleColor(.red, for: .highlighted)
-        element.setTitleColor(.gray, for: .disabled)
+        
         element.addTarget(self,
                           action: #selector(takeAction),
                           for: .touchUpInside)
         element.accessibilityIdentifier = accessibilityIdentifier
-
-        element.setTitleColor(.darkGray, for: .normal)
+        
+        element.setTitleColor(style.highlightedTextColor, for: .highlighted)
+        element.setTitleColor(style.disabledTextColor, for: .disabled)
+        element.setTitleColor(style.normalTextColor, for: .normal)
+                
+        switch element.state {
+        case .highlighted:
+            element.backgroundColor = style.highlightedBackgroundColor
+        case .selected:
+            element.backgroundColor = style.highlightedBackgroundColor
+        case .disabled:
+            element.backgroundColor = style.disabledBackgroundColor
+        default:
+            element.backgroundColor = style.normalBackgroundColor
+        }
+        
         element.backgroundColor = .white
         element.isEnabled = true
         
