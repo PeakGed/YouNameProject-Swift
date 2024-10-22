@@ -45,15 +45,59 @@ struct PriceTargetVM {
         
         // Determine the end max point , use min to get max value
         let endMaxPoint = yValues.min().map { CGPoint(x: endX, y: $0) }
-        endMaxShape = endMaxPoint.map { Circle.endMaxPrice(center: $0) }
-        
-        // Determine the end average point
-        let endAvgPoint = yAvg.map { CGPoint(x: endX, y: $0) }
-        
-        
+        //endMaxShape = endMaxPoint.map { Circle.endMaxPrice(center: $0) }
+        if let endMaxPoint {
+            //lower
+            if endMaxPoint.y < startPoint.y {
+                endMaxShape = Circle.endBelowMaxPrice(center: endMaxPoint)
+                upperTriagle = nil
+            }
+            //upper
+            else if endMaxPoint.y > startPoint.y {
+                endMaxShape = Circle.endAboveMaxPrice(center: endMaxPoint)
+                
+                // check is maxPrice is not higher then nowPrice
+                upperTriagle = Triangle.aboveCurrentPrice(startPoint: startPoint,
+                                                          secondPoint: endNowPoint,
+                                                          endPoint: endMaxPoint)
+            }
+            else {
+                endMaxShape = nil
+                upperTriagle = nil
+            }
+        }
+        else {
+            endMaxShape = nil
+            upperTriagle = nil
+        }
+                
         // Determine the end min point , use max to get min value
         let endMinPoint = yValues.max().map { CGPoint(x: endX, y: $0) }
-        endMinShape = endMinPoint.map { Circle.endMinPrice(center: $0) }
+        
+        if let endMinPoint {
+            //lower
+            if endMinPoint.y < startPoint.y {
+                endMinShape = Circle.endBelowMinPrice(center: endMinPoint)
+                
+                // check is minPrice is not lower then nowPrice
+                lowerTriagle = Triangle.belowCurrentPrice(startPoint: startPoint,
+                                                          secondPoint: endNowPoint,
+                                                          endPoint: endMinPoint)
+            }
+            //upper
+            else if endMinPoint.y > startPoint.y {
+                endMinShape = Circle.endAboveCurrentPrice(center: endMinPoint)
+                lowerTriagle = nil
+            }
+            else {
+                endMinShape = nil
+                lowerTriagle = nil
+            }
+        }
+        else {
+            endMinShape = nil
+            lowerTriagle = nil
+        }
         
         // Create end above now shapes , use filter to get values above start point
         let endYAboveNow = yValues.filter { $0 < startPoint.y }
@@ -70,6 +114,9 @@ struct PriceTargetVM {
         
         maxLine = endMaxPoint.map { DashLine.aboveDashLine(from: startPoint,
                                                            to: $0) }
+        
+        // Determine the end average point
+        let endAvgPoint = yAvg.map { CGPoint(x: endX, y: $0) }
         
         if let endAvgPoint {
             if endAvgPoint.y > startPoint.y {
@@ -99,13 +146,8 @@ struct PriceTargetVM {
 
         // Create triangles if applicable
         
-        upperTriagle = endMaxPoint.map { Triangle.aboveCurrentPrice(startPoint: startPoint,
-                                                                    secondPoint: endNowPoint,
-                                                                    endPoint: $0) }
         
-        lowerTriagle = endMinPoint.map { Triangle.belowCurrentPrice(startPoint: startPoint,
-                                                                    secondPoint: endNowPoint,
-                                                                    endPoint: $0) }
+      
         
     }
 //
@@ -284,13 +326,22 @@ struct Circle: Shape {
                      alpha: 1)
     }
     
-    static func endMaxPrice(center: CGPoint) -> Self {
+    static func endAboveMaxPrice(center: CGPoint) -> Self {
         return .init(center: center,
                      radius: 2.5,
                      fillColor: .green,
                      strokeColor: .black,
                      lineWidth: 1,
                      alpha: 1)
+    }
+    
+    static func endBelowMaxPrice(center: CGPoint) -> Self {
+        return .init(center: center,
+                     radius: 2.5,
+                     fillColor: .orange,
+                     strokeColor: .black,
+                     lineWidth: 1,
+                        alpha: 1)
     }
     
     static func endAboveCurrentPrice(center: CGPoint) -> Self {
@@ -311,7 +362,16 @@ struct Circle: Shape {
                      alpha: 0.5)
     }
     
-    static func endMinPrice(center: CGPoint) -> Self {
+    static func endAboveMinPrice(center: CGPoint) -> Self {
+        return .init(center: center,
+                     radius: 2.5,
+                     fillColor: .green,
+                     strokeColor: .black,
+                     lineWidth: 1,
+                     alpha: 1)
+    }
+    
+    static func endBelowMinPrice(center: CGPoint) -> Self {
         return .init(center: center,
                      radius: 3,
                      fillColor: .orange,

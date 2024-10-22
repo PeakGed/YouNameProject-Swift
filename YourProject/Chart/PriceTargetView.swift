@@ -20,7 +20,7 @@ public class PriceTargetView: UIView {
         vm.avgLine?.draw(on: self)
         vm.minLine?.draw(on: self)
         
-        //draw shape
+        //draw circle
         vm.endAboveNowShape.forEach {
             $0.draw(on: self)
         }
