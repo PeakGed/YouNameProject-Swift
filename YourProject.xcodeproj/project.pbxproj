@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		364029012CC608EA004D745F /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 364029002CC608EA004D745F /* DGCharts */; };
+		364029042CC60B8B004D745F /* RKetCombinedChartRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364029032CC60B85004D745F /* RKetCombinedChartRenderer.swift */; };
+		364029062CC60BA1004D745F /* RKLineChartRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364029052CC60BA0004D745F /* RKLineChartRenderer.swift */; };
+		364029082CC60BCF004D745F /* TextHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364029072CC60BCB004D745F /* TextHelper.swift */; };
+		3640290A2CC62A44004D745F /* UIView+DrawShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364029092CC62A3A004D745F /* UIView+DrawShape.swift */; };
+		3640290C2CC74325004D745F /* OHLC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3640290B2CC74323004D745F /* OHLC.swift */; };
+		3640290E2CC74FC3004D745F /* PriceTargetVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3640290D2CC74FC0004D745F /* PriceTargetVM.swift */; };
+		364029102CC754AC004D745F /* PriceTargetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3640290F2CC754AA004D745F /* PriceTargetTests.swift */; };
+		364029122CC78575004D745F /* PriceTargetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364029112CC7856F004D745F /* PriceTargetView.swift */; };
 		36B587C32BF73F1600D523D0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B587C22BF73F1600D523D0 /* AppDelegate.swift */; };
 		36B587C52BF73F1600D523D0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B587C42BF73F1600D523D0 /* SceneDelegate.swift */; };
 		36B587C72BF73F1600D523D0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B587C62BF73F1600D523D0 /* ViewController.swift */; };
@@ -38,6 +47,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		364029032CC60B85004D745F /* RKetCombinedChartRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKetCombinedChartRenderer.swift; sourceTree = "<group>"; };
+		364029052CC60BA0004D745F /* RKLineChartRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKLineChartRenderer.swift; sourceTree = "<group>"; };
+		364029072CC60BCB004D745F /* TextHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextHelper.swift; sourceTree = "<group>"; };
+		364029092CC62A3A004D745F /* UIView+DrawShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+DrawShape.swift"; sourceTree = "<group>"; };
+		3640290B2CC74323004D745F /* OHLC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OHLC.swift; sourceTree = "<group>"; };
+		3640290D2CC74FC0004D745F /* PriceTargetVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceTargetVM.swift; sourceTree = "<group>"; };
+		3640290F2CC754AA004D745F /* PriceTargetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceTargetTests.swift; sourceTree = "<group>"; };
+		364029112CC7856F004D745F /* PriceTargetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceTargetView.swift; sourceTree = "<group>"; };
 		36B587BF2BF73F1600D523D0 /* YourProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YourProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36B587C22BF73F1600D523D0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		36B587C42BF73F1600D523D0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -59,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				364029012CC608EA004D745F /* DGCharts in Frameworks */,
 				36B587F62BF73FF800D523D0 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -80,12 +98,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		364028FF2CC608EA004D745F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		364029022CC60B80004D745F /* Chart */ = {
+			isa = PBXGroup;
+			children = (
+				364029112CC7856F004D745F /* PriceTargetView.swift */,
+				364029092CC62A3A004D745F /* UIView+DrawShape.swift */,
+				3640290D2CC74FC0004D745F /* PriceTargetVM.swift */,
+				3640290B2CC74323004D745F /* OHLC.swift */,
+				364029032CC60B85004D745F /* RKetCombinedChartRenderer.swift */,
+				364029052CC60BA0004D745F /* RKLineChartRenderer.swift */,
+				364029072CC60BCB004D745F /* TextHelper.swift */,
+			);
+			path = Chart;
+			sourceTree = "<group>";
+		};
 		36B587B62BF73F1600D523D0 = {
 			isa = PBXGroup;
 			children = (
 				36B587C12BF73F1600D523D0 /* YourProject */,
 				36B587D82BF73F1900D523D0 /* YourProjectTests */,
 				36B587E22BF73F1900D523D0 /* YourProjectUITests */,
+				364028FF2CC608EA004D745F /* Frameworks */,
 				36B587C02BF73F1600D523D0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -106,6 +146,7 @@
 				36B587C22BF73F1600D523D0 /* AppDelegate.swift */,
 				36B587C42BF73F1600D523D0 /* SceneDelegate.swift */,
 				36B587F22BF73F4900D523D0 /* CustomViewController.swift */,
+				364029022CC60B80004D745F /* Chart */,
 				36B587C62BF73F1600D523D0 /* ViewController.swift */,
 				36B587C82BF73F1600D523D0 /* Main.storyboard */,
 				36B587CB2BF73F1800D523D0 /* Assets.xcassets */,
@@ -118,6 +159,7 @@
 		36B587D82BF73F1900D523D0 /* YourProjectTests */ = {
 			isa = PBXGroup;
 			children = (
+				3640290F2CC754AA004D745F /* PriceTargetTests.swift */,
 				36B587D92BF73F1900D523D0 /* YourProjectTests.swift */,
 			);
 			path = YourProjectTests;
@@ -150,6 +192,7 @@
 			name = YourProject;
 			packageProductDependencies = (
 				36B587F52BF73FF800D523D0 /* SnapKit */,
+				364029002CC608EA004D745F /* DGCharts */,
 			);
 			productName = YourProject;
 			productReference = 36B587BF2BF73F1600D523D0 /* YourProject.app */;
@@ -225,6 +268,7 @@
 			mainGroup = 36B587B62BF73F1600D523D0;
 			packageReferences = (
 				36B587F42BF73FF800D523D0 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				364028FE2CC604B4004D745F /* XCRemoteSwiftPackageReference "Charts" */,
 			);
 			productRefGroup = 36B587C02BF73F1600D523D0 /* Products */;
 			projectDirPath = "";
@@ -269,10 +313,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				364029062CC60BA1004D745F /* RKLineChartRenderer.swift in Sources */,
 				36B587C72BF73F1600D523D0 /* ViewController.swift in Sources */,
+				364029122CC78575004D745F /* PriceTargetView.swift in Sources */,
 				36B587C32BF73F1600D523D0 /* AppDelegate.swift in Sources */,
 				36B587C52BF73F1600D523D0 /* SceneDelegate.swift in Sources */,
+				3640290A2CC62A44004D745F /* UIView+DrawShape.swift in Sources */,
+				364029042CC60B8B004D745F /* RKetCombinedChartRenderer.swift in Sources */,
+				3640290E2CC74FC3004D745F /* PriceTargetVM.swift in Sources */,
 				36B587F32BF73F4900D523D0 /* CustomViewController.swift in Sources */,
+				3640290C2CC74325004D745F /* OHLC.swift in Sources */,
+				364029082CC60BCF004D745F /* TextHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,6 +331,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				364029102CC754AC004D745F /* PriceTargetTests.swift in Sources */,
 				36B587DA2BF73F1900D523D0 /* YourProjectTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -621,6 +673,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		364028FE2CC604B4004D745F /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ChartsOrg/Charts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.0;
+			};
+		};
 		36B587F42BF73FF800D523D0 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -632,6 +692,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		364029002CC608EA004D745F /* DGCharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 364028FE2CC604B4004D745F /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGCharts;
+		};
 		36B587F52BF73FF800D523D0 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 36B587F42BF73FF800D523D0 /* XCRemoteSwiftPackageReference "SnapKit" */;
