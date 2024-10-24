@@ -101,28 +101,66 @@ class CustomViewController: UIViewController {
         
         // delay 2 sec
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.callAfterDelay4()
+            let stubValue = self.getStubValue()
+            self.initStubTargetPriceView(now: stubValue.now,
+                                         max: stubValue.max,
+                                         min: stubValue.min,
+                                         avg: stubValue.avg,
+                                         other: stubValue.other)
+            self.initStubCapsuleValues(now: stubValue.now,
+                                       max: stubValue.max,
+                                       min: stubValue.min,
+                                       avg: stubValue.avg)
         }
     }
-    
-    func callAfterDelay4() {
-        // get last entry of line chart
+ 
+    func getStubValue() -> (min: Double,
+                            max: Double,
+                            avg: Double,
+                            now: Double,
+                            other: [Double]) {
         let lastEntry = lineChartDataEntries.last!
-        print("lastEntry: \(lastEntry)")
         let allBeginPos = getAllPriceTargetPositions(entries: [lastEntry],
                                                      in: chartView)
-        let startPos: CGPoint = .init(x: 0, y: allBeginPos.first!.y) 
+        
+        
         let endXPos = priceTargetContainerView.bounds.width
         
         let allPriceTargetPos = getAllPriceTargetPositions(entries: scatterChartDataEntries,
                                                            in: chartView)
         let yValues = allPriceTargetPos.map { $0.y }
-        let avg = allPriceTargetPos.randomElement()
         
+        // Stub Value
+        let now: CGPoint = .init(x: 0,
+                                 y: allBeginPos.first!.y)
+        let avg = allPriceTargetPos.randomElement()!
+        let min = yValues.max()!  // toggle from chart render direction
+        let max = yValues.min()! // toggle from chart render direction
+        
+        //print log
+        print("now: \(now)")
+        print("avg: \(avg)")
+        print("min: \(min)")
+        print("max: \(max)")
+        
+        return (Double(min),
+                Double(max),
+                Double(avg.y),
+                Double(now.y),
+                yValues.map { Double($0) })
+    }
+    
+    func initStubTargetPriceView(now: Double,
+                                 max: Double,
+                                 min: Double,
+                                 avg: Double,
+                                 other: [Double]) {
+        let startPos: CGPoint = .init(x: 0, y: now)
+        let endXPos = priceTargetContainerView.bounds.width
         let vm = PriceTargetVM(startPoint: startPos,
                                endX: endXPos,
-                               yValues: yValues,
-                               yAvg: avg?.y)
+                               yValues: other.map({ CGFloat($0) }),
+                               yAvg: avg)
         priceTargetContainerView.bind(vm)
     }
     
@@ -184,15 +222,15 @@ class CustomViewController: UIViewController {
 //                                                lineWidth: 0.5,
 //                                                alpha: 0.5)
 //        }
-//        
+//
 //        let allPriceTargetPos = getAllPriceTargetPositions(entries: scatterChartDataEntries,
 //                                                           in: chartView)
-//        
+//
 //        print("allPriceTargetPos: \(allPriceTargetPos)")
 //        let priceTargetContainerViewWidth = priceTargetContainerView.bounds.width
 //        let targetPos: [CGPoint] = allPriceTargetPos.map { .init(x: priceTargetContainerViewWidth,
 //                                                                 y: $0.y) }
-//        
+//
 //        // create circle for each price target
 //        targetPos.forEach { p in
 //            priceTargetContainerView.drawCircle(at: p,
@@ -202,7 +240,7 @@ class CustomViewController: UIViewController {
 //                                                lineWidth: 0.5,
 //                                                alpha: 0.5)
 //        }
-//        
+//
 //        let pairPos: [(from: CGPoint, to: CGPoint)] = createPairOfPoint(from: beginPos.first!,
 //                                                                        to: targetPos)
 //        // create straight line from begin to each price target
@@ -211,7 +249,7 @@ class CustomViewController: UIViewController {
 //            //                                                      to: pair.to,
 //            //                                                      strokeColor: .black,
 //            //                                                      lineWidth: 2)
-//            
+//
 //            // draw dashed line from begin to each price target
 //            priceTargetContainerView.drawDashedLine(from: pair.from,
 //                                                    to: pair.to,
@@ -335,7 +373,7 @@ class CustomViewController: UIViewController {
                                     in chartView: BarLineChartViewBase) -> [CGPoint]
     {
         entries.map {
-            let dataSets = chartView.data?.dataSets            
+            let dataSets = chartView.data?.dataSets
             let p = chartView.getPosition(entry: $0,
                                           axis: .left)
             print("point \(p.x) \(p.y)")

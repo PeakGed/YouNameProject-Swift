@@ -38,6 +38,8 @@ class CapsuleView: UIView {
         addSubview(rightTitleLabel)
 
         initLayout()
+        
+        self.backgroundColor = .red
     }
 
     func initLayout() {
@@ -54,10 +56,9 @@ class CapsuleView: UIView {
         }
     }
 
-    func configure(leftTitle: String,
-                   rightTitle: String)
-    {
-        leftTitleLabel.text = leftTitle
-        rightTitleLabel.text = rightTitle
+    func bind(_ vm: CapsuleVM) {
+        leftTitleLabel.text = vm.leftTitle
+        rightTitleLabel.text = vm.rightTitle
     }
+                  
 }
