@@ -47,56 +47,50 @@ struct PriceTargetVM {
         let endMaxPoint = yValues.min().map { CGPoint(x: endX, y: $0) }
         //endMaxShape = endMaxPoint.map { Circle.endMaxPrice(center: $0) }
         if let endMaxPoint {
-            //lower
-            if endMaxPoint.y < startPoint.y {
-                endMaxShape = Circle.endBelowMaxPrice(center: endMaxPoint)
-                upperTriagle = nil
-            }
-            //upper
-            else if endMaxPoint.y > startPoint.y {
-                endMaxShape = Circle.endAboveMaxPrice(center: endMaxPoint)
-                
-                // check is maxPrice is not higher then nowPrice
-                upperTriagle = Triangle.aboveCurrentPrice(startPoint: startPoint,
-                                                          secondPoint: endNowPoint,
-                                                          endPoint: endMaxPoint)
-            }
-            else {
-                endMaxShape = nil
-                upperTriagle = nil
-            }
-        }
-        else {
+            let isLower = endMaxPoint.y > startPoint.y
+            let isUpper = endMaxPoint.y < startPoint.y
+            
+            endMaxShape = isLower ? Circle.endBelowMaxPrice(center: endMaxPoint) :
+                          isUpper ? Circle.endAboveMaxPrice(center: endMaxPoint) :
+                          nil
+            
+            upperTriagle = isUpper ? Triangle.aboveCurrentPrice(startPoint: startPoint,
+                                                                secondPoint: endNowPoint,
+                                                                endPoint: endMaxPoint) :
+                           nil
+            
+            maxLine = isLower ? DashLine.belowDashLine(from: startPoint, to: endMaxPoint) :
+                      isUpper ? DashLine.aboveDashLine(from: startPoint, to: endMaxPoint) :
+                      nil
+        } else {
             endMaxShape = nil
             upperTriagle = nil
+            maxLine = nil
         }
                 
         // Determine the end min point , use max to get min value
         let endMinPoint = yValues.max().map { CGPoint(x: endX, y: $0) }
         
         if let endMinPoint {
-            //lower
-            if endMinPoint.y < startPoint.y {
-                endMinShape = Circle.endBelowMinPrice(center: endMinPoint)
-                
-                // check is minPrice is not lower then nowPrice
-                lowerTriagle = Triangle.belowCurrentPrice(startPoint: startPoint,
-                                                          secondPoint: endNowPoint,
-                                                          endPoint: endMinPoint)
-            }
-            //upper
-            else if endMinPoint.y > startPoint.y {
-                endMinShape = Circle.endAboveCurrentPrice(center: endMinPoint)
-                lowerTriagle = nil
-            }
-            else {
-                endMinShape = nil
-                lowerTriagle = nil
-            }
-        }
-        else {
+            let isLower = endMinPoint.y > startPoint.y
+            let isUpper = endMinPoint.y < startPoint.y
+            
+            endMinShape = isLower ? Circle.endBelowMinPrice(center: endMinPoint) :
+                          isUpper ? Circle.endAboveCurrentPrice(center: endMinPoint) :
+                          nil
+            
+            lowerTriagle = isLower ? Triangle.belowCurrentPrice(startPoint: startPoint,
+                                                                secondPoint: endNowPoint,
+                                                                endPoint: endMinPoint) :
+                           nil
+            
+            minLine = isLower ? DashLine.belowDashLine(from: startPoint, to: endMinPoint) :
+                      isUpper ? DashLine.aboveDashLine(from: startPoint, to: endMinPoint) :
+                      nil
+        } else {
             endMinShape = nil
             lowerTriagle = nil
+            minLine = nil
         }
         
         // Create end above now shapes , use filter to get values above start point
@@ -112,42 +106,24 @@ struct PriceTargetVM {
         nowLine = SolidLine.currentPriceLine(from: startPoint,
                                              to: endNowPoint)
         
-        maxLine = endMaxPoint.map { DashLine.aboveDashLine(from: startPoint,
-                                                           to: $0) }
-        
         // Determine the end average point
         let endAvgPoint = yAvg.map { CGPoint(x: endX, y: $0) }
         
         if let endAvgPoint {
-            if endAvgPoint.y > startPoint.y {
-                endAvgShape = HorizontalCapsule.endAvgPriceBelowNow(center: endAvgPoint)
-                
-                avgLine = DashLine.belowDashLine(from: startPoint,
-                                                 to: endAvgPoint)
-            }
-            else if endAvgPoint.y < startPoint.y {
-                endAvgShape = HorizontalCapsule.endAvgPriceAboveNow(center: endAvgPoint)
-                avgLine = DashLine.aboveDashLine(from: startPoint,
-                                                 to: endAvgPoint)
-            }
-            else {
-                endAvgShape = nil
-                avgLine = nil
-            }
-        }
-        else {
+            let isBelow = endAvgPoint.y > startPoint.y
+            let isAbove = endAvgPoint.y < startPoint.y
+            
+            endAvgShape = isBelow ? HorizontalCapsule.endAvgPriceBelowNow(center: endAvgPoint) :
+                          isAbove ? HorizontalCapsule.endAvgPriceAboveNow(center: endAvgPoint) :
+                          nil
+            
+            avgLine = isBelow ? DashLine.belowDashLine(from: startPoint, to: endAvgPoint) :
+                      isAbove ? DashLine.aboveDashLine(from: startPoint, to: endAvgPoint) :
+                      nil
+        } else {
             endAvgShape = nil
             avgLine = nil
-        }
-        
-        
-        minLine = endMinPoint.map { DashLine.belowDashLine(from: startPoint,
-                                                           to: $0) }
-
-        // Create triangles if applicable
-        
-        
-      
+        }        
         
     }
 //
