@@ -97,7 +97,7 @@ class CustomViewController: UIViewController {
         initViews()
         initConstriantLayout()
         initChart() // Initialize the chart
-        initDrawLine()
+        //initDrawLine()
         
         // delay 2 sec
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -167,60 +167,60 @@ class CustomViewController: UIViewController {
         priceTargetContainerView.bind(vm)
     }
     
-    func callAfterDelay() {
-        // get last entry of line chart
-        let lastEntry = lineChartDataEntries.last!
-        print("lastEntry: \(lastEntry)")
-        let allBeginPos = getAllPriceTargetPositions(entries: [lastEntry],
-                                                     in: chartView)
-        let beginPos: [CGPoint] = allBeginPos.map { .init(x: 0,
-                                                          y: $0.y) }
-        // create circle for each price target
-        beginPos.forEach { p in
-            priceTargetContainerView.drawCircle(at: p,
-                                                radius: 3,
-                                                color: .black,
-                                                strokeColor: .red,
-                                                lineWidth: 0.5,
-                                                alpha: 0.5)
-        }
-        
-        let allPriceTargetPos = getAllPriceTargetPositions(entries: scatterChartDataEntries,
-                                                           in: chartView)
-        
-        print("allPriceTargetPos: \(allPriceTargetPos)")
-        let priceTargetContainerViewWidth = priceTargetContainerView.bounds.width
-        let targetPos: [CGPoint] = allPriceTargetPos.map { .init(x: priceTargetContainerViewWidth,
-                                                                 y: $0.y) }
-        
-        // create circle for each price target
-        targetPos.forEach { p in
-            priceTargetContainerView.drawCircle(at: p,
-                                                radius: 3,
-                                                color: .black,
-                                                strokeColor: .red,
-                                                lineWidth: 0.5,
-                                                alpha: 0.5)
-        }
-        
-        let pairPos: [(from: CGPoint, to: CGPoint)] = createPairOfPoint(from: beginPos.first!,
-                                                                        to: targetPos)
-        // create straight line from begin to each price target
-        pairPos.forEach { pair in
-            //            priceTargetContainerView.drawStraightLine(from: pair.from,
-            //                                                      to: pair.to,
-            //                                                      strokeColor: .black,
-            //                                                      lineWidth: 2)
-            
-            // draw dashed line from begin to each price target
-            priceTargetContainerView.drawDashedLine(from: pair.from,
-                                                    to: pair.to,
-                                                    strokeColor: .black,
-                                                    lineWidth: 2,
-                                                    lineDashPattern: [4, 4],
-                                                    lineCap: .round)
-        }
-    }
+//    func callAfterDelay() {
+//        // get last entry of line chart
+//        let lastEntry = lineChartDataEntries.last!
+//        print("lastEntry: \(lastEntry)")
+//        let allBeginPos = getAllPriceTargetPositions(entries: [lastEntry],
+//                                                     in: chartView)
+//        let beginPos: [CGPoint] = allBeginPos.map { .init(x: 0,
+//                                                          y: $0.y) }
+//        // create circle for each price target
+//        beginPos.forEach { p in
+//            priceTargetContainerView.drawCircle(at: p,
+//                                                radius: 3,
+//                                                color: .black,
+//                                                strokeColor: .red,
+//                                                lineWidth: 0.5,
+//                                                alpha: 0.5)
+//        }
+//        
+//        let allPriceTargetPos = getAllPriceTargetPositions(entries: scatterChartDataEntries,
+//                                                           in: chartView)
+//        
+//        print("allPriceTargetPos: \(allPriceTargetPos)")
+//        let priceTargetContainerViewWidth = priceTargetContainerView.bounds.width
+//        let targetPos: [CGPoint] = allPriceTargetPos.map { .init(x: priceTargetContainerViewWidth,
+//                                                                 y: $0.y) }
+//        
+//        // create circle for each price target
+//        targetPos.forEach { p in
+//            priceTargetContainerView.drawCircle(at: p,
+//                                                radius: 3,
+//                                                color: .black,
+//                                                strokeColor: .red,
+//                                                lineWidth: 0.5,
+//                                                alpha: 0.5)
+//        }
+//        
+//        let pairPos: [(from: CGPoint, to: CGPoint)] = createPairOfPoint(from: beginPos.first!,
+//                                                                        to: targetPos)
+//        // create straight line from begin to each price target
+//        pairPos.forEach { pair in
+//            //            priceTargetContainerView.drawStraightLine(from: pair.from,
+//            //                                                      to: pair.to,
+//            //                                                      strokeColor: .black,
+//            //                                                      lineWidth: 2)
+//            
+//            // draw dashed line from begin to each price target
+//            priceTargetContainerView.drawDashedLine(from: pair.from,
+//                                                    to: pair.to,
+//                                                    strokeColor: .black,
+//                                                    lineWidth: 2,
+//                                                    lineDashPattern: [4, 4],
+//                                                    lineCap: .round)
+//        }
+//    }
     
     private func initViews() {
         view.backgroundColor = .white
@@ -335,8 +335,7 @@ class CustomViewController: UIViewController {
                                     in chartView: BarLineChartViewBase) -> [CGPoint]
     {
         entries.map {
-            let dataSets = chartView.data?.dataSets
-            let last = dataSets?.last
+            let dataSets = chartView.data?.dataSets            
             let p = chartView.getPosition(entry: $0,
                                           axis: .left)
             print("point \(p.x) \(p.y)")
@@ -344,70 +343,70 @@ class CustomViewController: UIViewController {
         }
     }
 
-    private func initDrawLine() {
-        // 1) draw straight line from (0,0) to (max_width, 0)
-        let maxWidth = drawDemoContainerView.bounds.width
-        let startPoint = CGPoint(x: 0, y: 10)
-        let endPoint = CGPoint(x: 100, y: 10)
-        drawDemoContainerView.drawStraightLine(from: startPoint,
-                                               to: endPoint,
-                                               strokeColor: .black,
-                                               lineWidth: 2)
-
-        // 2) draw dashed line from (0,10) to (max_width, 10)
-        let startPoint2 = CGPoint(x: 0, y: 30)
-        let endPoint2 = CGPoint(x: 100, y: 30)
-        drawDemoContainerView.drawDashedLine(from: startPoint2,
-                                             to: endPoint2,
-                                             strokeColor: .black,
-                                             lineWidth: 2,
-                                             lineDashPattern: [4, 4],
-                                             lineCap: .round)
-
-        // 3) draw lower triangle at (0,30)
-        let pointA = CGPoint(x: 0, y: 50)
-        let pointB = CGPoint(x: 100, y: 50)
-        let pointC = CGPoint(x: 100, y: 150)
-        drawDemoContainerView.drawTriangle(withPoints: pointA,
-                                           pointB: pointB,
-                                           pointC: pointC,
-                                           fillColor: .blue,
-                                           strokeColor: .black,
-                                           lineWidth: 0,
-                                           alpha: 0.5)
-
-        // 4) draw upper triangle at (0,150)
-        let pointA2 = CGPoint(x: 0, y: 150)
-        let pointB2 = CGPoint(x: 100, y: 150)
-        let pointC2 = CGPoint(x: 0, y: 50)
-        drawDemoContainerView.drawTriangle(withPoints: pointA2,
-                                           pointB: pointB2,
-                                           pointC: pointC2,
-                                           fillColor: .red,
-                                           strokeColor: .black,
-                                           lineWidth: 0,
-                                           alpha: 0.5)
-
-        // 5) draw circle
-        let center = CGPoint(x: 50, y: 200)
-        let radius: CGFloat = 3
-        drawDemoContainerView.drawCircle(at: center,
-                                         radius: radius,
-                                         color: .black,
-                                         strokeColor: .red,
-                                         lineWidth: 0.5,
-                                         alpha: 0.5)
-
-        // 6) draw horizontal capsule
-        let capsuleStartPoint = CGPoint(x: 50, y: 250)
-        drawDemoContainerView.drawHorizontalCapsule(at: capsuleStartPoint,
-                                                    width: 20,
-                                                    height: 6,
-                                                    color: .black,
-                                                    strokeColor: .red,
-                                                    lineWidth: 0.5,
-                                                    alpha: 0.5)
-    }
+//    private func initDrawLine() {
+//        // 1) draw straight line from (0,0) to (max_width, 0)
+//        let maxWidth = drawDemoContainerView.bounds.width
+//        let startPoint = CGPoint(x: 0, y: 10)
+//        let endPoint = CGPoint(x: 100, y: 10)
+//        drawDemoContainerView.drawStraightLine(from: startPoint,
+//                                               to: endPoint,
+//                                               strokeColor: .black,
+//                                               lineWidth: 2)
+//
+//        // 2) draw dashed line from (0,10) to (max_width, 10)
+//        let startPoint2 = CGPoint(x: 0, y: 30)
+//        let endPoint2 = CGPoint(x: 100, y: 30)
+//        drawDemoContainerView.drawDashedLine(from: startPoint2,
+//                                             to: endPoint2,
+//                                             strokeColor: .black,
+//                                             lineWidth: 2,
+//                                             lineDashPattern: [4, 4],
+//                                             lineCap: .round)
+//
+//        // 3) draw lower triangle at (0,30)
+//        let pointA = CGPoint(x: 0, y: 50)
+//        let pointB = CGPoint(x: 100, y: 50)
+//        let pointC = CGPoint(x: 100, y: 150)
+//        drawDemoContainerView.drawTriangle(withPoints: pointA,
+//                                           pointB: pointB,
+//                                           pointC: pointC,
+//                                           fillColor: .blue,
+//                                           strokeColor: .black,
+//                                           lineWidth: 0,
+//                                           alpha: 0.5)
+//
+//        // 4) draw upper triangle at (0,150)
+//        let pointA2 = CGPoint(x: 0, y: 150)
+//        let pointB2 = CGPoint(x: 100, y: 150)
+//        let pointC2 = CGPoint(x: 0, y: 50)
+//        drawDemoContainerView.drawTriangle(withPoints: pointA2,
+//                                           pointB: pointB2,
+//                                           pointC: pointC2,
+//                                           fillColor: .red,
+//                                           strokeColor: .black,
+//                                           lineWidth: 0,
+//                                           alpha: 0.5)
+//
+//        // 5) draw circle
+//        let center = CGPoint(x: 50, y: 200)
+//        let radius: CGFloat = 3
+//        drawDemoContainerView.drawCircle(at: center,
+//                                         radius: radius,
+//                                         color: .black,
+//                                         strokeColor: .red,
+//                                         lineWidth: 0.5,
+//                                         alpha: 0.5)
+//
+//        // 6) draw horizontal capsule
+//        let capsuleStartPoint = CGPoint(x: 50, y: 250)
+//        drawDemoContainerView.drawHorizontalCapsule(at: capsuleStartPoint,
+//                                                    width: 20,
+//                                                    height: 6,
+//                                                    color: .black,
+//                                                    strokeColor: .red,
+//                                                    lineWidth: 0.5,
+//                                                    alpha: 0.5)
+//    }
 }
 
 extension CustomViewController: ChartViewDelegate {

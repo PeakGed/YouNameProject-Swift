@@ -11,7 +11,6 @@
 		364029042CC60B8B004D745F /* RKetCombinedChartRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364029032CC60B85004D745F /* RKetCombinedChartRenderer.swift */; };
 		364029062CC60BA1004D745F /* RKLineChartRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364029052CC60BA0004D745F /* RKLineChartRenderer.swift */; };
 		364029082CC60BCF004D745F /* TextHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364029072CC60BCB004D745F /* TextHelper.swift */; };
-		3640290A2CC62A44004D745F /* UIView+DrawShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364029092CC62A3A004D745F /* UIView+DrawShape.swift */; };
 		3640290C2CC74325004D745F /* OHLC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3640290B2CC74323004D745F /* OHLC.swift */; };
 		3640290E2CC74FC3004D745F /* PriceTargetVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3640290D2CC74FC0004D745F /* PriceTargetVM.swift */; };
 		364029102CC754AC004D745F /* PriceTargetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3640290F2CC754AA004D745F /* PriceTargetTests.swift */; };
@@ -50,7 +49,6 @@
 		364029032CC60B85004D745F /* RKetCombinedChartRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKetCombinedChartRenderer.swift; sourceTree = "<group>"; };
 		364029052CC60BA0004D745F /* RKLineChartRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKLineChartRenderer.swift; sourceTree = "<group>"; };
 		364029072CC60BCB004D745F /* TextHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextHelper.swift; sourceTree = "<group>"; };
-		364029092CC62A3A004D745F /* UIView+DrawShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+DrawShape.swift"; sourceTree = "<group>"; };
 		3640290B2CC74323004D745F /* OHLC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OHLC.swift; sourceTree = "<group>"; };
 		3640290D2CC74FC0004D745F /* PriceTargetVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceTargetVM.swift; sourceTree = "<group>"; };
 		3640290F2CC754AA004D745F /* PriceTargetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceTargetTests.swift; sourceTree = "<group>"; };
@@ -109,7 +107,6 @@
 			isa = PBXGroup;
 			children = (
 				364029112CC7856F004D745F /* PriceTargetView.swift */,
-				364029092CC62A3A004D745F /* UIView+DrawShape.swift */,
 				3640290D2CC74FC0004D745F /* PriceTargetVM.swift */,
 				3640290B2CC74323004D745F /* OHLC.swift */,
 				364029032CC60B85004D745F /* RKetCombinedChartRenderer.swift */,
@@ -318,7 +315,6 @@
 				364029122CC78575004D745F /* PriceTargetView.swift in Sources */,
 				36B587C32BF73F1600D523D0 /* AppDelegate.swift in Sources */,
 				36B587C52BF73F1600D523D0 /* SceneDelegate.swift in Sources */,
-				3640290A2CC62A44004D745F /* UIView+DrawShape.swift in Sources */,
 				364029042CC60B8B004D745F /* RKetCombinedChartRenderer.swift in Sources */,
 				3640290E2CC74FC3004D745F /* PriceTargetVM.swift in Sources */,
 				36B587F32BF73F4900D523D0 /* CustomViewController.swift in Sources */,
