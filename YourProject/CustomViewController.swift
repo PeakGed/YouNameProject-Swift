@@ -90,6 +90,9 @@ class CustomViewController: UIViewController {
         element.alpha = 0.5
         return element
     }()
+    
+    var capsuleSize: CGSize = .init(width: 0,
+                                    height: 26)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -107,6 +110,7 @@ class CustomViewController: UIViewController {
                                          min: stubValue.min,
                                          avg: stubValue.avg,
                                          other: stubValue.other)
+            
             self.initStubCapsuleValues(now: stubValue.now,
                                        max: stubValue.max,
                                        min: stubValue.min,
@@ -131,11 +135,14 @@ class CustomViewController: UIViewController {
         let yValues = allPriceTargetPos.map { $0.y }
 
         // Stub Value
-        let now = ChartDataEntry(x: 0, y: Double(allBeginPos.first!.y))
+        let now = ChartDataEntry(x: 0,
+                                 y: Double(allBeginPos.first!.y))
         let avg = ChartDataEntry(x: Double(allPriceTargetPos.randomElement()!.x),
                                  y: Double(allPriceTargetPos.randomElement()!.y))
-        let min = ChartDataEntry(x: 0, y: Double(yValues.max()!)) // toggle from chart render direction
-        let max = ChartDataEntry(x: 0, y: Double(yValues.min()!)) // toggle from chart render direction
+        let min = ChartDataEntry(x: 0,
+                                 y: Double(yValues.max()!)) // toggle from chart render direction
+        let max = ChartDataEntry(x: 0,
+                                 y: Double(yValues.min()!)) // toggle from chart render direction
 
         // print log
         print("now: \(now)")
@@ -300,7 +307,7 @@ class CustomViewController: UIViewController {
             make.top.equalTo(chartView.snp.top)
             make.left.equalTo(priceTargetContainerView.snp.right)
             make.right.equalToSuperview()
-            // make.width.equalTo(80)
+            //make.width.equalTo(capsuleSize.width)
             make.bottom.equalTo(chartView.snp.bottom)
         }
     }

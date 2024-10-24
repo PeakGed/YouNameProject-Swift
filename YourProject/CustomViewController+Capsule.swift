@@ -21,14 +21,13 @@ extension CustomViewController {
         
     }
     
+    // MARK: renderCapsules
     func initStubCapsuleValues(now: ChartDataEntry,
                                max: ChartDataEntry,
                                min: ChartDataEntry,
                                avg: ChartDataEntry) {
-                     
-        // MARK: renderCapsules
+                             
         // sort by Y value
-        
         let nowValue = now.data as? Double ?? 0
         let avgValue = avg.data as? Double ?? 0
         let minValue = min.data as? Double ?? 0
@@ -47,6 +46,8 @@ extension CustomViewController {
                                                   title: "Max",
                                                   value: maxValue)].sorted { $0.y < $1.y }
         
+        capsuleSize.width = capsuleWidth(sources: datasources)
+        
         let viewModels = createCapsules(by: datasources)
         
         viewModels.forEach { viewModel in
@@ -54,6 +55,12 @@ extension CustomViewController {
             capsuleContainerView.addSubview(capsuleView)
         }
         
+        // Update capsule container view layout
+//        capsuleContainerView.setNeedsLayout()
+//        capsuleContainerView.layoutIfNeeded()
+        self.capsuleContainerView.snp.updateConstraints { make in
+            make.width.equalTo(capsuleSize.width)
+        }
     }
     
     func createCapsuleView(with viewModel: CapsuleVM) -> CapsuleView {
@@ -127,16 +134,18 @@ extension CustomViewController {
         return [viewModel] + createCapsules(by: remainingCapsules,
                                             from: viewModel)
     }
+        
+    func capsuleWidth(sources: [CapsuleSource]) -> CGFloat {
+        let maxSource = sources.max(by: { $0.valueLabelWidth < $1.valueLabelWidth })
+        
+        return (maxSource?.valueLabelWidth ?? 0) + (30 + 8)
+    }
     
 }
 
 // MARK: - Calculator
 
 private extension CustomViewController {
-    var capsuleSize: CGSize {
-        .init(width: 72,
-              height: 26)
-    }
     
     var containerHeight: CGFloat { capsuleContainerView.bounds.height }
     var overlapSpacing: CGFloat { 6.0 }
@@ -180,11 +189,5 @@ private extension CustomViewController {
         
         return originY
     }
-    
-    func capsuleWidth(sources: [CapsuleSource]) -> CGFloat {
-        let maxSource = sources.max(by: { $0.valueLabelWidth < $1.valueLabelWidth })
-        
-        return maxSource?.valueLabelWidth ?? 0
-    }
-  
+   
 }
