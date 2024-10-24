@@ -17,7 +17,7 @@ class CustomViewController: UIViewController {
         element.textAlignment = .left
         return element
     }()
-    
+
     lazy var drawDemoContainerView: UIView = {
         let element = UIView()
         element.backgroundColor = .lightGray
@@ -25,13 +25,13 @@ class CustomViewController: UIViewController {
         element.layer.borderColor = UIColor.black.cgColor
         return element
     }()
-    
+
     // Chart
     lazy var chartContainerView: UIView = {
         let element = UIView()
         return element
     }()
-    
+
     lazy var chartView: CombinedChartView = {
         let element = CombinedChartView()
         element.isUserInteractionEnabled = true
@@ -46,25 +46,25 @@ class CustomViewController: UIViewController {
         element.pinchZoomEnabled = false
         element.noDataText = ""
         element.noDataTextColor = UIColor.clear
-        
+
         element.leftAxis.enabled = false
         element.rightAxis.enabled = false
         element.xAxis.drawAxisLineEnabled = false
         element.xAxis.drawGridLinesEnabled = false
         element.leftAxis.drawAxisLineEnabled = false
         element.xAxis.drawLabelsEnabled = false
-        
+
         element.drawGridBackgroundEnabled = false
         element.drawBordersEnabled = false
-        
+
         element.legend.form = .none
         element.setScaleEnabled(false)
-        
+
         element.delegate = self
         element.maxVisibleCount = 5000
         element.rightAxis.axisMaximum = 100
         element.rightAxis.axisMinimum = 0
-        
+
         element.setScaleMinima(1,
                                scaleY: 1)
         element.setViewPortOffsets(left: 0,
@@ -74,31 +74,31 @@ class CustomViewController: UIViewController {
         element.backgroundColor = .lightGray
         element.layer.borderWidth = 1
         element.layer.borderColor = UIColor.black.cgColor
-        
+
         return element
     }()
-    
+
     lazy var priceTargetContainerView: PriceTargetView = {
         let element = PriceTargetView()
         element.backgroundColor = .white
         return element
     }()
-    
+
     lazy var capsuleContainerView: UIView = {
         let element = UIView()
         element.backgroundColor = .brown
         element.alpha = 0.5
         return element
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         initViews()
         initConstriantLayout()
         initChart() // Initialize the chart
-        //initDrawLine()
-        
+        // initDrawLine()
+
         // delay 2 sec
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             let stubValue = self.getStubValue()
@@ -113,98 +113,98 @@ class CustomViewController: UIViewController {
                                        avg: stubValue.avg)
         }
     }
- 
-    func getStubValue() -> (min: Double,
-                            max: Double,
-                            avg: Double,
-                            now: Double,
-                            other: [Double]) {
+
+    func getStubValue() -> (min: ChartDataEntry,
+                            max: ChartDataEntry,
+                            avg: ChartDataEntry,
+                            now: ChartDataEntry,
+                            other: [ChartDataEntry])
+    {
         let lastEntry = lineChartDataEntries.last!
         let allBeginPos = getAllPriceTargetPositions(entries: [lastEntry],
                                                      in: chartView)
-        
-        
+
         let endXPos = priceTargetContainerView.bounds.width
-        
+
         let allPriceTargetPos = getAllPriceTargetPositions(entries: scatterChartDataEntries,
                                                            in: chartView)
         let yValues = allPriceTargetPos.map { $0.y }
-        
+
         // Stub Value
-        let now: CGPoint = .init(x: 0,
-                                 y: allBeginPos.first!.y)
-        let avg = allPriceTargetPos.randomElement()!
-        let min = yValues.max()!  // toggle from chart render direction
-        let max = yValues.min()! // toggle from chart render direction
-        
-        //print log
+        let now = ChartDataEntry(x: 0, y: Double(allBeginPos.first!.y))
+        let avg = ChartDataEntry(x: Double(allPriceTargetPos.randomElement()!.x),
+                                 y: Double(allPriceTargetPos.randomElement()!.y))
+        let min = ChartDataEntry(x: 0, y: Double(yValues.max()!)) // toggle from chart render direction
+        let max = ChartDataEntry(x: 0, y: Double(yValues.min()!)) // toggle from chart render direction
+
+        // print log
         print("now: \(now)")
         print("avg: \(avg)")
         print("min: \(min)")
         print("max: \(max)")
-        
-        return (Double(min),
-                Double(max),
-                Double(avg.y),
-                Double(now.y),
-                yValues.map { Double($0) })
+
+        return (min,
+                max,
+                avg,
+                now,
+                yValues.map { ChartDataEntry(x: 0, y: Double($0)) })
     }
-    
-    func initStubTargetPriceView(now: Double,
-                                 max: Double,
-                                 min: Double,
-                                 avg: Double,
-                                 other: [Double]) {
-        let startPos: CGPoint = .init(x: 0, y: now)
+
+    func initStubTargetPriceView(now: ChartDataEntry,
+                                 max: ChartDataEntry,
+                                 min: ChartDataEntry,
+                                 avg: ChartDataEntry,
+                                 other: [ChartDataEntry])
+    {
+        let startPos: CGPoint = .init(x: 0, y: now.y)
         let endXPos = priceTargetContainerView.bounds.width
         let vm = PriceTargetVM(startPoint: startPos,
                                endX: endXPos,
-                               yValues: other.map({ CGFloat($0) }),
-                               yAvg: avg)
+                               yValues: other.map { CGFloat($0.y) },
+                               yAvg: avg.y)
         priceTargetContainerView.bind(vm)
     }
-    
+
     func callAfterDelay3() {
         // get last entry of line chart
         let lastEntry = lineChartDataEntries.last!
-                        
+
         let lastPrice = lastEntry.y
-        
-        
+
         let startPos = CGPoint(x: 0,
                                y: lastPrice)
 
         let endXPos = priceTargetContainerView.bounds.width
-        
+
         let randomY = Stub.randomY
-        
+
         let max = randomY.max()
         let min = randomY.min()
         let avg = randomY.randomElement()
         let avgMoreThenNow: Bool? = (avg != nil) ? avg! > lastPrice : nil
-        
+
         print("###")
         print("Random Y Values: ")
         randomY.sorted().forEach { print($0) }
-        
+
         print("###")
         print("Max Y Value: \(String(describing: max))")
         print("Min Y Value: \(String(describing: min))")
         print("Average Y Value: \(String(describing: avg))")
         print("Average More Than Now: \(String(describing: avgMoreThenNow))")
-        
+
         print("###")
         print("Now : \(lastPrice)")
-        
-        let yValues = randomY.compactMap({ getItemYPosition(value: $0) })
+
+        let yValues = randomY.compactMap { getItemYPosition(value: $0) }
         let yAvg: CGFloat? = (avg != nil) ? getItemYPosition(value: avg!) : nil
         let vm = PriceTargetVM(startPoint: startPos,
-                             endX: endXPos,
-                             yValues: yValues,
-                             yAvg: yAvg)
+                               endX: endXPos,
+                               yValues: yValues,
+                               yAvg: yAvg)
         priceTargetContainerView.bind(vm)
     }
-    
+
 //    func callAfterDelay() {
 //        // get last entry of line chart
 //        let lastEntry = lineChartDataEntries.last!
@@ -259,56 +259,56 @@ class CustomViewController: UIViewController {
 //                                                    lineCap: .round)
 //        }
 //    }
-    
+
     private func initViews() {
         view.backgroundColor = .white
-        
+
         view.addSubview(nameLabel)
         view.addSubview(drawDemoContainerView)
         view.addSubview(chartView) // Ensure chartView is added to the view
         view.addSubview(priceTargetContainerView)
         view.addSubview(capsuleContainerView)
     }
-    
+
     private func initConstriantLayout() {
         nameLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.centerX.equalToSuperview()
         }
-        
+
         drawDemoContainerView.snp.makeConstraints { make in
             make.bottom.equalTo(nameLabel.snp.top)
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.height.equalTo(300)
         }
-        
+
         chartView.snp.makeConstraints { make in
             make.top.equalTo(nameLabel.snp.bottom).offset(20) // Position below nameLabel
             make.left.equalToSuperview()
             make.height.equalTo(300)
         }
-        
+
         priceTargetContainerView.snp.makeConstraints { make in
             make.top.equalTo(chartView.snp.top)
             make.left.equalTo(chartView.snp.right)
             make.width.equalTo(30)
             make.bottom.equalTo(chartView.snp.bottom)
         }
-        
+
         capsuleContainerView.snp.makeConstraints { make in
             make.top.equalTo(chartView.snp.top)
             make.left.equalTo(priceTargetContainerView.snp.right)
             make.right.equalToSuperview()
-            make.width.equalTo(80)
+            // make.width.equalTo(80)
             make.bottom.equalTo(chartView.snp.bottom)
         }
     }
-    
+
     // MARK: lineChartData
-    
+
     lazy var lineChartDataEntries: [ChartDataEntry] = Self.Stub.lineChartDataEntries
-    
+
     var lineChartDataSet: LineChartDataSet {
         let dataSet = LineChartDataSet(entries: lineChartDataEntries,
                                        label: "Sample Data")
@@ -316,11 +316,11 @@ class CustomViewController: UIViewController {
         dataSet.valueColors = [NSUIColor.black] // Set the value text color
         return dataSet
     }
-    
+
     // MARK: scatterChartData
-    
+
     lazy var scatterChartDataEntries: [ChartDataEntry] = Self.Stub.scatterChartDataEntries
-    
+
     var scatterChartDataSet: ScatterChartDataSet {
         let dataSet = ScatterChartDataSet(entries: scatterChartDataEntries,
                                           label: "Scatter Data")
@@ -329,7 +329,7 @@ class CustomViewController: UIViewController {
         dataSet.shapeRenderer = CircleShapeRenderer()
         return dataSet
     }
-    
+
     func getItemYPosition(value: Double) -> CGFloat? {
         let entry = ChartDataEntry(x: 0, y: value)
         let position = chartView.getPosition(entry: entry,
@@ -347,8 +347,8 @@ class CustomViewController: UIViewController {
         let renderer = RKetCombinedChartRenderer(chart: chartView,
                                                  animator: chartView.chartAnimator,
                                                  viewPortHandler: chartView.viewPortHandler,
-                                                 maxPrice: 300,//maxColsePriceOfChart,
-                                                 minPrice: 0) //minClosePriceOfChart)
+                                                 maxPrice: 300, // maxColsePriceOfChart,
+                                                 minPrice: 0) // minClosePriceOfChart)
         chartView.renderer = renderer
     }
 
@@ -451,17 +451,11 @@ extension CustomViewController: ChartViewDelegate {
     func chartValueSelected(_: ChartViewBase,
                             entry _: ChartDataEntry,
                             highlight _: Highlight)
-    {
-        
-    }
+    {}
 
-    func chartValueNothingSelected(_: ChartViewBase) {
-        
-    }
+    func chartValueNothingSelected(_: ChartViewBase) {}
 
-    func chartViewDidEndPanning(_: ChartViewBase) {
-        
-    }
+    func chartViewDidEndPanning(_: ChartViewBase) {}
 }
 
 // MARK: Stub Chart Data
@@ -482,14 +476,15 @@ extension CustomViewController {
             let lastIndex: Int = simple.count - 1
             let dataEntries = OHLC.Stub.simple1.enumerated().map { ref -> ChartDataEntry in
                 ChartDataEntry(x: Double(lastIndex),
-                               y: ref.element.close)
+                               y: ref.element.close,
+                               data: Double(ref.element.close))
             }
 
             return dataEntries
         }
-        
+
         static var randomY: [Double] {
-            (0 ..< 10).map { _ in Double.random(in: 100...200) }
+            (0 ..< 10).map { _ in Double.random(in: 100 ... 200) }
         }
     }
 }

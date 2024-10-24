@@ -5,6 +5,7 @@
 //  Created by IntrodexMac on 24/10/2567 BE.
 //
 import UIKit
+import DGCharts
 
 extension CustomViewController {
     
@@ -12,27 +13,39 @@ extension CustomViewController {
         let y: CGFloat
         let title: String
         let value: Double
+                
+        var valueLabelWidth: CGFloat {
+            return TextHelper.sizeForSingleLine(fromText: String(value),
+                                                font: .systemFont(ofSize: 16)).width
+        }
+        
     }
     
-    func initStubCapsuleValues(now: Double,
-                               max: Double,
-                               min: Double,
-                               avg: Double) {
+    func initStubCapsuleValues(now: ChartDataEntry,
+                               max: ChartDataEntry,
+                               min: ChartDataEntry,
+                               avg: ChartDataEntry) {
                      
         // MARK: renderCapsules
         // sort by Y value
-        let datasources: [CapsuleSource] = [.init(y: now,
+        
+        let nowValue = now.data as? Double ?? 0
+        let avgValue = avg.data as? Double ?? 0
+        let minValue = min.data as? Double ?? 0
+        let maxValue = max.data as? Double ?? 0
+        
+        let datasources: [CapsuleSource] = [.init(y: CGFloat(now.y),
                                                   title: "Now",
-                                                  value: now),
-                                            .init(y: avg,
+                                                  value: nowValue),
+                                            .init(y: CGFloat(avg.y),
                                                   title: "Avg",
-                                                  value: avg),
-                                            .init(y: min,
+                                                  value: avgValue),
+                                            .init(y: CGFloat(min.y),
                                                   title: "Min",
-                                                  value: min),
-                                            .init(y: max,
+                                                  value: minValue),
+                                            .init(y: CGFloat(max.y),
                                                   title: "Max",
-                                                  value: max)].sorted { $0.y < $1.y }
+                                                  value: maxValue)].sorted { $0.y < $1.y }
         
         let viewModels = createCapsules(by: datasources)
         
@@ -167,4 +180,11 @@ private extension CustomViewController {
         
         return originY
     }
+    
+    func capsuleWidth(sources: [CapsuleSource]) -> CGFloat {
+        let maxSource = sources.max(by: { $0.valueLabelWidth < $1.valueLabelWidth })
+        
+        return maxSource?.valueLabelWidth ?? 0
+    }
+  
 }
