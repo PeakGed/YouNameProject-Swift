@@ -15,6 +15,7 @@
 		3640290E2CC74FC3004D745F /* PriceTargetVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3640290D2CC74FC0004D745F /* PriceTargetVM.swift */; };
 		364029102CC754AC004D745F /* PriceTargetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3640290F2CC754AA004D745F /* PriceTargetTests.swift */; };
 		364029122CC78575004D745F /* PriceTargetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364029112CC7856F004D745F /* PriceTargetView.swift */; };
+		36514F582CCA2D0800838B37 /* CapsuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36514F572CCA2D0000838B37 /* CapsuleView.swift */; };
 		36B587C32BF73F1600D523D0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B587C22BF73F1600D523D0 /* AppDelegate.swift */; };
 		36B587C52BF73F1600D523D0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B587C42BF73F1600D523D0 /* SceneDelegate.swift */; };
 		36B587C72BF73F1600D523D0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B587C62BF73F1600D523D0 /* ViewController.swift */; };
@@ -53,6 +54,7 @@
 		3640290D2CC74FC0004D745F /* PriceTargetVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceTargetVM.swift; sourceTree = "<group>"; };
 		3640290F2CC754AA004D745F /* PriceTargetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceTargetTests.swift; sourceTree = "<group>"; };
 		364029112CC7856F004D745F /* PriceTargetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceTargetView.swift; sourceTree = "<group>"; };
+		36514F572CCA2D0000838B37 /* CapsuleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleView.swift; sourceTree = "<group>"; };
 		36B587BF2BF73F1600D523D0 /* YourProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YourProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36B587C22BF73F1600D523D0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		36B587C42BF73F1600D523D0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 		364029022CC60B80004D745F /* Chart */ = {
 			isa = PBXGroup;
 			children = (
+				36514F562CCA2CA700838B37 /* Capsule */,
 				364029112CC7856F004D745F /* PriceTargetView.swift */,
 				3640290D2CC74FC0004D745F /* PriceTargetVM.swift */,
 				3640290B2CC74323004D745F /* OHLC.swift */,
@@ -114,6 +117,14 @@
 				364029072CC60BCB004D745F /* TextHelper.swift */,
 			);
 			path = Chart;
+			sourceTree = "<group>";
+		};
+		36514F562CCA2CA700838B37 /* Capsule */ = {
+			isa = PBXGroup;
+			children = (
+				36514F572CCA2D0000838B37 /* CapsuleView.swift */,
+			);
+			path = Capsule;
 			sourceTree = "<group>";
 		};
 		36B587B62BF73F1600D523D0 = {
@@ -312,6 +323,7 @@
 			files = (
 				364029062CC60BA1004D745F /* RKLineChartRenderer.swift in Sources */,
 				36B587C72BF73F1600D523D0 /* ViewController.swift in Sources */,
+				36514F582CCA2D0800838B37 /* CapsuleView.swift in Sources */,
 				364029122CC78575004D745F /* PriceTargetView.swift in Sources */,
 				36B587C32BF73F1600D523D0 /* AppDelegate.swift in Sources */,
 				36B587C52BF73F1600D523D0 /* SceneDelegate.swift in Sources */,
