@@ -77,7 +77,7 @@ extension CustomViewController {
                                             .init(y: CGFloat(maxPos.y),
                                                   title: "Max",
                                                   value: maxValue)].sorted {
-            $0.y > $1.y
+            $0.y < $1.y
         }
         
         capsuleSize.width = capsuleWidth(sources: datasources)
