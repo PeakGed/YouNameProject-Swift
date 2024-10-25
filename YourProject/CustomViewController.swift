@@ -81,37 +81,13 @@ class CustomViewController: UIViewController {
     }()
     
     // MARK: - Data Stores
-    var lineChartDataSet: LineChartDataSet {
-        let dataSet = LineChartDataSet(entries: lineChartDataEntries,
-                                       label: "Sample Data")
-        dataSet.colors = [NSUIColor.blue]
-        dataSet.valueColors = [NSUIColor.black]
-        return dataSet
-    }
-    
     var priceTarget: PriceTargetResult?
     var priceChartDataSet: LineChartDataSet?
     var priceTargetChartDataSet: ScatterChartDataSet?
+    var OHLCs: [OHLC] = []
     
-    var lineChartDataEntries: [ChartDataEntry] = []
-    var scatterChartDataEntries: [ChartDataEntry] = []
     var capsuleSize: CGSize = .init(width: 0,
                                     height: 26)
-    
-    var minChartDataEntry: ChartDataEntry?
-    var maxChartDataEntry: ChartDataEntry?
-    var avgChartDataEntry: ChartDataEntry?
-    var nowChartDataEntry: ChartDataEntry?
-    var otherChartDataEntries: [ChartDataEntry] = []
-
-    var scatterChartDataSet: ScatterChartDataSet {
-        let dataSet = ScatterChartDataSet(entries: scatterChartDataEntries,
-                                          label: "Scatter Data")
-        dataSet.colors = [NSUIColor.red]
-        dataSet.scatterShapeSize = 10
-        dataSet.shapeRenderer = CircleShapeRenderer()
-        return dataSet
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -119,28 +95,6 @@ class CustomViewController: UIViewController {
         initViews()
         initConstriantLayout()
         fetchChartData()
-//        initChartStubData()
-//        initChart()
-//
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-//            guard
-//                let nowChartDataEntry = self.nowChartDataEntry,
-//                let minChartDataEntry = self.minChartDataEntry,
-//                let maxChartDataEntry = self.maxChartDataEntry,
-//                let avgChartDataEntry = self.avgChartDataEntry
-//            else { return }
-//            
-//            self.initStubTargetPriceView(now: nowChartDataEntry,
-//                                         max: maxChartDataEntry,
-//                                         min: minChartDataEntry,
-//                                         avg: avgChartDataEntry,
-//                                         other: self.otherChartDataEntries)
-//            
-//            self.initStubCapsuleValues(now: nowChartDataEntry,
-//                                       max: maxChartDataEntry,
-//                                       min: minChartDataEntry,
-//                                       avg: avgChartDataEntry)
-//        }
     }
     
     private func fetchChartData() {
@@ -153,7 +107,10 @@ class CustomViewController: UIViewController {
                 print("No data")
                 return
             }
+            
+            self.OHLCs = priceOHLCs
             self.priceTarget = priceTarget
+            
             fetchDataSuccess(priceTarget: priceTarget,
                                    OHLCs: priceOHLCs)
         }
@@ -208,53 +165,15 @@ class CustomViewController: UIViewController {
         let targetChartEntries = priceTargetWithSummaryAmount.map({ ChartDataEntry(x: 0, y: $0) })
         
         let dataSet = ScatterChartDataSet(entries: targetChartEntries,
-                                          label: "Target Price")
-        dataSet.colors = [NSUIColor.red]
-        dataSet.scatterShapeSize = 10
-        dataSet.shapeRenderer = CircleShapeRenderer()
-        
+                                          label: "")
+        dataSet.colors = [NSUIColor.clear]
+        dataSet.scatterShapeSize = 0
+        dataSet.drawValuesEnabled = false
+        dataSet.drawIconsEnabled = false
+        dataSet.drawVerticalHighlightIndicatorEnabled = false
+        dataSet.drawHorizontalHighlightIndicatorEnabled = false
         return dataSet
     }
-    
-//    func initChartStubData() {
-//        lineChartDataEntries = Self.Stub.lineChartDataEntries
-//        
-//        let lineLastEntry = lineChartDataEntries.last
-//        let lineLastEntryX = lineLastEntry?.x ?? 0
-//        let now = lineLastEntry?.y ?? 0
-//        
-//        self.nowChartDataEntry = ChartDataEntry(x: lineLastEntryX,
-//                                                y: now,
-//                                                data: now)
-//        
-//        let generator = MockPriceTargetGenerator()
-//        let mockData = generator.generateMockData(currentPrice: now)
-//        
-//        let sumPrice = mockData.response.result?.priceTargetSummary
-//        
-//        let avg: Double = Double(sumPrice?.average ?? "0") ?? 0
-//        let other: [Double] = mockData.response.result?.items.compactMap({
-//            Double($0.priceTarget)
-//        }) ?? []
-//        
-//        
-//        let entriesGroup = Self.Stub.generateEntries(avg: avg,
-//                                                     now: now,
-//                                                     other: other)
-//        
-//        minChartDataEntry = entriesGroup.minEntry
-//        maxChartDataEntry = entriesGroup.maxEntry
-//        avgChartDataEntry = entriesGroup.avgEntry
-//        otherChartDataEntries = entriesGroup.other
-//        
-//        let secoundGroup = [minChartDataEntry,
-//                            maxChartDataEntry,
-//                            avgChartDataEntry,
-//                            nowChartDataEntry].compactMap { $0 }
-//        
-//        scatterChartDataEntries = entriesGroup.other + secoundGroup
-//    }
-    
     
     func initStubTargetPriceView(now: ChartDataEntry,
                                  max: ChartDataEntry,
@@ -308,8 +227,13 @@ class CustomViewController: UIViewController {
         }
     }
 
-    func updateChartRenderer() {
-        let combine = lineChartDataEntries + scatterChartDataEntries
+    func createChartRenderer() -> RKetCombinedChartRenderer? {
+        guard
+            let priceChartDataSet,
+            let priceTargetChartDataSet
+        else { return nil }
+        
+        let combine = priceChartDataSet.entries + priceTargetChartDataSet.entries
         let maxColsePriceOfChart = combine.map { $0.y }.max() ?? 0
         let minClosePriceOfChart = combine.map { $0.y }.min() ?? 0
         let renderer = RKetCombinedChartRenderer(chart: priceChartView,
@@ -317,10 +241,16 @@ class CustomViewController: UIViewController {
                                                  viewPortHandler: priceChartView.viewPortHandler,
                                                  maxPrice: maxColsePriceOfChart,
                                                  minPrice: minClosePriceOfChart)
-        priceChartView.renderer = renderer
+        return renderer
     }
     
     private func initChart() {
+        renderPriceChart()
+        renderPriceTargetChart()
+        renderPriceTargetCapsules()
+    }
+    
+    private func renderPriceChart() {
         guard
             let priceChartDataSet,
             let priceTargetChartDataSet
@@ -334,10 +264,38 @@ class CustomViewController: UIViewController {
         combinedChartData.scatterData = scatterChartData
 
         priceChartView.data = combinedChartData
-
-        updateChartRenderer()
+        priceChartView.renderer = createChartRenderer()
     }
-
+    
+    func renderPriceTargetChart() {
+        guard
+            let priceTargetChartDataSet,
+            let priceTargetSummary = priceTarget?.priceTargetSummary,
+            let avg = Double(priceTargetSummary.average),
+            let now = OHLCs.last?.close
+        else { return }
+        
+        guard
+            let nowChartDataEntry = priceTargetChartDataSet.entries.first(where: { $0.y == now }),
+            let avgChartDataEntry = priceTargetChartDataSet.entries.first(where: { $0.y == avg })
+        else { return }
+        
+        let startPos: CGPoint = .init(x: 0,
+                                      y: getChartPos(entry: nowChartDataEntry).y)
+        let endX: CGFloat = priceTargetChartView.bounds.width
+        let entries = priceTargetChartDataSet.entries
+        
+        let yValues: [CGFloat] = self.getPositions(entries: entries,
+                                                   in: self.priceChartView).map({ CGFloat($0.y) })
+        
+        let vm = PriceTargetVM(startPoint: startPos,
+                               endX: endX,
+                               yValues: yValues,
+                               yAvg: getChartPos(entry: avgChartDataEntry).y)
+        
+        priceTargetChartView.bind(vm)
+    }
+    
     func getPositions(entries: [ChartDataEntry],
                       in chartView: BarLineChartViewBase) -> [CGPoint]
     {

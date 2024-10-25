@@ -20,6 +20,7 @@ extension CustomViewController {
         
         // apply formatter "xxx.xx"
         var valueWithFormatter: String {
+            print(String(format: "%.2f", value))
             return String(format: "%.2f", value)
         }
                 
@@ -48,6 +49,57 @@ extension CustomViewController {
     }
     
     // MARK: renderCapsules
+    func renderPriceTargetCapsules() {
+        guard
+            let priceTargetChartDataSet,
+            let priceTargetSummary = priceTarget?.priceTargetSummary,
+            let max = Double(priceTargetSummary.high),
+            let min = Double(priceTargetSummary.low),
+            let avg = Double(priceTargetSummary.average),
+            let now = OHLCs.last?.close,
+            let nowChartDataEntry = priceTargetChartDataSet.entries.first(where: { $0.y == now }),
+            let maxChartDataEntry = priceTargetChartDataSet.entries.first(where: { $0.y == max }),
+            let minChartDataEntry = priceTargetChartDataSet.entries.first(where: { $0.y == min }),
+            let avgChartDataEntry = priceTargetChartDataSet.entries.first(where: { $0.y == avg })
+        else { return }
+        
+        // find yPos
+        let nowPos = getChartPos(entry: nowChartDataEntry)
+        let avgPos = getChartPos(entry: avgChartDataEntry)
+        let minPos = getChartPos(entry: minChartDataEntry)
+        let maxPos = getChartPos(entry: maxChartDataEntry)
+        
+        let datasources: [CapsuleSource] = [.init(y: CGFloat(nowPos.y),
+                                                  title: "Now",
+                                                  value: now),
+                                            .init(y: CGFloat(avgPos.y),
+                                                  title: "Avg",
+                                                  value: avg),
+                                            .init(y: CGFloat(minPos.y),
+                                                  title: "Min",
+                                                  value: min),
+                                            .init(y: CGFloat(maxPos.y),
+                                                  title: "Max",
+                                                  value: max)].sorted {
+            $0.y < $1.y
+        }
+        
+        capsuleSize.width = capsuleWidth(sources: datasources)
+        
+        let viewModels = createCapsules(by: datasources)
+        
+        viewModels.forEach { viewModel in
+            let capsuleView = createCapsuleView(with: viewModel)
+            priceTargetCapsulesView.addSubview(capsuleView)
+        }
+        
+        // Update capsule container view layout
+        self.priceTargetCapsulesView.snp.updateConstraints { make in
+            make.width.equalTo(capsuleSize.width)
+        }
+    }
+    
+    
     func initStubCapsuleValues(now: ChartDataEntry,
                                max: ChartDataEntry,
                                min: ChartDataEntry,
@@ -98,7 +150,6 @@ extension CustomViewController {
     func createCapsuleView(with viewModel: CapsuleVM) -> CapsuleView {
         let element = CapsuleView(frame: viewModel.frame)
         element.bind(viewModel)
-        //element.delegate = self
         return element
     }
     
@@ -139,7 +190,7 @@ extension CustomViewController {
                                width: capsuleSize.width,
                                height: capsuleSize.height)
             return .init(title: source.title,
-                         value: String(source.value),
+                         value: source.valueWithFormatter,
                          frame: frame)
         }
     }
@@ -159,7 +210,7 @@ extension CustomViewController {
                            width: capsuleSize.width,
                            height: capsuleSize.height)
         let viewModel = CapsuleVM(title: source.title,
-                                  value: String(source.value),
+                                  value: source.valueWithFormatter,
                                   frame: frame)
         let remainingCapsules = Array(capsules.dropFirst())
         
@@ -170,7 +221,7 @@ extension CustomViewController {
     func capsuleWidth(sources: [CapsuleSource]) -> CGFloat {
         let maxSource = sources.max(by: { $0.valueLabelWidth < $1.valueLabelWidth })
         
-        return (maxSource?.valueLabelWidth ?? 0) + (30 + 8)
+        return (maxSource?.valueLabelWidth ?? 0) + (30 + 8 + 8 + 8)
     }
     
 }

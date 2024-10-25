@@ -13,7 +13,7 @@ class CapsuleView: UIView {
         let label = UILabel()
         label.textAlignment = .left
         label.text = "Left"
-        label.font = .systemFont(ofSize: 12)
+        label.font = .boldSystemFont(ofSize: 12)
         return label
     }()
 
@@ -46,13 +46,6 @@ class CapsuleView: UIView {
         self.backgroundColor = .red
     }
     
-//    override var intrinsicContentSize: CGSize {
-//        get {
-//            return CGSize(width: vm?.maxWidth ?? .zero,
-//                          height: 50)
-//        }
-//    }
-
     func initLayout() {
         leftTitleLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(8)
@@ -61,7 +54,7 @@ class CapsuleView: UIView {
         }
 
         rightTitleLabel.snp.makeConstraints { make in
-            make.right.equalToSuperview().offset(-8)
+            make.right.equalToSuperview().inset(8)
             make.top.bottom.equalToSuperview()
             make.left.equalTo(leftTitleLabel.snp.right).offset(8)
         }
