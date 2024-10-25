@@ -86,11 +86,11 @@ extension CustomViewController {
         
         viewModels.forEach { viewModel in
             let capsuleView = createCapsuleView(with: viewModel)
-            capsuleContainerView.addSubview(capsuleView)
+            priceTargetCapsulesView.addSubview(capsuleView)
         }
         
         // Update capsule container view layout
-        self.capsuleContainerView.snp.updateConstraints { make in
+        self.priceTargetCapsulesView.snp.updateConstraints { make in
             make.width.equalTo(capsuleSize.width)
         }
     }
@@ -179,7 +179,7 @@ extension CustomViewController {
 
 private extension CustomViewController {
     
-    var containerHeight: CGFloat { capsuleContainerView.bounds.height }
+    var containerHeight: CGFloat { priceTargetCapsulesView.bounds.height }
     var overlapSpacing: CGFloat { 6.0 }
     
     func calculateMinimumHeight(of capsules: [CapsuleSource]) -> CGFloat {

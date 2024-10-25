@@ -8,8 +8,6 @@
 import Foundation
 import UIKit
 
-
-
 struct PriceTargetVM {
     let startPoint: CGPoint
     let startNowShape: Circle
