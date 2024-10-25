@@ -49,7 +49,6 @@ class CustomViewController: UIViewController {
         element.legend.form = .none
         element.setScaleEnabled(false)
 
-        element.delegate = self
         element.maxVisibleCount = 5000
         element.rightAxis.axisMaximum = 100
         element.rightAxis.axisMinimum = 0
@@ -175,28 +174,6 @@ class CustomViewController: UIViewController {
         return dataSet
     }
     
-    func initStubTargetPriceView(now: ChartDataEntry,
-                                 max: ChartDataEntry,
-                                 min: ChartDataEntry,
-                                 avg: ChartDataEntry,
-                                 other: [ChartDataEntry])
-    {
-        let nowPos = getChartPos(entry: now)
-        let avgPos = getChartPos(entry: avg)
-                        
-        let startPos: CGPoint = .init(x: 0,
-                                      y: nowPos.y)
-        let endXPos = priceTargetChartView.bounds.width
-        let yValues: [CGFloat] = self.getPositions(entries: other + [max,min],
-                                                in: self.priceChartView).map({ CGFloat($0.y) })
-        
-        let vm = PriceTargetVM(startPoint: startPos,
-                               endX: endXPos,
-                               yValues: yValues,
-                               yAvg: avgPos.y)
-        priceTargetChartView.bind(vm)
-    }
-
     private func initViews() {
         view.backgroundColor = .white
         view.addSubview(chartContainerView)
@@ -204,7 +181,6 @@ class CustomViewController: UIViewController {
         chartContainerView.addArrangedSubview(priceTargetChartView)
         chartContainerView.addArrangedSubview(priceTargetCapsulesView)
     }
-    
 
     private func initConstriantLayout() {
         chartContainerView.snp.makeConstraints { make in
@@ -226,8 +202,14 @@ class CustomViewController: UIViewController {
             make.width.equalTo(capsuleSize.width)
         }
     }
-
-    func createChartRenderer() -> RKetCombinedChartRenderer? {
+    
+    private func initChart() {
+        renderPriceChart()
+        renderPriceTargetChart()
+        renderPriceTargetCapsules()
+    }
+    
+    private func createChartRenderer() -> RKetCombinedChartRenderer? {
         guard
             let priceChartDataSet,
             let priceTargetChartDataSet
@@ -242,12 +224,6 @@ class CustomViewController: UIViewController {
                                                  maxPrice: maxColsePriceOfChart,
                                                  minPrice: minClosePriceOfChart)
         return renderer
-    }
-    
-    private func initChart() {
-        renderPriceChart()
-        renderPriceTargetChart()
-        renderPriceTargetCapsules()
     }
     
     private func renderPriceChart() {
@@ -312,17 +288,6 @@ class CustomViewController: UIViewController {
         return p
     }
 
-}
-
-extension CustomViewController: ChartViewDelegate {
-    func chartValueSelected(_: ChartViewBase,
-                            entry _: ChartDataEntry,
-                            highlight _: Highlight)
-    {}
-
-    func chartValueNothingSelected(_: ChartViewBase) {}
-
-    func chartViewDidEndPanning(_: ChartViewBase) {}
 }
 
 // MARK: Stub Chart Data
