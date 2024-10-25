@@ -155,6 +155,25 @@ class CustomViewController: UIViewController {
                                        max: maxChartDataEntry,
                                        min: minChartDataEntry,
                                        avg: avgChartDataEntry)
+            
+            // debug
+            print("###")
+            let nowEntry1 = self.getChartPos(entry: nowChartDataEntry)
+            print("nowEntry1")
+            print(nowEntry1)
+            
+            let lastLineEntry = self.lineChartDataEntries.last!
+            let nowEntry2 = self.getChartPos(entry: lastLineEntry)
+            print("nowEntry2")
+            print(nowEntry2)
+            
+            let lineDataSet = self.chartView.data?.first as? LineChartDataSet
+            let last = lineDataSet?.entries.last
+            let nowEntry3 = self.getChartPos(entry: last!)
+            print("nowEntry3")
+            print(nowEntry3)
+            print("###")
+            
         }
     }
     
@@ -190,6 +209,12 @@ class CustomViewController: UIViewController {
         
         scatterChartDataEntries = entriesGroup.other + secoundGroup
 
+        print("### line chart")
+        lineChartDataEntries.forEach {
+            
+            print($0)
+        }
+        
         // print all entries
         print("###")
         print("Now: \(nowChartDataEntry?.y ?? 0)")
@@ -208,14 +233,20 @@ class CustomViewController: UIViewController {
                                  avg: ChartDataEntry,
                                  other: [ChartDataEntry])
     {
-        let startPos: CGPoint = .init(x: 0, y: now.y)
+        // get pos
+        let nowPos = getChartPos(entry: now)
+        let avgPos = getChartPos(entry: avg)
+                        
+        let startPos: CGPoint = .init(x: 0,
+                                      y: nowPos.y)
         let endXPos = priceTargetContainerView.bounds.width
-        let yValues: [CGFloat] = (other + [max, min]).map { CGFloat($0.y) }
+        let yValues: [CGFloat] = self.getPositions(entries: other + [max,min],
+                                                in: self.chartView).map({ CGFloat($0.y) })
         
         let vm = PriceTargetVM(startPoint: startPos,
                                endX: endXPos,
                                yValues: yValues,
-                               yAvg: avg.y)
+                               yAvg: avgPos.y)
         //log
         print("###")
         print("### Price Target VM: ")
@@ -353,8 +384,8 @@ class CustomViewController: UIViewController {
         updateChartRenderer()
     }
 
-    func getAllPriceTargetPositions(entries: [ChartDataEntry],
-                                    in chartView: BarLineChartViewBase) -> [CGPoint]
+    func getPositions(entries: [ChartDataEntry],
+                      in chartView: BarLineChartViewBase) -> [CGPoint]
     {
         entries.map {
             let p = chartView.getPosition(entry: $0,
