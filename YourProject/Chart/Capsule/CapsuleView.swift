@@ -43,7 +43,10 @@ class CapsuleView: UIView {
 
         initLayout()
         
-        self.backgroundColor = .red
+        self.layer.cornerRadius = 9
+        self.layer.masksToBounds = true
+        self.layer.borderWidth = 1
+        self.layer.borderColor = UIColor.black.cgColor
     }
     
     func initLayout() {
@@ -65,6 +68,10 @@ class CapsuleView: UIView {
         
         leftTitleLabel.text = vm.title
         rightTitleLabel.text = vm.value
+        
+        backgroundColor = vm.backgroundColor
+        leftTitleLabel.textColor = vm.textColor
+        rightTitleLabel.textColor = vm.textColor
     }
                   
 }

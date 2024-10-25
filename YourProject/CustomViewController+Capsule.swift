@@ -10,15 +10,34 @@ import DGCharts
 extension CustomViewController {
     
     struct CapsuleSource {
+        enum Kind {
+            case min
+            case max
+            case avg
+            case now
+            
+            var title: String {
+                switch self {
+                case .min:
+                    return "Min"
+                case .max:
+                    return "Max"
+                case .avg:
+                    return "Avg"
+                case .now:
+                    return "Now"
+                }
+            }
+        }
+        
         static let font: UIFont = .systemFont(ofSize: 12)
         
         let y: CGFloat
-        let title: String
         let value: Double
         let textColor: UIColor
         let backgroundColor: UIColor
+        let kind: Kind
         
-        // apply formatter "xxx.xx"
         var valueWithFormatter: String {
             print(String(format: "%.2f", value))
             return String(format: "%.2f", value)
@@ -35,17 +54,29 @@ extension CustomViewController {
         }
         
         init(y: CGFloat,
-             title: String,
+             kind: CapsuleSource.Kind,
              value: Double,
-             textColor: UIColor = .black,
-             backgroundColor: UIColor = .red) {
+             now: Double) {
             self.y = y
-            self.title = title
+            self.kind = kind
             self.value = value
-            self.textColor = textColor
-            self.backgroundColor = backgroundColor
+            
+            if value < now {
+                self.textColor = .red
+                self.backgroundColor = .red.withAlphaComponent(0.3)
+            } else if value > now {
+                self.textColor = .green
+                self.backgroundColor = .green.withAlphaComponent(0.3)
+            } else {
+                if kind == .now {
+                    self.textColor = .black
+                    self.backgroundColor = .black.withAlphaComponent(0.3)
+                } else {
+                    self.textColor = .green
+                    self.backgroundColor = .green.withAlphaComponent(0.3)
+                }
+            }
         }
-        
     }
     
     // MARK: renderCapsules
@@ -70,65 +101,21 @@ extension CustomViewController {
         let maxPos = getChartPos(entry: maxChartDataEntry)
         
         let datasources: [CapsuleSource] = [.init(y: CGFloat(nowPos.y),
-                                                  title: "Now",
-                                                  value: now),
+                                                  kind: .now,
+                                                  value: now,
+                                                  now: now),
                                             .init(y: CGFloat(avgPos.y),
-                                                  title: "Avg",
-                                                  value: avg),
+                                                  kind: .avg,
+                                                  value: avg,
+                                                  now: now),
                                             .init(y: CGFloat(minPos.y),
-                                                  title: "Min",
-                                                  value: min),
+                                                  kind: .min,
+                                                  value: min,
+                                                  now: now),
                                             .init(y: CGFloat(maxPos.y),
-                                                  title: "Max",
-                                                  value: max)].sorted {
-            $0.y < $1.y
-        }
-        
-        capsuleSize.width = capsuleWidth(sources: datasources)
-        
-        let viewModels = createCapsules(by: datasources)
-        
-        viewModels.forEach { viewModel in
-            let capsuleView = createCapsuleView(with: viewModel)
-            priceTargetCapsulesView.addSubview(capsuleView)
-        }
-        
-        // Update capsule container view layout
-        self.priceTargetCapsulesView.snp.updateConstraints { make in
-            make.width.equalTo(capsuleSize.width)
-        }
-    }
-    
-    
-    func initStubCapsuleValues(now: ChartDataEntry,
-                               max: ChartDataEntry,
-                               min: ChartDataEntry,
-                               avg: ChartDataEntry) {
-
-        // find yPos
-        let nowPos = getChartPos(entry: now)
-        let avgPos = getChartPos(entry: avg)
-        let minPos = getChartPos(entry: min)
-        let maxPos = getChartPos(entry: max)
-        
-        // map to CapSource
-        let nowValue = now.data as? Double ?? 0
-        let avgValue = avg.data as? Double ?? 0
-        let minValue = min.data as? Double ?? 0
-        let maxValue = max.data as? Double ?? 0
-        
-        let datasources: [CapsuleSource] = [.init(y: CGFloat(nowPos.y),
-                                                  title: "Now",
-                                                  value: nowValue),
-                                            .init(y: CGFloat(avgPos.y),
-                                                  title: "Avg",
-                                                  value: avgValue),
-                                            .init(y: CGFloat(minPos.y),
-                                                  title: "Min",
-                                                  value: minValue),
-                                            .init(y: CGFloat(maxPos.y),
-                                                  title: "Max",
-                                                  value: maxValue)].sorted {
+                                                  kind: .max,
+                                                  value: max,
+                                                  now: now)].sorted {
             $0.y < $1.y
         }
         
@@ -189,9 +176,11 @@ extension CustomViewController {
                                y: originY,
                                width: capsuleSize.width,
                                height: capsuleSize.height)
-            return .init(title: source.title,
+            return .init(title: source.kind.title,
                          value: source.valueWithFormatter,
-                         frame: frame)
+                         frame: frame,
+                         textColor: source.textColor,
+                         backgroundColor: source.backgroundColor)
         }
     }
     
@@ -209,9 +198,11 @@ extension CustomViewController {
                            y: originY,
                            width: capsuleSize.width,
                            height: capsuleSize.height)
-        let viewModel = CapsuleVM(title: source.title,
+        let viewModel = CapsuleVM(title: source.kind.title,
                                   value: source.valueWithFormatter,
-                                  frame: frame)
+                                  frame: frame,
+                                  textColor: source.textColor,
+                                  backgroundColor: source.backgroundColor)
         let remainingCapsules = Array(capsules.dropFirst())
         
         return [viewModel] + createCapsules(by: remainingCapsules,
@@ -231,7 +222,7 @@ extension CustomViewController {
 private extension CustomViewController {
     
     var containerHeight: CGFloat { priceTargetCapsulesView.bounds.height }
-    var overlapSpacing: CGFloat { 6.0 }
+    var overlapSpacing: CGFloat { 2.0 }
     
     func calculateMinimumHeight(of capsules: [CapsuleSource]) -> CGFloat {
         let amountOfCapsule = CGFloat(capsules.count)

@@ -10,12 +10,18 @@ struct CapsuleVM {
     let title: String
     let value: String
     let frame: CGRect
+    let textColor: UIColor
+    let backgroundColor: UIColor
     
     init(title: String,
          value: String,
-         frame: CGRect) {
+         frame: CGRect,
+         textColor: UIColor,
+         backgroundColor: UIColor) {
         self.title = title
         self.value = value
         self.frame = frame
+        self.textColor = textColor
+        self.backgroundColor = backgroundColor
     }
 }
