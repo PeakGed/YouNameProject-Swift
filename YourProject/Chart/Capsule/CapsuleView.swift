@@ -13,7 +13,7 @@ class CapsuleView: UIView {
         let label = UILabel()
         label.textAlignment = .left
         label.text = "Left"
-        label.font = .systemFont(ofSize: 16)
+        label.font = .systemFont(ofSize: 12)
         return label
     }()
 
@@ -21,7 +21,7 @@ class CapsuleView: UIView {
         let label = UILabel()
         label.textAlignment = .right
         label.text = "Right"
-        label.font = .systemFont(ofSize: 16)
+        label.font = .systemFont(ofSize: 12)
         return label
     }()
 
@@ -70,8 +70,8 @@ class CapsuleView: UIView {
     func bind(_ vm: CapsuleVM) {
         self.vm = vm
         
-        leftTitleLabel.text = vm.leftTitle
-        rightTitleLabel.text = vm.rightTitle
+        leftTitleLabel.text = vm.title
+        rightTitleLabel.text = vm.value
     }
                   
 }

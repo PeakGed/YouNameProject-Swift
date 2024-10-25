@@ -7,15 +7,15 @@
 import UIKit
 
 struct CapsuleVM {
-    let leftTitle: String
-    let rightTitle: String
+    let title: String
+    let value: String
     let frame: CGRect
     
-    init(leftTitle: String,
-         rightTitle: String,
+    init(title: String,
+         value: String,
          frame: CGRect) {
-        self.leftTitle = leftTitle
-        self.rightTitle = rightTitle
+        self.title = title
+        self.value = value
         self.frame = frame
     }
 }

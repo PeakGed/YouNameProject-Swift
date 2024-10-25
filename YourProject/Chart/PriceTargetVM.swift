@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 
+
+
 struct PriceTargetVM {
     let startPoint: CGPoint
     let startNowShape: Circle
@@ -123,7 +125,7 @@ struct PriceTargetVM {
         } else {
             endAvgShape = nil
             avgLine = nil
-        }        
+        }
         
     }
 

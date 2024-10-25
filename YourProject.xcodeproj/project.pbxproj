@@ -18,6 +18,7 @@
 		36514F582CCA2D0800838B37 /* CapsuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36514F572CCA2D0000838B37 /* CapsuleView.swift */; };
 		36514F5A2CCA2EB000838B37 /* CapsuleVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36514F592CCA2EAC00838B37 /* CapsuleVM.swift */; };
 		36514F5C2CCA2FB400838B37 /* CustomViewController+Capsule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36514F5B2CCA2FB100838B37 /* CustomViewController+Capsule.swift */; };
+		36514F5E2CCA4CDC00838B37 /* ResponseMocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36514F5D2CCA4CD800838B37 /* ResponseMocker.swift */; };
 		36B587C32BF73F1600D523D0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B587C22BF73F1600D523D0 /* AppDelegate.swift */; };
 		36B587C52BF73F1600D523D0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B587C42BF73F1600D523D0 /* SceneDelegate.swift */; };
 		36B587C72BF73F1600D523D0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B587C62BF73F1600D523D0 /* ViewController.swift */; };
@@ -29,6 +30,7 @@
 		36B587E62BF73F1900D523D0 /* YourProjectUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B587E52BF73F1900D523D0 /* YourProjectUITestsLaunchTests.swift */; };
 		36B587F32BF73F4900D523D0 /* CustomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B587F22BF73F4900D523D0 /* CustomViewController.swift */; };
 		36B587F62BF73FF800D523D0 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 36B587F52BF73FF800D523D0 /* SnapKit */; };
+		36D5D0CB2CCB4644003EC772 /* DrawShapeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D5D0CA2CCB463D003EC772 /* DrawShapeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +61,7 @@
 		36514F572CCA2D0000838B37 /* CapsuleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleView.swift; sourceTree = "<group>"; };
 		36514F592CCA2EAC00838B37 /* CapsuleVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleVM.swift; sourceTree = "<group>"; };
 		36514F5B2CCA2FB100838B37 /* CustomViewController+Capsule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CustomViewController+Capsule.swift"; sourceTree = "<group>"; };
+		36514F5D2CCA4CD800838B37 /* ResponseMocker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseMocker.swift; sourceTree = "<group>"; };
 		36B587BF2BF73F1600D523D0 /* YourProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YourProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36B587C22BF73F1600D523D0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		36B587C42BF73F1600D523D0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -73,6 +76,7 @@
 		36B587E32BF73F1900D523D0 /* YourProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourProjectUITests.swift; sourceTree = "<group>"; };
 		36B587E52BF73F1900D523D0 /* YourProjectUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourProjectUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		36B587F22BF73F4900D523D0 /* CustomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViewController.swift; sourceTree = "<group>"; };
+		36D5D0CA2CCB463D003EC772 /* DrawShapeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawShapeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +116,7 @@
 		364029022CC60B80004D745F /* Chart */ = {
 			isa = PBXGroup;
 			children = (
+				36514F5D2CCA4CD800838B37 /* ResponseMocker.swift */,
 				36514F562CCA2CA700838B37 /* Capsule */,
 				364029112CC7856F004D745F /* PriceTargetView.swift */,
 				3640290D2CC74FC0004D745F /* PriceTargetVM.swift */,
@@ -119,6 +124,7 @@
 				364029032CC60B85004D745F /* RKetCombinedChartRenderer.swift */,
 				364029052CC60BA0004D745F /* RKLineChartRenderer.swift */,
 				364029072CC60BCB004D745F /* TextHelper.swift */,
+				36D5D0CA2CCB463D003EC772 /* DrawShapeView.swift */,
 			);
 			path = Chart;
 			sourceTree = "<group>";
@@ -328,6 +334,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				364029062CC60BA1004D745F /* RKLineChartRenderer.swift in Sources */,
+				36514F5E2CCA4CDC00838B37 /* ResponseMocker.swift in Sources */,
 				36B587C72BF73F1600D523D0 /* ViewController.swift in Sources */,
 				36514F582CCA2D0800838B37 /* CapsuleView.swift in Sources */,
 				364029122CC78575004D745F /* PriceTargetView.swift in Sources */,
@@ -335,6 +342,7 @@
 				36B587C52BF73F1600D523D0 /* SceneDelegate.swift in Sources */,
 				36514F5A2CCA2EB000838B37 /* CapsuleVM.swift in Sources */,
 				364029042CC60B8B004D745F /* RKetCombinedChartRenderer.swift in Sources */,
+				36D5D0CB2CCB4644003EC772 /* DrawShapeView.swift in Sources */,
 				3640290E2CC74FC3004D745F /* PriceTargetVM.swift in Sources */,
 				36514F5C2CCA2FB400838B37 /* CustomViewController+Capsule.swift in Sources */,
 				36B587F32BF73F4900D523D0 /* CustomViewController.swift in Sources */,

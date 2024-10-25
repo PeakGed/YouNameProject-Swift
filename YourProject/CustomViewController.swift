@@ -80,7 +80,7 @@ class CustomViewController: UIViewController {
 
     lazy var priceTargetContainerView: PriceTargetView = {
         let element = PriceTargetView()
-        element.backgroundColor = .white
+        element.backgroundColor = .brown
         return element
     }()
 
@@ -94,69 +94,114 @@ class CustomViewController: UIViewController {
     var capsuleSize: CGSize = .init(width: 0,
                                     height: 26)
 
+    
+    // MARK: lineChartData
+
+    var lineChartDataEntries: [ChartDataEntry] = []
+
+    var lineChartDataSet: LineChartDataSet {
+        let dataSet = LineChartDataSet(entries: lineChartDataEntries,
+                                       label: "Sample Data")
+        dataSet.colors = [NSUIColor.blue] // Set the line color
+        dataSet.valueColors = [NSUIColor.black] // Set the value text color
+        return dataSet
+    }
+
+    // MARK: scatterChartData
+
+    var scatterChartDataEntries: [ChartDataEntry] = []
+    
+    var minChartDataEntry: ChartDataEntry?
+    var maxChartDataEntry: ChartDataEntry?
+    var avgChartDataEntry: ChartDataEntry?
+    var nowChartDataEntry: ChartDataEntry?
+    var otherChartDataEntries: [ChartDataEntry] = []
+
+    var scatterChartDataSet: ScatterChartDataSet {
+        let dataSet = ScatterChartDataSet(entries: scatterChartDataEntries,
+                                          label: "Scatter Data")
+        dataSet.colors = [NSUIColor.red]
+        dataSet.scatterShapeSize = 10
+        dataSet.shapeRenderer = CircleShapeRenderer()
+        return dataSet
+    }
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         initViews()
         initConstriantLayout()
+        
+        initChartStubData()
         initChart() // Initialize the chart
-        // initDrawLine()
 
-        // delay 2 sec
+        // run price line chart delay 2 sec
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            let stubValue = self.getStubValue()
-            self.initStubTargetPriceView(now: stubValue.now,
-                                         max: stubValue.max,
-                                         min: stubValue.min,
-                                         avg: stubValue.avg,
-                                         other: stubValue.other)
+            guard
+                let nowChartDataEntry = self.nowChartDataEntry,
+                let minChartDataEntry = self.minChartDataEntry,
+                let maxChartDataEntry = self.maxChartDataEntry,
+                let avgChartDataEntry = self.avgChartDataEntry
+            else { return }
             
-            self.initStubCapsuleValues(now: stubValue.now,
-                                       max: stubValue.max,
-                                       min: stubValue.min,
-                                       avg: stubValue.avg)
+            self.initStubTargetPriceView(now: nowChartDataEntry,
+                                         max: maxChartDataEntry,
+                                         min: minChartDataEntry,
+                                         avg: avgChartDataEntry,
+                                         other: self.otherChartDataEntries)
+            
+            self.initStubCapsuleValues(now: nowChartDataEntry,
+                                       max: maxChartDataEntry,
+                                       min: minChartDataEntry,
+                                       avg: avgChartDataEntry)
         }
     }
+    
+    func initChartStubData() {
+        lineChartDataEntries = Self.Stub.lineChartDataEntries
+        
+        self.nowChartDataEntry = lineChartDataEntries.last
+        let now = nowChartDataEntry?.y ?? 0
+        
+        let generator = MockPriceTargetGenerator()
+        let mockData = generator.generateMockData(currentPrice: now)
+        
+        let sumPrice = mockData.response.result?.priceTargetSummary
+        
+        let avg: Double = Double(sumPrice?.average ?? "0") ?? 0
+        let other: [Double] = mockData.response.result?.items.compactMap({
+            Double($0.priceTarget)
+        }) ?? []
+        
+        
+        let entriesGroup = Self.Stub.generateEntries(avg: avg,
+                                                     now: now,
+                                                     other: other)
+        minChartDataEntry = entriesGroup.minEntry
+        maxChartDataEntry = entriesGroup.maxEntry
+        avgChartDataEntry = entriesGroup.avgEntry
+        otherChartDataEntries = entriesGroup.other
+        
+        let secoundGroup = [minChartDataEntry,
+                            maxChartDataEntry,
+                            avgChartDataEntry,
+                            nowChartDataEntry].compactMap { $0 }
+        
+        scatterChartDataEntries = entriesGroup.other + secoundGroup
 
-    func getStubValue() -> (min: ChartDataEntry,
-                            max: ChartDataEntry,
-                            avg: ChartDataEntry,
-                            now: ChartDataEntry,
-                            other: [ChartDataEntry])
-    {
-        let lastEntry = lineChartDataEntries.last!
-        let allBeginPos = getAllPriceTargetPositions(entries: [lastEntry],
-                                                     in: chartView)
+        // print all entries
+        print("###")
+        print("Now: \(nowChartDataEntry?.y ?? 0)")
+        print("Avg: \(avgChartDataEntry?.y ?? 0)")
+        print("Min: \(minChartDataEntry?.y ?? 0)")
+        print("Max: \(maxChartDataEntry?.y ?? 0)")
 
-        let endXPos = priceTargetContainerView.bounds.width
+        print("### Scatter Chart Entries: ")
+        scatterChartDataEntries.forEach { print($0) }
 
-        let allPriceTargetPos = getAllPriceTargetPositions(entries: scatterChartDataEntries,
-                                                           in: chartView)
-        let yValues = allPriceTargetPos.map { $0.y }
-
-        // Stub Value
-        let now = ChartDataEntry(x: 0,
-                                 y: Double(allBeginPos.first!.y))
-        let avg = ChartDataEntry(x: Double(allPriceTargetPos.randomElement()!.x),
-                                 y: Double(allPriceTargetPos.randomElement()!.y))
-        let min = ChartDataEntry(x: 0,
-                                 y: Double(yValues.max()!)) // toggle from chart render direction
-        let max = ChartDataEntry(x: 0,
-                                 y: Double(yValues.min()!)) // toggle from chart render direction
-
-        // print log
-        print("now: \(now)")
-        print("avg: \(avg)")
-        print("min: \(min)")
-        print("max: \(max)")
-
-        return (min,
-                max,
-                avg,
-                now,
-                yValues.map { ChartDataEntry(x: 0, y: Double($0)) })
     }
-
+    
     func initStubTargetPriceView(now: ChartDataEntry,
                                  max: ChartDataEntry,
                                  min: ChartDataEntry,
@@ -165,106 +210,62 @@ class CustomViewController: UIViewController {
     {
         let startPos: CGPoint = .init(x: 0, y: now.y)
         let endXPos = priceTargetContainerView.bounds.width
-        let vm = PriceTargetVM(startPoint: startPos,
-                               endX: endXPos,
-                               yValues: other.map { CGFloat($0.y) },
-                               yAvg: avg.y)
-        priceTargetContainerView.bind(vm)
-    }
-
-    func callAfterDelay3() {
-        // get last entry of line chart
-        let lastEntry = lineChartDataEntries.last!
-
-        let lastPrice = lastEntry.y
-
-        let startPos = CGPoint(x: 0,
-                               y: lastPrice)
-
-        let endXPos = priceTargetContainerView.bounds.width
-
-        let randomY = Stub.randomY
-
-        let max = randomY.max()
-        let min = randomY.min()
-        let avg = randomY.randomElement()
-        let avgMoreThenNow: Bool? = (avg != nil) ? avg! > lastPrice : nil
-
-        print("###")
-        print("Random Y Values: ")
-        randomY.sorted().forEach { print($0) }
-
-        print("###")
-        print("Max Y Value: \(String(describing: max))")
-        print("Min Y Value: \(String(describing: min))")
-        print("Average Y Value: \(String(describing: avg))")
-        print("Average More Than Now: \(String(describing: avgMoreThenNow))")
-
-        print("###")
-        print("Now : \(lastPrice)")
-
-        let yValues = randomY.compactMap { getItemYPosition(value: $0) }
-        let yAvg: CGFloat? = (avg != nil) ? getItemYPosition(value: avg!) : nil
+        let yValues: [CGFloat] = (other + [max, min]).map { CGFloat($0.y) }
+        
         let vm = PriceTargetVM(startPoint: startPos,
                                endX: endXPos,
                                yValues: yValues,
-                               yAvg: yAvg)
+                               yAvg: avg.y)
+        //log
+        print("###")
+        print("### Price Target VM: ")
+        print("Start Point: \(startPos)")
+        print("End X: \(endXPos)")
+        // print all yValues
+        yValues.forEach { print("yValue: \($0)") }
+        print("Y Avg: \(avg.y)")
+        
         priceTargetContainerView.bind(vm)
     }
 
-//    func callAfterDelay() {
+//    func callAfterDelay3() {
 //        // get last entry of line chart
 //        let lastEntry = lineChartDataEntries.last!
-//        print("lastEntry: \(lastEntry)")
-//        let allBeginPos = getAllPriceTargetPositions(entries: [lastEntry],
-//                                                     in: chartView)
-//        let beginPos: [CGPoint] = allBeginPos.map { .init(x: 0,
-//                                                          y: $0.y) }
-//        // create circle for each price target
-//        beginPos.forEach { p in
-//            priceTargetContainerView.drawCircle(at: p,
-//                                                radius: 3,
-//                                                color: .black,
-//                                                strokeColor: .red,
-//                                                lineWidth: 0.5,
-//                                                alpha: 0.5)
-//        }
 //
-//        let allPriceTargetPos = getAllPriceTargetPositions(entries: scatterChartDataEntries,
-//                                                           in: chartView)
+//        let lastPrice = lastEntry.y
 //
-//        print("allPriceTargetPos: \(allPriceTargetPos)")
-//        let priceTargetContainerViewWidth = priceTargetContainerView.bounds.width
-//        let targetPos: [CGPoint] = allPriceTargetPos.map { .init(x: priceTargetContainerViewWidth,
-//                                                                 y: $0.y) }
+//        let startPos = CGPoint(x: 0,
+//                               y: lastPrice)
 //
-//        // create circle for each price target
-//        targetPos.forEach { p in
-//            priceTargetContainerView.drawCircle(at: p,
-//                                                radius: 3,
-//                                                color: .black,
-//                                                strokeColor: .red,
-//                                                lineWidth: 0.5,
-//                                                alpha: 0.5)
-//        }
+//        let endXPos = priceTargetContainerView.bounds.width
 //
-//        let pairPos: [(from: CGPoint, to: CGPoint)] = createPairOfPoint(from: beginPos.first!,
-//                                                                        to: targetPos)
-//        // create straight line from begin to each price target
-//        pairPos.forEach { pair in
-//            //            priceTargetContainerView.drawStraightLine(from: pair.from,
-//            //                                                      to: pair.to,
-//            //                                                      strokeColor: .black,
-//            //                                                      lineWidth: 2)
+//        let randomY = Stub.randomY
 //
-//            // draw dashed line from begin to each price target
-//            priceTargetContainerView.drawDashedLine(from: pair.from,
-//                                                    to: pair.to,
-//                                                    strokeColor: .black,
-//                                                    lineWidth: 2,
-//                                                    lineDashPattern: [4, 4],
-//                                                    lineCap: .round)
-//        }
+//        let max = randomY.max()
+//        let min = randomY.min()
+//        let avg = randomY.randomElement()
+//        let avgMoreThenNow: Bool? = (avg != nil) ? avg! > lastPrice : nil
+//
+//        print("###")
+//        print("Random Y Values: ")
+//        randomY.sorted().forEach { print($0) }
+//
+//        print("###")
+//        print("Max Y Value: \(String(describing: max))")
+//        print("Min Y Value: \(String(describing: min))")
+//        print("Average Y Value: \(String(describing: avg))")
+//        print("Average More Than Now: \(String(describing: avgMoreThenNow))")
+//
+//        print("###")
+//        print("Now : \(lastPrice)")
+//
+//        let yValues = randomY.compactMap { getItemYPosition(value: $0) }
+//        let yAvg: CGFloat? = (avg != nil) ? getItemYPosition(value: avg!) : nil
+//        let vm = PriceTargetVM(startPoint: startPos,
+//                               endX: endXPos,
+//                               yValues: yValues,
+//                               yAvg: yAvg)
+//        priceTargetContainerView.bind(vm)
 //    }
 
     private func initViews() {
@@ -307,41 +308,9 @@ class CustomViewController: UIViewController {
             make.top.equalTo(chartView.snp.top)
             make.left.equalTo(priceTargetContainerView.snp.right)
             make.right.equalToSuperview()
-            //make.width.equalTo(capsuleSize.width)
+            make.width.equalTo(capsuleSize.width)
             make.bottom.equalTo(chartView.snp.bottom)
         }
-    }
-
-    // MARK: lineChartData
-
-    lazy var lineChartDataEntries: [ChartDataEntry] = Self.Stub.lineChartDataEntries
-
-    var lineChartDataSet: LineChartDataSet {
-        let dataSet = LineChartDataSet(entries: lineChartDataEntries,
-                                       label: "Sample Data")
-        dataSet.colors = [NSUIColor.blue] // Set the line color
-        dataSet.valueColors = [NSUIColor.black] // Set the value text color
-        return dataSet
-    }
-
-    // MARK: scatterChartData
-
-    lazy var scatterChartDataEntries: [ChartDataEntry] = Self.Stub.scatterChartDataEntries
-
-    var scatterChartDataSet: ScatterChartDataSet {
-        let dataSet = ScatterChartDataSet(entries: scatterChartDataEntries,
-                                          label: "Scatter Data")
-        dataSet.colors = [NSUIColor.red]
-        dataSet.scatterShapeSize = 10
-        dataSet.shapeRenderer = CircleShapeRenderer()
-        return dataSet
-    }
-
-    func getItemYPosition(value: Double) -> CGFloat? {
-        let entry = ChartDataEntry(x: 0, y: value)
-        let position = chartView.getPosition(entry: entry,
-                                             axis: .left)
-        return position.y
     }
 
     func createPairOfPoint(from: CGPoint, to: [CGPoint]) -> [(from: CGPoint, to: CGPoint)] {
@@ -349,17 +318,25 @@ class CustomViewController: UIViewController {
     }
 
     func updateChartRenderer() {
-        let maxColsePriceOfChart = lineChartDataEntries.map { $0.y }.max() ?? 0
-        let minClosePriceOfChart = lineChartDataEntries.map { $0.y }.min() ?? 0
+        let combine = lineChartDataEntries + scatterChartDataEntries
+        let maxColsePriceOfChart = combine.map { $0.y }.max() ?? 0
+        let minClosePriceOfChart = combine.map { $0.y }.min() ?? 0
         let renderer = RKetCombinedChartRenderer(chart: chartView,
                                                  animator: chartView.chartAnimator,
                                                  viewPortHandler: chartView.viewPortHandler,
-                                                 maxPrice: 300, // maxColsePriceOfChart,
-                                                 minPrice: 0) // minClosePriceOfChart)
+                                                 maxPrice: maxColsePriceOfChart,
+                                                 minPrice: minClosePriceOfChart)
         chartView.renderer = renderer
     }
 
+    var priceTargetResponse: PriceTargetResponse? = nil
+    
+    var now: Double {
+        lineChartDataEntries.last?.y ?? 0
+    }
+    
     private func initChart() {
+                             
         let _lineChartDataSet = lineChartDataSet
         let _scatterChartDataSet = scatterChartDataSet
 
@@ -380,78 +357,20 @@ class CustomViewController: UIViewController {
                                     in chartView: BarLineChartViewBase) -> [CGPoint]
     {
         entries.map {
-            let dataSets = chartView.data?.dataSets
             let p = chartView.getPosition(entry: $0,
                                           axis: .left)
             print("point \(p.x) \(p.y)")
             return p
         }
     }
+    
+    func getChartPos(entry: ChartDataEntry) -> CGPoint {
+        let p = chartView.getPosition(entry: entry,
+                                      axis: .left)
+        print("point \(p.x) \(p.y)")
+        return p
+    }
 
-//    private func initDrawLine() {
-//        // 1) draw straight line from (0,0) to (max_width, 0)
-//        let maxWidth = drawDemoContainerView.bounds.width
-//        let startPoint = CGPoint(x: 0, y: 10)
-//        let endPoint = CGPoint(x: 100, y: 10)
-//        drawDemoContainerView.drawStraightLine(from: startPoint,
-//                                               to: endPoint,
-//                                               strokeColor: .black,
-//                                               lineWidth: 2)
-//
-//        // 2) draw dashed line from (0,10) to (max_width, 10)
-//        let startPoint2 = CGPoint(x: 0, y: 30)
-//        let endPoint2 = CGPoint(x: 100, y: 30)
-//        drawDemoContainerView.drawDashedLine(from: startPoint2,
-//                                             to: endPoint2,
-//                                             strokeColor: .black,
-//                                             lineWidth: 2,
-//                                             lineDashPattern: [4, 4],
-//                                             lineCap: .round)
-//
-//        // 3) draw lower triangle at (0,30)
-//        let pointA = CGPoint(x: 0, y: 50)
-//        let pointB = CGPoint(x: 100, y: 50)
-//        let pointC = CGPoint(x: 100, y: 150)
-//        drawDemoContainerView.drawTriangle(withPoints: pointA,
-//                                           pointB: pointB,
-//                                           pointC: pointC,
-//                                           fillColor: .blue,
-//                                           strokeColor: .black,
-//                                           lineWidth: 0,
-//                                           alpha: 0.5)
-//
-//        // 4) draw upper triangle at (0,150)
-//        let pointA2 = CGPoint(x: 0, y: 150)
-//        let pointB2 = CGPoint(x: 100, y: 150)
-//        let pointC2 = CGPoint(x: 0, y: 50)
-//        drawDemoContainerView.drawTriangle(withPoints: pointA2,
-//                                           pointB: pointB2,
-//                                           pointC: pointC2,
-//                                           fillColor: .red,
-//                                           strokeColor: .black,
-//                                           lineWidth: 0,
-//                                           alpha: 0.5)
-//
-//        // 5) draw circle
-//        let center = CGPoint(x: 50, y: 200)
-//        let radius: CGFloat = 3
-//        drawDemoContainerView.drawCircle(at: center,
-//                                         radius: radius,
-//                                         color: .black,
-//                                         strokeColor: .red,
-//                                         lineWidth: 0.5,
-//                                         alpha: 0.5)
-//
-//        // 6) draw horizontal capsule
-//        let capsuleStartPoint = CGPoint(x: 50, y: 250)
-//        drawDemoContainerView.drawHorizontalCapsule(at: capsuleStartPoint,
-//                                                    width: 20,
-//                                                    height: 6,
-//                                                    color: .black,
-//                                                    strokeColor: .red,
-//                                                    lineWidth: 0.5,
-//                                                    alpha: 0.5)
-//    }
 }
 
 extension CustomViewController: ChartViewDelegate {
@@ -492,6 +411,60 @@ extension CustomViewController {
 
         static var randomY: [Double] {
             (0 ..< 10).map { _ in Double.random(in: 100 ... 200) }
+        }
+        
+        static func generateEntries(avg: Double,
+                                    now: Double,
+                                    other: [Double]) -> (minEntry: ChartDataEntry?,
+                                                         maxEntry: ChartDataEntry?,
+                                                         avgEntry: ChartDataEntry?,
+                                                         nowEntry: ChartDataEntry?,
+                                                         other: [ChartDataEntry]) {
+            let x = Double(0)
+            let avgEntry = ChartDataEntry(x: x,
+                                          y: avg,
+                                          data: avg)
+            let nowEntry = ChartDataEntry(x: x,
+                                          y: now,
+                                          data: now)
+            var otherEntries = other.sorted().enumerated().map { ref -> ChartDataEntry in
+                ChartDataEntry(x: x,
+                               y: ref.element,
+                               data: Double(ref.element))
+            }
+            
+            let minEntry = otherEntries.first
+            let maxEntry = otherEntries.last
+            
+            otherEntries.removeLast()
+            otherEntries.removeFirst()
+            
+            return (minEntry,
+                    maxEntry,
+                    avgEntry,
+                    nowEntry,
+                    otherEntries)
+        }
+        
+    }
+}
+
+extension CustomViewController {
+    
+    struct Position {
+        let entry: ChartDataEntry
+        let point: CGPoint
+        
+        init(entry: ChartDataEntry,
+             x: CGFloat,
+             y: CGFloat) {
+            self.entry = entry
+            self.point = .init(x: x,
+                               y: y)
+        }
+        
+        var value: Double {
+            entry.data as? Double ?? 0
         }
     }
 }

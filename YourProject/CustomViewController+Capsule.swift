@@ -10,13 +10,39 @@ import DGCharts
 extension CustomViewController {
     
     struct CapsuleSource {
+        static let font: UIFont = .systemFont(ofSize: 12)
+        
         let y: CGFloat
         let title: String
         let value: Double
+        let textColor: UIColor
+        let backgroundColor: UIColor
+        
+        // apply formatter "xxx.xx"
+        var valueWithFormatter: String {
+            return String(format: "%.2f", value)
+        }
                 
         var valueLabelWidth: CGFloat {
-            return TextHelper.sizeForSingleLine(fromText: String(value),
-                                                font: .systemFont(ofSize: 16)).width
+            return TextHelper.sizeForSingleLine(fromText: String(valueWithFormatter),
+                                                font: Self.font).width
+        }
+        
+        func valueLabelWidth(font: UIFont) -> CGFloat {
+            return TextHelper.sizeForSingleLine(fromText: String(valueWithFormatter),
+                                                font: font).width
+        }
+        
+        init(y: CGFloat,
+             title: String,
+             value: Double,
+             textColor: UIColor = .black,
+             backgroundColor: UIColor = .red) {
+            self.y = y
+            self.title = title
+            self.value = value
+            self.textColor = textColor
+            self.backgroundColor = backgroundColor
         }
         
     }
@@ -26,25 +52,33 @@ extension CustomViewController {
                                max: ChartDataEntry,
                                min: ChartDataEntry,
                                avg: ChartDataEntry) {
-                             
-        // sort by Y value
+
+        // find yPos
+        let nowPos = getChartPos(entry: now)
+        let avgPos = getChartPos(entry: avg)
+        let minPos = getChartPos(entry: min)
+        let maxPos = getChartPos(entry: max)
+        
+        // map to CapSource
         let nowValue = now.data as? Double ?? 0
         let avgValue = avg.data as? Double ?? 0
         let minValue = min.data as? Double ?? 0
         let maxValue = max.data as? Double ?? 0
         
-        let datasources: [CapsuleSource] = [.init(y: CGFloat(now.y),
+        let datasources: [CapsuleSource] = [.init(y: CGFloat(nowPos.y),
                                                   title: "Now",
                                                   value: nowValue),
-                                            .init(y: CGFloat(avg.y),
+                                            .init(y: CGFloat(avgPos.y),
                                                   title: "Avg",
                                                   value: avgValue),
-                                            .init(y: CGFloat(min.y),
+                                            .init(y: CGFloat(minPos.y),
                                                   title: "Min",
                                                   value: minValue),
-                                            .init(y: CGFloat(max.y),
+                                            .init(y: CGFloat(maxPos.y),
                                                   title: "Max",
-                                                  value: maxValue)].sorted { $0.y < $1.y }
+                                                  value: maxValue)].sorted {
+            $0.y > $1.y
+        }
         
         capsuleSize.width = capsuleWidth(sources: datasources)
         
@@ -56,8 +90,6 @@ extension CustomViewController {
         }
         
         // Update capsule container view layout
-//        capsuleContainerView.setNeedsLayout()
-//        capsuleContainerView.layoutIfNeeded()
         self.capsuleContainerView.snp.updateConstraints { make in
             make.width.equalTo(capsuleSize.width)
         }
@@ -106,8 +138,8 @@ extension CustomViewController {
                                y: originY,
                                width: capsuleSize.width,
                                height: capsuleSize.height)
-            return .init(leftTitle: source.title,
-                         rightTitle: String(source.value),
+            return .init(title: source.title,
+                         value: String(source.value),
                          frame: frame)
         }
     }
@@ -126,8 +158,8 @@ extension CustomViewController {
                            y: originY,
                            width: capsuleSize.width,
                            height: capsuleSize.height)
-        let viewModel = CapsuleVM(leftTitle: source.title,
-                                  rightTitle: String(source.value),
+        let viewModel = CapsuleVM(title: source.title,
+                                  value: String(source.value),
                                   frame: frame)
         let remainingCapsules = Array(capsules.dropFirst())
         
