@@ -154,15 +154,19 @@ class CustomViewController: UIViewController {
             self.initStubCapsuleValues(now: nowChartDataEntry,
                                        max: maxChartDataEntry,
                                        min: minChartDataEntry,
-                                       avg: avgChartDataEntry)            
+                                       avg: avgChartDataEntry)
         }
     }
     
     func initChartStubData() {
         lineChartDataEntries = Self.Stub.lineChartDataEntries
         
-        self.nowChartDataEntry = lineChartDataEntries.last
-        let now = nowChartDataEntry?.y ?? 0
+        let lineLastEntry = lineChartDataEntries.last
+        let lineLastEntryX = lineLastEntry?.x ?? 0
+        let now = lineLastEntry?.y ?? 0
+        self.nowChartDataEntry = ChartDataEntry(x: lineLastEntryX,
+                                                y: now,
+                                                data: now)
         
         let generator = MockPriceTargetGenerator()
         let mockData = generator.generateMockData(currentPrice: now)
@@ -178,6 +182,7 @@ class CustomViewController: UIViewController {
         let entriesGroup = Self.Stub.generateEntries(avg: avg,
                                                      now: now,
                                                      other: other)
+        
         minChartDataEntry = entriesGroup.minEntry
         maxChartDataEntry = entriesGroup.maxEntry
         avgChartDataEntry = entriesGroup.avgEntry
@@ -228,13 +233,13 @@ class CustomViewController: UIViewController {
                                yValues: yValues,
                                yAvg: avgPos.y)
         //log
-        print("###")
-        print("### Price Target VM: ")
-        print("Start Point: \(startPos)")
-        print("End X: \(endXPos)")
-        // print all yValues
-        yValues.forEach { print("yValue: \($0)") }
-        print("Y Avg: \(avg.y)")
+//        print("###")
+//        print("### Price Target VM: ")
+//        print("Start Point: \(startPos)")
+//        print("End X: \(endXPos)")
+//        // print all yValues
+//        yValues.forEach { print("yValue: \($0)") }
+//        print("Y Avg: \(avg.y)")
         
         priceTargetContainerView.bind(vm)
     }
