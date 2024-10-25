@@ -91,7 +91,7 @@ class MockPriceTargetGenerator {
     }
     
     func generatePriceTargetRange(currentPrice: Double) -> (min: Double, max: Double, scenario: PriceTargetScenario) {
-        let scenario = PriceTargetScenario.highlyVolatile
+        let scenario = PriceTargetScenario.bearish
         
         // Base volatility factors
         let lowVolatility = Double.random(in: 0.05...0.15)   // 5-15%

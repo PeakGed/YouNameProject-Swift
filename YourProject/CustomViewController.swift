@@ -68,14 +68,13 @@ class CustomViewController: UIViewController {
 
     lazy var priceTargetChartView: PriceTargetView = {
         let element = PriceTargetView()
-        element.backgroundColor = .brown
+        element.backgroundColor = .clear
         return element
     }()
 
     lazy var priceTargetCapsulesView: UIView = {
         let element = UIView()
-        element.backgroundColor = .brown
-        element.alpha = 0.5
+        element.backgroundColor = .clear
         return element
     }()
     
@@ -86,7 +85,7 @@ class CustomViewController: UIViewController {
     var OHLCs: [OHLC] = []
     
     var capsuleSize: CGSize = .init(width: 0,
-                                    height: 26)
+                                    height: 18)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -180,6 +179,7 @@ class CustomViewController: UIViewController {
         chartContainerView.addArrangedSubview(priceChartView)
         chartContainerView.addArrangedSubview(priceTargetChartView)
         chartContainerView.addArrangedSubview(priceTargetCapsulesView)
+        chartContainerView.setCustomSpacing(6, after: priceTargetChartView)
     }
 
     private func initConstriantLayout() {

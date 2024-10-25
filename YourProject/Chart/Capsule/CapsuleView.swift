@@ -46,7 +46,7 @@ class CapsuleView: UIView {
         self.layer.cornerRadius = 9
         self.layer.masksToBounds = true
         self.layer.borderWidth = 1
-        self.layer.borderColor = UIColor.black.cgColor
+        self.layer.borderColor = UIColor.white.cgColor
     }
     
     func initLayout() {
