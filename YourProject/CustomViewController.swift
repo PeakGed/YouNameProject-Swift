@@ -154,26 +154,7 @@ class CustomViewController: UIViewController {
             self.initStubCapsuleValues(now: nowChartDataEntry,
                                        max: maxChartDataEntry,
                                        min: minChartDataEntry,
-                                       avg: avgChartDataEntry)
-            
-            // debug
-            print("###")
-            let nowEntry1 = self.getChartPos(entry: nowChartDataEntry)
-            print("nowEntry1")
-            print(nowEntry1)
-            
-            let lastLineEntry = self.lineChartDataEntries.last!
-            let nowEntry2 = self.getChartPos(entry: lastLineEntry)
-            print("nowEntry2")
-            print(nowEntry2)
-            
-            let lineDataSet = self.chartView.data?.first as? LineChartDataSet
-            let last = lineDataSet?.entries.last
-            let nowEntry3 = self.getChartPos(entry: last!)
-            print("nowEntry3")
-            print(nowEntry3)
-            print("###")
-            
+                                       avg: avgChartDataEntry)            
         }
     }
     
@@ -209,21 +190,20 @@ class CustomViewController: UIViewController {
         
         scatterChartDataEntries = entriesGroup.other + secoundGroup
 
-        print("### line chart")
-        lineChartDataEntries.forEach {
-            
-            print($0)
-        }
+//        print("### line chart")
+//        lineChartDataEntries.forEach {
+//            print($0)
+//        }
         
         // print all entries
-        print("###")
-        print("Now: \(nowChartDataEntry?.y ?? 0)")
-        print("Avg: \(avgChartDataEntry?.y ?? 0)")
-        print("Min: \(minChartDataEntry?.y ?? 0)")
-        print("Max: \(maxChartDataEntry?.y ?? 0)")
-
-        print("### Scatter Chart Entries: ")
-        scatterChartDataEntries.forEach { print($0) }
+//        print("###")
+//        print("Now: \(nowChartDataEntry?.y ?? 0)")
+//        print("Avg: \(avgChartDataEntry?.y ?? 0)")
+//        print("Min: \(minChartDataEntry?.y ?? 0)")
+//        print("Max: \(maxChartDataEntry?.y ?? 0)")
+//
+//        print("### Scatter Chart Entries: ")
+//        scatterChartDataEntries.forEach { print($0) }
 
     }
     
