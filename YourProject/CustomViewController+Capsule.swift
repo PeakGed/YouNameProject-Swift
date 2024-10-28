@@ -134,14 +134,14 @@ extension CustomViewController {
         }
     }
     
-    func createCapsuleView(with viewModel: CapsuleVM) -> CapsuleView {
-        let element = CapsuleView(frame: viewModel.frame)
+    func createCapsuleView(with viewModel: PTCapsuleVM) -> PTCapsuleView {
+        let element = PTCapsuleView(frame: viewModel.frame)
         element.bind(viewModel)
         return element
     }
     
     func createCapsules(by capsules: [CapsuleSource],
-                        from previousViewModel: CapsuleVM? = nil) -> [CapsuleVM] {
+                        from previousViewModel: PTCapsuleVM? = nil) -> [PTCapsuleVM] {
         guard let source = capsules.first else { return [] }
         
         let capsuleHeight = capsuleSize.height
@@ -149,7 +149,7 @@ extension CustomViewController {
         let inputHeight = calculateInputHeight(of: capsules)
         let startY: CGFloat = source.y - capsuleHeight / 2.0
         
-        let viewModels: [CapsuleVM]
+        let viewModels: [PTCapsuleVM]
         
         if minContainerHeight > inputHeight {
             viewModels = createCompressedCapsules(from: capsules,
@@ -164,7 +164,7 @@ extension CustomViewController {
     }
     
     private func createCompressedCapsules(from capsules: [CapsuleSource],
-                                          startY: CGFloat) -> [CapsuleVM] {
+                                          startY: CGFloat) -> [PTCapsuleVM] {
         let capsuleHeight = capsuleSize.height
         let minContainerHeight = calculateMinimumHeight(of: capsules)
         let maxY = startY + minContainerHeight
@@ -185,8 +185,8 @@ extension CustomViewController {
     }
     
     func createNormalCapsules(from capsules: [CapsuleSource],
-                              previousViewModel: CapsuleVM?,
-                              startY: CGFloat) -> [CapsuleVM] {
+                              previousViewModel: PTCapsuleVM?,
+                              startY: CGFloat) -> [PTCapsuleVM] {
         guard let source = capsules.first else { return [] }
         
         let originY: CGFloat = calculateOriginYForNormalCapsules(
@@ -198,7 +198,7 @@ extension CustomViewController {
                            y: originY,
                            width: capsuleSize.width,
                            height: capsuleSize.height)
-        let viewModel = CapsuleVM(title: source.kind.title,
+        let viewModel = PTCapsuleVM(title: source.kind.title,
                                   value: source.valueWithFormatter,
                                   frame: frame,
                                   textColor: source.textColor,
@@ -246,7 +246,7 @@ private extension CustomViewController {
     }
     
     private func calculateOriginYForNormalCapsules(startY: CGFloat,
-                                                   previousViewModel: CapsuleVM?) -> CGFloat {
+                                                   previousViewModel: PTCapsuleVM?) -> CGFloat {
         let capsuleHeight = capsuleSize.height
         let maxY = startY + capsuleHeight
         var originY: CGFloat = startY

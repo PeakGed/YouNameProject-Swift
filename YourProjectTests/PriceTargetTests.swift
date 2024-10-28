@@ -18,7 +18,7 @@ final class PriceTargetTests: XCTestCase {
         let startPoint = CGPoint(x: 0,
                                  y: 10)
         let allEndPoints = Stub.simple10(x: 10)
-        let priceTarget = PriceTargetVM(startPoint: startPoint,
+        let priceTarget = PTChartVM(startPoint: startPoint,
                                       allEndPoints: allEndPoints)
         print(priceTarget)
         print("debug")

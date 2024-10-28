@@ -90,9 +90,8 @@ class MockPriceTargetGenerator {
         }
     }
     
-    func generatePriceTargetRange(currentPrice: Double) -> (min: Double, max: Double, scenario: PriceTargetScenario) {
-        let scenario = PriceTargetScenario.bearish
-        
+    func generatePriceTargetRange(currentPrice: Double,
+                                  scenario: PriceTargetScenario = .random()) -> (min: Double, max: Double, scenario: PriceTargetScenario) {
         // Base volatility factors
         let lowVolatility = Double.random(in: 0.05...0.15)   // 5-15%
         let mediumVolatility = Double.random(in: 0.15...0.35) // 15-35%
@@ -143,12 +142,14 @@ class MockPriceTargetGenerator {
         return (range.min, range.max, scenario)
     }
     
-    func generateMockData(currentPrice: Double) -> (response: PriceTargetResponse, scenario: PriceTargetScenario) {
+    func generateMockData(currentPrice: Double,
+                          scenario: PriceTargetScenario = .random()) -> (response: PriceTargetResponse, scenario: PriceTargetScenario) {
         let numberOfItems = Int.random(in: 5...25)
         var items: [PriceTargetItem] = []
         
         // Generate price target range based on scenario
-        let (minPriceTarget, maxPriceTarget, scenario) = generatePriceTargetRange(currentPrice: currentPrice)
+        let (minPriceTarget, maxPriceTarget, scenario) = generatePriceTargetRange(currentPrice: currentPrice,
+                                                                                  scenario: scenario)
         
         // Generate random dates within last 30 days
         let calendar = Calendar.current

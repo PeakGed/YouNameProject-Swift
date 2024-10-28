@@ -1,5 +1,5 @@
 //
-//  CapsuleView.swift
+//  PTCapsuleView.swift
 //  YourProject
 //
 //  Created by IntrodexMac on 24/10/2567 BE.
@@ -8,7 +8,7 @@
 import SnapKit
 import UIKit
 
-class CapsuleView: UIView {
+class PTCapsuleView: UIView {
     private let leftTitleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
@@ -25,7 +25,7 @@ class CapsuleView: UIView {
         return label
     }()
 
-    private(set) var vm: CapsuleVM?
+    private(set) var vm: PTCapsuleVM?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -63,7 +63,7 @@ class CapsuleView: UIView {
         }
     }
 
-    func bind(_ vm: CapsuleVM) {
+    func bind(_ vm: PTCapsuleVM) {
         self.vm = vm
         
         leftTitleLabel.text = vm.title

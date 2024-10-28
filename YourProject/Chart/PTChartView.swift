@@ -1,5 +1,5 @@
 //
-//  PriceTargetView.swift
+//  PTChartView.swift
 //  YourProject
 //
 //  Created by IntrodexMac on 22/10/2567 BE.
@@ -7,9 +7,9 @@
 
 import UIKit
 
-public class PriceTargetView: UIView {
+public class PTChartView: UIView {
     
-    func bind(_ vm: PriceTargetVM) {
+    func bind(_ vm: PTChartVM) {
         // draw triangle
         vm.upperTriagle?.draw(on: self)
         vm.lowerTriagle?.draw(on: self)

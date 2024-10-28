@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-struct PriceTargetVM {
+struct PTChartVM {
     let startPoint: CGPoint
     let startNowShape: Circle
         

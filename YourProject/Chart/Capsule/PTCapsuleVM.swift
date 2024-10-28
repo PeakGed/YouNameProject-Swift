@@ -1,12 +1,12 @@
 //
-//  CapsuleVM.swift
+//  PTCapsuleVM.swift
 //  YourProject
 //
 //  Created by IntrodexMac on 24/10/2567 BE.
 //
 import UIKit
 
-struct CapsuleVM {
+struct PTCapsuleVM {
     let title: String
     let value: String
     let frame: CGRect

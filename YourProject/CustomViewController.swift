@@ -66,8 +66,8 @@ class CustomViewController: UIViewController {
         return element
     }()
 
-    lazy var priceTargetChartView: PriceTargetView = {
-        let element = PriceTargetView()
+    lazy var priceTargetChartView: PTChartView = {
+        let element = PTChartView()
         element.backgroundColor = .clear
         return element
     }()
@@ -264,7 +264,7 @@ class CustomViewController: UIViewController {
         let yValues: [CGFloat] = self.getPositions(entries: entries,
                                                    in: self.priceChartView).map({ CGFloat($0.y) })
         
-        let vm = PriceTargetVM(startPoint: startPos,
+        let vm = PTChartVM(startPoint: startPos,
                                endX: endX,
                                yValues: yValues,
                                yAvg: getChartPos(entry: avgChartDataEntry).y)
