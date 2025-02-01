@@ -7,9 +7,14 @@
 import Foundation
 import KeychainSwift
 
-protocol LocalStorageManagerProtocal {
+protocol LocalStorageManagerProtocal: Sendable {
     var accessToken: String? { get set }
     var refreshToken: String? { get set }
+    
+    // Authenticate
+    func isAuthenticated() -> Bool
+    func clearToken()
+    func setToken(_ token: AuthTokenResponse)
 }
 
 class LocalStorageManager: LocalStorageManagerProtocal {
@@ -23,6 +28,20 @@ class LocalStorageManager: LocalStorageManagerProtocal {
     
     init(keychainHelper: KeychainHelperable = KeyChainHelper()) {
         self.keychainHelper = keychainHelper
+    }
+    
+    func isAuthenticated() -> Bool {
+        accessToken != nil && refreshToken != nil
+    }
+    
+    func clearToken() {
+        accessToken = nil
+        refreshToken = nil
+    }
+    
+    func setToken(_ token: AuthTokenResponse) {
+        accessToken = token.accessToken
+        refreshToken = token.refreshToken
     }
     
 }

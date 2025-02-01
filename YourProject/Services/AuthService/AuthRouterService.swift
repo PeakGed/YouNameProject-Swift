@@ -13,7 +13,7 @@ enum AuthRouterService: AlamofireBaseRouterProtocol {
     case emailLogin(request: AuthServiceRequest.EmailLogin)
     case appleIdLogin(request: AuthServiceRequest.AppleIdLogin)
     case logout
-    case refreshToken
+    case refreshToken(request: AuthServiceRequest.TokenRefresh)
     case register
     case resetPassword
 
@@ -23,9 +23,9 @@ enum AuthRouterService: AlamofireBaseRouterProtocol {
 
     var path: String {
         switch self {
-        case .emailLogin(let request):
+        case .emailLogin(_):
             return "/v4/auth/login"
-        case .appleIdLogin(let req):
+        case .appleIdLogin(_):
             return "/v4/auth/login/apple"
         case .logout:
             return "/v4/auth/logout"
@@ -66,16 +66,25 @@ enum AuthRouterService: AlamofireBaseRouterProtocol {
     }
 
     var parameters: [String: Any]? {
-       return nil
-    }
-
-    var body: Data? {
-        switch self {
-        case .emailLogin(let request):
-            return request.body
+       switch self {
+            case .emailLogin(let request):
+           return ["email": request.username,
+                   "password": request.password]
+        case .refreshToken(let request):
+           return ["refresh_token": request.token]
         default:
             return nil
         }
+    }
+
+    var body: Data? {
+//        switch self {
+//        case .emailLogin(let request):
+//            return request.body
+//        default:
+//            return nil
+//        }
+        return nil
     }
 
     func asURLRequest() throws -> URLRequest {

@@ -1,11 +1,11 @@
 //
-//  AuthToken.swift
+//  AuthTokenResponse.swift
 //  YourProject
 //
 //  Created by IntrodexMini on 30/1/2568 BE.
 //
 
-struct AuthToken: Decodable {
+struct AuthTokenResponse: Decodable {
     let accessToken: String
     let refreshToken: String
 

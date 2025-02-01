@@ -21,7 +21,7 @@ extension AppConfiguration {
             case .production:
                 return "https://api.introdex.com"
             case .development:
-                return "https://api.introdex.com"
+                return "https://homemadestay.herokuapp.com/api"
             }
         }
     }
