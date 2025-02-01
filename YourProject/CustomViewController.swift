@@ -23,17 +23,7 @@ class CustomViewController: UIViewController {
         
         initViews()
         initConstriantLayout()
-        
-        Task {
-            do {
-                try await AuthRemoteService()
-                    .emailLogin(request: .init(username: "test1@email.com",
-                                                              password: "12345678"))
-            } catch {
-                print(error)
-            }
-        }
-        
+       
         
     }
     

@@ -68,7 +68,7 @@ enum AuthRouterService: AlamofireBaseRouterProtocol {
     var parameters: [String: Any]? {
        switch self {
             case .emailLogin(let request):
-           return ["email": request.username,
+           return ["username": request.username,
                    "password": request.password]
         case .refreshToken(let request):
            return ["refresh_token": request.token]
