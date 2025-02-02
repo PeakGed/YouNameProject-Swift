@@ -7,13 +7,15 @@
 
 import XCTest
 import Alamofire
+import Mockable
+
 @testable import YourProject
 
 final class AuthRouterServiceTests: XCTestCase {
     
     var baseURL: String!
-    let localStorage: LocalStorageManagerProtocal = LocalStorageManager()
-    let authRemoteService: AuthServiceProtocol = AuthRemoteService()
+    lazy var localStorage = MockLocalStorageManagerProtocal()
+    lazy var authRemoteService = MockAuthServiceProtocol()
     
     override func setUp() {
         super.setUp()
@@ -82,15 +84,81 @@ final class AuthRouterServiceTests: XCTestCase {
     
     
     func testEmailLoginCallService() async throws {
+        
+        given(authRemoteService).emailLogin(request: .any).willReturn()
+            
+        
         let loginRequest = AuthServiceRequest.EmailLogin(username: "test1@email.com",
                                                          password: "12345678")
-        let expectation = XCTestExpectation(description: "Wait for response")
         
         try await authRemoteService.emailLogin(request: loginRequest)
             
         XCTAssertNotNil(localStorage.accessToken)
         XCTAssertNotNil(localStorage.refreshToken)
     }
+    
+    func testTokenRefreshWithNilTokens() async {
+        // Given
+        localStorage.clearToken()
+        
+        // When/Then
+        do {
+            let request = AuthServiceRequest.TokenRefresh(token: "refresh_token")
+            try await authRemoteService.tokenRefresh(request: request)
+            XCTFail("Should throw error")
+        } catch let error as APIAuthErrorResponse {
+            XCTAssertEqual(error.errorCode, .missingAccessToken)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+    
+    func testTokenRefreshWithValidTokens() async throws {
+        // Given
+        localStorage.setToken(.init(accessToken: "valid_access_token",
+                                    refreshToken: "valid_refresh_token"))
+        
+        let request = AuthServiceRequest.TokenRefresh(token: "valid_refresh_token")
+        
+        // When
+        try await authRemoteService.tokenRefresh(request: request)
+        
+        // Then
+        XCTAssertNotNil(localStorage.accessToken)
+        XCTAssertNotNil(localStorage.refreshToken)
+    }
+    
+//    func testTokenRefreshWithNilAccessTokenButValidRefreshToken() async throws {
+//        // Given
+//        localStorage.accessToken = nil
+//        localStorage.refreshToken = "valid_refresh_token"
+//        
+//        let request = AuthServiceRequest.TokenRefresh(token: "valid_refresh_token")
+//        
+//        // When
+//        try await authRemoteService.tokenRefresh(request: request)
+//        
+//        // Then
+//        XCTAssertNotNil(localStorage.accessToken)
+//        XCTAssertNotNil(localStorage.refreshToken)
+//    }
+//    
+//    func testTokenRefreshWithValidAccessTokenButNilRefreshToken() async {
+//        // Given
+//        localStorage.accessToken = "valid_access_token"
+//        localStorage.refreshToken = nil
+//        
+//        // When/Then
+//        do {
+//            let request = AuthServiceRequest.TokenRefresh(token: "refresh_token")
+//            try await authRemoteService.tokenRefresh(request: request)
+//            XCTFail("Should throw error")
+//        } catch let error as APIAuthErrorResponse {
+//            XCTAssertEqual(error.errorCode, .invalidRefreshToken)
+//        } catch {
+//            XCTFail("Unexpected error: \(error)")
+//        }
+//    }
     
 }
 

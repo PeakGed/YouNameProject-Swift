@@ -6,7 +6,9 @@
 //
 import Foundation
 import Alamofire
+import Mockable
 
+@Mockable
 protocol AuthServiceProtocol: AnyObject {
     func emailLogin(request: AuthServiceRequest.EmailLogin) async throws
     func tokenRefresh(request: AuthServiceRequest.TokenRefresh) async throws
@@ -40,7 +42,12 @@ class AuthRemoteService: AuthServiceProtocol {
     }
     
     func logout() async throws {
-        
+        let router = AuthRouterService.logout
+        let response: AuthTokenResponse = try await APIManager.shared.request(router.path,
+                                                                              method: router.method,
+                                                                              parameters: router.parameters,
+                                                                              requiredAuthorization: false)
+        localStorage.clearToken()
     }
     
     

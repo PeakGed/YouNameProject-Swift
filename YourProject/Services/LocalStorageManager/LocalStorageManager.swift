@@ -6,7 +6,9 @@
 //
 import Foundation
 import KeychainSwift
+import Mockable
 
+@Mockable
 protocol LocalStorageManagerProtocal: Sendable {
     var accessToken: String? { get set }
     var refreshToken: String? { get set }
