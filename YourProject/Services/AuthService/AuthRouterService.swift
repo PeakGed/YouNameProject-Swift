@@ -91,7 +91,8 @@ enum AuthRouterService: AlamofireBaseRouterProtocol {
         guard let url = URL(string: domain + path) else {
             throw APIError.invalidURL
         }
-        let encoding: ParameterEncoding = (method == .get) ? URLEncoding.default : JSONEncoding.default
+        //let encoding: ParameterEncoding = (method == .get) ? URLEncoding.default : JSONEncoding.default
+        let encoding: ParameterEncoding = URLEncoding.default
         var request = URLRequest(url: url)
 
         request.httpMethod = method.rawValue

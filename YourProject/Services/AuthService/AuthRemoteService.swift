@@ -18,35 +18,33 @@ protocol AuthServiceProtocol: AnyObject {
 class AuthRemoteService: AuthServiceProtocol {
     
     private var localStorage: LocalStorageManagerProtocal
+    private let apiManager: APIManagerProtocal
     
-    init(localStorage: LocalStorageManagerProtocal = LocalStorageManager()) {
+    init(localStorage: LocalStorageManagerProtocal = LocalStorageManager(),
+         apiManager: APIManagerProtocal = APIManager.shared) {
         self.localStorage = localStorage
+        self.apiManager = apiManager
     }
     
     func emailLogin(request: AuthServiceRequest.EmailLogin) async throws {
         let router = AuthRouterService.emailLogin(request: request)
-        let response: AuthTokenResponse = try await APIManager.shared.request(router.path,
-                                                                              method: router.method,
-                                                                              parameters: router.parameters,
-                                                                              requiredAuthorization: false)
+        
+        let response: AuthTokenResponse = try await apiManager.request(router: router,
+                                                                       requiredAuthorization: false)
         localStorage.setToken(response)
     }
-
+    
     func tokenRefresh(request: AuthServiceRequest.TokenRefresh) async throws {
         let router = AuthRouterService.refreshToken(request: request)
-        let response: AuthTokenResponse = try await APIManager.shared.request(router.path,
-                                                                              method: router.method,
-                                                                              parameters: router.parameters,
-                                                                              requiredAuthorization: false)
+        let response: AuthTokenResponse = try await apiManager.request(router: router,
+                                                                       requiredAuthorization: false)
         localStorage.setToken(response)
     }
     
     func logout() async throws {
         let router = AuthRouterService.logout
-        let response: AuthTokenResponse = try await APIManager.shared.request(router.path,
-                                                                              method: router.method,
-                                                                              parameters: router.parameters,
-                                                                              requiredAuthorization: false)
+        try await apiManager.requestACK(router: router,
+                                        requiredAuthorization: false)
         localStorage.clearToken()
     }
     
