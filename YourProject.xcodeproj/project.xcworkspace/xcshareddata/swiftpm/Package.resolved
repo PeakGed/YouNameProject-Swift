@@ -1,5 +1,5 @@
 {
-  "originHash" : "3776474e0cd15e47ecee9f169fe9edb435961b32e088cf09a1a6bc1198a58edd",
+  "originHash" : "067dc3f6fe13711482a31cf44b1f0eca2a1e2e8ea940ed103855df53ed5141ab",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -26,6 +26,15 @@
       "state" : {
         "revision" : "203336d0ccb7ff03a8a03db54a4fa18fc2b0c771",
         "version" : "0.3.0"
+      }
+    },
+    {
+      "identity" : "mocker",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/WeTransfer/Mocker",
+      "state" : {
+        "revision" : "95fa785c751f6bc40c49e112d433c3acf8417a97",
+        "version" : "3.0.2"
       }
     },
     {
