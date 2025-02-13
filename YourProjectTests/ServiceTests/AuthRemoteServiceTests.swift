@@ -9,8 +9,6 @@ import XCTest
 import Alamofire
 import Mockable
 
-@testable import YourProject
-
 final class AuthRouterServiceTests: XCTestCase {
     
     var baseURL: String!

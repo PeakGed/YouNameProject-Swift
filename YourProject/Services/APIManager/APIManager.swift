@@ -70,7 +70,8 @@ class APIManager: APIManagerProtocal {
     
     private var localStorageManager: LocalStorageManagerProtocal
     
-    init(localStorageManager: LocalStorageManagerProtocal = LocalStorageManager()) {
+    init(localStorageManager: LocalStorageManagerProtocal = LocalStorageManager(),
+         authRemoteService: AuthServiceProtocol = AuthRemoteService()) {
         self.localStorageManager = localStorageManager
         
         let configuration = URLSessionConfiguration.default
@@ -78,7 +79,10 @@ class APIManager: APIManagerProtocal {
         configuration.timeoutIntervalForResource = 300  // 5 minutes
         configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
         
-        let authInterceptor = AuthInterceptor()
+        let authInterceptor = AuthInterceptor(
+            localStorageManager: localStorageManager,
+            authRemoteService: authRemoteService
+        )
         self.authSession = Session(
             configuration: configuration,
             interceptor: authInterceptor
