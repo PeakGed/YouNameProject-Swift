@@ -11,6 +11,7 @@
 		0F819EC82D4BD4260025B2B0 /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 0F819EC72D4BD4260025B2B0 /* KeychainSwift */; };
 		0F819F012D4F779F0025B2B0 /* Mockable in Frameworks */ = {isa = PBXBuildFile; productRef = 0F819F002D4F779F0025B2B0 /* Mockable */; };
 		0F819F042D4F77B40025B2B0 /* Mockable in Frameworks */ = {isa = PBXBuildFile; productRef = 0F819F032D4F77B40025B2B0 /* Mockable */; };
+		0FDD99E82D5EA9AA00836890 /* Mocker in Frameworks */ = {isa = PBXBuildFile; productRef = 0FDD99E72D5EA9AA00836890 /* Mocker */; };
 		0FE6996E2D5038ED00FC746E /* Mocker in Frameworks */ = {isa = PBXBuildFile; productRef = 0FE6996D2D5038ED00FC746E /* Mocker */; };
 		36B587F62BF73FF800D523D0 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 36B587F52BF73FF800D523D0 /* SnapKit */; };
 /* End PBXBuildFile section */
@@ -116,6 +117,7 @@
 			files = (
 				0F819F042D4F77B40025B2B0 /* Mockable in Frameworks */,
 				0FE6996E2D5038ED00FC746E /* Mocker in Frameworks */,
+				0FDD99E82D5EA9AA00836890 /* Mocker in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -692,6 +694,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0F819EFF2D4F779F0025B2B0 /* XCRemoteSwiftPackageReference "Mockable" */;
 			productName = Mockable;
+		};
+		0FDD99E72D5EA9AA00836890 /* Mocker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0FE6996C2D5038ED00FC746E /* XCRemoteSwiftPackageReference "Mocker" */;
+			productName = Mocker;
 		};
 		0FE6996D2D5038ED00FC746E /* Mocker */ = {
 			isa = XCSwiftPackageProductDependency;

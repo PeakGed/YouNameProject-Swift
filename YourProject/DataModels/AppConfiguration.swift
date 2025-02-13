@@ -8,7 +8,7 @@
 struct AppConfiguration {
     static let shared = AppConfiguration()
     
-    let baseURL: String = env().baseURL
+    let baseURL: String = env.baseURL
 }
 
 extension AppConfiguration {
@@ -28,7 +28,7 @@ extension AppConfiguration {
 }
 
 extension AppConfiguration {
-    static func env() -> Environment {
+    static var env: Environment {
         let stubEnv = Environment.development
         return stubEnv
     }

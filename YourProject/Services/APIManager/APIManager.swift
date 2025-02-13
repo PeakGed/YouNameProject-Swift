@@ -69,6 +69,7 @@ class APIManager: APIManagerProtocal {
     private var authSession: Session
     
     private var localStorageManager: LocalStorageManagerProtocal
+    private let authInterceptor: AuthInterceptor
     
     init(localStorageManager: LocalStorageManagerProtocal = LocalStorageManager(),
          authRemoteService: AuthServiceProtocol = AuthRemoteService()) {
@@ -79,16 +80,32 @@ class APIManager: APIManagerProtocal {
         configuration.timeoutIntervalForResource = 300  // 5 minutes
         configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
         
-        let authInterceptor = AuthInterceptor(
+        authInterceptor = AuthInterceptor(
             localStorageManager: localStorageManager,
             authRemoteService: authRemoteService
         )
-        self.authSession = Session(
+        
+        authSession = Session(
             configuration: configuration,
             interceptor: authInterceptor
         )
         
-        self.session = Session(configuration: configuration)
+        session = Session(configuration: configuration)
+    }
+    
+    /// For setup Units or UI tests
+    func setupURLSession(with configuration: URLSessionConfiguration) {
+        self.authSession = Session(
+            configuration: configuration,
+            interceptor: authInterceptor
+        )
+        authSession.sessionConfiguration.timeoutIntervalForRequest = 30
+        authSession.sessionConfiguration.timeoutIntervalForResource = 30
+        
+        session = Session(configuration: configuration)
+        session.sessionConfiguration.timeoutIntervalForRequest = 30
+        session.sessionConfiguration.timeoutIntervalForResource = 30
+       
     }
     
     func request<T>(

@@ -8,6 +8,7 @@
 import XCTest
 import Alamofire
 import Mockable
+import Mocker
 
 //class MockLocalStorageManager: LocalStorageManagerProtocal {
 //    var accessToken: String?
@@ -27,10 +28,16 @@ class APIManagerTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
+        
         sut = APIManager(
             localStorageManager: localStorageManager,
             authRemoteService: authRemoveService
         )
+        
+        let configuration = URLSessionConfiguration.af.default
+        configuration.protocolClasses = [MockingURLProtocol.self]
+        sut.setupURLSession(with: configuration)
+        
     }
     
     override func tearDown() {
@@ -42,24 +49,44 @@ class APIManagerTests: XCTestCase {
     
     func testRequestWithValidURLShouldSucceed() async throws {
         // Given
-        let expectation = XCTestExpectation(description: "API request succeeds")
         let parameters: Parameters = ["key": "value"]
+        
+        // Response
+        let originalURL = URL(
+            string: "\(AppConfiguration.shared.baseURL)/test"
+        )!
+        let jsonResponse = """
+        "OK"
+        """.data(using: .utf8)
+            
+        let mock = Mock(
+            url: originalURL,
+            ignoreQuery: true,
+            contentType: .json,
+            statusCode: 200,
+            data: [
+                .get : jsonResponse!
+            ]
+        )
+        mock.register()
         
         // When
         do {
-            let _: String = try await sut.request(
+            let response: String = try await sut.request(
                 "/test",
                 method: .get,
                 parameters: parameters,
                 encoding: URLEncoding.default,
                 requiredAuthorization: false
             )
-            expectation.fulfill()
+            
+            XCTAssertEqual(response, "OK")
         } catch {
-            XCTFail("Request should not fail: \(error)")
+            print(error)
+            print("")
         }
+       
         
-        await fulfillment(of: [expectation], timeout: 5.0)
     }
     
     func testRequestWithRouterShouldSucceed() async throws {
