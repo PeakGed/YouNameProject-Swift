@@ -4,7 +4,7 @@
 //
 //  Created by IntrodexMini on 31/1/2568 BE.
 //
-
+import Foundation
 
 struct APIAuthErrorResponse: Decodable, Error {
     enum ErrorCode: Error {

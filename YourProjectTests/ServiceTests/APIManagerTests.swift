@@ -10,15 +10,6 @@ import Alamofire
 import Mockable
 import Mocker
 
-//class MockLocalStorageManager: LocalStorageManagerProtocal {
-//    var accessToken: String?
-//    
-//    init(accessToken: String? = nil) {
-//        self.accessToken = accessToken
-//    }
-//}
-//
-
 class APIManagerTests: XCTestCase {
     
     var localStorageManager = MockLocalStorageManagerProtocal()
@@ -71,41 +62,48 @@ class APIManagerTests: XCTestCase {
         mock.register()
         
         // When
-        do {
-            let response: String = try await sut.request(
-                "/test",
-                method: .get,
-                parameters: parameters,
-                encoding: URLEncoding.default,
-                requiredAuthorization: false
-            )
-            
-            XCTAssertEqual(response, "OK")
-        } catch {
-            print(error)
-            print("")
-        }
-       
+        let response: String = try await sut.request(
+            "/test",
+            method: .get,
+            parameters: parameters,
+            encoding: URLEncoding.default,
+            requiredAuthorization: false
+        )
         
+        XCTAssertEqual(response, "OK")
     }
     
     func testRequestWithRouterShouldSucceed() async throws {
         // Given
-        let expectation = XCTestExpectation(description: "Router API request succeeds")
+        
         let mockRouter = MockRouter()
+
+        // Response
+        let originalURL = URL(
+            string: "\(AppConfiguration.shared.baseURL)/test"
+        )!
+        let jsonResponse = """
+        "OK"
+        """.data(using: .utf8)
+            
+        let mock = Mock(
+            url: originalURL,
+            ignoreQuery: true,
+            contentType: .json,
+            statusCode: 200,
+            data: [
+                .get : jsonResponse!
+            ]
+        )
+        mock.register()
         
         // When
-        do {
-            let _: String = try await sut.request(
-                router: mockRouter,
-                requiredAuthorization: false
-            )
-            expectation.fulfill()
-        } catch {
-            XCTFail("Router request should not fail: \(error)")
-        }
+        let response: String = try await sut.request(
+            router: mockRouter,
+            requiredAuthorization: false
+        )
         
-        await fulfillment(of: [expectation], timeout: 5.0)
+        XCTAssertEqual(response, "OK")
     }
     
     func testRequestACKShouldSucceed() async throws {
@@ -172,7 +170,7 @@ extension APIManagerTests {
     // Mock Router for testing
     struct MockRouter: AlamofireBaseRouterProtocol {
         func asURLRequest() throws -> URLRequest {
-            let url = URL(string: "https://api.example.com/test")!
+            let url = URL(string: "\(AppConfiguration.shared.baseURL)/test")!   
             return URLRequest(url: url)
         }
     }

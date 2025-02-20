@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import Mockable
 
 enum APIError: Error, LocalizedError {
     case invalidURL
@@ -25,11 +26,13 @@ enum AuthorizationType {
     case bearer(token: String)
 }
 
-// Add this protocol before the APIManager class
+
+@Mockable
 protocol AlamofireBaseRouterProtocol {
     func asURLRequest() throws -> URLRequest
 }
 
+@Mockable
 protocol APIManagerProtocal: AnyObject {
     
     func request<T>(
