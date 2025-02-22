@@ -104,8 +104,11 @@ final class AuthRouterServiceTests: XCTestCase {
             let request = AuthServiceRequest.TokenRefresh(token: "refresh_token")
             try await authRemoteService.tokenRefresh(request: request)
             XCTFail("Should throw error")
-        } catch let error as APIAuthErrorResponse {
-            XCTAssertEqual(error.errorCode, .missingAccessToken)
+        } catch let error as APIErrorResponse {
+            XCTAssertEqual(
+                error.errorKey,
+                APIErrorResponse.AuthErrorKey.missingAccessToken.rawValue
+            )
         } catch {
             XCTFail("Unexpected error: \(error)")
         }

@@ -11,7 +11,7 @@ import Mockable
 
 enum APIError: Error, LocalizedError {
     case invalidURL
-    case unauthorized(error: APIAuthErrorResponse)
+    case unauthorized(error: APIErrorResponse)
     case networkError(error: Error)
     case decodingError(error: Error)
     case httpError(error: Error)
@@ -173,7 +173,7 @@ class APIManager: APIManagerProtocal {
             .serializingData()
             .response
         
-        return try handleResponse(response)
+        return try handleResponseData(response)
     }
     
 }
@@ -195,24 +195,69 @@ private extension APIManager {
     }
     
     func handleResponse<T: Decodable>(_ response: AFDataResponse<Data>) throws -> T {
+        // handel error
+        if let error = response.error?.asAFError {
+            switch error {
+            case .requestRetryFailed(let retryError, let originalError):
+                
+                
+                print(error.localizedDescription)
+                throw APIError.unexpectedError(error: error)
+            case .requestAdaptationFailed(let err):
+                if let err = err as? APIErrorResponse {
+                    if let _ = err.authErorKey {
+                        throw APIError.unauthorized(error: err)
+                    }
+                    
+                    throw APIError.unexpectedError(error: err)
+                }
+                
+                throw APIError.unexpectedError(error: err)
+                
+            default:
+                print(error.localizedDescription)
+                throw APIError.unexpectedError(error: error)
+            
+            }
+        }
+        
         // case no response
         guard let serverResponse = response.response else {
             throw APIError.serverError(statusCode: 500)
         }
-        
+      
         // case no response value
         guard let value = response.value else {
             throw APIError.serverError(statusCode: serverResponse.statusCode)
         }
         
+        // try to decode data to APIErrorResponse
+        if let apiError: APIErrorResponse = try? JSONDecoder().decode(APIErrorResponse.self, from: value) {
+//            if apiError.isAccessTokenExpired {
+//                // retry fetch refresh token
+//                try await authInterceptor.refreshToken()
+//            }
+//            if let authErorKey = apiError.authErorKey {
+//                switch authErorKey {
+//                case .accessTokenExpired:
+//                    try await authInterceptor
+//                        .retry(response.request,
+//                               for: session,
+//                               dueTo: apiError,
+//                               completion: <#T##(RetryResult) -> Void#>
+//                        )
+//                default:
+//                    break
+//                }
+//            }
+            
+            throw apiError
+        }
+        
+        
         // try to decode to <T>
         if let decoded: T = try? JSONDecoder().decode(T.self, from: value) {
             return decoded
-        }
-        
-        // try to decode data to APIErrorResponse
-        if let apiError: APIErrorResponse = try? JSONDecoder().decode(APIErrorResponse.self, from: value) {
-            throw apiError
         }
         
         // try to decode data to String
@@ -222,13 +267,33 @@ private extension APIManager {
                                         subtitle: string,
                                         underlying: nil)
         }
+      
+        
+        print("error 500")
+        throw APIError.serverError(statusCode: 500)
+    }
+
+    func handleResponseData(_ response: AFDataResponse<Data>) throws -> Data? {
+        // case no response
+        guard let serverResponse = response.response else {
+            throw APIError.serverError(statusCode: 500)
+        }
+        
+        // cast to Data
+        guard let value = response.value else {
+            throw APIError.serverError(statusCode: serverResponse.statusCode)
+        }
+        // try to decode data to APIErrorResponse
+        if let apiError: APIErrorResponse = try? JSONDecoder().decode(APIErrorResponse.self, from: value) {
+            throw apiError
+        }
         
         if let error = response.error {
             print(error.localizedDescription)
             throw APIError.unexpectedError(error: error)
         }
-        
-        print("error 500")
-        throw APIError.serverError(statusCode: 500)
+                
+        return value
     }
+
 }

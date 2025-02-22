@@ -46,6 +46,7 @@
 				/Localized/LaunchScreen.storyboard,
 				/Localized/Main.storyboard,
 				Info.plist,
+				Services/APIManager/APIAuthErrorResponse.swift,
 			);
 			target = 36B587BE2BF73F1600D523D0 /* YourProject */;
 		};
@@ -54,7 +55,6 @@
 			membershipExceptions = (
 				DataModels/AppConfiguration.swift,
 				DataModels/AuthTokenResponse.swift,
-				Services/APIManager/APIAuthErrorResponse.swift,
 				Services/APIManager/APIErrorResponse.swift,
 				Services/APIManager/APIManager.swift,
 				Services/APIManager/AuthInterceptor.swift,
