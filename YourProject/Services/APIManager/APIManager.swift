@@ -72,20 +72,31 @@ class APIManager: APIManagerProtocal {
     private var authSession: Session
     
     private var localStorageManager: LocalStorageManagerProtocal
-    private let authInterceptor: AuthInterceptor
+    private let authInterceptor: AuthenticationInterceptor<OAuthAuthenticator>
+    private let authenticator: OAuthAuthenticator
     
     init(localStorageManager: LocalStorageManagerProtocal = LocalStorageManager(),
          authRemoteService: AuthServiceProtocol = AuthRemoteService()) {
         self.localStorageManager = localStorageManager
         
         let configuration = URLSessionConfiguration.default
-        configuration.timeoutIntervalForRequest = 30  // 30 seconds timeout
-        configuration.timeoutIntervalForResource = 300  // 5 minutes
+        configuration.timeoutIntervalForRequest = 30
+        configuration.timeoutIntervalForResource = 300
         configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
         
-        authInterceptor = AuthInterceptor(
+        // Initialize the OAuth authenticator
+        self.authenticator = OAuthAuthenticator(
             localStorageManager: localStorageManager,
             authRemoteService: authRemoteService
+        )
+        
+        // Create the authentication interceptor
+        self.authInterceptor = AuthenticationInterceptor(
+            authenticator: authenticator,
+            credential: OAuthCredential(
+                accessToken: localStorageManager.accessToken ?? "",
+                refreshToken: localStorageManager.refreshToken ?? ""
+            )
         )
         
         authSession = Session(

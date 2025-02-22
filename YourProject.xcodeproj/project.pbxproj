@@ -58,6 +58,8 @@
 				Services/APIManager/APIErrorResponse.swift,
 				Services/APIManager/APIManager.swift,
 				Services/APIManager/AuthInterceptor.swift,
+				Services/APIManager/JWTPayload.swift,
+				Services/APIManager/OAuthCredential.swift,
 				Services/AuthService/AuthRemoteService.swift,
 				Services/AuthService/AuthRouterService.swift,
 				Services/AuthService/AuthServiceRequest.swift,
