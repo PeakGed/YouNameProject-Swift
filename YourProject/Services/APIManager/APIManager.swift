@@ -91,12 +91,10 @@ class APIManager: APIManagerProtocal {
         )
         
         // Create the authentication interceptor
+        let authCredential = OAuthCredential(localStorageManager: localStorageManager)
         self.authInterceptor = AuthenticationInterceptor(
             authenticator: authenticator,
-            credential: OAuthCredential(
-                accessToken: localStorageManager.accessToken ?? "",
-                refreshToken: localStorageManager.refreshToken ?? ""
-            )
+            credential: authCredential            
         )
         
         authSession = Session(

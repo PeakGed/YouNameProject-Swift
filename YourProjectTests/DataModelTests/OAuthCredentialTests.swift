@@ -7,9 +7,11 @@
 
 import XCTest
 import Alamofire
-@testable import YourProject
+import Mockable
 
 final class OAuthCredentialTests: XCTestCase {
+    
+    let mockLocalStorgeManager = MockLocalStorageManagerProtocal()
     
     // Valid token that expires at timestamp 1738369475 (Feb 1, 2025)
     let validToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozOCwiY2xpZW50X2lkIjpudWxsLCJzdGFmZl9yb2xlIjpudWxsLCJhY2Nlc3NpYmxlX2hvdGVsc19pZHMiOlsxMDcsMTA1XSwicGFja2FnZV9leHBpcmVzX2F0IjpudWxsLCJqdGkiOiIzZTFhZmMyOTM1YzU4MGE2ZWU4ZDA4OTAwODVhMDY3NyIsImlhdCI6MTczODM2ODU3NSwiZXhwIjoxNzM4MzY5NDc1LCJzdWIiOiJobXMtcG1zLWFwaSIsImF1dGhfbWV0aG9kIjoiaG1zIn0.rXvKtBAMq4betJrtlgh31KrZjQEE_zzp6ldqpX8x99U"
@@ -20,9 +22,15 @@ final class OAuthCredentialTests: XCTestCase {
         OAuthCredential.currentDate = { Date() }
     }
     
+    
     func testRequiresRefreshWithValidToken() {
         // Given
-        let credential = OAuthCredential(accessToken: validToken, refreshToken: "dummy-refresh-token")
+        given(mockLocalStorgeManager).accessToken.willReturn(validToken)
+        given(mockLocalStorgeManager).refreshToken.willReturn("dummy-refresh-token")
+            
+        let credential = OAuthCredential(
+            localStorageManager: mockLocalStorgeManager
+        )
         
         // Mock current date to be well before expiration (1 hour before)
         let mockDate = Date(timeIntervalSince1970: 1738369475 - 3600)
@@ -34,7 +42,12 @@ final class OAuthCredentialTests: XCTestCase {
     
     func testRequiresRefreshWithNearExpirationToken() {
         // Given
-        let credential = OAuthCredential(accessToken: validToken, refreshToken: "dummy-refresh-token")
+        given(mockLocalStorgeManager).accessToken.willReturn(validToken)
+        given(mockLocalStorgeManager).refreshToken.willReturn("dummy-refresh-token")
+            
+        let credential = OAuthCredential(
+            localStorageManager: mockLocalStorgeManager
+        )
         
         // Mock current date to be 4 minutes before expiration (within 5-minute buffer)
         let mockDate = Date(timeIntervalSince1970: 1738369475 - 240)
@@ -46,7 +59,12 @@ final class OAuthCredentialTests: XCTestCase {
     
     func testRequiresRefreshWithExpiredToken() {
         // Given
-        let credential = OAuthCredential(accessToken: validToken, refreshToken: "dummy-refresh-token")
+        given(mockLocalStorgeManager).accessToken.willReturn(validToken)
+        given(mockLocalStorgeManager).refreshToken.willReturn("dummy-refresh-token")
+            
+        let credential = OAuthCredential(
+            localStorageManager: mockLocalStorgeManager
+        )
         
         // Mock current date to be after expiration
         let mockDate = Date(timeIntervalSince1970: 1738369475 + 3600)
@@ -58,7 +76,12 @@ final class OAuthCredentialTests: XCTestCase {
     
     func testRequiresRefreshWithInvalidToken() {
         // Given
-        let credential = OAuthCredential(accessToken: "invalid-token", refreshToken: "dummy-refresh-token")
+        given(mockLocalStorgeManager).accessToken.willReturn("invalid-token")
+        given(mockLocalStorgeManager).refreshToken.willReturn("dummy-refresh-token")
+            
+        let credential = OAuthCredential(
+            localStorageManager: mockLocalStorgeManager
+        )
         
         // Then
         XCTAssertTrue(credential.requiresRefresh, "Invalid token should require refresh")

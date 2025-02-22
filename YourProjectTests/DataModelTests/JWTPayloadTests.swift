@@ -6,7 +6,6 @@
 //
 
 import XCTest
-@testable import YourProject
 
 final class JWTPayloadTests: XCTestCase {
     

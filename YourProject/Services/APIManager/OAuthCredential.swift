@@ -13,8 +13,15 @@ struct OAuthCredential: AuthenticationCredential {
     typealias DateProvider = () -> Date
     static var currentDate: DateProvider = { Date() }
     
-    let accessToken: String
-    let refreshToken: String
+    let localStorageManager: LocalStorageManagerProtocal
+    
+    var accessToken: String {
+        localStorageManager.accessToken ?? ""
+    }
+        
+    var refreshToken: String {
+        localStorageManager.refreshToken ?? ""
+    }
     
     var requiresRefresh: Bool {
         do {
@@ -28,6 +35,10 @@ struct OAuthCredential: AuthenticationCredential {
             // If we can't decode the token, assume it needs refresh
             return true
         }
+    }
+    
+    init(localStorageManager: LocalStorageManagerProtocal) {
+        self.localStorageManager = localStorageManager
     }
 }
 
@@ -55,10 +66,7 @@ class OAuthAuthenticator: Authenticator {
                 )
                 
                 // Create new credential with updated tokens
-                let newCredential = OAuthCredential(
-                    accessToken: localStorageManager.accessToken ?? "",
-                    refreshToken: localStorageManager.refreshToken ?? ""
-                )
+                let newCredential = OAuthCredential(localStorageManager: localStorageManager)
                 
                 completion(.success(newCredential))
             } catch {
