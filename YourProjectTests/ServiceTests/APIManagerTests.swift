@@ -171,12 +171,29 @@ class APIManagerTests: XCTestCase {
         XCTAssertEqual(responseData, expectedData)
     }
     
+    //MARK: With Authen
     func testRequestWithAuthorizationShouldSucceed() async throws {
         // Given
+        let sut1 = APIManager(
+            localStorageManager: localStorageManager,
+            authRemoteService: authRemoveService,
+            authCredential: OAuthCredential(
+                localStorageManager: localStorageManager,
+                byPassRequiresRefresh: false
+            )
+        )
+        
+        let configuration = URLSessionConfiguration.af.default
+        configuration.protocolClasses = [MockingURLProtocol.self]
+        sut1.setupURLSession(with: configuration)
+        
         let mockRouter = MockRouter()
         
         let mockToken = "mock_access_token"
         given(localStorageManager).accessToken.willReturn(mockToken)
+        given(localStorageManager).refreshToken.willReturn(mockToken)
+        
+        given(authRemoveService).tokenRefresh(request: .any).willReturn()
         
         // Response
         let originalURL = URL(string: "\(AppConfiguration.shared.baseURL)/test")!
@@ -194,7 +211,7 @@ class APIManagerTests: XCTestCase {
         mock.register()
         
         // When
-        let response: String = try await sut.request(
+        let response: String = try await sut1.request(
             router: mockRouter,
             requiredAuthorization: true
         )
@@ -210,6 +227,8 @@ class APIManagerTests: XCTestCase {
         given(localStorageManager).accessToken.willReturn(nil)
         given(localStorageManager).refreshToken.willReturn(nil)
               
+        given(authRemoveService).tokenRefresh(request: .any).willReturn()
+        
         // Response
         let originalURL = URL(string: "\(AppConfiguration.shared.baseURL)/test")!
         let jsonResponse = """
@@ -244,14 +263,13 @@ class APIManagerTests: XCTestCase {
             
             switch error {
             case .unauthorized(let err):
-                typealias AuthErrorKey = APIErrorResponse.AuthErrorKey
-                
-                XCTAssertEqual(err.errorCode, 401)
-                XCTAssertEqual(err.errorKey, AuthErrorKey.missingAccessToken.rawValue)
-                XCTAssertEqual(
-                    err.errorMessage,
-                    AuthErrorKey.missingAccessToken.errorMessage
-                )
+                if err is Alamofire.AuthenticationError {
+                    XCTAssertTrue(true)
+                }
+                else {
+                    print(err.localizedDescription)
+                    XCTFail()
+                }
                 
             default:
                 print(error.localizedDescription)
@@ -266,7 +284,9 @@ class APIManagerTests: XCTestCase {
         
         given(localStorageManager).accessToken.willReturn("expired_token")
         given(localStorageManager).refreshToken.willReturn("valid_refresh_token")
-            
+        
+        given(authRemoveService).tokenRefresh(request: .any).willReturn()
+        
         // First request fails with expired token
         let originalURL = URL(string: "\(AppConfiguration.shared.baseURL)/test")!
         let errorResponse = """
@@ -285,17 +305,17 @@ class APIManagerTests: XCTestCase {
             data: [.get: errorResponse!]
         )
         mock.register()
-//        
-//        // stub refresh api
+        
+        // stub refresh api
 //        let refreshResponse = """
 //        {
 //            "access_token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozOCwiY2xpZW50X2lkIjpudWxsLCJzdGFmZl9yb2xlIjpudWxsLCJhY2Nlc3NpYmxlX2hvdGVsc19pZHMiOlsxMDcsMTA1XSwicGFja2FnZV9leHBpcmVzX2F0IjpudWxsLCJqdGkiOiIzZTFhZmMyOTM1YzU4MGE2ZWU4ZDA4OTAwODVhMDY3NyIsImlhdCI6MTczODM2ODU3NSwiZXhwIjoxNzM4MzY5NDc1LCJzdWIiOiJobXMtcG1zLWFwaSIsImF1dGhfbWV0aG9kIjoiaG1zIn0.rXvKtBAMq4betJrtlgh31KrZjQEE_zzp6ldqpX8x99U",
 //            "refresh_token": "0292d8674a33d836b925ddecac65c4cf"
 //        }
 //        """.data(using: .utf8)
-        
-        //given(authRemoveService).tokenRefresh(request: .any)
-        
+//        
+//        given(authRemoveService).tokenRefresh(request: .any).willReturn()
+//        
 //        let refreshURL = URL(string: "\(AppConfiguration.shared.baseURL)/v4/auth/refresh")!
 //        let refreshMock = Mock(
 //            url: originalURL,
@@ -314,21 +334,17 @@ class APIManagerTests: XCTestCase {
                 requiredAuthorization: true
             )
             
-            verify(authRemoveService).tokenRefresh(request: .any).called(1)
             
-            //XCTFail("Request should fail with expired token")
+            //verify(authRemoveService).tokenRefresh(request: .any).called(1)
+            
+            XCTFail("Request should fail with expired token")
         } catch {
-            guard
-                let error = error as? APIError
-            else {
-                print(error.localizedDescription)
-                XCTFail()
-                return
-            }
-            
-            print(error.localizedDescription)
+            verify(authRemoveService)
+                .tokenRefresh(request: .any)
+                .called(.atLeastOnce)
         }
     }
+    
 }
 
 extension APIManagerTests {

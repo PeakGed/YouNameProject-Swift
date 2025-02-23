@@ -11,7 +11,7 @@ import Mockable
 
 enum APIError: Error, LocalizedError {
     case invalidURL
-    case unauthorized(error: APIErrorResponse)
+    case unauthorized(error: Error)
     case networkError(error: Error)
     case decodingError(error: Error)
     case httpError(error: Error)
@@ -71,13 +71,16 @@ class APIManager: APIManagerProtocal {
     private var session: Session
     private var authSession: Session
     
-    private var localStorageManager: LocalStorageManagerProtocal
+    private let localStorageManager: LocalStorageManagerProtocal
+    private let authRemoteService: AuthServiceProtocol
     private let authInterceptor: AuthenticationInterceptor<OAuthAuthenticator>
     private let authenticator: OAuthAuthenticator
     
     init(localStorageManager: LocalStorageManagerProtocal = LocalStorageManager(),
-         authRemoteService: AuthServiceProtocol = AuthRemoteService()) {
+         authRemoteService: AuthServiceProtocol = AuthRemoteService(),
+         authCredential: OAuthCredential = OAuthCredential()) {
         self.localStorageManager = localStorageManager
+        self.authRemoteService = authRemoteService
         
         let configuration = URLSessionConfiguration.default
         configuration.timeoutIntervalForRequest = 30
@@ -91,10 +94,10 @@ class APIManager: APIManagerProtocal {
         )
         
         // Create the authentication interceptor
-        let authCredential = OAuthCredential(localStorageManager: localStorageManager)
+        //let authCredential = OAuthCredential(localStorageManager: localStorageManager)
         self.authInterceptor = AuthenticationInterceptor(
             authenticator: authenticator,
-            credential: authCredential            
+            credential: authCredential
         )
         
         authSession = Session(
@@ -207,27 +210,18 @@ private extension APIManager {
         // handel error
         if let error = response.error?.asAFError {
             switch error {
-            case .requestRetryFailed(let retryError, let originalError):
-                
-                
-                print(error.localizedDescription)
-                throw APIError.unexpectedError(error: error)
             case .requestAdaptationFailed(let err):
-                if let err = err as? APIErrorResponse {
-                    if let _ = err.authErorKey {
-                        throw APIError.unauthorized(error: err)
-                    }
-                    
-                    throw APIError.unexpectedError(error: err)
-                }
-                
-                throw APIError.unexpectedError(error: err)
+                print(err.localizedDescription)
+                throw APIError.unauthorized(error: err)
                 
             default:
-                print(error.localizedDescription)
                 throw APIError.unexpectedError(error: error)
-            
             }
+        }
+            
+        if let error = response.error?.asAFError {
+            print(error.localizedDescription)
+            throw APIError.unexpectedError(error: error)
         }
         
         // case no response

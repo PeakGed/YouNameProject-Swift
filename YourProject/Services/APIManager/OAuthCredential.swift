@@ -14,6 +14,7 @@ struct OAuthCredential: AuthenticationCredential {
     static var currentDate: DateProvider = { Date() }
     
     let localStorageManager: LocalStorageManagerProtocal
+    let byPassRequiresRefresh: Bool?
     
     var accessToken: String {
         localStorageManager.accessToken ?? ""
@@ -24,6 +25,10 @@ struct OAuthCredential: AuthenticationCredential {
     }
     
     var requiresRefresh: Bool {
+        if let byPassRequiresRefresh {
+            return byPassRequiresRefresh
+        }
+        
         do {
             let payload = try JWTPayload(jwtToken: accessToken)
             let expirationDate = Date(timeIntervalSince1970: TimeInterval(payload.exp))
@@ -37,14 +42,18 @@ struct OAuthCredential: AuthenticationCredential {
         }
     }
     
-    init(localStorageManager: LocalStorageManagerProtocal) {
+    init(
+        localStorageManager: LocalStorageManagerProtocal = LocalStorageManager(),
+        byPassRequiresRefresh: Bool? = nil
+    ) {
         self.localStorageManager = localStorageManager
+        self.byPassRequiresRefresh = byPassRequiresRefresh
     }
 }
 
 class OAuthAuthenticator: Authenticator {
     private let localStorageManager: LocalStorageManagerProtocal
-    private let authRemoteService: AuthServiceProtocol
+    private let authRemoteService: AuthServiceProtocol        
     
     init(localStorageManager: LocalStorageManagerProtocal,
          authRemoteService: AuthServiceProtocol) {
@@ -53,12 +62,25 @@ class OAuthAuthenticator: Authenticator {
     }
     
     func apply(_ credential: OAuthCredential, to urlRequest: inout URLRequest) {
+        print(">>> Adding Authorization header to URLRequest")
         urlRequest.headers.add(.authorization(bearerToken: credential.accessToken))
     }
     
     func refresh(_ credential: OAuthCredential,
                  for session: Session,
                  completion: @escaping (Result<OAuthCredential, Error>) -> Void) {
+        guard
+            let _ = localStorageManager.accessToken,
+            let _ = localStorageManager.refreshToken
+        else {
+//            let error = APIError.unauthorized(
+//                error: APIErrorResponse.AuthErrorKey
+//                    .missingRefreshToken.apiErrorResponse)
+            let error = Alamofire.AuthenticationError.missingCredential
+            completion(.failure(error))
+            return
+        }
+        print(">>> Refreshing OAuth token...")
         Task {
             do {
                 try await authRemoteService.tokenRefresh(
@@ -78,11 +100,13 @@ class OAuthAuthenticator: Authenticator {
     func didRequest(_ urlRequest: URLRequest,
                    with response: HTTPURLResponse,
                    failDueToAuthenticationError error: Error) -> Bool {
+        print(">>> Authentication error: \(error)")
         return response.statusCode == 401
     }
     
     func isRequest(_ urlRequest: URLRequest,
                   authenticatedWith credential: OAuthCredential) -> Bool {
+        print(">>> Checking if request is authenticated...")
         let bearerToken = HTTPHeader.authorization(bearerToken: credential.accessToken).value
         return urlRequest.headers["Authorization"] == bearerToken
     }

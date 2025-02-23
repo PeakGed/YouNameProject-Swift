@@ -37,7 +37,7 @@ class AuthRemoteService: AuthServiceProtocol {
     func tokenRefresh(request: AuthServiceRequest.TokenRefresh) async throws {
         let router = AuthRouterService.refreshToken(request: request)
         let response: AuthTokenResponse = try await apiManager.request(router: router,
-                                                                       requiredAuthorization: false)
+                                                                       requiredAuthorization: true)
         localStorage.setToken(response)
     }
     
