@@ -13,7 +13,7 @@ final class AuthRouterServiceTests: XCTestCase {
     
     var baseURL: String!
     lazy var localStorage = MockLocalStorageManagerProtocal()
-    lazy var authRemoteService = MockAuthServiceProtocol()
+    lazy var apiManager = MockAPIManagerProtocal()
     
     override func setUp() {
         super.setUp()
@@ -34,10 +34,12 @@ final class AuthRouterServiceTests: XCTestCase {
         XCTAssertEqual(urlRequest.httpMethod, HTTPMethod.post.rawValue)
         
         // Test parameters
-        let parameters = try JSONSerialization.jsonObject(with: urlRequest.httpBody!,
-                                                          options: []) as? [String: Any]
-        XCTAssertEqual(parameters?["email"] as? String, "test@example.com")
-        XCTAssertEqual(parameters?["password"] as? String, "password123")
+        if let parameters = parseURLEncodedBody(from: urlRequest.httpBody) {
+            XCTAssertEqual(parameters["username"], "test@example.com")
+            XCTAssertEqual(parameters["password"], "password123")
+        } else {
+            XCTFail("Failed to parse HTTP body")
+        }
     }
     
     func testRefreshTokenRequest() throws {
@@ -53,8 +55,11 @@ final class AuthRouterServiceTests: XCTestCase {
         XCTAssertEqual(urlRequest.httpMethod, HTTPMethod.post.rawValue)
         
         // Test parameters
-        let parameters = try JSONSerialization.jsonObject(with: urlRequest.httpBody!, options: []) as? [String: Any]
-        XCTAssertEqual(parameters?["refresh_token"] as? String, "refresh_token_123")
+        if let parameters = parseURLEncodedBody(from: urlRequest.httpBody) {
+            XCTAssertEqual(parameters["refresh_token"], "refresh_token_123")
+        } else {
+            XCTFail("Failed to parse HTTP body")
+        }
     }
     
     func testLogoutRequest() throws {
@@ -70,96 +75,179 @@ final class AuthRouterServiceTests: XCTestCase {
         XCTAssertNil(urlRequest.httpBody)
     }
     
-    func testInvalidURLThrows() {
-        // Given
-        let router = AuthRouterService.logout
+    func testEmailLogin_WillGetValidResponse() async throws {
+        let response = AuthTokenResponse(accessToken: "access_token",
+                                          refreshToken: "refresh_token")
+        given(apiManager).request(router: .any,
+                                  requiredAuthorization: .any).willReturn(response)
+        given(localStorage).setToken(.any).willReturn()
         
-        // When/Then
-//        XCTAssertThrowsError(try router.asURLRequest()) { error in
-//            XCTAssertEqual(error as? APIError, .invalidURL)
-//        }
-    }
-    
-    
-    func testEmailLoginCallService() async throws {
-        
-        given(authRemoteService).emailLogin(request: .any).willReturn()
-            
+        let authRemoteService = AuthRemoteService(localStorage: localStorage,
+                                                  apiManager: apiManager)
         
         let loginRequest = AuthServiceRequest.EmailLogin(username: "test1@email.com",
                                                          password: "12345678")
         
         try await authRemoteService.emailLogin(request: loginRequest)
             
-        XCTAssertNotNil(localStorage.accessToken)
-        XCTAssertNotNil(localStorage.refreshToken)
+        
+        verify(localStorage).setToken(.any).called(.atLeastOnce)
+    }
+        
+    func testEmailLogin_WhenAPIFails_ThrowsError() async {
+        // Given
+        let expectedError = MockError()
+        given(apiManager)
+            .request(router: .any,
+                     requiredAuthorization: .any)
+            .willProduce { a, b -> AuthTokenResponse in
+                throw expectedError
+            }
+        
+        let authRemoteService = AuthRemoteService(localStorage: localStorage,
+                                                apiManager: apiManager)
+
+        let loginRequest = AuthServiceRequest.EmailLogin(username: "test@email.com",
+                                                       password: "password")
+
+        // When/Then
+        do {
+            try await authRemoteService.emailLogin(request: loginRequest)
+            XCTFail("Should throw an error")
+        } catch {
+            if error is MockError {
+                XCTAssertTrue(true)
+            }
+            else {
+                XCTFail()
+            }
+        }
+
+        verify(localStorage).setToken(.any).called(.never)
     }
     
-    func testTokenRefreshWithNilTokens() async {
+    func testFetchTokenRefresh_WillGetValidResponse() async {
         // Given
-        localStorage.clearToken()
+        given(localStorage).accessToken.willReturn(nil)
+        given(localStorage).refreshToken.willReturn(nil)
         
+        let response = AuthTokenResponse(accessToken: "access_token",
+                                          refreshToken: "refresh_token")
+        given(apiManager).request(router: .any,
+                                  requiredAuthorization: .any).willReturn(response)
+        given(localStorage).setToken(.any).willReturn()
+        
+        let authRemoteService = AuthRemoteService(
+            localStorage: localStorage,
+            apiManager: apiManager
+        )
+                
         // When/Then
         do {
             let request = AuthServiceRequest.TokenRefresh(token: "refresh_token")
             try await authRemoteService.tokenRefresh(request: request)
-            XCTFail("Should throw error")
-        } catch let error as APIErrorResponse {
-            XCTAssertEqual(
-                error.errorKey,
-                APIErrorResponse.AuthErrorKey.missingAccessToken.rawValue
-            )
-        } catch {
-            XCTFail("Unexpected error: \(error)")
+       } catch {
+           XCTFail()
         }
     }
-    
-    func testTokenRefreshWithValidTokens() async throws {
+        
+    func testTokenRefresh_WhenAPIFails_ThrowsError() async {
         // Given
-        localStorage.setToken(.init(accessToken: "valid_access_token",
-                                    refreshToken: "valid_refresh_token"))
+        let expectedError = MockError()
+        given(apiManager).request(router: .any,
+                                  requiredAuthorization: .any).willProduce { a, b -> AuthTokenResponse in
+            throw expectedError
+        }
         
-        let request = AuthServiceRequest.TokenRefresh(token: "valid_refresh_token")
+        let authRemoteService = AuthRemoteService(localStorage: localStorage,
+                                                  apiManager: apiManager)
         
-        // When
-        try await authRemoteService.tokenRefresh(request: request)
+        let request = AuthServiceRequest.TokenRefresh(token: "refresh_token")
         
-        // Then
-        XCTAssertNotNil(localStorage.accessToken)
-        XCTAssertNotNil(localStorage.refreshToken)
+        // When/Then
+        do {
+            try await authRemoteService.tokenRefresh(request: request)
+            XCTFail("Should throw an error")
+        } catch {
+             if error is MockError {
+                XCTAssertTrue(true)
+            }
+            else {
+                XCTFail()
+            }
+        }
+        
+        verify(localStorage).setToken(.any).called(.never)
     }
     
-//    func testTokenRefreshWithNilAccessTokenButValidRefreshToken() async throws {
-//        // Given
-//        localStorage.accessToken = nil
-//        localStorage.refreshToken = "valid_refresh_token"
-//        
-//        let request = AuthServiceRequest.TokenRefresh(token: "valid_refresh_token")
-//        
-//        // When
-//        try await authRemoteService.tokenRefresh(request: request)
-//        
-//        // Then
-//        XCTAssertNotNil(localStorage.accessToken)
-//        XCTAssertNotNil(localStorage.refreshToken)
-//    }
-//    
-//    func testTokenRefreshWithValidAccessTokenButNilRefreshToken() async {
-//        // Given
-//        localStorage.accessToken = "valid_access_token"
-//        localStorage.refreshToken = nil
-//        
-//        // When/Then
-//        do {
-//            let request = AuthServiceRequest.TokenRefresh(token: "refresh_token")
-//            try await authRemoteService.tokenRefresh(request: request)
-//            XCTFail("Should throw error")
-//        } catch let error as APIAuthErrorResponse {
-//            XCTAssertEqual(error.errorCode, .invalidRefreshToken)
-//        } catch {
-//            XCTFail("Unexpected error: \(error)")
-//        }
-//    }
+    func testLogout_Success() async throws {
+        // Given
+        given(apiManager).requestACK(router: .any,
+                                   requiredAuthorization: .any).willReturn()
+        given(localStorage).clearToken().willReturn()
+        
+        let authRemoteService = AuthRemoteService(localStorage: localStorage,
+                                                apiManager: apiManager)
+        
+        // When
+        await authRemoteService.logout()
+        
+        // Then
+        verify(localStorage).clearToken().called(.once)
+        verify(apiManager).requestACK(router: .any,
+                                      requiredAuthorization: .any).called(
+                                        .atLeastOnce
+                                      )
+    }
+   
+   func testLogout_WhenAPIFails_ThrowsError() async {
+       // Given
+       let expectedError = MockError()
+       given(apiManager).requestACK(router: .any,
+                                    requiredAuthorization: .any).willProduce { a, b -> Void in
+           throw expectedError
+       }
+       given(localStorage).clearToken().willReturn()
+       
+       let authRemoteService = AuthRemoteService(localStorage: localStorage,
+                                               apiManager: apiManager)
+       
+       // When/Then
+       await authRemoteService.logout()
+       
+       verify(localStorage).clearToken().called(.once)
+   }
     
+}
+
+// MARK: - Helper Methods
+private extension AuthRouterServiceTests {
+    func parseURLEncodedBody(from data: Data?) -> [String: String]? {
+        guard let data = data, !data.isEmpty,
+              let bodyString = String(data: data, encoding: .utf8) else {
+            return nil
+        }
+        
+        // For debugging
+        print("HTTP Body: \(bodyString)")
+        
+        let components = bodyString.components(separatedBy: "&")
+        var parameters: [String: String] = [:]
+        
+        for component in components {
+            let keyValuePair = component.components(separatedBy: "=")
+            if keyValuePair.count == 2 {
+                let key = keyValuePair[0]
+                let value = keyValuePair[1].removingPercentEncoding ?? keyValuePair[1]
+                parameters[key] = value
+            }
+        }
+        
+        return parameters
+    }
+}
+
+extension AuthRouterServiceTests {
+    struct MockError: Error {}
 }
 

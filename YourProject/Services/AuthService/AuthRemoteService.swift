@@ -41,11 +41,15 @@ class AuthRemoteService: AuthServiceProtocol {
         localStorage.setToken(response)
     }
     
-    func logout() async throws {
+    func logout() async {
         let router = AuthRouterService.logout
-        try await apiManager.requestACK(router: router,
-                                        requiredAuthorization: false)
-        localStorage.clearToken()
+        do {
+            try await apiManager.requestACK(router: router,
+                                            requiredAuthorization: false)
+            localStorage.clearToken()
+        } catch {
+            localStorage.clearToken()
+        }
     }
     
     

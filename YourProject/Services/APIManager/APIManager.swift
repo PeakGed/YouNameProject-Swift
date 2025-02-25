@@ -58,6 +58,7 @@ protocol APIManagerProtocal: AnyObject {
         requiredAuthorization: Bool
     ) async throws -> Data?
     
+    func cancelAllRequests()
 }
 
 class APIManager: APIManagerProtocal {
@@ -170,8 +171,7 @@ class APIManager: APIManagerProtocal {
             .serializingData()
             .response
         
-        let rawBody: String = try handleResponse(response)
-        print(rawBody)
+        try handleResponseACK(response)
     }
     
     func requestData(
@@ -188,6 +188,10 @@ class APIManager: APIManagerProtocal {
         return try handleResponseData(response)
     }
     
+    func cancelAllRequests() {
+        session.cancelAllRequests()
+        authSession.cancelAllRequests()
+    }
 }
 
 private extension APIManager {
@@ -236,24 +240,6 @@ private extension APIManager {
         
         // try to decode data to APIErrorResponse
         if let apiError: APIErrorResponse = try? JSONDecoder().decode(APIErrorResponse.self, from: value) {
-//            if apiError.isAccessTokenExpired {
-//                // retry fetch refresh token
-//                try await authInterceptor.refreshToken()
-//            }
-//            if let authErorKey = apiError.authErorKey {
-//                switch authErorKey {
-//                case .accessTokenExpired:
-//                    try await authInterceptor
-//                        .retry(response.request,
-//                               for: session,
-//                               dueTo: apiError,
-//                               completion: <#T##(RetryResult) -> Void#>
-//                        )
-//                default:
-//                    break
-//                }
-//            }
-            
             throw apiError
         }
         
@@ -297,6 +283,29 @@ private extension APIManager {
         }
                 
         return value
+    }
+
+    func handleResponseACK(_ response: AFDataResponse<Data>) throws {
+        // case no response
+        guard let serverResponse = response.response else {
+            throw APIError.serverError(statusCode: 500)
+        }
+        
+        // Check if there's error data to decode
+        if let value = response.value,
+           let apiError: APIErrorResponse = try? JSONDecoder().decode(APIErrorResponse.self, from: value) {
+            throw apiError
+        }
+        
+        if let error = response.error {
+            print(error.localizedDescription)
+            throw APIError.unexpectedError(error: error)
+        }
+        
+        // If status code is not in 200-299 range, throw server error
+        if !(200...299).contains(serverResponse.statusCode) {
+            throw APIError.serverError(statusCode: serverResponse.statusCode)
+        }
     }
 
 }
