@@ -12,7 +12,10 @@ import Mockable
 protocol AuthServiceProtocol: AnyObject {
     func emailLogin(request: AuthServiceRequest.EmailLogin) async throws
     func tokenRefresh(request: AuthServiceRequest.TokenRefresh) async throws
-    func logout() async throws
+    func logout() async throws        
+    func resendEmailConfirmation(request: AuthServiceRequest.ResendEmailConfirmation) async throws
+    func passwordReset(request: AuthServiceRequest.PasswordReset) async throws
+    func signup(request: AuthServiceRequest.Signup) async throws
 }
 
 class AuthRemoteService: AuthServiceProtocol {
@@ -51,6 +54,22 @@ class AuthRemoteService: AuthServiceProtocol {
             localStorage.clearToken()
         }
     }
+
+    func resendEmailConfirmation(request: AuthServiceRequest.ResendEmailConfirmation) async throws {
+        let router = AuthRouterService.resendEmailConfirmation(request: request)
+        try await apiManager.requestACK(router: router,
+                                            requiredAuthorization: false)
+    }
+
+    func passwordReset(request: AuthServiceRequest.PasswordReset) async throws {
+        let router = AuthRouterService.passwordReset(request: request)
+        try await apiManager.requestACK(router: router,
+                                            requiredAuthorization: false)
+    }
     
-    
+    func signup(request: AuthServiceRequest.Signup) async throws {
+        let router = AuthRouterService.signup(request: request)
+        try await apiManager.requestACK(router: router,
+                                        requiredAuthorization: false)
+    }
 }

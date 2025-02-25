@@ -28,4 +28,30 @@ struct AuthServiceRequest {
             case token = "refresh_token"
         }
     }
+
+    struct ResendEmailConfirmation: Encodable {
+        let email: String
+    }
+
+    struct PasswordReset: Encodable {
+        let email: String
+    }
+    
+    struct Signup: Encodable {
+        let email: String
+        let password: String
+        let firstName: String?
+        let lastName: String?
+        let phoneNumber: String?
+        let pinCode: String?
+        
+        enum CodingKeys: String, CodingKey {
+            case email
+            case password
+            case firstName = "first_name"
+            case lastName = "last_name"
+            case phoneNumber = "phone_number"
+            case pinCode = "pin_code"
+        }
+    }
 }
