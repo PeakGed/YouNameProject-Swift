@@ -195,10 +195,7 @@ class APIManager: APIManagerProtocal {
 }
 
 private extension APIManager {
-    func isAuthenticated() -> Bool {
-        return localStorageManager.accessToken != nil
-    }
-    
+
     func fullPath(path: String) -> String {
         return "\(baseURL)\(path)"
     }
