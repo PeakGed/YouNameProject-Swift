@@ -48,7 +48,7 @@ class AuthRemoteService: AuthServiceProtocol {
         let router = AuthRouterService.logout
         do {
             try await apiManager.requestACK(router: router,
-                                            requiredAuthorization: false)
+                                            requiredAuthorization: true)
             localStorage.clearToken()
         } catch {
             localStorage.clearToken()
@@ -64,7 +64,7 @@ class AuthRemoteService: AuthServiceProtocol {
     func passwordReset(request: AuthServiceRequest.PasswordReset) async throws {
         let router = AuthRouterService.passwordReset(request: request)
         try await apiManager.requestACK(router: router,
-                                            requiredAuthorization: false)
+                                            requiredAuthorization: true)
     }
     
     func signup(request: AuthServiceRequest.Signup) async throws {
