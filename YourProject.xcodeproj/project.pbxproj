@@ -46,7 +46,6 @@
 				/Localized/LaunchScreen.storyboard,
 				/Localized/Main.storyboard,
 				Info.plist,
-				Services/APIManager/APIAuthErrorResponse.swift,
 			);
 			target = 36B587BE2BF73F1600D523D0 /* YourProject */;
 		};
