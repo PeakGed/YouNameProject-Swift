@@ -53,7 +53,7 @@ enum HotelRouterService: AlamofireBaseRouterProtocol {
     var parameters: [String: Any]? {
         switch self {
         case .fetchHotels(let request):
-            return request.asParameters()
+            return nil 
         case .createHotel(let request):
             return request.asParameters()
         case .updateHotel(let request):

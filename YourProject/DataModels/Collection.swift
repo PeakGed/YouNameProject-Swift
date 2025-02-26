@@ -15,7 +15,7 @@ struct Collection<T: Codable>: Codable {
     
     subscript(index: Int) -> T { get { return lists[index] } }
     
-    init(array: [T]) { self.lists = array }
+    init(array: [T] = []) { self.lists = array }
     
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
