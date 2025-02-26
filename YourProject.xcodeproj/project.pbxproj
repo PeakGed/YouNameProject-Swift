@@ -54,6 +54,9 @@
 			membershipExceptions = (
 				DataModels/AppConfiguration.swift,
 				DataModels/AuthTokenResponse.swift,
+				DataModels/Collection.swift,
+				DataModels/Hotel.swift,
+				DataModels/Hotels.swift,
 				Services/APIManager/APIErrorResponse.swift,
 				Services/APIManager/APIManager.swift,
 				Services/APIManager/AuthInterceptor.swift,
@@ -78,6 +81,9 @@
 			membershipExceptions = (
 				DataModels/AppConfiguration.swift,
 				DataModels/AuthTokenResponse.swift,
+				DataModels/Collection.swift,
+				DataModels/Hotel.swift,
+				DataModels/Hotels.swift,
 			);
 			target = 36B587DE2BF73F1900D523D0 /* YourProjectUITests */;
 		};
