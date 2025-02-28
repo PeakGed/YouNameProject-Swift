@@ -16,6 +16,8 @@ enum RoomRouterService: AlamofireBaseRouterProtocol {
     case updateRoom(request: RoomServiceRequest.UpdateRoom)
     case deleteRoom(request: RoomServiceRequest.DeleteRoom)
     case changeRoomType(request: RoomServiceRequest.ChangeRoomType)
+    case batchCreateRooms(request: RoomServiceRequest.BatchCreateRooms)
+    case batchDeleteRooms(request: RoomServiceRequest.BatchDeleteRooms)
     
     var domain: String {
         return AppConfiguration.shared.baseURL
@@ -35,6 +37,10 @@ enum RoomRouterService: AlamofireBaseRouterProtocol {
             return "/api/v4/rooms/\(request.id)"
         case .changeRoomType(let request):
             return "/api/v4/rooms/\(request.id)/change_room_type"
+        case .batchCreateRooms(_):
+            return "/api/v4/rooms/batch_create"
+        case .batchDeleteRooms(_):
+            return "/api/v4/rooms/batch_delete"
         }
     }
     
@@ -42,18 +48,18 @@ enum RoomRouterService: AlamofireBaseRouterProtocol {
         switch self {
         case .fetchRooms(_), .fetchRoomDetail(_):
             return .get
-        case .createRoom(_), .changeRoomType(_):
+        case .createRoom(_), .changeRoomType(_), .batchCreateRooms(_):
             return .post
         case .updateRoom(_):
             return .put
-        case .deleteRoom(_):
+        case .deleteRoom(_), .batchDeleteRooms(_):
             return .delete
         }
     }
     
     var headers: [String: String]? {
         switch self {
-        case .createRoom(_), .updateRoom(_), .changeRoomType(_):
+        case .createRoom(_), .updateRoom(_), .changeRoomType(_), .batchCreateRooms(_):
             return ["Content-Type": "application/x-www-form-urlencoded",
                     "Accept": "application/json"]
         case .fetchRoomDetail(_):
@@ -77,6 +83,10 @@ enum RoomRouterService: AlamofireBaseRouterProtocol {
             return nil
         case .changeRoomType(let request):
             return request.asParameters()
+        case .batchCreateRooms(let request):
+            return request.asParameters()
+        case .batchDeleteRooms(_):
+            return nil
         }
     }
     

@@ -104,4 +104,25 @@ struct RoomServiceRequest {
             ]
         }
     }
+    
+    struct BatchCreateRooms: Encodable {
+        let hotelId: Int
+        
+        enum CodingKeys: String, CodingKey {
+            case hotelId = "hotel_id"
+        }
+        
+        func asParameters() -> [String: Any] {
+            return [
+                "hotel_id": hotelId
+            ]
+        }
+    }
+    
+    struct BatchDeleteRooms: Encodable {
+        // Empty implementation since we don't need to encode anything
+        func encode(to encoder: Encoder) throws {
+            // No properties to encode
+        }
+    }
 } 

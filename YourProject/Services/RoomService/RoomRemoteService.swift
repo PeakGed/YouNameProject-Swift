@@ -14,8 +14,11 @@ protocol RoomServiceProtocol: AnyObject {
     func fetchRoomDetail(request: RoomServiceRequest.FetchRoomDetail) async throws -> Room
     func createRoom(request: RoomServiceRequest.CreateRoom) async throws -> Room
     func updateRoom(request: RoomServiceRequest.UpdateRoom) async throws -> Room
-    func deleteRoom(request: RoomServiceRequest.DeleteRoom) async throws -> Void
+    func deleteRoom(request: RoomServiceRequest.DeleteRoom) async throws
     func changeRoomType(request: RoomServiceRequest.ChangeRoomType) async throws -> Room
+    
+    func batchCreateRooms(request: RoomServiceRequest.BatchCreateRooms) async throws -> Rooms
+    func batchDeleteRooms(request: RoomServiceRequest.BatchDeleteRooms) async throws
 }
 
 class RoomRemoteService: RoomServiceProtocol {
@@ -63,5 +66,17 @@ class RoomRemoteService: RoomServiceProtocol {
         let router = RoomRouterService.changeRoomType(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
+    }
+    
+    func batchCreateRooms(request: RoomServiceRequest.BatchCreateRooms) async throws -> Rooms {
+        let router = RoomRouterService.batchCreateRooms(request: request)
+        return try await apiManager.request(router: router,
+                                           requiredAuthorization: true)
+    }
+    
+    func batchDeleteRooms(request: RoomServiceRequest.BatchDeleteRooms) async throws {
+        let router = RoomRouterService.batchDeleteRooms(request: request)
+        try await apiManager.requestACK(router: router,
+                                        requiredAuthorization: true)
     }
 } 
