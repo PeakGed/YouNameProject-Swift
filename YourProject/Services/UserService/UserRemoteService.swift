@@ -8,19 +8,6 @@ import Foundation
 import Alamofire
 import Mockable
 
-// Define model types for responses
-struct User: Decodable {
-    // Add properties based on your API response
-    let id: Int
-    let name: String
-    let email: String
-    // Add other properties as needed
-}
-
-struct Users: Decodable {
-    let users: [User]
-}
-
 struct NotificationSettings: Decodable {
     // Add properties based on your API response
 }
