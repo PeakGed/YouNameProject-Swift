@@ -77,7 +77,7 @@ extension Room {
     enum Status: String, Codable {
         case available = "available"
         case unavailable = "unavailable"
-        case needCleaning = "need_cleaning"
+        //case needCleaning = "need_cleaning"
     }
 }
 
