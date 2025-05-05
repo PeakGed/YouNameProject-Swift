@@ -676,7 +676,7 @@
 			repositoryURL = "https://github.com/Kolos65/Mockable";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.3.0;
+				minimumVersion = 0.3.1;
 			};
 		};
 		0FE6996C2D5038ED00FC746E /* XCRemoteSwiftPackageReference "Mocker" */ = {
