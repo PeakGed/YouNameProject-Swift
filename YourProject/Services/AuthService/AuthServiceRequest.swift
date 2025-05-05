@@ -15,13 +15,6 @@ struct AuthServiceRequest {
             case username
             case password
         }
-        
-        func asParameters() -> [String: Any] {
-            return [
-                "username": username,
-                "password": password
-            ]
-        }
     }
     
     struct AppleIdLogin: Encodable {
@@ -36,26 +29,6 @@ struct AuthServiceRequest {
             case lastName = "last_name"
             case email
         }
-        
-        func asParameters() -> [String: Any] {
-            var params: [String: Any] = [
-                "code": code
-            ]
-            
-            if let firstName = firstName {
-                params["first_name"] = firstName
-            }
-            
-            if let lastName = lastName {
-                params["last_name"] = lastName
-            }
-            
-            if let email = email {
-                params["email"] = email
-            }
-            
-            return params
-        }
     }
     
     struct TokenRefresh: Encodable {
@@ -64,26 +37,14 @@ struct AuthServiceRequest {
         enum CodingKeys: String, CodingKey {
             case token = "refresh_token"
         }
-        
-        func asParameters() -> [String: Any] {
-            return ["refresh_token": token]
-        }
     }
 
     struct ResendEmailConfirmation: Encodable {
         let email: String
-        
-        func asParameters() -> [String: Any] {
-            return ["email": email]
-        }
     }
 
     struct PasswordReset: Encodable {
         let email: String
-        
-        func asParameters() -> [String: Any] {
-            return ["email": email]
-        }
     }
     
     struct Signup: Encodable {
@@ -103,29 +64,5 @@ struct AuthServiceRequest {
             case pinCode = "pin_code"
         }
         
-        func asParameters() -> [String: Any] {
-            var params: [String: Any] = [
-                "email": email,
-                "password": password
-            ]
-            
-            if let firstName = firstName {
-                params["first_name"] = firstName
-            }
-            
-            if let lastName = lastName {
-                params["last_name"] = lastName
-            }
-            
-            if let phoneNumber = phoneNumber {
-                params["phone_number"] = phoneNumber
-            }
-            
-            if let pinCode = pinCode {
-                params["pin_code"] = pinCode
-            }
-            
-            return params
-        }
     }
 }

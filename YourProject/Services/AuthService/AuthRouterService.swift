@@ -55,49 +55,78 @@ enum AuthRouterService: AlamofireBaseRouterProtocol {
     }
     
     var headers: [String: String]? {
+        return ["Content-Type": "application/json"]
+    }
+
+    var parameters: [String: Any]? {
         return nil
     }
-    
-    var parameters: [String: Any]? {
+
+    var body: Data? {
         switch self {
         case .emailLogin(let request):
-            return request.asParameters()
+            return try? JSONEncoder().encode(request)
         case .refreshToken(let request):
-            return request.asParameters()
+            return try? JSONEncoder().encode(request)
         case .resendEmailConfirmation(let request):
-            return request.asParameters()
+            return try? JSONEncoder().encode(request)
         case .passwordReset(let request):
-            return request.asParameters()
+            return try? JSONEncoder().encode(request)
         case .signup(let request):
-            return request.asParameters()
+            return try? JSONEncoder().encode(request)
         case .appleIdLogin(let request):
-            return request.asParameters()
+            return try? JSONEncoder().encode(request)
         default:
             return nil
         }
     }
-    
-    var body: Data? {
-        return nil
-    }
-    
+
     func asURLRequest() throws -> URLRequest {
         guard let url = URL(string: domain + path) else {
             throw APIError.invalidURL
         }
-        //let encoding: ParameterEncoding = (method == .get) ? URLEncoding.default : JSONEncoding.default
-        let encoding: ParameterEncoding = URLEncoding.default
-        var request = URLRequest(url: url)
         
+        let encoding: ParameterEncoding = (method == .get) ? URLEncoding.default : JSONEncoding.default
+        var request = URLRequest(url: url)
+
         request.httpMethod = method.rawValue
         request.httpBody = body
-        
+
         headers?.forEach {
             request.addValue($0.value,
                              forHTTPHeaderField: $0.key)
         }
-        
+
         return try encoding.encode(request,
                                    with: parameters)
     }
+    
+//    var headers: [String: String]? {
+//        return nil
+//    }
+//    
+//    var parameters: [String: Any]? {
+//        return nil
+//        switch self {
+//        case .emailLogin(let request):
+//            return request.asParameters()
+//        case .refreshToken(let request):
+//            return request.asParameters()
+//        case .resendEmailConfirmation(let request):
+//            return request.asParameters()
+//        case .passwordReset(let request):
+//            return request.asParameters()
+//        case .signup(let request):
+//            return request.asParameters()
+//        case .appleIdLogin(let request):
+//            return request.asParameters()
+//        default:
+//            return nil
+//        }
+   // }
+    
+//    var body: Data? {
+//        return nil
+//    }
+    
 }
