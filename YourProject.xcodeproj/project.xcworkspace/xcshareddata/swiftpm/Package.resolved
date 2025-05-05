@@ -1,6 +1,15 @@
 {
-  "originHash" : "4cdad746817ac9ed37e44dbe90a2ff25fc018954899b7d513e41a4bfc70f065a",
+  "originHash" : "09bf4f7a08dbe67852929ebc4cd1f93a5a95c3fc24bb5dc5ecc8e662caa97e18",
   "pins" : [
+    {
+      "identity" : "parchment",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/rechsteiner/Parchment",
+      "state" : {
+        "branch" : "main",
+        "revision" : "dfb23ea5118ca8bfbc578065627fccf4ec4a362e"
+      }
+    },
     {
       "identity" : "snapkit",
       "kind" : "remoteSourceControl",
