@@ -5,12 +5,12 @@
 //  Created by IntrodexMini on 26/2/2568 BE.
 //
 
-typealias Hotels = Collection<Hotel>
+typealias Hotels = Collection<HotelDetail>
 
 //MARK: Computed properties
 extension Hotels {
     
-    var activeHotels: [Hotel] {
+    var activeHotels: [HotelDetail] {
         return lists.filter { $0.status == "active" }
     }
     
@@ -29,17 +29,17 @@ extension Hotels {
         return Hotels(array: [])
     }
     
-    func findHotel(byId id: Int) -> Hotel? {
+    func findHotel(byId id: Int) -> HotelDetail? {
         return lists.first { $0.id == id }
     }
     
-    func findHotels(byStatus status: String) -> [Hotel] {
+    func findHotels(byStatus status: String) -> [HotelDetail] {
         return lists.filter { $0.status == status }
     }
     
     // Function with multiple parameters
     func findHotels(withName nameContains: String,
-                    andStatus status: String? = nil) -> [Hotel] {
+                    andStatus status: String? = nil) -> [HotelDetail] {
         return lists.filter { hotel in
             let nameMatches = hotel.name.lowercased().contains(nameContains.lowercased())
             let statusMatches = status == nil ? true : hotel.status == status
@@ -48,7 +48,7 @@ extension Hotels {
     }
     
     // Mutating function example (if needed)
-    mutating func addHotel(_ hotel: Hotel) {
+    mutating func addHotel(_ hotel: HotelDetail) {
         lists.append(hotel)
     }
 

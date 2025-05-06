@@ -61,6 +61,7 @@
 				"DataModels/Extension/String/String+Validator.swift",
 				DataModels/Form/FormConfig.swift,
 				DataModels/Hotel/Hotel.swift,
+				DataModels/Hotel/HotelDetail.swift,
 				DataModels/Hotel/Hotels.swift,
 				DataModels/Hotel/PriceCard/LocalPriceCard.swift,
 				DataModels/Hotel/PriceCard/LocalPriceCards.swift,
@@ -82,6 +83,7 @@
 				DataModels/Manager/LocalStorageManager/Wrappers/KeychainWrapper.swift,
 				DataModels/Manager/LocalStorageManager/Wrappers/SecureEnclaveWrapper.swift,
 				DataModels/Manager/LocalStorageManager/Wrappers/UserDefaultsWrapper.swift,
+				DataModels/Paginator.swift,
 				DataModels/User/Staff.swift,
 				DataModels/User/Staffs.swift,
 				DataModels/User/User.swift,
@@ -99,7 +101,9 @@
 				DataModels/AuthTokenResponse.swift,
 				DataModels/Collection.swift,
 				DataModels/Hotel/Hotel.swift,
+				DataModels/Hotel/HotelDetail.swift,
 				DataModels/Hotel/Hotels.swift,
+				DataModels/Paginator.swift,
 			);
 			target = 36B587DE2BF73F1900D523D0 /* YourProjectUITests */;
 		};
