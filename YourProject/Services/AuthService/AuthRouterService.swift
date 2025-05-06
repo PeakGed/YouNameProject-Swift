@@ -57,25 +57,29 @@ enum AuthRouterService: AlamofireBaseRouterProtocol {
     var headers: [String: String]? {
         return ["Content-Type": "application/json"]
     }
-
+    
     var parameters: [String: Any]? {
         return nil
     }
-
+    
     var body: Data? {
         switch self {
-        case let .emailLogin(request),
-             let .refreshToken(request),
-             let .resendEmailConfirmation(request),
-             let .passwordReset(request),
-             let .signup(request),
-             let .appleIdLogin(request):
+        case .emailLogin(let request):
             return try? JSONEncoder().encode(request)
+        case .refreshToken(let request):
+            return try? JSONEncoder().encode(request)
+        case .resendEmailConfirmation(let request):
+            return try? JSONEncoder().encode(request)
+        case .passwordReset(let request):
+            return try? JSONEncoder().encode(request)
+        case .signup(let request):
+            return try? JSONEncoder().encode(request)
+        case .appleIdLogin(let request):
         default:
             return nil
         }
     }
-
+    
     func asURLRequest() throws -> URLRequest {
         guard let url = URL(string: domain + path) else {
             throw APIError.invalidURL
@@ -83,15 +87,15 @@ enum AuthRouterService: AlamofireBaseRouterProtocol {
         
         let encoding: ParameterEncoding = (method == .get) ? URLEncoding.default : JSONEncoding.default
         var request = URLRequest(url: url)
-
+        
         request.httpMethod = method.rawValue
         request.httpBody = body
-
+        
         headers?.forEach {
             request.addValue($0.value,
                              forHTTPHeaderField: $0.key)
         }
-
+        
         return try encoding.encode(request,
                                    with: parameters)
     }
