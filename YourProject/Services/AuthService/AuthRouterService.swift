@@ -64,17 +64,12 @@ enum AuthRouterService: AlamofireBaseRouterProtocol {
 
     var body: Data? {
         switch self {
-        case .emailLogin(let request):
-            return try? JSONEncoder().encode(request)
-        case .refreshToken(let request):
-            return try? JSONEncoder().encode(request)
-        case .resendEmailConfirmation(let request):
-            return try? JSONEncoder().encode(request)
-        case .passwordReset(let request):
-            return try? JSONEncoder().encode(request)
-        case .signup(let request):
-            return try? JSONEncoder().encode(request)
-        case .appleIdLogin(let request):
+        case let .emailLogin(request),
+             let .refreshToken(request),
+             let .resendEmailConfirmation(request),
+             let .passwordReset(request),
+             let .signup(request),
+             let .appleIdLogin(request):
             return try? JSONEncoder().encode(request)
         default:
             return nil
@@ -100,33 +95,5 @@ enum AuthRouterService: AlamofireBaseRouterProtocol {
         return try encoding.encode(request,
                                    with: parameters)
     }
-    
-//    var headers: [String: String]? {
-//        return nil
-//    }
-//    
-//    var parameters: [String: Any]? {
-//        return nil
-//        switch self {
-//        case .emailLogin(let request):
-//            return request.asParameters()
-//        case .refreshToken(let request):
-//            return request.asParameters()
-//        case .resendEmailConfirmation(let request):
-//            return request.asParameters()
-//        case .passwordReset(let request):
-//            return request.asParameters()
-//        case .signup(let request):
-//            return request.asParameters()
-//        case .appleIdLogin(let request):
-//            return request.asParameters()
-//        default:
-//            return nil
-//        }
-   // }
-    
-//    var body: Data? {
-//        return nil
-//    }
     
 }
