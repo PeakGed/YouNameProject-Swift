@@ -49,34 +49,22 @@ enum LocalPriceCardRouterService: AlamofireBaseRouterProtocol {
     }
     
     var headers: [String: String]? {
-        switch self {
-        case .createPriceCard(_), .updatePriceCard(_):
-            return ["Content-Type": "application/x-www-form-urlencoded",
-                    "Accept": "application/json"]
-        case .getPriceCard(_), .fetchPriceCards(_):
-            return ["Accept": "application/json"]
-        default:
-            return nil
-        }
+        return ["Content-Type": "application/json"]
     }
     
     var parameters: [String: Any]? {
-        switch self {
-        case .fetchPriceCards(let request):
-            return request.asParameters()
-        case .getPriceCard(_):
-            return nil
-        case .createPriceCard(let request):
-            return request.asParameters()
-        case .updatePriceCard(let request):
-            return request.asParameters()
-        case .deletePriceCard(_):
-            return nil
-        }
+        return nil
     }
     
     var body: Data? {
-        return nil
+        switch self {
+        case .createPriceCard(let request):
+            return try? JSONEncoder().encode(request)
+        case .updatePriceCard(let request):
+            return try? JSONEncoder().encode(request)
+        default:
+            return nil
+        }
     }
     
     func asURLRequest() throws -> URLRequest {
@@ -84,13 +72,7 @@ enum LocalPriceCardRouterService: AlamofireBaseRouterProtocol {
             throw APIError.invalidURL
         }
         
-        let encoding: ParameterEncoding
-        if method == .get {
-            encoding = URLEncoding.default
-        } else {
-            encoding = URLEncoding.httpBody // Use httpBody for form-urlencoded
-        }
-        
+        let encoding: ParameterEncoding = (method == .get) ? URLEncoding.default : JSONEncoding.default
         var request = URLRequest(url: url)
         
         request.httpMethod = method.rawValue

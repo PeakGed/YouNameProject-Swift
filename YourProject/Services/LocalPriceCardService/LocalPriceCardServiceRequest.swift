@@ -25,34 +25,6 @@ struct LocalPriceCardServiceRequest {
             case reservableTypeType = "reservable_type_type"
             case reservableTypeId = "reservable_type_id"
         }
-        
-        func asParameters() -> [String: Any] {
-            var params: [String: Any] = [:]
-            
-            if let hotelId = hotelId {
-                params["hotel_id"] = hotelId
-            }
-            if let startDate = startDate {
-                params["start_date"] = startDate
-            }
-            if let endDate = endDate {
-                params["end_date"] = endDate
-            }
-            if let channelId = channelId {
-                params["channel_id"] = channelId
-            }
-            if let subChannelId = subChannelId {
-                params["sub_channel_id"] = subChannelId
-            }
-            if let reservableTypeType = reservableTypeType {
-                params["reservable_type_type"] = reservableTypeType
-            }
-            if let reservableTypeId = reservableTypeId {
-                params["reservable_type_id"] = reservableTypeId
-            }
-            
-            return params
-        }
     }
     
     struct GetPriceCard: Encodable {
@@ -107,63 +79,6 @@ struct LocalPriceCardServiceRequest {
             case channels
             case pinned
         }
-        
-        func asParameters() -> [String: Any] {
-            var params: [String: Any] = [
-                "hotel_id": hotelId,
-                "title": title,
-                "reservable_type_id": reservableTypeId,
-                "reservable_type_type": reservableTypeType,
-                "price": price,
-                "start_at": startAt,
-                "end_at": endAt
-            ]
-            
-            if let description = description {
-                params["description"] = description
-            }
-            if let code = code {
-                params["code"] = code
-            }
-            if let color = color {
-                params["color"] = color
-            }
-            if let bfIncluded = bfIncluded {
-                params["bf_included"] = bfIncluded
-            }
-            if let bfAdultPrice = bfAdultPrice {
-                params["bf_adult_price"] = bfAdultPrice
-            }
-            if let bfAdultLimit = bfAdultLimit {
-                params["bf_adult_limit"] = bfAdultLimit
-            }
-            if let bfAdultExtraRate = bfAdultExtraRate {
-                params["bf_adult_extra_rate"] = bfAdultExtraRate
-            }
-            if let bfAdultExtraLimit = bfAdultExtraLimit {
-                params["bf_adult_extra_limit"] = bfAdultExtraLimit
-            }
-            if let bfChildPrice = bfChildPrice {
-                params["bf_child_price"] = bfChildPrice
-            }
-            if let bfChildLimit = bfChildLimit {
-                params["bf_child_limit"] = bfChildLimit
-            }
-            if let bfChildExtraRate = bfChildExtraRate {
-                params["bf_child_extra_rate"] = bfChildExtraRate
-            }
-            if let bfChildExtraLimit = bfChildExtraLimit {
-                params["bf_child_extra_limit"] = bfChildExtraLimit
-            }
-            if let channels = channels {
-                params["channels"] = channels
-            }
-            if let pinned = pinned {
-                params["pinned"] = pinned
-            }
-            
-            return params
-        }
     }
     
     struct UpdatePriceCard: Encodable {
@@ -211,73 +126,6 @@ struct LocalPriceCardServiceRequest {
             case channels
             case pinned
             // id is not encoded as it's used in the URL path
-        }
-        
-        func asParameters() -> [String: Any] {
-            var params: [String: Any] = [:]
-            
-            if let title = title {
-                params["title"] = title
-            }
-            if let description = description {
-                params["description"] = description
-            }
-            if let reservableTypeId = reservableTypeId {
-                params["reservable_type_id"] = reservableTypeId
-            }
-            if let reservableTypeType = reservableTypeType {
-                params["reservable_type_type"] = reservableTypeType
-            }
-            if let price = price {
-                params["price"] = price
-            }
-            if let code = code {
-                params["code"] = code
-            }
-            if let color = color {
-                params["color"] = color
-            }
-            if let bfIncluded = bfIncluded {
-                params["bf_included"] = bfIncluded
-            }
-            if let bfAdultPrice = bfAdultPrice {
-                params["bf_adult_price"] = bfAdultPrice
-            }
-            if let bfAdultLimit = bfAdultLimit {
-                params["bf_adult_limit"] = bfAdultLimit
-            }
-            if let bfAdultExtraRate = bfAdultExtraRate {
-                params["bf_adult_extra_rate"] = bfAdultExtraRate
-            }
-            if let bfAdultExtraLimit = bfAdultExtraLimit {
-                params["bf_adult_extra_limit"] = bfAdultExtraLimit
-            }
-            if let bfChildPrice = bfChildPrice {
-                params["bf_child_price"] = bfChildPrice
-            }
-            if let bfChildLimit = bfChildLimit {
-                params["bf_child_limit"] = bfChildLimit
-            }
-            if let bfChildExtraRate = bfChildExtraRate {
-                params["bf_child_extra_rate"] = bfChildExtraRate
-            }
-            if let bfChildExtraLimit = bfChildExtraLimit {
-                params["bf_child_extra_limit"] = bfChildExtraLimit
-            }
-            if let startAt = startAt {
-                params["start_at"] = startAt
-            }
-            if let endAt = endAt {
-                params["end_at"] = endAt
-            }
-            if let channels = channels {
-                params["channels"] = channels
-            }
-            if let pinned = pinned {
-                params["pinned"] = pinned
-            }
-            
-            return params
         }
     }
     
