@@ -51,66 +51,6 @@ struct HotelServiceRequest {
             case longitude
             case otaRateCodes = "ota_rate_codes"
         }
-        
-        func asParameters() -> [String: Any] {
-            var params: [String: Any] = [
-                "name": name
-            ]
-            
-            if let information = information {
-                params["information"] = information
-            }
-            if let address = address {
-                params["address"] = address
-            }
-            if let phone = phone {
-                params["phone"] = phone
-            }
-            if let geolocation = geolocation {
-                params["geolocation"] = geolocation
-            }
-            if let email = email {
-                params["email"] = email
-            }
-            if let website = website {
-                params["website"] = website
-            }
-            if let workingTime = workingTime {
-                params["working_time"] = workingTime
-            }
-            if let checkInTime = checkInTime {
-                params["check_in_time"] = checkInTime
-            }
-            if let checkOutTime = checkOutTime {
-                params["check_out_time"] = checkOutTime
-            }
-            if let note = note {
-                params["note"] = note
-            }
-            if let taxNumber = taxNumber {
-                params["tax_number"] = taxNumber
-            }
-            if let policies = policies {
-                params["policies"] = policies
-            }
-            if let quote = quote {
-                params["quote"] = quote
-            }
-            if let termAndCondition = termAndCondition {
-                params["term_and_condition"] = termAndCondition
-            }
-            if let latitude = latitude {
-                params["latitude"] = latitude
-            }
-            if let longitude = longitude {
-                params["longitude"] = longitude
-            }
-            if let otaRateCodes = otaRateCodes {
-                params["ota_rate_codes"] = otaRateCodes
-            }
-            
-            return params
-        }
     }
     
     struct UpdateHotel: Encodable {
@@ -154,68 +94,6 @@ struct HotelServiceRequest {
             case longitude
             case otaRateCodes = "ota_rate_codes"
             // hotelId is not encoded as it's used in the URL path
-        }
-        
-        func asParameters() -> [String: Any] {
-            var params: [String: Any] = [:]
-            
-            if let name = name {
-                params["name"] = name
-            }
-            
-            if let information = information {
-                params["information"] = information
-            }
-            if let address = address {
-                params["address"] = address
-            }
-            if let phone = phone {
-                params["phone"] = phone
-            }
-            if let geolocation = geolocation {
-                params["geolocation"] = geolocation
-            }
-            if let email = email {
-                params["email"] = email
-            }
-            if let website = website {
-                params["website"] = website
-            }
-            if let workingTime = workingTime {
-                params["working_time"] = workingTime
-            }
-            if let checkInTime = checkInTime {
-                params["check_in_time"] = checkInTime
-            }
-            if let checkOutTime = checkOutTime {
-                params["check_out_time"] = checkOutTime
-            }
-            if let note = note {
-                params["note"] = note
-            }
-            if let taxNumber = taxNumber {
-                params["tax_number"] = taxNumber
-            }
-            if let policies = policies {
-                params["policies"] = policies
-            }
-            if let quote = quote {
-                params["quote"] = quote
-            }
-            if let termAndCondition = termAndCondition {
-                params["term_and_condition"] = termAndCondition
-            }
-            if let latitude = latitude {
-                params["latitude"] = latitude
-            }
-            if let longitude = longitude {
-                params["longitude"] = longitude
-            }
-            if let otaRateCodes = otaRateCodes {
-                params["ota_rate_codes"] = otaRateCodes
-            }
-            
-            return params
         }
     }
 } 

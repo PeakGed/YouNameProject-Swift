@@ -75,6 +75,7 @@ enum AuthRouterService: AlamofireBaseRouterProtocol {
         case .signup(let request):
             return try? JSONEncoder().encode(request)
         case .appleIdLogin(let request):
+            return try? JSONEncoder().encode(request)
         default:
             return nil
         }

@@ -41,34 +41,29 @@ enum HotelRouterService: AlamofireBaseRouterProtocol {
     }
     
     var headers: [String: String]? {
-        switch self {
-        case .createHotel(_), .updateHotel(_):
-            return ["Content-Type": "application/x-www-form-urlencoded",
-                    "Accept": "application/json"]
-        default:
-            return nil
-        }
+        return ["Content-Type": "application/json"]
     }
     
     var parameters: [String: Any]? {
-        switch self {
-        case .fetchHotels(let request):
-            return nil 
-        case .createHotel(let request):
-            return request.asParameters()
-        case .updateHotel(let request):
-            return request.asParameters()
-        }
+        return nil
     }
     
     var body: Data? {
-        return nil
+        switch self {
+        case .createHotel(let request):
+            return try? JSONEncoder().encode(request)
+        case .updateHotel(let request):
+            return try? JSONEncoder().encode(request)
+        default:
+            return nil
+        }
     }
     
     func asURLRequest() throws -> URLRequest {
         guard let url = URL(string: domain + path) else {
             throw APIError.invalidURL
         }
+        
         let encoding: ParameterEncoding = (method == .get) ? URLEncoding.default : JSONEncoding.default
         var request = URLRequest(url: url)
         
