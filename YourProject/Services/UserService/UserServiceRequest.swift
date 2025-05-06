@@ -44,29 +44,6 @@ struct UserServiceRequest {
             case address
             case profileImage = "profile_image"
         }
-        
-        func asParameters() -> [String: Any] {
-            var params: [String: Any] = [
-                "name": name,
-                "email": email,
-                "password": password
-            ]
-            
-            if let role = role {
-                params["role"] = role
-            }
-            if let phoneNumber = phoneNumber {
-                params["phone_number"] = phoneNumber
-            }
-            if let address = address {
-                params["address"] = address
-            }
-            if let profileImage = profileImage {
-                params["profile_image"] = profileImage
-            }
-            
-            return params
-        }
     }
     
     struct UpdateUser: Encodable {
@@ -88,34 +65,6 @@ struct UserServiceRequest {
             case address
             case profileImage = "profile_image"
             // id is not encoded as it's used in the URL path
-        }
-        
-        func asParameters() -> [String: Any] {
-            var params: [String: Any] = [:]
-            
-            if let name = name {
-                params["name"] = name
-            }
-            if let email = email {
-                params["email"] = email
-            }
-            if let password = password {
-                params["password"] = password
-            }
-            if let role = role {
-                params["role"] = role
-            }
-            if let phoneNumber = phoneNumber {
-                params["phone_number"] = phoneNumber
-            }
-            if let address = address {
-                params["address"] = address
-            }
-            if let profileImage = profileImage {
-                params["profile_image"] = profileImage
-            }
-            
-            return params
         }
     }
     
@@ -142,14 +91,6 @@ struct UserServiceRequest {
             case currentPassword = "current_password"
             case newEmail = "new_email"
             case newEmailConfirmation = "new_email_confirmation"
-        }
-        
-        func asParameters() -> [String: Any] {
-            return [
-                "current_password": currentPassword,
-                "new_email": newEmail,
-                "new_email_confirmation": newEmailConfirmation
-            ]
         }
     }
     
@@ -231,14 +172,6 @@ struct UserServiceRequest {
             case newPasswordConfirmation = "new_password_confirmation"
             // userId is not encoded as it's used in the URL path
         }
-        
-        func asParameters() -> [String: Any] {
-            return [
-                "current_password": currentPassword,
-                "new_password": newPassword,
-                "new_password_confirmation": newPasswordConfirmation
-            ]
-        }
     }
     
     struct UpdateUserProfile: Encodable {
@@ -260,34 +193,6 @@ struct UserServiceRequest {
             case lineAccessToken = "line_access_token"
             case notificationLanguage = "notification_language"
             // userId is not encoded as it's used in the URL path
-        }
-        
-        func asParameters() -> [String: Any] {
-            var params: [String: Any] = [:]
-            
-            if let firstName = firstName {
-                params["first_name"] = firstName
-            }
-            if let lastName = lastName {
-                params["last_name"] = lastName
-            }
-            if let phoneNumber = phoneNumber {
-                params["phone_number"] = phoneNumber
-            }
-            if let pinCode = pinCode {
-                params["pin_code"] = pinCode
-            }
-            if let idCard = idCard {
-                params["id_card"] = idCard
-            }
-            if let lineAccessToken = lineAccessToken {
-                params["line_access_token"] = lineAccessToken
-            }
-            if let notificationLanguage = notificationLanguage {
-                params["notification_language"] = notificationLanguage
-            }
-            
-            return params
         }
     }
     

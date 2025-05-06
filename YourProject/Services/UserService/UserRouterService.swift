@@ -84,49 +84,43 @@ enum UserRouterService: AlamofireBaseRouterProtocol {
     }
     
     var headers: [String: String]? {
-        switch self {
-        case .createUser(_), .updateUser(_), .changeEmail(_), .resendEmailLoginCode(_), .emailLoginLink(_), .sendEmailLoginCode(_), .appleLoginLink(_), .changePassword(_), .updateUserProfile(_):
-            return ["Content-Type": "application/x-www-form-urlencoded",
-                    "Accept": "application/json"]
-        default:
-            return ["Accept": "application/json"]
-        }
+        return ["Content-Type": "application/json"]
     }
     
     var parameters: [String: Any]? {
-        switch self {
-        case .fetchUsers(_), .fetchUser(_), .deleteUser(_), .fetchNotificationSettings(_), .fetchUserDevices(_), .fetchUserCompanies(_), .fetchUserDetail(_):
-            return nil 
-        case .createUser(let request):
-            return request.asParameters()
-        case .updateUser(let request):
-            return request.asParameters()
-        case .changeEmail(let request):
-            return request.asParameters()
-        case .resendEmailLoginCode(let request):
-            return request.asParameters()
-        case .emailLoginLink(let request):
-            return request.asParameters()
-        case .sendEmailLoginCode(let request):
-            return request.asParameters()
-        case .appleLoginLink(let request):
-            return request.asParameters()
-        case .changePassword(let request):
-            return request.asParameters()
-        case .updateUserProfile(let request):
-            return request.asParameters()
-        }
+        return nil
     }
     
     var body: Data? {
-        return nil
+        switch self {
+        case .createUser(let request):
+            return try? JSONEncoder().encode(request)
+        case .updateUser(let request):
+            return try? JSONEncoder().encode(request)
+        case .changeEmail(let request):
+            return try? JSONEncoder().encode(request)
+        case .resendEmailLoginCode(let request):
+            return try? JSONEncoder().encode(request)
+        case .emailLoginLink(let request):
+            return try? JSONEncoder().encode(request)
+        case .sendEmailLoginCode(let request):
+            return try? JSONEncoder().encode(request)
+        case .appleLoginLink(let request):
+            return try? JSONEncoder().encode(request)
+        case .changePassword(let request):
+            return try? JSONEncoder().encode(request)
+        case .updateUserProfile(let request):
+            return try? JSONEncoder().encode(request)
+        default:
+            return nil
+        }
     }
     
     func asURLRequest() throws -> URLRequest {
         guard let url = URL(string: domain + path) else {
             throw APIError.invalidURL
         }
-        let encoding: ParameterEncoding = (method == .get) ? URLEncoding.default : URLEncoding.httpBody
+        let encoding: ParameterEncoding = (method == .get) ? URLEncoding.default : JSONEncoding.default
         var request = URLRequest(url: url)
         
         request.httpMethod = method.rawValue
