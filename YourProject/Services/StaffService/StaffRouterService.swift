@@ -58,41 +58,35 @@ enum StaffRouterService: AlamofireBaseRouterProtocol {
     }
     
     var headers: [String: String]? {
-        switch self {
-        case .createStaff(_), .updateStaff(_), .changeHotel(_), .changePassword(_), .updateStaffDetails(_):
-            return ["Content-Type": "application/x-www-form-urlencoded",
-                    "Accept": "application/json"]
-        default:
-            return ["Accept": "application/json"]
-        }
+        return ["Content-Type": "application/json"]
     }
     
     var parameters: [String: Any]? {
-        switch self {
-        case .fetchStaffs(_), .fetchStaff(_), .deleteStaff(_):
-            return nil 
-        case .createStaff(let request):
-            return request.asParameters()
-        case .updateStaff(let request):
-            return request.asParameters()
-        case .changeHotel(let request):
-            return request.asParameters()
-        case .changePassword(let request):
-            return request.asParameters()
-        case .updateStaffDetails(let request):
-            return request.asParameters()
-        }
+        return nil
     }
     
     var body: Data? {
-        return nil
+        switch self {
+        case .createStaff(let request):
+            return try? JSONEncoder().encode(request)
+        case .updateStaff(let request):
+            return try? JSONEncoder().encode(request)
+        case .changeHotel(let request):
+            return try? JSONEncoder().encode(request)
+        case .changePassword(let request):
+            return try? JSONEncoder().encode(request)
+        case .updateStaffDetails(let request):
+            return try? JSONEncoder().encode(request)
+        default:
+            return nil
+        }
     }
     
     func asURLRequest() throws -> URLRequest {
         guard let url = URL(string: domain + path) else {
             throw APIError.invalidURL
         }
-        let encoding: ParameterEncoding = (method == .get) ? URLEncoding.default : URLEncoding.httpBody
+        let encoding: ParameterEncoding = (method == .get) ? URLEncoding.default : JSONEncoding.default
         var request = URLRequest(url: url)
         
         request.httpMethod = method.rawValue

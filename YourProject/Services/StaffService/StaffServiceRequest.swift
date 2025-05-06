@@ -50,36 +50,6 @@ struct StaffServiceRequest {
             case limitedNumberOfCmUnits = "limited_number_of_cm_units"
             case description
         }
-        
-        func asParameters() -> [String: Any] {
-            var params: [String: Any] = [
-                "hotel_id": hotelId,
-                "name": name,
-                "base_rate": baseRate,
-                "base_guest_number": baseGuestNumber
-            ]
-            
-            if let extraBedRate = extraBedRate {
-                params["extra_bed_rate"] = extraBedRate
-            }
-            if let extraGuestRate = extraGuestRate {
-                params["extra_guest_rate"] = extraGuestRate
-            }
-            if let maxExtraBedNumber = maxExtraBedNumber {
-                params["max_extra_bed_number"] = maxExtraBedNumber
-            }
-            if let maxExtraGuestNumber = maxExtraGuestNumber {
-                params["max_extra_guest_number"] = maxExtraGuestNumber
-            }
-            if let limitedNumberOfCmUnits = limitedNumberOfCmUnits {
-                params["limited_number_of_cm_units"] = limitedNumberOfCmUnits
-            }
-            if let description = description {
-                params["description"] = description
-            }
-            
-            return params
-        }
     }
     
     struct UpdateStaff: Encodable {
@@ -105,40 +75,6 @@ struct StaffServiceRequest {
             case limitedNumberOfCmUnits = "limited_number_of_cm_units"
             case description
             // id is not encoded as it's used in the URL path
-        }
-        
-        func asParameters() -> [String: Any] {
-            var params: [String: Any] = [:]
-            
-            if let name = name {
-                params["name"] = name
-            }
-            if let baseRate = baseRate {
-                params["base_rate"] = baseRate
-            }
-            if let baseGuestNumber = baseGuestNumber {
-                params["base_guest_number"] = baseGuestNumber
-            }
-            if let extraBedRate = extraBedRate {
-                params["extra_bed_rate"] = extraBedRate
-            }
-            if let extraGuestRate = extraGuestRate {
-                params["extra_guest_rate"] = extraGuestRate
-            }
-            if let maxExtraBedNumber = maxExtraBedNumber {
-                params["max_extra_bed_number"] = maxExtraBedNumber
-            }
-            if let maxExtraGuestNumber = maxExtraGuestNumber {
-                params["max_extra_guest_number"] = maxExtraGuestNumber
-            }
-            if let limitedNumberOfCmUnits = limitedNumberOfCmUnits {
-                params["limited_number_of_cm_units"] = limitedNumberOfCmUnits
-            }
-            if let description = description {
-                params["description"] = description
-            }
-            
-            return params
         }
     }
     
@@ -166,10 +102,6 @@ struct StaffServiceRequest {
             case hotelId = "hotel_id"
             // id is not encoded as it's used in the URL path
         }
-        
-        func asParameters() -> [String: Any] {
-            return ["hotel_id": hotelId]
-        }
     }
     
     struct ChangePassword: Encodable {
@@ -179,10 +111,6 @@ struct StaffServiceRequest {
         enum CodingKeys: String, CodingKey {
             case password
             // id is not encoded as it's used in the URL path
-        }
-        
-        func asParameters() -> [String: Any] {
-            return ["password": password]
         }
     }
     
@@ -201,28 +129,6 @@ struct StaffServiceRequest {
             case pinCode = "pin_code"
             case idCard = "id_card"
             // id is not encoded as it's used in the URL path
-        }
-        
-        func asParameters() -> [String: Any] {
-            var params: [String: Any] = [:]
-            
-            if let firstName = firstName {
-                params["first_name"] = firstName
-            }
-            if let lastName = lastName {
-                params["last_name"] = lastName
-            }
-            if let phoneNumber = phoneNumber {
-                params["phone_number"] = phoneNumber
-            }
-            if let pinCode = pinCode {
-                params["pin_code"] = pinCode
-            }
-            if let idCard = idCard {
-                params["id_card"] = idCard
-            }
-            
-            return params
         }
     }
 } 
