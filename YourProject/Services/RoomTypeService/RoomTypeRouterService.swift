@@ -49,35 +49,29 @@ enum RoomTypeRouterService: AlamofireBaseRouterProtocol {
     }
     
     var headers: [String: String]? {
-        switch self {
-        case .createRoomType(_), .updateRoomType(_):
-            return ["Content-Type": "application/x-www-form-urlencoded",
-                    "Accept": "application/json"]
-        default:
-            return ["Accept": "application/json"]
-        }
+        return ["Content-Type": "application/json"]
     }
     
     var parameters: [String: Any]? {
-        switch self {
-        case .fetchRoomTypes(_), .fetchRoomType(_), .deleteRoomType(_):
-            return nil 
-        case .createRoomType(let request):
-            return request.asParameters()
-        case .updateRoomType(let request):
-            return request.asParameters()
-        }
+        return nil
     }
     
     var body: Data? {
-        return nil
+        switch self {
+        case .createRoomType(let request):
+            return try? JSONEncoder().encode(request)
+        case .updateRoomType(let request):
+            return try? JSONEncoder().encode(request)
+        default:
+            return nil
+        }
     }
     
     func asURLRequest() throws -> URLRequest {
         guard let url = URL(string: domain + path) else {
             throw APIError.invalidURL
         }
-        let encoding: ParameterEncoding = (method == .get) ? URLEncoding.default : URLEncoding.httpBody
+        let encoding: ParameterEncoding = (method == .get) ? URLEncoding.default : JSONEncoding.default
         var request = URLRequest(url: url)
         
         request.httpMethod = method.rawValue
