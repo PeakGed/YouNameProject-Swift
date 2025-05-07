@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0F2BAD752DCB4706004D502D /* Parchment in Frameworks */ = {isa = PBXBuildFile; productRef = 0F2BAD742DCB4706004D502D /* Parchment */; };
 		36B587F62BF73FF800D523D0 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 36B587F52BF73FF800D523D0 /* SnapKit */; };
 /* End PBXBuildFile section */
 
@@ -68,6 +69,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				36B587F62BF73FF800D523D0 /* SnapKit in Frameworks */,
+				0F2BAD752DCB4706004D502D /* Parchment in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -129,6 +131,7 @@
 			name = YourProject;
 			packageProductDependencies = (
 				36B587F52BF73FF800D523D0 /* SnapKit */,
+				0F2BAD742DCB4706004D502D /* Parchment */,
 			);
 			productName = YourProject;
 			productReference = 36B587BF2BF73F1600D523D0 /* YourProject.app */;
@@ -209,6 +212,7 @@
 			mainGroup = 36B587B62BF73F1600D523D0;
 			packageReferences = (
 				36B587F42BF73FF800D523D0 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				0F2BAD732DCB4706004D502D /* XCRemoteSwiftPackageReference "Parchment" */,
 			);
 			preferredProjectObjectVersion = 56;
 			productRefGroup = 36B587C02BF73F1600D523D0 /* Products */;
@@ -573,6 +577,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		0F2BAD732DCB4706004D502D /* XCRemoteSwiftPackageReference "Parchment" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/rechsteiner/Parchment";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		36B587F42BF73FF800D523D0 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -584,6 +596,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0F2BAD742DCB4706004D502D /* Parchment */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0F2BAD732DCB4706004D502D /* XCRemoteSwiftPackageReference "Parchment" */;
+			productName = Parchment;
+		};
 		36B587F52BF73FF800D523D0 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 36B587F42BF73FF800D523D0 /* XCRemoteSwiftPackageReference "SnapKit" */;
