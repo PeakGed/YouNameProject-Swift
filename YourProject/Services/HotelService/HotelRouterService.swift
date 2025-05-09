@@ -16,6 +16,8 @@ enum HotelRouterService: AlamofireBaseRouterProtocol {
     case fetchHotelsShort
     case deleteHotel(request: HotelServiceRequest.DeleteHotel)
     case fetchChannelManager(request: HotelServiceRequest.FetchChannelManagerFeature)
+    case fetchBeds24Config(request: HotelServiceRequest.FetchBeds24Config)
+    case updateBeds24Config(request: HotelServiceRequest.UpdateBeds24Config)
     
     var domain: String {
         return AppConfiguration.shared.baseURL
@@ -35,6 +37,10 @@ enum HotelRouterService: AlamofireBaseRouterProtocol {
             return "/api/v4/hotels/\(request.hotelId)"
         case .fetchChannelManager(let request):
             return "/api/v4/hotels/\(request.hotelId)/channel-manager"
+        case .fetchBeds24Config(let request):
+            return "/api/v4/hotels/\(request.hotelId)/beds24-config"
+        case .updateBeds24Config(let request):
+            return "/api/v4/hotels/\(request.hotelId)/beds24-config"
         }
     }
     
@@ -52,11 +58,21 @@ enum HotelRouterService: AlamofireBaseRouterProtocol {
             return .delete
         case .fetchChannelManager(_):
             return .get
+        case .fetchBeds24Config(_):
+            return .get
+        case .updateBeds24Config(_):
+            return .put
         }
     }
     
     var headers: [String: String]? {
-        return ["Content-Type": "application/json"]
+        switch self {
+        case .updateBeds24Config:
+            return ["Content-Type": "application/x-www-form-urlencoded",
+                    "Accept": "application/json"]
+        default:
+            return ["Content-Type": "application/json"]
+        }
     }
     
     var parameters: [String: Any]? {

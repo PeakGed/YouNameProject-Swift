@@ -101,4 +101,17 @@ struct HotelServiceRequest {
     struct FetchChannelManagerFeature: Encodable {
         let hotelId: Int
     }
+    
+    struct FetchBeds24Config: Encodable {
+        let hotelId: Int
+    }
+    
+    struct UpdateBeds24Config: Encodable {
+        let hotelId: Int
+        let enabledAutoCancelReservationFromCm: Bool
+        
+        enum CodingKeys: String, CodingKey {
+            case enabledAutoCancelReservationFromCm = "enabled_auto_cancel_reservation_from_cm"
+        }
+    }
 } 
