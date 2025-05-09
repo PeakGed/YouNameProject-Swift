@@ -18,6 +18,8 @@ protocol HotelServiceProtocol: AnyObject {
     func fetchChannelManagerFeature(request: HotelServiceRequest.FetchChannelManagerFeature) async throws -> ChannelManagerFeature
     func fetchBeds24Config(request: HotelServiceRequest.FetchBeds24Config) async throws -> Beds24Config
     func updateBeds24Config(request: HotelServiceRequest.UpdateBeds24Config) async throws -> Beds24Config
+    func fetchColorProfile(request: HotelServiceRequest.FetchColorProfile) async throws -> ColorProfile
+    func updateColorProfile(request: HotelServiceRequest.UpdateColorProfile) async throws -> ColorProfile
 }
 
 class HotelRemoteService: HotelServiceProtocol {
@@ -75,6 +77,18 @@ class HotelRemoteService: HotelServiceProtocol {
     
     func updateBeds24Config(request: HotelServiceRequest.UpdateBeds24Config) async throws -> Beds24Config {
         let router = HotelRouterService.updateBeds24Config(request: request)
+        return try await apiManager.request(router: router,
+                                           requiredAuthorization: true)
+    }
+    
+    func fetchColorProfile(request: HotelServiceRequest.FetchColorProfile) async throws -> ColorProfile {
+        let router = HotelRouterService.fetchColorProfile(request: request)
+        return try await apiManager.request(router: router,
+                                           requiredAuthorization: true)
+    }
+    
+    func updateColorProfile(request: HotelServiceRequest.UpdateColorProfile) async throws -> ColorProfile {
+        let router = HotelRouterService.updateColorProfile(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }

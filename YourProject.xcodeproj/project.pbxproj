@@ -108,12 +108,6 @@
 				DataModels/AuthTokenResponse.swift,
 				DataModels/Collection.swift,
 				DataModels/FilterBy.swift,
-				DataModels/Hotel/Hotel/Beds24Config.swift,
-				DataModels/Hotel/Hotel/ChannelManagerFeature.swift,
-				DataModels/Hotel/Hotel/ColorProfile.swift,
-				DataModels/Hotel/Hotel/GeoLocation.swift,
-				DataModels/Hotel/Hotel/Hotel.swift,
-				DataModels/Hotel/Hotel/Hotels.swift,
 				DataModels/Paginator.swift,
 				DataModels/SortOrder.swift,
 			);

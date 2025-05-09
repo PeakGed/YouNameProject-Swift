@@ -18,6 +18,8 @@ enum HotelRouterService: AlamofireBaseRouterProtocol {
     case fetchChannelManager(request: HotelServiceRequest.FetchChannelManagerFeature)
     case fetchBeds24Config(request: HotelServiceRequest.FetchBeds24Config)
     case updateBeds24Config(request: HotelServiceRequest.UpdateBeds24Config)
+    case fetchColorProfile(request: HotelServiceRequest.FetchColorProfile)
+    case updateColorProfile(request: HotelServiceRequest.UpdateColorProfile)
     
     var domain: String {
         return AppConfiguration.shared.baseURL
@@ -41,6 +43,10 @@ enum HotelRouterService: AlamofireBaseRouterProtocol {
             return "/api/v4/hotels/\(request.hotelId)/beds24-config"
         case .updateBeds24Config(let request):
             return "/api/v4/hotels/\(request.hotelId)/beds24-config"
+        case .fetchColorProfile(let request):
+            return "/api/v4/hotels/\(request.hotelId)/color-profile"
+        case .updateColorProfile(let request):
+            return "/api/v4/hotels/\(request.hotelId)/color-profile"
         }
     }
     
@@ -62,14 +68,15 @@ enum HotelRouterService: AlamofireBaseRouterProtocol {
             return .get
         case .updateBeds24Config(_):
             return .put
+        case .fetchColorProfile(_):
+            return .get
+        case .updateColorProfile(_):
+            return .put
         }
     }
     
     var headers: [String: String]? {
-        switch self {
-        case .updateBeds24Config:
-            return ["Content-Type": "application/x-www-form-urlencoded",
-                    "Accept": "application/json"]
+        switch self {        
         default:
             return ["Content-Type": "application/json"]
         }
@@ -84,6 +91,10 @@ enum HotelRouterService: AlamofireBaseRouterProtocol {
         case .createHotel(let request):
             return try? JSONEncoder().encode(request)
         case .updateHotel(let request):
+            return try? JSONEncoder().encode(request)
+        case .updateBeds24Config(let request):
+            return try? JSONEncoder().encode(request)
+        case .updateColorProfile(let request):
             return try? JSONEncoder().encode(request)
         default:
             return nil

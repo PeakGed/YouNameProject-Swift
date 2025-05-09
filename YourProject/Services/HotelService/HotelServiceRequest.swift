@@ -114,4 +114,17 @@ struct HotelServiceRequest {
             case enabledAutoCancelReservationFromCm = "enabled_auto_cancel_reservation_from_cm"
         }
     }
+    
+    struct FetchColorProfile: Encodable {
+        let hotelId: Int
+    }
+    
+    struct UpdateColorProfile: Encodable {
+        let hotelId: Int
+        let colorProfile: ColorProfile
+        
+        enum CodingKeys: String, CodingKey {
+            case colorProfile = "color_profile"
+        }
+    }
 } 
