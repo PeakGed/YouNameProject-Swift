@@ -32,15 +32,24 @@ struct HotelShort: Codable {
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decode(Int.self, forKey: .id)
-        name = try container.decode(String.self, forKey: .name)
-        quote = try container.decodeIfPresent(String.self, forKey: .quote)
-        hotelLogo300 = try container.decodeIfPresent(String.self, forKey: .hotelLogo300)
-        headerLogoPhotos = try container.decode([String].self, forKey: .headerLogoPhotos)
-        bannerImage = try container.decodeIfPresent(String.self, forKey: .bannerImage)
-        logoImage = try container.decodeIfPresent(String.self, forKey: .logoImage)
-        createdAt = try container.decode(String.self, forKey: .createdAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
-        updatedAt = try container.decode(String.self, forKey: .updatedAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
+        id = try container.decode(Int.self,
+                                  forKey: .id)
+        name = try container.decode(String.self,
+                                    forKey: .name)
+        quote = try container.decodeIfPresent(String.self,
+                                              forKey: .quote)
+        hotelLogo300 = try container.decodeIfPresent(String.self,
+                                                     forKey: .hotelLogo300)
+        headerLogoPhotos = try container.decode([String].self,
+                                                forKey: .headerLogoPhotos)
+        bannerImage = try container.decodeIfPresent(String.self,
+                                                    forKey: .bannerImage)
+        logoImage = try container.decodeIfPresent(String.self,
+                                                  forKey: .logoImage)
+        createdAt = try container.decode(String.self,
+                                         forKey: .createdAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
+        updatedAt = try container.decode(String.self,
+                                         forKey: .updatedAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
     }
     
     init(id: Int,
@@ -65,15 +74,24 @@ struct HotelShort: Codable {
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id, forKey: .id)
-        try container.encode(name, forKey: .name)
-        try container.encodeIfPresent(quote, forKey: .quote)
-        try container.encodeIfPresent(hotelLogo300, forKey: .hotelLogo300)
-        try container.encode(headerLogoPhotos, forKey: .headerLogoPhotos)
-        try container.encodeIfPresent(bannerImage, forKey: .bannerImage)
-        try container.encodeIfPresent(logoImage, forKey: .logoImage)
-        try container.encode(createdAt.toDateString(FormConfig.DateFormat.datetimeISO), forKey: .createdAt)
-        try container.encode(updatedAt.toDateString(FormConfig.DateFormat.datetimeISO), forKey: .updatedAt)
+        try container.encode(id,
+                             forKey: .id)
+        try container.encode(name,
+                             forKey: .name)
+        try container.encodeIfPresent(quote,
+                                      forKey: .quote)
+        try container.encodeIfPresent(hotelLogo300,
+                                      forKey: .hotelLogo300)
+        try container.encode(headerLogoPhotos,
+                             forKey: .headerLogoPhotos)
+        try container.encodeIfPresent(bannerImage,
+                                      forKey: .bannerImage)
+        try container.encodeIfPresent(logoImage,
+                                      forKey: .logoImage)
+        try container.encode(createdAt.toDateString(FormConfig.DateFormat.datetimeISO),
+                             forKey: .createdAt)
+        try container.encode(updatedAt.toDateString(FormConfig.DateFormat.datetimeISO),
+                             forKey: .updatedAt)
     }
 } 
 

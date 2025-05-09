@@ -43,6 +43,14 @@ struct ChannelManagerFeature: Codable {
             otaRateCodes = [:]
         }
     }
+
+    init(enabled: Bool,
+     otas: [Ota],
+      otaRateCodes: [String: RateCodeList]) {
+        self.enabled = enabled
+        self.otas = otas
+        self.otaRateCodes = otaRateCodes
+    }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
