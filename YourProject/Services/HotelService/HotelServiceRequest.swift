@@ -26,7 +26,6 @@ struct HotelServiceRequest {
         let termAndCondition: String?
         let latitude: Double?
         let longitude: Double?
-        let otaRateCodes: RateCodeList?
         
         enum CodingKeys: String, CodingKey {
             case name
@@ -46,7 +45,6 @@ struct HotelServiceRequest {
             case termAndCondition = "term_and_condition"
             case latitude
             case longitude
-            case otaRateCodes = "ota_rate_codes"
         }
     }
     
@@ -69,7 +67,6 @@ struct HotelServiceRequest {
         let termAndCondition: String?
         let latitude: Double?
         let longitude: Double?
-        let otaRateCodes: RateCodeList?
         
         enum CodingKeys: String, CodingKey {
             case name
@@ -89,7 +86,6 @@ struct HotelServiceRequest {
             case termAndCondition = "term_and_condition"
             case latitude
             case longitude
-            case otaRateCodes = "ota_rate_codes"
             // hotelId is not encoded as it's used in the URL path
         }
     }
