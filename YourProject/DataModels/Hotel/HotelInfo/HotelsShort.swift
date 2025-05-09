@@ -42,9 +42,9 @@ extension HotelsShort {
             let result = lists.sorted(by: {
                 switch orderBy {
                 case .descending:
-                    return $0.name < $1.name
-                case .ascending:
                     return $0.name > $1.name
+                case .ascending:
+                    return $0.name < $1.name
                 }
             })
             return HotelsShort(array: result)
@@ -53,9 +53,9 @@ extension HotelsShort {
             let result = lists.sorted(by: {
                 switch orderBy {
                 case .descending:
-                    return $0.id < $1.id
-                case .ascending:
                     return $0.id > $1.id
+                case .ascending:
+                    return $0.id < $1.id
                 }
             })
             return HotelsShort(array: result)
@@ -63,9 +63,9 @@ extension HotelsShort {
             let result = lists.sorted(by: {
                 switch orderBy {
                 case .descending:
-                    return $0.createdAt < $1.createdAt
-                case .ascending:
                     return $0.createdAt > $1.createdAt
+                case .ascending:
+                    return $0.createdAt < $1.createdAt
                 }
             })
             return HotelsShort(array: result)
@@ -73,9 +73,9 @@ extension HotelsShort {
             let result = lists.sorted(by: {
                 switch orderBy {
                 case .descending:
-                    return $0.updatedAt < $1.updatedAt
-                case .ascending:
                     return $0.updatedAt > $1.updatedAt
+                case .ascending:
+                    return $0.updatedAt < $1.updatedAt
                 }
             })
             return HotelsShort(array: result)

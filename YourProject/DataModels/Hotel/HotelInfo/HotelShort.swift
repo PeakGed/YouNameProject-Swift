@@ -43,6 +43,26 @@ struct HotelShort: Codable {
         updatedAt = try container.decode(String.self, forKey: .updatedAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
     }
     
+    init(id: Int,
+         name: String,
+         quote: String?,
+         hotelLogo300: String?,
+         headerLogoPhotos: [String],
+         bannerImage: String?,
+         logoImage: String?,
+         createdAt: Date,
+         updatedAt: Date) {
+        self.id = id
+        self.name = name
+        self.quote = quote
+        self.hotelLogo300 = hotelLogo300
+        self.headerLogoPhotos = headerLogoPhotos
+        self.bannerImage = bannerImage
+        self.logoImage = logoImage
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
+    }
+    
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)

@@ -101,18 +101,6 @@
 			);
 			target = 36B587D42BF73F1900D523D0 /* YourProjectTests */;
 		};
-		0F819EFB2D4E081E0025B2B0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				DataModels/AppConfiguration.swift,
-				DataModels/AuthTokenResponse.swift,
-				DataModels/Collection.swift,
-				DataModels/FilterBy.swift,
-				DataModels/Paginator.swift,
-				DataModels/SortOrder.swift,
-			);
-			target = 36B587DE2BF73F1900D523D0 /* YourProjectUITests */;
-		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
@@ -127,7 +115,7 @@
 /* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		0F8140142D4BC79F0025B2B0 /* YourProject */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (0F81401F2D4BC79F0025B2B0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 0F8140202D4BC79F0025B2B0 /* PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet */, 0F819EEB2D4E08070025B2B0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 0F819EFB2D4E081E0025B2B0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = YourProject; sourceTree = "<group>"; };
+		0F8140142D4BC79F0025B2B0 /* YourProject */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (0F81401F2D4BC79F0025B2B0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 0F8140202D4BC79F0025B2B0 /* PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet */, 0F819EEB2D4E08070025B2B0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = YourProject; sourceTree = "<group>"; };
 		0F8140222D4BC7A30025B2B0 /* YourProjectTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = YourProjectTests; sourceTree = "<group>"; };
 		0F8140262D4BC7A50025B2B0 /* YourProjectUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = YourProjectUITests; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
