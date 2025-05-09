@@ -24,4 +24,12 @@ struct ColorProfile: Codable {
         backgroundColor = try container.decodeIfPresent(String.self, forKey: .backgroundColor)
         fontColor = try container.decodeIfPresent(String.self, forKey: .fontColor)
     }
+
+    init(color: String?,
+     backgroundColor: String?,
+      fontColor: String?) {
+        self.color = color
+        self.backgroundColor = backgroundColor
+        self.fontColor = fontColor
+    }
 }

@@ -83,6 +83,62 @@ struct Hotel: Codable {
         updatedAt = try container.decode(String.self, forKey: .updatedAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
     }
 
+    init(id: Int,
+     name: String,
+      status: String,
+       information: String,
+        address: String,
+         geolocation: String?,
+          phone: String?,
+          policies: String?,
+          email: String?,
+          website: String?,
+          workingTime: String?,
+          checkInTime: String?,
+          checkOutTime: String?,
+          note: String?,
+          hotelLogo300: String?,
+          taxNumber: String?,
+          photos: [String],
+          headerLogoPhotos: [String],
+          tags: [String],
+          quote: String?,
+          termAndCondition: String?,
+          latitude: String?,
+          longitude: String?,
+          logoImage: String?,
+          bannerImage: String?,
+          createdAt: Date,
+          updatedAt: Date) {
+        self.id = id
+        self.name = name
+        self.status = status
+        self.information = information
+        self.address = address
+        self.geolocation = geolocation
+        self.phone = phone
+        self.policies = policies
+        self.email = email
+        self.website = website
+        self.workingTime = workingTime
+        self.checkInTime = checkInTime
+        self.checkOutTime = checkOutTime
+        self.note = note
+        self.hotelLogo300 = hotelLogo300
+        self.taxNumber = taxNumber
+        self.photos = photos
+        self.headerLogoPhotos = headerLogoPhotos
+        self.tags = tags
+        self.quote = quote
+        self.termAndCondition = termAndCondition
+        self.latitude = latitude
+        self.longitude = longitude
+        self.logoImage = logoImage
+        self.bannerImage = bannerImage
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
+    }
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)

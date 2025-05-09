@@ -25,5 +25,10 @@ struct GeoLocation {
             }
         }
     }
-    
+
+    init(latitude: Double,
+     longtitude: Double) {
+        self.latitude = latitude
+        self.longtitude = longtitude
+    }
 }

@@ -46,6 +46,24 @@ struct Staff: Codable {
         }
     }
 
+    init(id: Int,
+     status: String,
+      role: String,
+       data: [String: String],
+        createdAt: Date,
+         updatedAt: Date,
+          hotelId: Int,
+           user: User) {
+        self.id = id
+        self.status = status
+        self.role = role
+        self.data = data
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
+        self.hotelId = hotelId
+        self.user = user
+    }
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)

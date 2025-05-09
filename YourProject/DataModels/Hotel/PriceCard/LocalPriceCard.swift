@@ -62,7 +62,41 @@ struct LocalPriceCard: Codable {
         self.createdAt = try container.decode(String.self, forKey: .createdAt).tryToDate(FormConfig.DateFormat.datetimeISO)
         self.updatedAt = try container.decode(String.self, forKey: .updatedAt).tryToDate(FormConfig.DateFormat.datetimeISO)
     }
-    
+
+    init(id: Int,
+     title: String,
+      description: String,
+       dailyPrice: Double,
+        totalPrice: Double,
+         periodTypes: WeekDays,
+          exceptionDates: [Date],
+           reservableTypeId: Int,
+            reservableType: ReservableKind,
+             code: String?,
+              color: String?,
+               meal: Meal,
+                period: PeriodDate?,
+                availableChannels: [AvailabelChannel],
+                 createdAt: Date,
+                  updatedAt: Date) {
+        self.id = id
+        self.title = title
+        self.description = description
+        self.dailyPrice = dailyPrice
+        self.totalPrice = totalPrice
+        self.periodTypes = periodTypes
+        self.exceptionDates = exceptionDates
+        self.reservableTypeId = reservableTypeId
+        self.reservableType = reservableType
+        self.code = code
+        self.color = color
+        self.meal = meal
+        self.period = period
+        self.availableChannels = availableChannels
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
+    }
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         

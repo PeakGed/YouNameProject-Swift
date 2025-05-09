@@ -11,4 +11,8 @@ struct Beds24Config: Codable {
     enum CodingKeys: String, CodingKey {
         case enabledAutoCancelReservationFromCm = "enabled_auto_cancel_reservation_from_cm"
     }
+
+    init(enabledAutoCancelReservationFromCm: Bool) {
+        self.enabledAutoCancelReservationFromCm = enabledAutoCancelReservationFromCm
+    }
 }

@@ -92,7 +92,60 @@ struct User: Codable {
         self.createdAt = try container.decode(String.self, forKey: .createdAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
         self.updatedAt = try container.decode(String.self, forKey: .updatedAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)        
     }
-    
+
+    init(id: Int,
+     email: String,
+      firstName: String,
+       lastName: String,
+        phoneNumber: String,
+         role: String,
+          idCard: String,
+           logoImage: String?,
+            signSignatureImage: String?,
+             verifiedAt: String?,
+              passwordChangedAt: String?,
+               currentPackage: CurrentPackage?,
+                notificationSetting: NotificationSetting?,
+                 authProviders: [String],
+                  images: [String],
+                   staff: Staff?,
+                    promoCode: String?,
+                     staffRole: String?,
+                      maxUnits: Int?,
+                       maxHotels: Int?,
+                        trustAuthor: Bool?,
+                         notificationLanguage: String?,
+                          registeredLineAccessToken: Bool?,
+                           createdAt: Date,
+                            updatedAt: Date) {
+        self.id = id
+        self.email = email
+        self.firstName = firstName
+        self.lastName = lastName
+        self.phoneNumber = phoneNumber
+        self.role = role
+        self.idCard = idCard
+        self.logoImage = logoImage
+        self.signSignatureImage = signSignatureImage
+        self.verifiedAt = verifiedAt
+        self.passwordChangedAt = passwordChangedAt
+        self.currentPackage = currentPackage
+        self.notificationSetting = notificationSetting
+        self.authProviders = authProviders
+        self.images = images
+        self.staff = staff
+        self.promoCode = promoCode
+        self.staffRole = staffRole
+        self.maxUnits = maxUnits
+        self.maxHotels = maxHotels
+        self.trustAuthor = trustAuthor
+        self.notificationLanguage = notificationLanguage
+        self.registeredLineAccessToken = registeredLineAccessToken
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
+    }
+        
+        
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         

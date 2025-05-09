@@ -56,6 +56,12 @@ struct PeriodDate {
         return "\(startString) - \(endString)"
         
     }
+
+    init(start: Date,
+     end: Date) {
+        self.start = start
+        self.end = end
+    }
 }
 
 extension PeriodDate: Equatable {
