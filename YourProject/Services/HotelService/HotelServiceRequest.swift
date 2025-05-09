@@ -97,4 +97,8 @@ struct HotelServiceRequest {
     struct DeleteHotel: Encodable {
         let hotelId: Int
     }
+    
+    struct FetchChannelManagerFeature: Encodable {
+        let hotelId: Int
+    }
 } 

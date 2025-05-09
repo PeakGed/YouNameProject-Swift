@@ -15,6 +15,7 @@ enum HotelRouterService: AlamofireBaseRouterProtocol {
     case updateHotel(request: HotelServiceRequest.UpdateHotel)
     case fetchHotelsShort
     case deleteHotel(request: HotelServiceRequest.DeleteHotel)
+    case fetchChannelManager(request: HotelServiceRequest.FetchChannelManagerFeature)
     
     var domain: String {
         return AppConfiguration.shared.baseURL
@@ -32,6 +33,8 @@ enum HotelRouterService: AlamofireBaseRouterProtocol {
             return "/api/v4/hotels/short"
         case .deleteHotel(let request):
             return "/api/v4/hotels/\(request.hotelId)"
+        case .fetchChannelManager(let request):
+            return "/api/v4/hotels/\(request.hotelId)/channel-manager"
         }
     }
     
@@ -47,6 +50,8 @@ enum HotelRouterService: AlamofireBaseRouterProtocol {
             return .get
         case .deleteHotel(_):
             return .delete
+        case .fetchChannelManager(_):
+            return .get
         }
     }
     
