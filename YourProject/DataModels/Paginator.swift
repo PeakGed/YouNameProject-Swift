@@ -7,18 +7,6 @@
 
 import Foundation
 
-/* JSON Example
-{
-    "items": [
-
-    ],
-    "total_items": 26,
-    "total_pages": 2,
-    "per_page": 20,
-    "page": 1
-}
-*/
-
 struct Paginator<T: Codable>: Codable {
     let items: Collection<T>
     let totalItems: Int
@@ -99,3 +87,15 @@ struct Paginator<T: Codable>: Codable {
         )
     }
 }
+
+/* JSON Example
+{
+    "items": [
+
+    ],
+    "total_items": 26,
+    "total_pages": 2,
+    "per_page": 20,
+    "page": 1
+}
+*/
