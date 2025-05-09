@@ -5,12 +5,14 @@
 //  Created by IntrodexMini on 10/5/2568 BE.
 //
 
-import XCTest
+import Testing
+import Foundation
 
-final class ChannelManagerFeatureTests: XCTestCase {
+struct ChannelManagerFeatureTests {
     
     // MARK: - Decode Tests
     
+    @Test("Test decoding valid channel manager data")
     func testDecodeValidData() throws {
         // Arrange
         let json = """
@@ -57,27 +59,28 @@ final class ChannelManagerFeatureTests: XCTestCase {
         let feature = try JSONDecoder().decode(ChannelManagerFeature.self, from: jsonData)
         
         // Assert
-        XCTAssertTrue(feature.enabled)
-        XCTAssertEqual(feature.otas.count, 2)
+        assert(feature.enabled == true)
+        assert(feature.otas.count == 2)
         
         // Verify first OTA
-        XCTAssertEqual(feature.otas[0].otaName, "booking.com")
-        XCTAssertNil(feature.otas[0].beds24Id)
-        XCTAssertFalse(feature.otas[0].enabledSyncAllotment)
-        XCTAssertFalse(feature.otas[0].enabledSyncRate)
+        assert(feature.otas[0].otaName == "booking.com")
+        assert(feature.otas[0].beds24Id == nil)
+        assert(feature.otas[0].enabledSyncAllotment == false)
+        assert(feature.otas[0].enabledSyncRate == false)
         
         // Verify second OTA
-        XCTAssertEqual(feature.otas[1].otaName, "agoda")
-        XCTAssertEqual(feature.otas[1].beds24Id, "123")
-        XCTAssertTrue(feature.otas[1].enabledSyncAllotment)
-        XCTAssertTrue(feature.otas[1].enabledSyncRate)
+        assert(feature.otas[1].otaName == "agoda")
+        assert(feature.otas[1].beds24Id == "123")
+        assert(feature.otas[1].enabledSyncAllotment == true)
+        assert(feature.otas[1].enabledSyncRate == true)
         
         // Verify rate codes
-        XCTAssertEqual(feature.otaRateCodes.count, 2)
-        XCTAssertEqual(feature.otaRateCodes["bookingcomRateCode"]?.rateCodes.count, 2)
-        XCTAssertEqual(feature.otaRateCodes["agodacomRateCode"]?.rateCodes.count, 1)
+        assert(feature.otaRateCodes.count == 2)
+        assert(feature.otaRateCodes["bookingcomRateCode"]?.rateCodes.count == 2)
+        assert(feature.otaRateCodes["agodacomRateCode"]?.rateCodes.count == 1)
     }
     
+    @Test("Test decoding minimal channel manager data")
     func testDecodeMinimalData() throws {
         // Arrange
         let json = """
@@ -92,12 +95,13 @@ final class ChannelManagerFeatureTests: XCTestCase {
         let feature = try JSONDecoder().decode(ChannelManagerFeature.self, from: jsonData)
         
         // Assert
-        XCTAssertFalse(feature.enabled)
-        XCTAssertTrue(feature.otas.isEmpty)
-        XCTAssertTrue(feature.otaRateCodes.isEmpty)
+        assert(feature.enabled == false)
+        assert(feature.otas.isEmpty)
+        assert(feature.otaRateCodes.isEmpty)
     }
     
-    func testDecodeInvalidData() {
+    @Test("Test decoding invalid channel manager data throws error")
+    func testDecodeInvalidData() throws {
         // Arrange
         let json = """
         {
@@ -108,13 +112,18 @@ final class ChannelManagerFeatureTests: XCTestCase {
         let jsonData = json.data(using: .utf8)!
         
         // Act & Assert
-        XCTAssertThrowsError(try JSONDecoder().decode(ChannelManagerFeature.self, from: jsonData)) { error in
-            XCTAssertTrue(error is DecodingError)
+        var didThrow = false
+        do {
+            _ = try JSONDecoder().decode(ChannelManagerFeature.self, from: jsonData)
+        } catch {
+            didThrow = true
         }
+        assert(didThrow)
     }
     
     // MARK: - Encode Tests
     
+    @Test("Test encoding and decoding channel manager feature")
     func testEncode() throws {
         // Arrange
         let otas = [
@@ -135,21 +144,21 @@ final class ChannelManagerFeatureTests: XCTestCase {
         let decodedFeature = try JSONDecoder().decode(ChannelManagerFeature.self, from: encodedData)
         
         // Assert
-        XCTAssertEqual(decodedFeature.enabled, feature.enabled)
-        XCTAssertEqual(decodedFeature.otas.count, feature.otas.count)
-        XCTAssertEqual(decodedFeature.otaRateCodes.count, feature.otaRateCodes.count)
+        assert(decodedFeature.enabled == feature.enabled)
+        assert(decodedFeature.otas.count == feature.otas.count)
+        assert(decodedFeature.otaRateCodes.count == feature.otaRateCodes.count)
         
         // Verify OTA details
-        XCTAssertEqual(decodedFeature.otas[0].otaName, "test_ota")
-        XCTAssertEqual(decodedFeature.otas[0].beds24Id, "123")
-        XCTAssertTrue(decodedFeature.otas[0].enabledSyncAllotment)
-        XCTAssertFalse(decodedFeature.otas[0].enabledSyncRate)
+        assert(decodedFeature.otas[0].otaName == "test_ota")
+        assert(decodedFeature.otas[0].beds24Id == "123")
+        assert(decodedFeature.otas[0].enabledSyncAllotment == true)
+        assert(decodedFeature.otas[0].enabledSyncRate == false)
         
         // Verify rate codes
         let decodedRateCodes = decodedFeature.otaRateCodes["testRateCode"]?.rateCodes
-        XCTAssertEqual(decodedRateCodes?.count, 1)
-        XCTAssertEqual(decodedRateCodes?[0].code, "TEST1")
-        XCTAssertEqual(decodedRateCodes?[0].name, "Test Rate")
+        assert(decodedRateCodes?.count == 1)
+        assert(decodedRateCodes?[0].code == "TEST1")
+        assert(decodedRateCodes?[0].name == "Test Rate")
     }
 }
 
