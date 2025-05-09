@@ -6,7 +6,7 @@
 //
 import Foundation
 
-enum SortOrder: String {
+enum SortOrderBy: String {
       case ascending = "asc"
       case descending = "desc"
   }

@@ -9,7 +9,11 @@ import Foundation
 
 struct RoomTypeServiceRequest {
     struct FetchRoomTypes: Encodable {
-        // Query parameters can be added here if needed
+        let hotelId: Int
+        
+        enum CodingKeys: String, CodingKey {
+            case hotelId = "hotel_id"
+        }
     }
     
     struct FetchRoomType: Encodable {

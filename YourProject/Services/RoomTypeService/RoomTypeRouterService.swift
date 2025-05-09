@@ -53,7 +53,12 @@ enum RoomTypeRouterService: AlamofireBaseRouterProtocol {
     }
     
     var parameters: [String: Any]? {
-        return nil
+        switch self {
+        case .fetchRoomTypes(let request):
+            return ["hotel_id" : request.hotelId]
+        default:
+            return nil
+        }
     }
     
     var body: Data? {
