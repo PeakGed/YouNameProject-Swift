@@ -12,10 +12,10 @@
 //  Created by IntrodexMini on 26/2/2568 BE.
 //
 
-typealias HotelShorts = Collection<HotelShort>
+typealias HotelsShort = Collection<HotelShort>
 
 //MARK: Computed properties
-extension HotelShorts {
+extension HotelsShort {
     
     enum SortBy: String {
         case id

@@ -68,7 +68,7 @@
 				DataModels/Hotel/Hotel/Hotel.swift,
 				DataModels/Hotel/Hotel/Hotels.swift,
 				DataModels/Hotel/Hotel/HotelShort.swift,
-				DataModels/Hotel/Hotel/HotelShorts.swift,
+				DataModels/Hotel/Hotel/HotelsShort.swift,
 				DataModels/Hotel/PriceCard/LocalPriceCard.swift,
 				DataModels/Hotel/PriceCard/LocalPriceCards.swift,
 				DataModels/Hotel/PriceCard/PeriodDate.swift,

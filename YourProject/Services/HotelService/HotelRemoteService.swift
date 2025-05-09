@@ -10,9 +10,11 @@ import Mockable
 
 @Mockable
 protocol HotelServiceProtocol: AnyObject {
-    func fetchHotels(request: HotelServiceRequest.FetchHotels) async throws -> Hotels
+    func fetchHotels() async throws -> Hotels
     func createHotel(request: HotelServiceRequest.CreateHotel) async throws -> Hotel
     func updateHotel(request: HotelServiceRequest.UpdateHotel) async throws -> Hotel
+    func fetchHotelsShort() async throws -> HotelsShort
+    func deleteHotel(request: HotelServiceRequest.DeleteHotel) async throws
 }
 
 class HotelRemoteService: HotelServiceProtocol {
@@ -26,8 +28,8 @@ class HotelRemoteService: HotelServiceProtocol {
         self.apiManager = apiManager
     }
     
-    func fetchHotels(request: HotelServiceRequest.FetchHotels) async throws -> Hotels {
-        let router = HotelRouterService.fetchHotels(request: request)
+    func fetchHotels() async throws -> Hotels {
+        let router = HotelRouterService.fetchHotels
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
@@ -42,5 +44,17 @@ class HotelRemoteService: HotelServiceProtocol {
         let router = HotelRouterService.updateHotel(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
+    }
+    
+    func fetchHotelsShort() async throws -> HotelsShort {
+        let router = HotelRouterService.fetchHotelsShort
+        return try await apiManager.request(router: router,
+                                           requiredAuthorization: true)
+    }
+    
+    func deleteHotel(request: HotelServiceRequest.DeleteHotel) async throws {
+        let router = HotelRouterService.deleteHotel(request: request)
+        try await apiManager.requestACK(router: router,
+                                        requiredAuthorization: true)
     }
 } 

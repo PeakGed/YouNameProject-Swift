@@ -7,9 +7,6 @@
 import Foundation
 
 struct HotelServiceRequest {
-    struct FetchHotels: Encodable {
-        
-    }
     
     struct CreateHotel: Encodable {
         let name: String
@@ -95,5 +92,9 @@ struct HotelServiceRequest {
             case otaRateCodes = "ota_rate_codes"
             // hotelId is not encoded as it's used in the URL path
         }
+    }
+    
+    struct DeleteHotel: Encodable {
+        let hotelId: Int
     }
 } 

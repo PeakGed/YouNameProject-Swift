@@ -10,9 +10,11 @@ import Foundation
 
 enum HotelRouterService: AlamofireBaseRouterProtocol {
     
-    case fetchHotels(request: HotelServiceRequest.FetchHotels)
+    case fetchHotels
     case createHotel(request: HotelServiceRequest.CreateHotel)
     case updateHotel(request: HotelServiceRequest.UpdateHotel)
+    case fetchHotelsShort
+    case deleteHotel(request: HotelServiceRequest.DeleteHotel)
     
     var domain: String {
         return AppConfiguration.shared.baseURL
@@ -20,23 +22,31 @@ enum HotelRouterService: AlamofireBaseRouterProtocol {
     
     var path: String {
         switch self {
-        case .fetchHotels(_):
+        case .fetchHotels:
             return "/v4/hotels"
         case .createHotel(_):
             return "/api/v4/hotels"
         case .updateHotel(let request):
+            return "/api/v4/hotels/\(request.hotelId)"
+        case .fetchHotelsShort:
+            return "/api/v4/hotels/short"
+        case .deleteHotel(let request):
             return "/api/v4/hotels/\(request.hotelId)"
         }
     }
     
     var method: Alamofire.HTTPMethod {
         switch self {
-        case .fetchHotels(_):
+        case .fetchHotels:
             return .get
         case .createHotel(_):
             return .post
         case .updateHotel(_):
             return .put
+        case .fetchHotelsShort:
+            return .get
+        case .deleteHotel(_):
+            return .delete
         }
     }
     
