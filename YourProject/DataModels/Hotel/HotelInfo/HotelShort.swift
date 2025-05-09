@@ -95,6 +95,16 @@ struct HotelShort: Codable {
     }
 } 
 
+extension HotelShort {
+    
+    enum SortBy: String {
+        case id
+        case name
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+    }
+    
+}
 
 /*
 {

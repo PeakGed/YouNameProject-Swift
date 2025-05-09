@@ -17,13 +17,6 @@ typealias HotelsShort = Collection<HotelShort>
 //MARK: Computed properties
 extension HotelsShort {
 
-    enum SortBy: String {
-        case id
-        case name
-        case createdAt = "created_at"
-        case updatedAt = "updated_at"
-    }
-
     var hotelNames: [String] {
         return lists.map { $0.name }
     }
@@ -34,7 +27,7 @@ extension HotelsShort {
 extension HotelsShort {
     
     func sortedBy(
-        by: SortBy = .name,
+        by: HotelShort.SortBy = .name,
         orderBy: SortOrderBy = .ascending
     ) -> HotelsShort {
         switch by {

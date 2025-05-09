@@ -34,7 +34,7 @@ struct Hotel: Codable {
     let bannerImage: String?
     let createdAt: Date
     let updatedAt: Date
-
+    
     enum CodingKeys: String, CodingKey {
         case id, name, status, information, address, geolocation, phone, policies, email, website
         case workingTime = "working_time"
@@ -51,7 +51,7 @@ struct Hotel: Codable {
         case createdAt = "created_at"
         case updatedAt = "updated_at"
     }
-
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(Int.self, forKey: .id)
@@ -82,34 +82,34 @@ struct Hotel: Codable {
         createdAt = try container.decode(String.self, forKey: .createdAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
         updatedAt = try container.decode(String.self, forKey: .updatedAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
     }
-
+    
     init(id: Int,
-     name: String,
-      status: String,
-       information: String,
-        address: String,
+         name: String,
+         status: String,
+         information: String,
+         address: String,
          geolocation: String?,
-          phone: String?,
-          policies: String?,
-          email: String?,
-          website: String?,
-          workingTime: String?,
-          checkInTime: String?,
-          checkOutTime: String?,
-          note: String?,
-          hotelLogo300: String?,
-          taxNumber: String?,
-          photos: [String],
-          headerLogoPhotos: [String],
-          tags: [String],
-          quote: String?,
-          termAndCondition: String?,
-          latitude: String?,
-          longitude: String?,
-          logoImage: String?,
-          bannerImage: String?,
-          createdAt: Date,
-          updatedAt: Date) {
+         phone: String?,
+         policies: String?,
+         email: String?,
+         website: String?,
+         workingTime: String?,
+         checkInTime: String?,
+         checkOutTime: String?,
+         note: String?,
+         hotelLogo300: String?,
+         taxNumber: String?,
+         photos: [String],
+         headerLogoPhotos: [String],
+         tags: [String],
+         quote: String?,
+         termAndCondition: String?,
+         latitude: String?,
+         longitude: String?,
+         logoImage: String?,
+         bannerImage: String?,
+         createdAt: Date,
+         updatedAt: Date) {
         self.id = id
         self.name = name
         self.status = status
@@ -138,7 +138,7 @@ struct Hotel: Codable {
         self.createdAt = createdAt
         self.updatedAt = updatedAt
     }
-
+    
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
@@ -171,34 +171,48 @@ struct Hotel: Codable {
     }
 }
 
+extension Hotel {
+    
+    enum FilterBy: String {
+        case name
+    }
+    
+    enum SortBy: String {
+        case id
+        case name
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+    }
+}
+
 /*
  {
-     "id": 105,
-     "name": "โอมเมดเสตย์",
-     "status": "created",
-     "information": "dddddddd",
-     "address": "127/4 ถ. สุขุมวิท แขวง พระโขนงเหนือ เขตวัฒนา กรุงเทพมหานคร 10110 ประเทศไทย",
-     "geolocation": null,
-     "phone": "0223232655",
-     "policies": null,
-     "email": "asdd@asd.com",
-     "website": null,
-     "working_time": "",
-     "check_in_time": "1",
-     "check_out_time": "2",
-     "note": null,
-     "hotel_logo_300": null,
-     "tax_number": null,
-     "photos": [],
-     "header_logo_photos": [],
-     "tags": [],
-     "quote": "ฟกฟกไฟหกฟกหก",
-     "term_and_condition": "344r///ำ  sdfdsf  ",
-     "latitude": "13.706704797987564",
-     "longitude": "100.60173992067575",
-     "logo_image": "https://hms-heroku.s3.ap-southeast-1.amazonaws.com/documents/c3b43969-ac5b-4099-9351-6607cd778475/BFD53D03-8E67-491B-BCF7-45C3D0B8451C.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2I7XJ7WJNRHU7NRV%2F20250509%2Fap-southeast-1%2Fs3%2Faws4_request&X-Amz-Date=20250509T010227Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=aad33c5b285172985dd43619af1af64ad821a4f98a3206b12ed864b00b20b8c0",
-     "banner_image": null,
-     "created_at": "2019-11-19T17:08:46.877+07:00",
-     "updated_at": "2024-05-11T06:13:49.864+07:00"
+ "id": 105,
+ "name": "โอมเมดเสตย์",
+ "status": "created",
+ "information": "dddddddd",
+ "address": "127/4 ถ. สุขุมวิท แขวง พระโขนงเหนือ เขตวัฒนา กรุงเทพมหานคร 10110 ประเทศไทย",
+ "geolocation": null,
+ "phone": "0223232655",
+ "policies": null,
+ "email": "asdd@asd.com",
+ "website": null,
+ "working_time": "",
+ "check_in_time": "1",
+ "check_out_time": "2",
+ "note": null,
+ "hotel_logo_300": null,
+ "tax_number": null,
+ "photos": [],
+ "header_logo_photos": [],
+ "tags": [],
+ "quote": "ฟกฟกไฟหกฟกหก",
+ "term_and_condition": "344r///ำ  sdfdsf  ",
+ "latitude": "13.706704797987564",
+ "longitude": "100.60173992067575",
+ "logo_image": "https://hms-heroku.s3.ap-southeast-1.amazonaws.com/documents/c3b43969-ac5b-4099-9351-6607cd778475/BFD53D03-8E67-491B-BCF7-45C3D0B8451C.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2I7XJ7WJNRHU7NRV%2F20250509%2Fap-southeast-1%2Fs3%2Faws4_request&X-Amz-Date=20250509T010227Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=aad33c5b285172985dd43619af1af64ad821a4f98a3206b12ed864b00b20b8c0",
+ "banner_image": null,
+ "created_at": "2019-11-19T17:08:46.877+07:00",
+ "updated_at": "2024-05-11T06:13:49.864+07:00"
  }
  */
