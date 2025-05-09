@@ -280,15 +280,14 @@ extension Date {
         return dateFormatter.string(from: self)
     }
     
-//    func toDateString(_ strDateFormat: String,
-//                      locale: Locale) -> String {
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = strDateFormat
-//        dateFormatter.calendar = Calendar(identifier: Calendar.Identifier.gregorian) // use fix calendar
-//        dateFormatter.locale = locale
-//        return dateFormatter.string(from: self)
-//    }
-//    
+    // suggest by ai
+//    private static let isoDateFormatter: DateFormatter = {
+//        let formatter = DateFormatter()
+//        formatter.locale = Locale(identifier: "en_US_POSIX")
+//        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
+//        return formatter
+//    }()
+    
     func toDateString(_ strDateFormat: String,
                       timeZone: TimeZone) -> String {
         let dateFormatter = DateFormatter()
