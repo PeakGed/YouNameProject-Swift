@@ -15,7 +15,6 @@ enum FolioRouterService: AlamofireBaseRouterProtocol {
     case createFolio(request: FolioServiceRequest.CreateFolio)
     case updateFolio(request: FolioServiceRequest.UpdateFolio)
     case deleteFolio(request: FolioServiceRequest.DeleteFolio)
-    case batchCreateFolios(request: FolioServiceRequest.BatchCreateFolios)
     
     var domain: String {
         return AppConfiguration.shared.baseURL
@@ -33,8 +32,6 @@ enum FolioRouterService: AlamofireBaseRouterProtocol {
             return "/api/v4/folios/\(request.id)"
         case .deleteFolio(let request):
             return "/api/v4/folios/\(request.id)"
-        case .batchCreateFolios(_):
-            return "/api/v4/folios/batch_create"
         }
     }
     
@@ -42,7 +39,7 @@ enum FolioRouterService: AlamofireBaseRouterProtocol {
         switch self {
         case .fetchFolios(_), .fetchFolio(_):
             return .get
-        case .createFolio(_), .batchCreateFolios(_):
+        case .createFolio(_):
             return .post
         case .updateFolio(_):
             return .put
@@ -52,42 +49,62 @@ enum FolioRouterService: AlamofireBaseRouterProtocol {
     }
     
     var headers: [String: String]? {
-        return ["Content-Type": "application/json"]
+        var headers = ["Content-Type": "application/json"]
+        if method == .post {
+            headers["Content-Type"] = "application/x-www-form-urlencoded"
+        }
+        headers["Accept"] = "application/json"
+        return headers
     }
     
     var parameters: [String: Any]? {
-        return nil
-    }
-    
-    var body: Data? {
         switch self {
+        case .fetchFolios(let request):
+            var params: [String: Any] = ["hotel_id": request.hotelId]
+            if let page = request.page { params["page"] = page }
+            if let perPage = request.perPage { params["per_page"] = perPage }
+            if let sortedBy = request.sortedBy { params["sorted_by"] = sortedBy }
+            if let sortedOrder = request.sortedOrder { params["sorted_order"] = sortedOrder }
+            return params
         case .createFolio(let request):
-            return try? JSONEncoder().encode(request)
+            return [
+                "hotel_id": request.hotelId,
+                "name": request.name,
+                "amount": request.amount,
+                "description": request.description,
+                "category_id": request.categoryId,
+                "amount_vat_option": request.amountVatOption
+            ]
         case .updateFolio(let request):
-            return try? JSONEncoder().encode(request)
-        case .batchCreateFolios(let request):
-            return try? JSONEncoder().encode(request)
+            var params: [String: Any] = [:]
+            if let name = request.name { params["name"] = name }
+            if let amount = request.amount { params["amount"] = amount }
+            if let description = request.description { params["description"] = description }
+            if let categoryId = request.categoryId { params["category_id"] = categoryId }
+            if let amountVatOption = request.amountVatOption { params["amount_vat_option"] = amountVatOption }
+            return params
         default:
             return nil
         }
+    }
+    
+    var body: Data? {
+        return nil // We're using parameters instead of body for all requests
     }
     
     func asURLRequest() throws -> URLRequest {
         guard let url = URL(string: domain + path) else {
             throw APIError.invalidURL
         }
-        let encoding: ParameterEncoding = (method == .get) ? URLEncoding.default : JSONEncoding.default
-        var request = URLRequest(url: url)
         
+        var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
-        request.httpBody = body
         
         headers?.forEach {
-            request.addValue($0.value,
-                             forHTTPHeaderField: $0.key)
+            request.addValue($0.value, forHTTPHeaderField: $0.key)
         }
         
-        return try encoding.encode(request,
-                                   with: parameters)
+        let encoding: ParameterEncoding = method == .get ? URLEncoding.default : URLEncoding.httpBody
+        return try encoding.encode(request, with: parameters)
     }
 } 

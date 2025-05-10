@@ -10,12 +10,11 @@ import Mockable
 
 @Mockable
 protocol FolioServiceProtocol: AnyObject {
-    func fetchFolios(request: FolioServiceRequest.FetchFolios) async throws -> Folios
+    func fetchFolios(request: FolioServiceRequest.FetchFolios) async throws -> Paginator<Folios>
     func fetchFolio(request: FolioServiceRequest.FetchFolio) async throws -> Folio
     func createFolio(request: FolioServiceRequest.CreateFolio) async throws -> Folio
     func updateFolio(request: FolioServiceRequest.UpdateFolio) async throws -> Folio
     func deleteFolio(request: FolioServiceRequest.DeleteFolio) async throws
-    func batchCreateFolios(request: FolioServiceRequest.BatchCreateFolios) async throws -> Folios
 }
 
 class FolioRemoteService: FolioServiceProtocol {
@@ -29,7 +28,7 @@ class FolioRemoteService: FolioServiceProtocol {
         self.apiManager = apiManager
     }
     
-    func fetchFolios(request: FolioServiceRequest.FetchFolios) async throws -> Folios {
+    func fetchFolios(request: FolioServiceRequest.FetchFolios) async throws -> Paginator<Folios> {
         let router = FolioRouterService.fetchFolios(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
@@ -57,11 +56,5 @@ class FolioRemoteService: FolioServiceProtocol {
         let router = FolioRouterService.deleteFolio(request: request)
         try await apiManager.requestACK(router: router,
                                         requiredAuthorization: true)
-    }
-    
-    func batchCreateFolios(request: FolioServiceRequest.BatchCreateFolios) async throws -> Folios {
-        let router = FolioRouterService.batchCreateFolios(request: request)
-        return try await apiManager.request(router: router,
-                                           requiredAuthorization: true)
     }
 } 

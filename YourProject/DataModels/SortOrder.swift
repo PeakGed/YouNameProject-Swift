@@ -10,3 +10,8 @@ enum SortOrderBy: String {
       case ascending = "asc"
       case descending = "desc"
   }
+
+enum ServiceSortedOrder: String, Codable {
+    case ascending = "ASC"
+    case descending = "DESC"
+}
