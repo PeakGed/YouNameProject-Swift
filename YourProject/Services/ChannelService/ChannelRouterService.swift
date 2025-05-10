@@ -2,9 +2,8 @@ import Foundation
 import Alamofire
 import Mockable
 
-enum ChannelRouterService: AlamofireBaseRouterProtocol {
-    
-    case fetchChannels(request: ChannelServiceRequest.FetchChannels)
+enum ChannelRouterService: AlamofireBaseRouterProtocol {    
+    case fetchChannels
     case fetchChannel(request: ChannelServiceRequest.FetchChannel)
     case createChannel(request: ChannelServiceRequest.CreateChannel)
     case updateChannel(request: ChannelServiceRequest.UpdateChannel)
@@ -46,10 +45,12 @@ enum ChannelRouterService: AlamofireBaseRouterProtocol {
     }
     
     var headers: [String: String] {
-        return [
-            "Content-Type": "application/json"
-        ]
-    }    
+        return ["Content-Type": "application/json"]
+    }
+    
+    var parameters: [String: Any]? {
+        return nil
+    }
      
     var body: Data? {
         switch self {
@@ -75,7 +76,7 @@ enum ChannelRouterService: AlamofireBaseRouterProtocol {
         request.httpMethod = method.rawValue
         request.httpBody = body
         
-        headers?.forEach {
+        headers.forEach {
             request.addValue($0.value,
                              forHTTPHeaderField: $0.key)
         }

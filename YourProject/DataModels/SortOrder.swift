@@ -15,3 +15,11 @@ enum ServiceSortedOrder: String, Codable {
     case ascending = "ASC"
     case descending = "DESC"
 }
+
+enum PerPage: String, Codable {
+    case ten = "10"
+    case twenty = "20"
+    case fifty = "50"
+    case hundred = "100"
+    
+}

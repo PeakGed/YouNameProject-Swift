@@ -107,6 +107,12 @@
 				Services/AuthService/AuthRemoteService.swift,
 				Services/AuthService/AuthRouterService.swift,
 				Services/AuthService/AuthServiceRequest.swift,
+				Services/ChannelService/ChannelRemoteService.swift,
+				Services/ChannelService/ChannelRouterService.swift,
+				Services/ChannelService/ChannelServiceRequest.swift,
+				Services/FolioService/FolioRemoteService.swift,
+				Services/FolioService/FolioRouterService.swift,
+				Services/FolioService/FolioServiceRequest.swift,
 			);
 			target = 36B587D42BF73F1900D523D0 /* YourProjectTests */;
 		};

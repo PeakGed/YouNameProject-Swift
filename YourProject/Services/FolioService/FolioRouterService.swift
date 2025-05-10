@@ -23,15 +23,15 @@ enum FolioRouterService: AlamofireBaseRouterProtocol {
     var path: String {
         switch self {
         case .fetchFolios(_):
-            return "/api/v4/folios"
+            return "/v4/folios"
         case .fetchFolio(let request):
-            return "/api/v4/folios/\(request.id)"
+            return "/v4/folios/\(request.id)"
         case .createFolio(_):
-            return "/api/v4/folios"
+            return "/v4/folios"
         case .updateFolio(let request):
-            return "/api/v4/folios/\(request.id)"
+            return "/v4/folios/\(request.id)"
         case .deleteFolio(let request):
-            return "/api/v4/folios/\(request.id)"
+            return "/v4/folios/\(request.id)"
         }
     }
     
@@ -49,43 +49,18 @@ enum FolioRouterService: AlamofireBaseRouterProtocol {
     }
     
     var headers: [String: String]? {
-        var headers = ["Content-Type": "application/json"]
-        if method == .post {
-            headers["Content-Type"] = "application/x-www-form-urlencoded"
-        }
-        headers["Accept"] = "application/json"
-        return headers
+        return [
+            "Content-Type": "application/json"
+        ]
     }
     
     var parameters: [String: Any]? {
-        // switch self {
-        // case .fetchFolios(let request):
-        //     var params: [String: Any] = ["hotel_id": request.hotelId]
-        //     if let page = request.page { params["page"] = page }
-        //     if let perPage = request.perPage { params["per_page"] = perPage }
-        //     if let sortedBy = request.sortedBy { params["sorted_by"] = sortedBy }
-        //     if let sortedOrder = request.sortedOrder { params["sorted_order"] = sortedOrder }
-        //     return params
-        // case .createFolio(let request):
-        //     return [
-        //         "hotel_id": request.hotelId,
-        //         "name": request.name,
-        //         "amount": request.amount,
-        //         "description": request.description,
-        //         "category_id": request.categoryId,
-        //         "amount_vat_option": request.amountVatOption
-        //     ]
-        // case .updateFolio(let request):
-        //     var params: [String: Any] = [:]
-        //     if let name = request.name { params["name"] = name }
-        //     if let amount = request.amount { params["amount"] = amount }
-        //     if let description = request.description { params["description"] = description }
-        //     if let categoryId = request.categoryId { params["category_id"] = categoryId }
-        //     if let amountVatOption = request.amountVatOption { params["amount_vat_option"] = amountVatOption }
-        //     return params
-        // default:
-        //     return nil
-        nil
+        switch self {
+        case .fetchFolios(let request):
+            return request.parameters
+        default:
+            return nil
+        }
     }
     
     var body: Data? {
@@ -94,8 +69,6 @@ enum FolioRouterService: AlamofireBaseRouterProtocol {
             return try? JSONEncoder().encode(request)
         case .updateFolio(let request):
             return try? JSONEncoder().encode(request)
-        case .deleteFolio(let request):
-            return try? JSONEncoder().encode(request)            
         default:
             return nil
         }

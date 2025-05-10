@@ -16,21 +16,6 @@ struct ChannelServiceRequest {
         case updatedAt = "UPDATED_AT"
     }
     
-    // MARK: - Request Models
-    struct FetchChannels: Encodable {
-        let page: Int?
-        let perPage: Int?
-        let sortedBy: SortedBy?
-        let sortedOrder: ServiceSortedOrder?
-        
-        enum CodingKeys: String, CodingKey {
-            case page
-            case perPage = "per_page"
-            case sortedBy = "sorted_by"
-            case sortedOrder = "sorted_order"
-        }
-    }
-    
     struct FetchChannel: Encodable {
         let id: Int
         

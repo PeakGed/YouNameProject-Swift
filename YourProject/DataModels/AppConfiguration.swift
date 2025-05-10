@@ -20,8 +20,8 @@ extension AppConfiguration {
             switch self {
             case .production:
                 return "https://api.introdex.com"
-            case .development:
-                return "https://homemadestay.herokuapp.com/api"
+            case .development:                
+                return "http://157.230.37.164/api"
             }
         }
     }

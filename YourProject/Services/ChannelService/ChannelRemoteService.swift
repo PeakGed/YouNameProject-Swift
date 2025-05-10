@@ -11,7 +11,7 @@ import Mockable
 // MARK: - Protocol
 @Mockable
 protocol ChannelServiceProtocol: AnyObject {
-    func fetchChannels(request: ChannelServiceRequest.FetchChannels) async throws -> Channels
+    func fetchChannels() async throws -> Channels
     func fetchChannel(request: ChannelServiceRequest.FetchChannel) async throws -> Channel
     func createChannel(request: ChannelServiceRequest.CreateChannel) async throws -> Channel
     func updateChannel(request: ChannelServiceRequest.UpdateChannel) async throws -> Channel
@@ -30,8 +30,8 @@ final class ChannelRemoteService: ChannelServiceProtocol {
         self.apiManager = apiManager
     }
     
-    func fetchChannels(request: ChannelServiceRequest.FetchChannels) async throws -> Channels {
-        let router = ChannelRouterService.fetchChannels(request: request)
+    func fetchChannels() async throws -> Channels {
+        let router = ChannelRouterService.fetchChannels
         return try await apiManager.request(router: router,
                                           requiredAuthorization: true)
     }

@@ -20,10 +20,10 @@ struct Channel: Codable {
         case id
         case name
         case feeRate = "fee_rate"
-        case createdAt = "created_at"
-        case updatedAt = "updated_at"
         case subChannels = "sub_channels"
         case images
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
     }
     
     init(from decoder: Decoder) throws {

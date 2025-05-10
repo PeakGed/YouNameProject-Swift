@@ -25,9 +25,19 @@ struct FolioServiceRequest {
     struct FetchFolios: Encodable {
         let hotelId: Int
         let page: Int?
-        let perPage: Int?
+        let perPage: PerPage?
         let sortedBy: SortedBy?
         let sortedOrder: ServiceSortedOrder?
+        
+        var parameters: [String: Any]? {
+            var params: [String: Any] = [:]
+            params["hotel_id"] = hotelId
+            if let page = page { params["page"] = page }
+            if let perPage = perPage { params["per_page"] = perPage.rawValue }
+            if let sortedBy = sortedBy { params["sorted_by"] = sortedBy.rawValue }
+            if let sortedOrder = sortedOrder { params["sorted_order"] = sortedOrder.rawValue }
+            return params
+        }
         
         enum CodingKeys: String, CodingKey {
             case hotelId = "hotel_id"
