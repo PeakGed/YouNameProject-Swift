@@ -9,7 +9,7 @@ import Foundation
 struct Reservation: Codable {
     let id: Int
     let uid: String
-    let status: String
+    let status: Status
     let checkInDate: String
     let checkOutDate: String
     let adultNumber: Int
@@ -21,7 +21,6 @@ struct Reservation: Codable {
     let documentPhotos: String?
     let otaBookingId: String
     let relatedReservationId: String?
-    let data: ReservationData
     let guestComment: String?
     let markers: [String]
     let flags: [String]
@@ -55,7 +54,6 @@ struct Reservation: Codable {
         case documentPhotos = "document_photos"
         case otaBookingId = "ota_booking_id"
         case relatedReservationId = "related_reservation_id"
-        case data
         case guestComment = "guest_comment"
         case markers
         case flags
@@ -79,19 +77,18 @@ struct Reservation: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(Int.self, forKey: .id)
         uid = try container.decode(String.self, forKey: .uid)
-        status = try container.decode(String.self, forKey: .status)
+        status = try container.decode(Status.self, forKey: .status)
         checkInDate = try container.decode(String.self, forKey: .checkInDate)
         checkOutDate = try container.decode(String.self, forKey: .checkOutDate)
         adultNumber = try container.decode(Int.self, forKey: .adultNumber)
         extraAdultNumber = try container.decode(Int.self, forKey: .extraAdultNumber)
         childNumber = try container.decode(Int.self, forKey: .childNumber)
         contacts = try container.decode(Contacts.self, forKey: .contacts)
-        note = try container.decode(String.self, forKey: .note)
+        note = (try? container.decode(String.self, forKey: .note)) ?? ""
         canceledReason = try container.decodeIfPresent(String.self, forKey: .canceledReason)
         documentPhotos = try container.decodeIfPresent(String.self, forKey: .documentPhotos)
-        otaBookingId = try container.decode(String.self, forKey: .otaBookingId)
+        otaBookingId = (try? container.decode(String.self, forKey: .otaBookingId)) ?? ""
         relatedReservationId = try container.decodeIfPresent(String.self, forKey: .relatedReservationId)
-        data = try container.decode(ReservationData.self, forKey: .data)
         guestComment = try container.decodeIfPresent(String.self, forKey: .guestComment)
         markers = try container.decode([String].self, forKey: .markers)
         flags = try container.decode([String].self, forKey: .flags)
@@ -111,6 +108,71 @@ struct Reservation: Codable {
         subChannelId = try container.decodeIfPresent(String.self, forKey: .subChannelId)
     }
     
+    init(id: Int,
+         uid: String,
+         status: Status,
+         checkInDate: String,
+         checkOutDate: String,
+         adultNumber: Int,
+         extraAdultNumber: Int,
+         childNumber: Int,
+         contacts: Contacts,
+         note: String = "",
+         canceledReason: String? = nil,
+         documentPhotos: String? = nil,
+         otaBookingId: String = "",
+         relatedReservationId: String? = nil,
+         guestComment: String? = nil,
+         markers: [String] = [],
+         flags: [String] = [],
+         tags: [String] = [],
+         emoji: String? = nil,
+         checkedInAt: String? = nil,
+         checkedOutAt: String? = nil,
+         canceledAt: String? = nil,
+         noShowAt: String? = nil,
+         createdAt: String,
+         updatedAt: String,
+         hotelChannelReservationId: String? = nil,
+         confirmationInfo: ConfirmationInfo,
+         hotelId: Int,
+         creatorId: Int,
+         channelId: Int,
+         subChannelId: String? = nil) {
+        self.id = id
+        self.uid = uid
+        self.status = status
+        self.checkInDate = checkInDate
+        self.checkOutDate = checkOutDate
+        self.adultNumber = adultNumber
+        self.extraAdultNumber = extraAdultNumber
+        self.childNumber = childNumber
+        self.contacts = contacts
+        self.note = note
+        self.canceledReason = canceledReason
+        self.documentPhotos = documentPhotos
+        self.otaBookingId = otaBookingId
+        self.relatedReservationId = relatedReservationId
+        self.guestComment = guestComment
+        self.markers = markers
+        self.flags = flags
+        self.tags = tags
+        self.emoji = emoji
+        self.checkedInAt = checkedInAt
+        self.checkedOutAt = checkedOutAt
+        self.canceledAt = canceledAt
+        self.noShowAt = noShowAt
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
+        self.hotelChannelReservationId = hotelChannelReservationId
+        self.confirmationInfo = confirmationInfo
+        self.hotelId = hotelId
+        self.creatorId = creatorId
+        self.channelId = channelId
+        self.subChannelId = subChannelId
+    }
+    
+    
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
@@ -127,7 +189,6 @@ struct Reservation: Codable {
         try container.encodeIfPresent(documentPhotos, forKey: .documentPhotos)
         try container.encode(otaBookingId, forKey: .otaBookingId)
         try container.encodeIfPresent(relatedReservationId, forKey: .relatedReservationId)
-        try container.encode(data, forKey: .data)
         try container.encodeIfPresent(guestComment, forKey: .guestComment)
         try container.encode(markers, forKey: .markers)
         try container.encode(flags, forKey: .flags)
@@ -150,6 +211,43 @@ struct Reservation: Codable {
 
 extension Reservation {
     
+    enum Status: String, Codable ,CaseIterable {
+        case booked = "created"
+        case checkedIn = "checked_in"
+        case checkedOut = "checked_out"
+        case confirmed = "confirmed"
+        case canceled = "canceled"
+        case noShown = "no_showed"
+        
+        var description: String {
+            switch self {
+            case .booked:
+                return "Booked"
+            case .checkedIn:
+                return "Checked-in"
+            case .checkedOut:
+                return "Checked-out"
+            case .canceled:
+                return "Canceled"
+            case .confirmed:
+                return "Confirmed"
+            case .noShown:
+                return "No shown"
+            }
+        }
+        
+    }
+    
+    enum Flag: String, Codable {
+        case red = "FLAG_RED"
+        case blue = "FLAG_BLUE"
+        case orange = "FLAG_ORANGE"
+        case yellow = "FLAG_YELLOW"
+        case purple = "FLAG_PURPLE"
+        case green = "FLAG_GREEN"
+        case gray = "FLAG_GRAY"
+    }
+    
     struct Contacts: Codable {
         let title: String?
         let fullname: String
@@ -163,7 +261,7 @@ extension Reservation {
             case tel
         }
     }
-
+    
     struct ConfirmationInfo: Codable {
         let createdAt: String?
         let remark: String?
@@ -175,7 +273,7 @@ extension Reservation {
             case url
         }
     }
-
+    
     struct ReservationData: Codable {
         let additionServices: String
         let financeRecords: String
@@ -189,95 +287,87 @@ extension Reservation {
 
 /* example json
  {
-             "id": 512,
-             "uid": "rsvt_5la15znqpb30lz5rmqj",
-             "status": "checked_out",
-             "check_in_date": "2019-11-28",
-             "check_out_date": "2019-12-01",
-             "adult_number": 1,
-             "extra_adult_number": 0,
-             "child_number": 0,
-             "contacts": {
-                 "title": null,
-                 "fullname": "abc",
-                 "email": "avc@email.com",
-                 "tel": "1234567890"
-             },
-             "note": "test",
-             "canceled_reason": null,
-             "document_photos": null,
-             "ota_booking_id": "",
-             "related_reservation_id": null,
-             "data": {
-                 "addition_services": "[\n\n]",
-                 "finance_records": "[\n  {\n    \"note\" : \"\",\n    \"name\" : \"CHECK-OUT PAYMENT\",\n    \"amount\" : 1500,\n    \"timestamp\" : \"28 Nov 2019 13:51\",\n    \"method\" : \"Bank Transfer\"\n  }\n]"
-             },
-             "guest_comment": null,
-             "markers": [],
-             "flags": [],
-             "tags": [],
-             "emoji": null,
-             "checked_in_at": "2019-11-28T13:51:22.214+07:00",
-             "checked_out_at": "2020-08-27T21:58:06.587+07:00",
-             "canceled_at": null,
-             "no_showed_at": null,
-             "created_at": "2019-11-28T13:43:02.888+07:00",
-             "updated_at": "2020-08-27T21:58:06.595+07:00",
-             "hotel_channel_reservation_id": null,
-             "confirmation_info": {
-                 "created_at": null,
-                 "remark": null,
-                 "url": null
-             },
-             "hotel_id": 105,
-             "creator_id": 38,
-             "channel_id": 9,
-             "sub_channel_id": null
-         },
-         {
-             "id": 528,
-             "uid": "rsvt_5la15zp03yyhsxbvsl5",
-             "status": "checked_out",
-             "check_in_date": "2020-01-21",
-             "check_out_date": "2020-01-22",
-             "adult_number": 1,
-             "extra_adult_number": 0,
-             "child_number": 0,
-             "contacts": {
-                 "title": null,
-                 "fullname": "test",
-                 "email": "",
-                 "tel": ""
-             },
-             "note": "",
-             "canceled_reason": null,
-             "document_photos": null,
-             "ota_booking_id": "",
-             "related_reservation_id": null,
-             "data": {
-                 "addition_services": "[\n  {\n    \"qty\" : 2,\n    \"rate\" : 300,\n    \"folio_id\" : 116,\n    \"name\" : \"อาหารเช้า\"\n  }\n]",
-                 "finance_records": "[\n  {\n    \"method\" : \"Bank Transfer\",\n    \"note\" : \"\",\n    \"timestamp\" : \"21 Jan 2020 12:05\",\n    \"name\" : \"CHECK-OUT PAYMENT\",\n    \"amount\" : 1100\n  }\n]"
-             },
-             "guest_comment": null,
-             "markers": [],
-             "flags": [],
-             "tags": [],
-             "emoji": null,
-             "checked_in_at": "2020-01-21T12:04:47.827+07:00",
-             "checked_out_at": "2020-02-01T16:15:17.793+07:00",
-             "canceled_at": null,
-             "no_showed_at": null,
-             "created_at": "2020-01-21T12:01:19.993+07:00",
-             "updated_at": "2020-02-01T16:15:17.797+07:00",
-             "hotel_channel_reservation_id": null,
-             "confirmation_info": {
-                 "created_at": null,
-                 "remark": null,
-                 "url": null
-             },
-             "hotel_id": 105,
-             "creator_id": 38,
-             "channel_id": 8,
-             "sub_channel_id": null
-         }
+ "id": 512,
+ "uid": "rsvt_5la15znqpb30lz5rmqj",
+ "status": "checked_out",
+ "check_in_date": "2019-11-28",
+ "check_out_date": "2019-12-01",
+ "adult_number": 1,
+ "extra_adult_number": 0,
+ "child_number": 0,
+ "contacts": {
+ "title": null,
+ "fullname": "abc",
+ "email": "avc@email.com",
+ "tel": "1234567890"
+ },
+ "note": "test",
+ "canceled_reason": null,
+ "document_photos": null,
+ "ota_booking_id": "",
+ "related_reservation_id": null,
+ "guest_comment": null,
+ "markers": [],
+ "flags": [],
+ "tags": [],
+ "emoji": null,
+ "checked_in_at": "2019-11-28T13:51:22.214+07:00",
+ "checked_out_at": "2020-08-27T21:58:06.587+07:00",
+ "canceled_at": null,
+ "no_showed_at": null,
+ "created_at": "2019-11-28T13:43:02.888+07:00",
+ "updated_at": "2020-08-27T21:58:06.595+07:00",
+ "hotel_channel_reservation_id": null,
+ "confirmation_info": {
+ "created_at": null,
+ "remark": null,
+ "url": null
+ },
+ "hotel_id": 105,
+ "creator_id": 38,
+ "channel_id": 9,
+ "sub_channel_id": null
+ },
+ {
+ "id": 528,
+ "uid": "rsvt_5la15zp03yyhsxbvsl5",
+ "status": "checked_out",
+ "check_in_date": "2020-01-21",
+ "check_out_date": "2020-01-22",
+ "adult_number": 1,
+ "extra_adult_number": 0,
+ "child_number": 0,
+ "contacts": {
+ "title": null,
+ "fullname": "test",
+ "email": "",
+ "tel": ""
+ },
+ "note": "",
+ "canceled_reason": null,
+ "document_photos": null,
+ "ota_booking_id": "",
+ "related_reservation_id": null,
+ "guest_comment": null,
+ "markers": [],
+ "flags": [],
+ "tags": [],
+ "emoji": null,
+ "checked_in_at": "2020-01-21T12:04:47.827+07:00",
+ "checked_out_at": "2020-02-01T16:15:17.793+07:00",
+ "canceled_at": null,
+ "no_showed_at": null,
+ "created_at": "2020-01-21T12:01:19.993+07:00",
+ "updated_at": "2020-02-01T16:15:17.797+07:00",
+ "hotel_channel_reservation_id": null,
+ "confirmation_info": {
+ "created_at": null,
+ "remark": null,
+ "url": null
+ },
+ "hotel_id": 105,
+ "creator_id": 38,
+ "channel_id": 8,
+ "sub_channel_id": null
+ }
  */
