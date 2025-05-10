@@ -34,13 +34,13 @@ struct LocalPriceCard: Codable {
         self.description = try (container.decodeIfPresent(String.self, forKey: .description) ?? "")
         self.totalPrice = try (container.decodeIfPresent(String.self, forKey: .totalPrice)?.toDouble ?? 0)
         self.dailyPrice = try (container.decodeIfPresent(Double.self, forKey: .price) ?? 0)
-
+        
         let _days = try (container.decodeIfPresent([String].self, forKey: .periodTypes) ?? [])
         self.periodTypes = .init(days: _days)
         
         let _exceptionDates = try (container.decodeIfPresent([String].self, forKey: .exceptionDates) ?? [])
         self.exceptionDates = try _exceptionDates.map({ try $0.tryToDate(dateFormat: FormConfig.DateFormat.yyyyMMdd) })
-                               
+        
         self.reservableTypeId = try container.decode(Int.self, forKey: .reservableTypeId)
         self.reservableType = try container.decode(Self.ReservableKind.self, forKey: .reservableType)
         self.code = try? container.decode(String.self, forKey: .code)
@@ -62,23 +62,23 @@ struct LocalPriceCard: Codable {
         self.createdAt = try container.decode(String.self, forKey: .createdAt).tryToDate(FormConfig.DateFormat.datetimeISO)
         self.updatedAt = try container.decode(String.self, forKey: .updatedAt).tryToDate(FormConfig.DateFormat.datetimeISO)
     }
-
+    
     init(id: Int,
-     title: String,
-      description: String,
-       dailyPrice: Double,
-        totalPrice: Double,
+         title: String,
+         description: String,
+         dailyPrice: Double,
+         totalPrice: Double,
          periodTypes: WeekDays,
-          exceptionDates: [Date],
-           reservableTypeId: Int,
-            reservableType: ReservableKind,
-             code: String?,
-              color: String?,
-               meal: Meal,
-                period: PeriodDate?,
-                availableChannels: [AvailabelChannel],
-                 createdAt: Date,
-                  updatedAt: Date) {
+         exceptionDates: [Date],
+         reservableTypeId: Int,
+         reservableType: ReservableKind,
+         code: String?,
+         color: String?,
+         meal: Meal,
+         period: PeriodDate?,
+         availableChannels: [AvailabelChannel],
+         createdAt: Date,
+         updatedAt: Date) {
         self.id = id
         self.title = title
         self.description = description
@@ -96,7 +96,7 @@ struct LocalPriceCard: Codable {
         self.createdAt = createdAt
         self.updatedAt = updatedAt
     }
-
+    
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
@@ -136,7 +136,7 @@ struct LocalPriceCard: Codable {
         
         // convert date UTC
         let date = "\(date.toDateString("yyyy-MM-dd"))T00:00:00.000+00:00".toDate(dateFormat) ?? date
-         
+        
         // no period on setting
         guard let period else { return true }
         
@@ -280,7 +280,7 @@ extension LocalPriceCard {
         func isIncluded(date: Date) -> Bool {
             guard
                 let day = Day(dayFromCalendar: date)
-                else { return false }
+            else { return false }
             
             switch day {
             case .mon:
@@ -299,7 +299,7 @@ extension LocalPriceCard {
                 return contains(day: .sun)
             }
         }
-                        
+        
         enum Day: String, CaseIterable {
             case mon = "Mon"
             case tue = "Tue"
@@ -472,7 +472,7 @@ extension LocalPriceCard {
             try container.encode(channelID, forKey: .channelID)
             try container.encode(subChannelID, forKey: .subChannelID)
         }
-
+        
         func hash(into hasher: inout Hasher) {
             hasher.combine(channelID)
             hasher.combine(subChannelID)
@@ -480,198 +480,198 @@ extension LocalPriceCard {
     }
 }
 
-    
-    /*
-     {
-     "id": 260,
-     "title": "9999",
-     "description": "",
-     "price": 9999.0,
-     "total_price": "9999.0",
-     "period_types": [
-     "Sun",
-     "Fri",
-     "Tue",
-     "Mon",
-     "Wed",
-     "Sat",
-     "Thu"
-     ],
-     "exception_dates": [],
-     "reservable_type_id": 179,
-     "reservable_type_type": "RoomType",
-     "code": null,
-     "color": null,
-     "bf": {
-     "included": false,
-     "adult": {
-     "price": "0.0",
-     "limit": 0,
-     "extra_rate": "0.0",
-     "extra_limit": 0
-     },
-     "child": {
-     "price": "0.0",
-     "limit": 0,
-     "extra_rate": "0.0",
-     "extra_limit": 0
-     }
-     },
-     "channels": [
-     {
-     "channel_id": 7,
-     "sub_channel_id": 11
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 21
-     },
-     {
-     "channel_id": 4,
-     "sub_channel_id": 31
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 3
-     },
-     {
-     "channel_id": 4,
-     "sub_channel_id": 23
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 28
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 18
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 15
-     },
-     {
-     "channel_id": 6,
-     "sub_channel_id": null
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 27
-     },
-     {
-     "channel_id": 9,
-     "sub_channel_id": null
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 12
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 16
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 17
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 35
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 29
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 1
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 19
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 22
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 10
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 26
-     },
-     {
-     "channel_id": 8,
-     "sub_channel_id": null
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 32
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 9
-     },
-     {
-     "channel_id": 4,
-     "sub_channel_id": 7
-     },
-     {
-     "channel_id": 10,
-     "sub_channel_id": null
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 25
-     },
-     {
-     "channel_id": 11,
-     "sub_channel_id": null
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 14
-     },
-     {
-     "channel_id": 5,
-     "sub_channel_id": null
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 30
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 4
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 20
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 33
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 8
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 13
-     },
-     {
-     "channel_id": 7,
-     "sub_channel_id": 24
-     }
-     ],
-     "pinned": false,
-     "start_at": null,
-     "end_at": null,
-     "created_at": "2024-04-20T13:49:20.614+07:00",
-     "updated_at": "2024-04-20T13:49:20.620+07:00",
-     "hotel_id": 105
-     }
-     */
+
+/*
+ {
+ "id": 260,
+ "title": "9999",
+ "description": "",
+ "price": 9999.0,
+ "total_price": "9999.0",
+ "period_types": [
+ "Sun",
+ "Fri",
+ "Tue",
+ "Mon",
+ "Wed",
+ "Sat",
+ "Thu"
+ ],
+ "exception_dates": [],
+ "reservable_type_id": 179,
+ "reservable_type_type": "RoomType",
+ "code": null,
+ "color": null,
+ "bf": {
+ "included": false,
+ "adult": {
+ "price": "0.0",
+ "limit": 0,
+ "extra_rate": "0.0",
+ "extra_limit": 0
+ },
+ "child": {
+ "price": "0.0",
+ "limit": 0,
+ "extra_rate": "0.0",
+ "extra_limit": 0
+ }
+ },
+ "channels": [
+ {
+ "channel_id": 7,
+ "sub_channel_id": 11
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 21
+ },
+ {
+ "channel_id": 4,
+ "sub_channel_id": 31
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 3
+ },
+ {
+ "channel_id": 4,
+ "sub_channel_id": 23
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 28
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 18
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 15
+ },
+ {
+ "channel_id": 6,
+ "sub_channel_id": null
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 27
+ },
+ {
+ "channel_id": 9,
+ "sub_channel_id": null
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 12
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 16
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 17
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 35
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 29
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 1
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 19
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 22
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 10
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 26
+ },
+ {
+ "channel_id": 8,
+ "sub_channel_id": null
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 32
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 9
+ },
+ {
+ "channel_id": 4,
+ "sub_channel_id": 7
+ },
+ {
+ "channel_id": 10,
+ "sub_channel_id": null
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 25
+ },
+ {
+ "channel_id": 11,
+ "sub_channel_id": null
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 14
+ },
+ {
+ "channel_id": 5,
+ "sub_channel_id": null
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 30
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 4
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 20
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 33
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 8
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 13
+ },
+ {
+ "channel_id": 7,
+ "sub_channel_id": 24
+ }
+ ],
+ "pinned": false,
+ "start_at": null,
+ "end_at": null,
+ "created_at": "2024-04-20T13:49:20.614+07:00",
+ "updated_at": "2024-04-20T13:49:20.620+07:00",
+ "hotel_id": 105
+ }
+ */
