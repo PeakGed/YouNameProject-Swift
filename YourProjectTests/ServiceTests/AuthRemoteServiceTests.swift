@@ -36,7 +36,8 @@ final class AuthRouterServiceTests: XCTestCase {
         // Test parameters
         if let body = urlRequest.httpBody {
             do {
-                if let json = try JSONSerialization.jsonObject(with: body, options: []) as? [String: Any] {
+                if let json = try JSONSerialization.jsonObject(with: body,
+                                                               options: []) as? [String: Any] {
                     XCTAssertEqual(json["username"] as? String, "test@example.com")
                     XCTAssertEqual(json["password"] as? String, "password123")
                 } else {
@@ -65,7 +66,8 @@ final class AuthRouterServiceTests: XCTestCase {
         // Test parameters
         if let body = urlRequest.httpBody {
             do {
-                if let json = try JSONSerialization.jsonObject(with: body, options: []) as? [String: Any] {
+                if let json = try JSONSerialization.jsonObject(with: body,
+                                                               options: []) as? [String: Any] {
                     XCTAssertEqual(json["refresh_token"] as? String, "refresh_token_123")
                 } else {
                     XCTFail("JSON is not a dictionary")
