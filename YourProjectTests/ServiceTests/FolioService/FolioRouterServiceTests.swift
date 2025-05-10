@@ -123,7 +123,7 @@ final class FolioRouterServiceTests: XCTestCase {
             do {
                 if let json = try JSONSerialization.jsonObject(with: body, options: []) as? [String: Any] {
                     XCTAssertEqual(json["name"] as? String, "Updated Name")
-                    XCTAssertEqual(json["amount"] as? Double, 200.0)
+                    XCTAssertEqual(json["amount"] as? String, "200.0")
                     XCTAssertEqual(json["description"] as? String, "Updated Description")
                     XCTAssertEqual(json["category_id"] as? Int, 2)
                     XCTAssertEqual(json["amount_vat_option"] as? String, "included_vat")
