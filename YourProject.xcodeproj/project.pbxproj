@@ -52,6 +52,8 @@
 		0F819EEB2D4E08070025B2B0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				DataModels/Additional/Folio.swift,
+				DataModels/Additional/Folios.swift,
 				DataModels/AppConfiguration.swift,
 				DataModels/AuthTokenResponse.swift,
 				DataModels/Collection.swift,

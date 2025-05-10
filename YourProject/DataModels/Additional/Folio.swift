@@ -12,7 +12,7 @@ struct Folio: Codable {
     let name: String
     let amount: Double
     let amountBeforeVat: Double
-    let vatAmount: String
+    let vatAmount: Double
     let barcode: String?
     let code: String?
     let categoryId: Int?
@@ -44,7 +44,7 @@ struct Folio: Codable {
          name: String,
          amount: Double,
          amountBeforeVat: Double,
-         vatAmount: String,
+         vatAmount: Double,
          barcode: String? = nil,
          code: String? = nil,
          categoryId: Int? = nil,
@@ -76,7 +76,7 @@ struct Folio: Codable {
         name = try container.decode(String.self, forKey: .name)
         amount = try container.decode(String.self, forKey: .amount).trytoDouble()
         amountBeforeVat = try container.decode(String.self, forKey: .amountBeforeVat).trytoDouble()
-        vatAmount = try container.decode(String.self, forKey: .vatAmount)
+        vatAmount = try container.decode(String.self, forKey: .vatAmount).trytoDouble()
         barcode = try container.decodeIfPresent(String.self, forKey: .barcode)
         code = try container.decodeIfPresent(String.self, forKey: .code)
         categoryId = try container.decodeIfPresent(Int.self, forKey: .categoryId)
@@ -95,7 +95,7 @@ struct Folio: Codable {
         try container.encode(name, forKey: .name)
         try container.encode(amount.toString(), forKey: .amount)
         try container.encode(amountBeforeVat.toString(), forKey: .amountBeforeVat)
-        try container.encode(vatAmount, forKey: .vatAmount)
+        try container.encode(vatAmount.toString(), forKey: .vatAmount)
         try container.encode(barcode, forKey: .barcode)
         try container.encode(code, forKey: .code)
         try container.encode(categoryId, forKey: .categoryId)
