@@ -61,7 +61,7 @@ final class ChannelTest: XCTestCase {
         let subChannel = SubChannel(
             id: 31,
             name: "Travel together (เที่ยวด้วยกัน)",
-            feeRate: 0.0,
+            feeRate: 1.23,
             createdAt: createdAt,
             updatedAt: updatedAt
         )
@@ -69,7 +69,7 @@ final class ChannelTest: XCTestCase {
         let channel = Channel(
             id: 4,
             name: "Social Media",
-            feeRate: 0.0,
+            feeRate: 3.45,
             subChannels: [subChannel],
             images: [],
             createdAt: createdAt,
@@ -84,7 +84,7 @@ final class ChannelTest: XCTestCase {
         // Then
         XCTAssertEqual(decodedChannel.id, channel.id)
         XCTAssertEqual(decodedChannel.name, channel.name)
-        XCTAssertEqual(decodedChannel.feeRate, channel.feeRate)
+        XCTAssertEqual(decodedChannel.feeRate, channel.feeRate, accuracy: 0.0001)
         XCTAssertEqual(decodedChannel.subChannels.count, channel.subChannels.count)
         XCTAssertEqual(decodedChannel.images.count, channel.images.count)
     }
