@@ -62,7 +62,21 @@ struct Room: Codable {
 }
 
 extension Room {
-   
+    
+    enum FilterBy {
+        case id(id: Int)
+        case roomTypeId(id: Int)
+        case status(status: Status)
+    }
+    
+    enum SortBy: String {
+        case id
+        case code
+        case order
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+    }
+    
     enum CodingKeys: String, CodingKey {
         case id
         case code

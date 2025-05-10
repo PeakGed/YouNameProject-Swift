@@ -31,6 +31,7 @@ final class HotelShortTests: XCTestCase {
         // Arrange & Act
         let hotel = HotelShort(
             id: 1,
+            status: .created,
             name: "Test Hotel",
             quote: nil,
             hotelLogo300: nil,
@@ -112,6 +113,7 @@ final class HotelShortTests: XCTestCase {
     private func createSampleHotel() -> HotelShort {
         return HotelShort(
             id: 1,
+            status: .created,
             name: "Test Hotel",
             quote: "Great hotel",
             hotelLogo300: "logo.jpg",

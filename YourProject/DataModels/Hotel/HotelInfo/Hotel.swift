@@ -9,7 +9,7 @@ import Foundation
 struct Hotel: Codable {
     let id: Int
     let name: String
-    let status: String
+    let status: Status
     let information: String
     let address: String
     let geolocation: String?
@@ -56,7 +56,7 @@ struct Hotel: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(Int.self, forKey: .id)
         name = try container.decode(String.self, forKey: .name)
-        status = try container.decode(String.self, forKey: .status)
+        status = try container.decode(Status.self, forKey: .status)
         information = try container.decode(String.self, forKey: .information)
         address = try container.decode(String.self, forKey: .address)
         geolocation = try container.decodeIfPresent(String.self, forKey: .geolocation)
@@ -85,7 +85,7 @@ struct Hotel: Codable {
     
     init(id: Int,
          name: String,
-         status: String,
+         status: Status,
          information: String,
          address: String,
          geolocation: String?,
@@ -173,8 +173,10 @@ struct Hotel: Codable {
 
 extension Hotel {
     
-    enum FilterBy: String {
-        case name
+    enum FilterBy {
+        case id(id: Int)
+        case name(name: String)
+        case status(status: Status)
     }
     
     enum SortBy: String {
@@ -182,6 +184,10 @@ extension Hotel {
         case name
         case createdAt = "created_at"
         case updatedAt = "updated_at"
+    }
+    
+    enum Status: String, Codable {
+        case created = "created"
     }
 }
 

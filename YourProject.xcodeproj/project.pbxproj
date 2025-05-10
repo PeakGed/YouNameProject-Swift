@@ -76,6 +76,7 @@
 				DataModels/Hotel/RoomType/Rooms.swift,
 				DataModels/Hotel/RoomType/RoomType.swift,
 				DataModels/Hotel/RoomType/RoomTypes.swift,
+				DataModels/Hotel/RoomType/RoomTypeWithUnit.swift,
 				DataModels/Manager/APIManager/APIErrorResponse.swift,
 				DataModels/Manager/APIManager/APIManager.swift,
 				DataModels/Manager/APIManager/AuthInterceptor.swift,

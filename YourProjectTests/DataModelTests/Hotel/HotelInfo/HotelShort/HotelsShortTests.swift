@@ -124,6 +124,7 @@ struct HotelsShortTests {
     private func createSampleHotels() -> HotelsShort {
         let hotel1 = HotelShort(
             id: 1,
+            status: .created,
             name: "Hotel A",
             quote: "Great hotel",
             hotelLogo300: "logo1.jpg",
@@ -136,6 +137,7 @@ struct HotelsShortTests {
         
         let hotel2 = HotelShort(
             id: 2,
+            status: .created,
             name: "Hotel B",
             quote: nil,
             hotelLogo300: nil,
@@ -148,6 +150,7 @@ struct HotelsShortTests {
         
         let hotel3 = HotelShort(
             id: 3,
+            status: .created,
             name: "Hotel C",
             quote: "Amazing view",
             hotelLogo300: "logo3.jpg",

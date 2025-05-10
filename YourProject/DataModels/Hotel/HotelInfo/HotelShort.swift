@@ -9,6 +9,7 @@ import Foundation
 
 struct HotelShort: Codable {
     let id: Int
+    let status: Status
     let name: String
     let quote: String?
     let hotelLogo300: String?
@@ -20,6 +21,7 @@ struct HotelShort: Codable {
     
     enum CodingKeys: String, CodingKey {
         case id
+        case status
         case name
         case quote
         case hotelLogo300 = "hotel_logo_300"
@@ -34,6 +36,8 @@ struct HotelShort: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(Int.self,
                                   forKey: .id)
+        status = try container.decode(Status.self,
+                                      forKey: .id)
         name = try container.decode(String.self,
                                     forKey: .name)
         quote = try container.decodeIfPresent(String.self,
@@ -53,6 +57,7 @@ struct HotelShort: Codable {
     }
     
     init(id: Int,
+         status: Status,
          name: String,
          quote: String?,
          hotelLogo300: String?,
@@ -62,6 +67,7 @@ struct HotelShort: Codable {
          createdAt: Date,
          updatedAt: Date) {
         self.id = id
+        self.status = status
         self.name = name
         self.quote = quote
         self.hotelLogo300 = hotelLogo300
@@ -76,6 +82,8 @@ struct HotelShort: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id,
                              forKey: .id)
+        try container.encode(status,
+                             forKey: .status)
         try container.encode(name,
                              forKey: .name)
         try container.encodeIfPresent(quote,
@@ -96,6 +104,11 @@ struct HotelShort: Codable {
 } 
 
 extension HotelShort {
+    enum FilterBy {
+        case id(id: Int)
+        case name(name: String)
+        case status(status: Status)
+    }
     
     enum SortBy: String {
         case id
@@ -104,6 +117,9 @@ extension HotelShort {
         case updatedAt = "updated_at"
     }
     
+    enum Status: String, Codable {
+        case created = "created"
+    }
 }
 
 /*

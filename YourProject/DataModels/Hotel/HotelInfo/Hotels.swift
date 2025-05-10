@@ -41,6 +41,33 @@ extension Hotels {
 //        return Hotels(array: lists.filter({ $0.name == name }))
 //    }
     
+    func filterBy(
+        by: Hotel.FilterBy
+    ) -> Hotels {
+        switch by {
+        case .id(let id):
+            let result = lists.filter({
+                $0.id == id
+            })
+            
+            return .init(array: result)
+            
+        case .name(let name):
+            let result = lists.filter({
+                $0.name.lowercased().contains(name.lowercased())
+            })
+            
+            return .init(array: result)
+            
+        case .status(let status):
+            let result = lists.filter({
+                $0.status == status
+            })
+            
+            return .init(array: result)
+        }
+    }
+    
     func sortedBy(
         by: Hotel.SortBy = .name,
         orderBy: SortOrderBy = .ascending
@@ -55,7 +82,7 @@ extension Hotels {
                     return $0.name < $1.name
                 }
             })
-            return Hotels(array: result)
+            return .init(array: result)
 
         case .id:
             let result = lists.sorted(by: {
@@ -66,7 +93,8 @@ extension Hotels {
                     return $0.id < $1.id
                 }
             })
-            return Hotels(array: result)
+            return .init(array: result)
+            
         case .createdAt:
             let result = lists.sorted(by: {
                 switch orderBy {
@@ -76,7 +104,8 @@ extension Hotels {
                     return $0.createdAt < $1.createdAt
                 }
             })
-            return Hotels(array: result)
+            return .init(array: result)
+            
         case .updatedAt:
             let result = lists.sorted(by: {
                 switch orderBy {
@@ -86,7 +115,7 @@ extension Hotels {
                     return $0.updatedAt < $1.updatedAt
                 }
             })
-            return Hotels(array: result)
+            return .init(array: result)
 
         }
     }
