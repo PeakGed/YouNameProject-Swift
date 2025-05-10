@@ -11,7 +11,7 @@ import Mockable
 @Mockable
 protocol RoomServiceProtocol: AnyObject {
     func fetchRooms(request: RoomServiceRequest.FetchRooms) async throws -> Rooms
-    func fetchRoomDetail(request: RoomServiceRequest.FetchRoomDetail) async throws -> Room
+    func fetchRoom(request: RoomServiceRequest.FetchRoom) async throws -> Room
     func createRoom(request: RoomServiceRequest.CreateRoom) async throws -> Room
     func updateRoom(request: RoomServiceRequest.UpdateRoom) async throws -> Room
     func deleteRoom(request: RoomServiceRequest.DeleteRoom) async throws
@@ -38,8 +38,8 @@ class RoomRemoteService: RoomServiceProtocol {
                                            requiredAuthorization: true)
     }
     
-    func fetchRoomDetail(request: RoomServiceRequest.FetchRoomDetail) async throws -> Room {
-        let router = RoomRouterService.fetchRoomDetail(request: request)
+    func fetchRoom(request: RoomServiceRequest.FetchRoom) async throws -> Room {
+        let router = RoomRouterService.fetchRoom(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }

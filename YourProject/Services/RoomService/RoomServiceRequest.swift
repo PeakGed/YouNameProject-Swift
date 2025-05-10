@@ -8,10 +8,16 @@ import Foundation
 
 struct RoomServiceRequest {
     struct FetchRooms: Encodable {
+        let roomTypeId: Int
+        let hotelId: Int
         
+        enum CodingKeys: String, CodingKey {
+            case roomTypeId = "room_type_id"
+            case hotelId = "hotel_id"
+        }
     }
     
-    struct FetchRoomDetail: Encodable {
+    struct FetchRoom: Encodable {
         let id: Int
         
         // id is not encoded as it's used in the URL path

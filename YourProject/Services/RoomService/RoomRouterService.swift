@@ -11,7 +11,7 @@ import Foundation
 enum RoomRouterService: AlamofireBaseRouterProtocol {
     
     case fetchRooms(request: RoomServiceRequest.FetchRooms)
-    case fetchRoomDetail(request: RoomServiceRequest.FetchRoomDetail)
+    case fetchRoom(request: RoomServiceRequest.FetchRoom)
     case createRoom(request: RoomServiceRequest.CreateRoom)
     case updateRoom(request: RoomServiceRequest.UpdateRoom)
     case deleteRoom(request: RoomServiceRequest.DeleteRoom)
@@ -27,7 +27,7 @@ enum RoomRouterService: AlamofireBaseRouterProtocol {
         switch self {
         case .fetchRooms(_):
             return "/api/v4/rooms"
-        case .fetchRoomDetail(let request):
+        case .fetchRoom(let request):
             return "/api/v4/rooms/\(request.id)"
         case .createRoom(_):
             return "/api/v4/rooms"
@@ -46,7 +46,7 @@ enum RoomRouterService: AlamofireBaseRouterProtocol {
     
     var method: Alamofire.HTTPMethod {
         switch self {
-        case .fetchRooms(_), .fetchRoomDetail(_):
+        case .fetchRooms(_), .fetchRoom(_):
             return .get
         case .createRoom(_), .changeRoomType(_), .batchCreateRooms(_):
             return .post
