@@ -34,11 +34,19 @@ final class AuthRouterServiceTests: XCTestCase {
         XCTAssertEqual(urlRequest.httpMethod, HTTPMethod.post.rawValue)
         
         // Test parameters
-        if let parameters = parseURLEncodedBody(from: urlRequest.httpBody) {
-            XCTAssertEqual(parameters["username"], "test@example.com")
-            XCTAssertEqual(parameters["password"], "password123")
+        if let body = urlRequest.httpBody {
+            do {
+                if let json = try JSONSerialization.jsonObject(with: body, options: []) as? [String: Any] {
+                    XCTAssertEqual(json["username"] as? String, "test@example.com")
+                    XCTAssertEqual(json["password"] as? String, "password123")
+                } else {
+                    XCTFail("JSON is not a dictionary")
+                }
+            } catch {
+                XCTFail("Failed to parse JSON: \(error)")
+            }
         } else {
-            XCTFail("Failed to parse HTTP body")
+            XCTFail("HTTP body is nil")
         }
     }
     
@@ -55,10 +63,18 @@ final class AuthRouterServiceTests: XCTestCase {
         XCTAssertEqual(urlRequest.httpMethod, HTTPMethod.post.rawValue)
         
         // Test parameters
-        if let parameters = parseURLEncodedBody(from: urlRequest.httpBody) {
-            XCTAssertEqual(parameters["refresh_token"], "refresh_token_123")
+        if let body = urlRequest.httpBody {
+            do {
+                if let json = try JSONSerialization.jsonObject(with: body, options: []) as? [String: Any] {
+                    XCTAssertEqual(json["refresh_token"] as? String, "refresh_token_123")
+                } else {
+                    XCTFail("JSON is not a dictionary")
+                }
+            } catch {
+                XCTFail("Failed to parse JSON: \(error)")
+            }
         } else {
-            XCTFail("Failed to parse HTTP body")
+            XCTFail("HTTP body is nil")
         }
     }
     
