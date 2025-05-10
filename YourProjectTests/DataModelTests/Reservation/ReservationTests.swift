@@ -41,10 +41,21 @@ final class ReservationTests: XCTestCase {
         XCTAssertNil(reservation.relatedReservationId)
         XCTAssertNil(reservation.guestComment)
         XCTAssertNil(reservation.emoji)
-        XCTAssertNil(reservation.canceledAt)
-        XCTAssertNil(reservation.noShowAt)
         XCTAssertNil(reservation.hotelChannelReservationId)
         XCTAssertNil(reservation.subChannelId)
+    }
+    
+    func test_initWithDates() throws {
+        // Arrange & Act
+        let reservation = createSampleReservation()
+        
+        // Assert
+        XCTAssertNotNil(reservation.checkedInAt)
+        XCTAssertNotNil(reservation.checkedOutAt)
+        XCTAssertNotNil(reservation.createdAt)
+        XCTAssertNotNil(reservation.updatedAt)
+        XCTAssertNil(reservation.canceledAt)
+        XCTAssertNil(reservation.noShowAt)
     }
     
     func test_initWithContacts() throws {
@@ -67,6 +78,7 @@ final class ReservationTests: XCTestCase {
         XCTAssertNil(reservation.confirmationInfo.remark)
         XCTAssertNil(reservation.confirmationInfo.url)
     }
+    
     // MARK: - Status Tests
     
     func test_statusDescription() throws {
@@ -159,6 +171,10 @@ final class ReservationTests: XCTestCase {
         XCTAssertTrue(reservation.markers.isEmpty)
         XCTAssertTrue(reservation.flags.isEmpty)
         XCTAssertTrue(reservation.tags.isEmpty)
+        XCTAssertNotNil(reservation.checkedInAt)
+        XCTAssertNotNil(reservation.checkedOutAt)
+        XCTAssertNotNil(reservation.createdAt)
+        XCTAssertNotNil(reservation.updatedAt)
     }
     
     func test_encodingToJSON() throws {
@@ -195,6 +211,9 @@ final class ReservationTests: XCTestCase {
             url: nil
         )
         
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
+        
         return Reservation(
             id: 512,
             uid: "rsvt_5la15znqpb30lz5rmqj",
@@ -215,18 +234,18 @@ final class ReservationTests: XCTestCase {
             flags: [],
             tags: [],
             emoji: nil,
-            checkedInAt: "2019-11-28T13:51:22.214+07:00",
-            checkedOutAt: "2020-08-27T21:58:06.587+07:00",
-            canceledAt: nil,
-            noShowAt: nil,
-            createdAt: "2019-11-28T13:43:02.888+07:00",
-            updatedAt: "2020-08-27T21:58:06.595+07:00",
             hotelChannelReservationId: nil,
             confirmationInfo: confirmationInfo,
             hotelId: 105,
             creatorId: 38,
             channelId: 9,
-            subChannelId: nil
+            subChannelId: nil,
+            checkedInAt: dateFormatter.date(from: "2019-11-28T13:51:22.214+07:00"),
+            checkedOutAt: dateFormatter.date(from: "2020-08-27T21:58:06.587+07:00"),
+            canceledAt: nil,
+            noShowAt: nil,
+            createdAt: dateFormatter.date(from: "2019-11-28T13:43:02.888+07:00")!,
+            updatedAt: dateFormatter.date(from: "2020-08-27T21:58:06.595+07:00")!
         )
     }
 }

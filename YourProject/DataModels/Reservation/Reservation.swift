@@ -26,18 +26,20 @@ struct Reservation: Codable {
     let flags: [String]
     let tags: [String]
     let emoji: String?
-    let checkedInAt: String?
-    let checkedOutAt: String?
-    let canceledAt: String?
-    let noShowAt: String?
-    let createdAt: String
-    let updatedAt: String
-    let hotelChannelReservationId: String?
+    
+    let hotelChannelReservationId: Int?
     let confirmationInfo: ConfirmationInfo
     let hotelId: Int
     let creatorId: Int
     let channelId: Int
-    let subChannelId: String?
+    let subChannelId: Int?
+
+    let checkedInAt: Date?
+    let checkedOutAt: Date?
+    let canceledAt: Date?
+    let noShowAt: Date?
+    let createdAt: Date
+    let updatedAt: Date
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -58,19 +60,19 @@ struct Reservation: Codable {
         case markers
         case flags
         case tags
-        case emoji
-        case checkedInAt = "checked_in_at"
-        case checkedOutAt = "checked_out_at"
-        case canceledAt = "canceled_at"
-        case noShowAt = "no_showed_at"
-        case createdAt = "created_at"
-        case updatedAt = "updated_at"
+        case emoji        
         case hotelChannelReservationId = "hotel_channel_reservation_id"
         case confirmationInfo = "confirmation_info"
         case hotelId = "hotel_id"
         case creatorId = "creator_id"
         case channelId = "channel_id"
         case subChannelId = "sub_channel_id"
+        case checkedInAt = "checked_in_at"
+        case checkedOutAt = "checked_out_at"
+        case canceledAt = "canceled_at"
+        case noShowAt = "no_showed_at"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
     }
     
     init(from decoder: Decoder) throws {
@@ -94,18 +96,21 @@ struct Reservation: Codable {
         flags = try container.decode([String].self, forKey: .flags)
         tags = try container.decode([String].self, forKey: .tags)
         emoji = try container.decodeIfPresent(String.self, forKey: .emoji)
-        checkedInAt = try container.decodeIfPresent(String.self, forKey: .checkedInAt)
-        checkedOutAt = try container.decodeIfPresent(String.self, forKey: .checkedOutAt)
-        canceledAt = try container.decodeIfPresent(String.self, forKey: .canceledAt)
-        noShowAt = try container.decodeIfPresent(String.self, forKey: .noShowAt)
-        createdAt = try container.decode(String.self, forKey: .createdAt)
-        updatedAt = try container.decode(String.self, forKey: .updatedAt)
-        hotelChannelReservationId = try container.decodeIfPresent(String.self, forKey: .hotelChannelReservationId)
+        
+        hotelChannelReservationId = try container.decodeIfPresent(Int.self, forKey: .hotelChannelReservationId)
         confirmationInfo = try container.decode(ConfirmationInfo.self, forKey: .confirmationInfo)
         hotelId = try container.decode(Int.self, forKey: .hotelId)
         creatorId = try container.decode(Int.self, forKey: .creatorId)
         channelId = try container.decode(Int.self, forKey: .channelId)
-        subChannelId = try container.decodeIfPresent(String.self, forKey: .subChannelId)
+        subChannelId = try container.decodeIfPresent(Int.self, forKey: .subChannelId)
+        
+        let dateFormat = FormConfig.DateFormat.datetimeISO
+        checkedInAt = try container.decodeIfPresent(String.self, forKey: .checkedInAt)?.tryToDate(dateFormat: dateFormat)
+        checkedOutAt = try container.decodeIfPresent(String.self, forKey: .checkedOutAt)?.tryToDate(dateFormat: dateFormat)
+        canceledAt = try container.decodeIfPresent(String.self, forKey: .canceledAt)?.tryToDate(dateFormat: dateFormat)
+        noShowAt = try container.decodeIfPresent(String.self, forKey: .noShowAt)?.tryToDate(dateFormat: dateFormat)
+        createdAt = try container.decode(String.self, forKey: .createdAt).tryToDate(dateFormat: dateFormat)
+        updatedAt = try container.decode(String.self, forKey: .updatedAt).tryToDate(dateFormat: dateFormat)
     }
     
     init(id: Int,
@@ -113,10 +118,10 @@ struct Reservation: Codable {
          status: Status,
          checkInDate: String,
          checkOutDate: String,
-         adultNumber: Int,
-         extraAdultNumber: Int,
-         childNumber: Int,
-         contacts: Contacts,
+         adultNumber: Int = 2,
+         extraAdultNumber: Int = 0,
+         childNumber: Int = 0,
+         contacts: Contacts = .init(),
          note: String = "",
          canceledReason: String? = nil,
          documentPhotos: String? = nil,
@@ -126,19 +131,19 @@ struct Reservation: Codable {
          markers: [String] = [],
          flags: [String] = [],
          tags: [String] = [],
-         emoji: String? = nil,
-         checkedInAt: String? = nil,
-         checkedOutAt: String? = nil,
-         canceledAt: String? = nil,
-         noShowAt: String? = nil,
-         createdAt: String,
-         updatedAt: String,
-         hotelChannelReservationId: String? = nil,
-         confirmationInfo: ConfirmationInfo,
+         emoji: String? = nil,         
+         hotelChannelReservationId: Int? = nil,
+         confirmationInfo: ConfirmationInfo = .init(),
          hotelId: Int,
          creatorId: Int,
          channelId: Int,
-         subChannelId: String? = nil) {
+         subChannelId: Int? = nil,
+         checkedInAt: Date? = nil,
+         checkedOutAt: Date? = nil,
+         canceledAt: Date? = nil,
+         noShowAt: Date? = nil,
+         createdAt: Date,
+         updatedAt: Date) {
         self.id = id
         self.uid = uid
         self.status = status
@@ -194,18 +199,20 @@ struct Reservation: Codable {
         try container.encode(flags, forKey: .flags)
         try container.encode(tags, forKey: .tags)
         try container.encodeIfPresent(emoji, forKey: .emoji)
-        try container.encodeIfPresent(checkedInAt, forKey: .checkedInAt)
-        try container.encodeIfPresent(checkedOutAt, forKey: .checkedOutAt)
-        try container.encodeIfPresent(canceledAt, forKey: .canceledAt)
-        try container.encodeIfPresent(noShowAt, forKey: .noShowAt)
-        try container.encode(createdAt, forKey: .createdAt)
-        try container.encode(updatedAt, forKey: .updatedAt)
         try container.encodeIfPresent(hotelChannelReservationId, forKey: .hotelChannelReservationId)
         try container.encode(confirmationInfo, forKey: .confirmationInfo)
         try container.encode(hotelId, forKey: .hotelId)
         try container.encode(creatorId, forKey: .creatorId)
         try container.encode(channelId, forKey: .channelId)
         try container.encodeIfPresent(subChannelId, forKey: .subChannelId)
+
+        let dateFormat = FormConfig.DateFormat.datetimeISO
+        try container.encodeIfPresent(checkedInAt?.toDateString(dateFormat), forKey: .checkedInAt)
+        try container.encodeIfPresent(checkedOutAt?.toDateString(dateFormat), forKey: .checkedOutAt)
+        try container.encodeIfPresent(canceledAt?.toDateString(dateFormat), forKey: .canceledAt)
+        try container.encodeIfPresent(noShowAt?.toDateString(dateFormat), forKey: .noShowAt)        
+        try container.encode(createdAt.toDateString(dateFormat), forKey: .createdAt)
+        try container.encode(updatedAt.toDateString(dateFormat), forKey: .updatedAt)
     }
 }
 
@@ -254,6 +261,16 @@ extension Reservation {
         let email: String
         let tel: String
         
+        init(title: String? = nil,
+             fullname: String = "",
+             email: String = "",
+             tel: String = "") {
+            self.title = title
+            self.fullname = fullname
+            self.email = email
+            self.tel = tel
+        }
+        
         enum CodingKeys: String, CodingKey {
             case title
             case fullname
@@ -267,6 +284,14 @@ extension Reservation {
         let remark: String?
         let url: String?
         
+        init(createdAt: String? = nil,
+             remark: String? = nil,
+             url: String? = nil) {
+            self.createdAt = createdAt
+            self.remark = remark
+            self.url = url
+        }
+        
         enum CodingKeys: String, CodingKey {
             case createdAt = "created_at"
             case remark
@@ -274,15 +299,6 @@ extension Reservation {
         }
     }
     
-    struct ReservationData: Codable {
-        let additionServices: String
-        let financeRecords: String
-        
-        enum CodingKeys: String, CodingKey {
-            case additionServices = "addition_services"
-            case financeRecords = "finance_records"
-        }
-    }
 }
 
 /* example json
