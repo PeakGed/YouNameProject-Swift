@@ -48,13 +48,8 @@ struct FolioServiceRequest {
         }
     }
     
-    struct FetchFolio: Encodable {
+    struct FetchFolio {
         let id: Int
-        
-        // id is not encoded as it's used in the URL path
-        func encode(to encoder: Encoder) throws {
-            // No properties to encode
-        }
     }
     
     struct CreateFolio: Encodable {
@@ -64,6 +59,30 @@ struct FolioServiceRequest {
         let description: String?
         let categoryId: Int?
         let amountVatOption: VatOption
+        
+        init(hotelId: Int,
+             name: String,
+             amount: Double,
+             description: String?,
+             categoryId: Int?,
+             amountVatOption: VatOption) {
+            self.hotelId = hotelId
+            self.name = name
+            self.amount = amount
+            self.description = description
+            self.categoryId = categoryId
+            self.amountVatOption = amountVatOption
+        }
+        
+        func encode(to encoder: any Encoder) throws {
+            var container: KeyedEncodingContainer<FolioServiceRequest.CreateFolio.CodingKeys> = encoder.container(keyedBy: FolioServiceRequest.CreateFolio.CodingKeys.self)
+            try container.encode(self.hotelId, forKey: .hotelId)
+            try container.encode(self.name, forKey: .name)
+            try container.encode(self.amount.toString(), forKey: .amount)
+            try container.encodeIfPresent(self.description, forKey: .description)
+            try container.encodeIfPresent(self.categoryId, forKey: .categoryId)
+            try container.encode(self.amountVatOption.rawValue, forKey: .amountVatOption)
+        }
         
         enum CodingKeys: String, CodingKey {
             case hotelId = "hotel_id"
@@ -93,13 +112,8 @@ struct FolioServiceRequest {
         }
     }
     
-    struct DeleteFolio: Encodable {
+    struct DeleteFolio {
         let id: Int
-        
-        // id is not encoded as it's used in the URL path
-        func encode(to encoder: Encoder) throws {
-            // No properties to encode
-        }
     }
    
 } 
