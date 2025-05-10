@@ -26,21 +26,21 @@ enum StaffRouterService: AlamofireBaseRouterProtocol {
     var path: String {
         switch self {
         case .fetchStaffs(_):
-            return "/api/v4/staffs"
+            return "/v4/staffs"
         case .fetchStaff(let request):
-            return "/api/v4/staffs/\(request.id)"
+            return "/v4/staffs/\(request.id)"
         case .createStaff(_):
-            return "/api/v4/staffs"
+            return "/v4/staffs"
         case .updateStaff(let request):
-            return "/api/v4/staffs/\(request.id)"
+            return "/v4/staffs/\(request.id)"
         case .deleteStaff(let request):
-            return "/api/v4/staffs/\(request.id)"
+            return "/v4/staffs/\(request.id)"
         case .changeHotel(let request):
-            return "/api/v4/staffs/\(request.id)/change-hotel"
+            return "/v4/staffs/\(request.id)/change-hotel"
         case .changePassword(let request):
-            return "/api/v4/staffs/\(request.id)/change-password"
+            return "/v4/staffs/\(request.id)/change-password"
         case .updateStaffDetails(let request):
-            return "/api/v4/staffs/\(request.id)"
+            return "/v4/staffs/\(request.id)"
         }
     }
     
