@@ -1,19 +1,19 @@
 //
-//  Reservations.swift
+//  Folios.swift
 //  YourProject
 //
 //  Created by IntrodexMini on 10/5/2568 BE.
 //
 
 
-typealias Reservations = Collection<Reservation>
+typealias Folios = Collection<Folio>
 
 // MARK: Computed properties
-extension Reservations {
+extension Folios {
 
 }
 
 // MARK: - Functions
-extension Reservations {
+extension Folios {
     
 }

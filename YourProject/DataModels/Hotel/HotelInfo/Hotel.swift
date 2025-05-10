@@ -179,11 +179,11 @@ extension Hotel {
         case status(status: Status)
     }
     
-    enum SortBy: String {
+    enum SortBy {
         case id
         case name
-        case createdAt = "created_at"
-        case updatedAt = "updated_at"
+        case createdAt
+        case updatedAt
     }
     
     enum Status: String, Codable {

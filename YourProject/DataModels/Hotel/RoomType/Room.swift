@@ -69,12 +69,12 @@ extension Room {
         case status(status: Status)
     }
     
-    enum SortBy: String {
+    enum SortBy {
         case id
         case code
         case order
-        case createdAt = "created_at"
-        case updatedAt = "updated_at"
+        case createdAt
+        case updatedAt
     }
     
     enum CodingKeys: String, CodingKey {

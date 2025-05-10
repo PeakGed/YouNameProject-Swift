@@ -101,13 +101,6 @@ final class HotelShortTests: XCTestCase {
         XCTAssertTrue(jsonString.contains("\"logo_image\" : \"logo.jpg\""))
     }
     
-    func test_sortByEnumRawValues() throws {
-        XCTAssertEqual(HotelShort.SortBy.id.rawValue, "id")
-        XCTAssertEqual(HotelShort.SortBy.name.rawValue, "name")
-        XCTAssertEqual(HotelShort.SortBy.createdAt.rawValue, "created_at")
-        XCTAssertEqual(HotelShort.SortBy.updatedAt.rawValue, "updated_at")
-    }
-    
     // MARK: - Helper Methods
     
     private func createSampleHotel() -> HotelShort {
