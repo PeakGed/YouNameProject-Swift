@@ -12,6 +12,8 @@ struct Collection<T: Codable>: Codable {
     var lists: [T] = []
     var first: T? { return lists.first }
     var count: Int { return lists.count }
+    var startIndex: Int { lists.startIndex }    
+    var endIndex: Int { lists.endIndex }
     
     subscript(index: Int) -> T { get { return lists[index] } }
     
@@ -25,6 +27,10 @@ struct Collection<T: Codable>: Codable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         try container.encode(lists)
+    }
+    
+    func index(after i: Int) -> Int {
+        lists.index(after: i)
     }
     
 }
