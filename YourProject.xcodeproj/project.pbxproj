@@ -46,6 +46,9 @@
 				/Localized/LaunchScreen.storyboard,
 				/Localized/Main.storyboard,
 				Info.plist,
+				Services/UserService/UserRemoteService.swift,
+				Services/UserService/UserRouterService.swift,
+				Services/UserService/UserServiceRequest.swift,
 			);
 			target = 36B587BE2BF73F1600D523D0 /* YourProject */;
 		};
@@ -105,6 +108,7 @@
 				DataModels/Staff/Staff.swift,
 				DataModels/Staff/Staffs.swift,
 				DataModels/User/Me.swift,
+				DataModels/User/NotificationSetting.swift,
 				DataModels/User/User.swift,
 				DataModels/User/Users.swift,
 				Services/AuthService/AuthRemoteService.swift,
@@ -116,6 +120,9 @@
 				Services/FolioService/FolioRemoteService.swift,
 				Services/FolioService/FolioRouterService.swift,
 				Services/FolioService/FolioServiceRequest.swift,
+				Services/MeService/MeRemoteService.swift,
+				Services/MeService/MeRouterService.swift,
+				Services/MeService/MeServiceRequest.swift,
 			);
 			target = 36B587D42BF73F1900D523D0 /* YourProjectTests */;
 		};

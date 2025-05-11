@@ -8,10 +8,6 @@ import Foundation
 import Alamofire
 import Mockable
 
-struct NotificationSettings: Decodable {
-    // Add properties based on your API response
-}
-
 struct UserDevice: Decodable {
     // Add properties based on your API response
 }

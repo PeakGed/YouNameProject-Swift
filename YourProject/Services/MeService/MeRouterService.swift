@@ -15,6 +15,8 @@ enum MeRouterService: AlamofireBaseRouterProtocol {
     case changeEmail(request: MeServiceRequest.ChangeEmail)
     case changePassword(request: MeServiceRequest.ChangePassword)
     case verification(request: MeServiceRequest.Verification)
+    case getNotificationSettings
+    case updateNotificationSettings(request: MeServiceRequest.NotificationSettings)
     
     var domain: String {
         return AppConfiguration.shared.baseURL
@@ -32,6 +34,8 @@ enum MeRouterService: AlamofireBaseRouterProtocol {
             return "/v4/me/change-password"
         case .verification(_):
             return "/v4/me/verification"
+        case .getNotificationSettings, .updateNotificationSettings:
+            return "/v4/me/notification-settings"
         }
     }
     
@@ -47,6 +51,10 @@ enum MeRouterService: AlamofireBaseRouterProtocol {
             return .put
         case .verification(_):
             return .post
+        case .getNotificationSettings:
+            return .get
+        case .updateNotificationSettings:
+            return .put
         }
     }
     
@@ -69,6 +77,8 @@ enum MeRouterService: AlamofireBaseRouterProtocol {
         case .changePassword(let request):
             return try? JSONEncoder().encode(request)
         case .verification(let request):
+            return try? JSONEncoder().encode(request)
+        case .updateNotificationSettings(let request):
             return try? JSONEncoder().encode(request)
         default:
             return nil

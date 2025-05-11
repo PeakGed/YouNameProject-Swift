@@ -15,6 +15,8 @@ protocol MeServiceProtocol: AnyObject {
     func changeEmail(request: MeServiceRequest.ChangeEmail) async throws -> Me
     func changePassword(request: MeServiceRequest.ChangePassword) async throws -> Me
     func verification(userId: Int, request: MeServiceRequest.Verification) async throws -> Me
+    func getNotificationSettings() async throws -> NotificationSettings
+    func updateNotificationSettings(request: MeServiceRequest.NotificationSettings) async throws -> Me
 }
 
 class MeRemoteService: MeServiceProtocol {
@@ -52,4 +54,14 @@ class MeRemoteService: MeServiceProtocol {
         let router = MeRouterService.verification(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
-} 
+    
+    func getNotificationSettings() async throws -> NotificationSettings {
+        let router = MeRouterService.getNotificationSettings
+        return try await apiManager.request(router: router, requiredAuthorization: true)
+    }
+    
+    func updateNotificationSettings(request: MeServiceRequest.NotificationSettings) async throws -> Me {
+        let router = MeRouterService.updateNotificationSettings(request: request)
+        return try await apiManager.request(router: router, requiredAuthorization: true)
+    }
+}
