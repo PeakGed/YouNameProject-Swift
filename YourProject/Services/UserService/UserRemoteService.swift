@@ -19,14 +19,14 @@ struct UserDevice: Decodable {
 struct UserDevices: Decodable {
     let devices: [UserDevice]
 }
-
-struct Company: Decodable {
-    // Add properties based on your API response
-}
-
-struct Companies: Decodable {
-    let companies: [Company]
-}
+//
+//struct Company: Decodable {
+//    // Add properties based on your API response
+//}
+//
+//struct Companies: Decodable {
+//    let companies: [Company]
+//}
 
 @Mockable
 protocol UserServiceProtocol: AnyObject {

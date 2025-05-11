@@ -7,9 +7,9 @@ final class ContactTests: XCTestCase {
         let now = Date(timeIntervalSince1970: 1000)
         let contact = Contact(
             id: 1,
-            businessType: "business",
+            businessType: .corporate,
             companyName: "Test Company",
-            contactType: "client",
+            contactType: .client,
             contactId: 2,
             address: "123 Main St",
             branchName: "Branch A",
@@ -29,9 +29,9 @@ final class ContactTests: XCTestCase {
         )
         // Assert
         XCTAssertEqual(contact.id, 1)
-        XCTAssertEqual(contact.businessType, "business")
+        XCTAssertEqual(contact.businessType, .corporate)
         XCTAssertEqual(contact.companyName, "Test Company")
-        XCTAssertEqual(contact.contactType, "client")
+        XCTAssertEqual(contact.contactType, .client)
         XCTAssertEqual(contact.contactId, 2)
         XCTAssertEqual(contact.address, "123 Main St")
         XCTAssertEqual(contact.branchName, "Branch A")
@@ -55,9 +55,9 @@ final class ContactTests: XCTestCase {
         let now = Date(timeIntervalSince1970: 1000)
         let contact = Contact(
             id: 1,
-            businessType: "business",
+            businessType: .individual,
             companyName: "Test Company",
-            contactType: "client",
+            contactType: .client,
             contactId: nil,
             address: "123 Main St",
             branchName: "Branch A",
@@ -116,9 +116,9 @@ final class ContactTests: XCTestCase {
         let contact = try JSONDecoder().decode(Contact.self, from: json)
         // Assert
         XCTAssertEqual(contact.id, 18)
-        XCTAssertEqual(contact.businessType, "individual")
+        XCTAssertEqual(contact.businessType, .individual)
         XCTAssertEqual(contact.companyName, "นายสมชาย ชาติทหาร")
-        XCTAssertEqual(contact.contactType, "client")
+        XCTAssertEqual(contact.contactType, .client)
         XCTAssertNil(contact.contactId)
         XCTAssertEqual(contact.address, "พระโขนง กรุงเทพฯ")
         XCTAssertEqual(contact.branchName, "")
@@ -140,9 +140,9 @@ final class ContactTests: XCTestCase {
         let now = Date(timeIntervalSince1970: 1000)
         let contact = Contact(
             id: 1,
-            businessType: "business",
+            businessType: .individual,
             companyName: "Test Company",
-            contactType: "client",
+            contactType: .host,
             contactId: 2,
             address: "123 Main St",
             branchName: "Branch A",
@@ -167,9 +167,9 @@ final class ContactTests: XCTestCase {
         let jsonString = String(data: jsonData, encoding: .utf8)!
         // Assert
         XCTAssertTrue(jsonString.contains("\"id\" : 1"))
-        XCTAssertTrue(jsonString.contains("\"business_type\" : \"business\""))
+        XCTAssertTrue(jsonString.contains("\"business_type\" : \"individual\""))
         XCTAssertTrue(jsonString.contains("\"company_name\" : \"Test Company\""))
-        XCTAssertTrue(jsonString.contains("\"contact_type\" : \"client\""))
+        XCTAssertTrue(jsonString.contains("\"contact_type\" : \"host\""))
         XCTAssertTrue(jsonString.contains("\"contact_id\" : 2"))
         XCTAssertTrue(jsonString.contains("\"address\" : \"123 Main St\""))
         XCTAssertTrue(jsonString.contains("\"branch_name\" : \"Branch A\""))

@@ -9,9 +9,9 @@ import Foundation
 
 struct Contact: Codable {
     let id: Int
-    let businessType: String
+    let businessType: BusinessType
     let companyName: String
-    let contactType: String
+    let contactType: ContactType
     let contactId: Int?
     let address: String
     let branchName: String
@@ -33,9 +33,9 @@ struct Contact: Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(Int.self, forKey: .id)
-        businessType = try container.decode(String.self, forKey: .businessType)
+        businessType = try container.decode(BusinessType.self, forKey: .businessType)
         companyName = try container.decode(String.self, forKey: .companyName)
-        contactType = try container.decode(String.self, forKey: .contactType)
+        contactType = try container.decode(ContactType.self, forKey: .contactType)
         contactId = try container.decode(Int?.self, forKey: .contactId)
         address = try container.decode(String.self, forKey: .address)
         branchName = try container.decode(String.self, forKey: .branchName)
@@ -59,9 +59,9 @@ struct Contact: Codable {
     }
     
     init(id: Int,
-         businessType: String,
+         businessType: BusinessType,
          companyName: String,
-         contactType: String,
+         contactType: ContactType,
          contactId: Int?,
          address: String,
          branchName: String,
@@ -151,6 +151,29 @@ struct Contact: Codable {
         case companyId = "company_id"
         case createdAt = "created_at"
         case updatedAt = "updated_at"
+    }
+    
+}
+
+extension Contact {
+    enum BusinessType: String, Codable {
+        case corporate = "corporate"
+        case individual = "individual"
+        
+        var description: String {
+            switch self {
+            case .corporate:
+                return "Corporate"
+            case .individual:
+                return "Individual"
+            }
+            
+        }
+    }
+    
+    enum ContactType: String, Codable {
+        case client = "client"
+        case host = "host"
     }
     
 }
