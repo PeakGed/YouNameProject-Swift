@@ -15,10 +15,10 @@ enum GuestRouterService: AlamofireBaseRouterProtocol {
     case fetchGuestsByCompany(request: GuestServiceRequest.FetchGuestsCompany)
     case fetchGuestsByReservation(request: GuestServiceRequest.FetchGuestsReservation)
     case fetchGuestsByDatetimeOffset(request: GuestServiceRequest.FetchGuestsDatetimeOffset)
-    case fetchGuest(id: Int)
+    case fetchGuest(request: GuestServiceRequest.FetchGuest)
     case createGuest(request: GuestServiceRequest.CreateGuest)
-    case updateGuest(id: Int, request: GuestServiceRequest.UpdateGuest)
-    case deleteGuest(id: Int)
+    case updateGuest(request: GuestServiceRequest.UpdateGuest)
+    case deleteGuest(request: GuestServiceRequest.DeleteGuest)
     
     var domain: String {
         return AppConfiguration.shared.baseURL
@@ -36,10 +36,14 @@ enum GuestRouterService: AlamofireBaseRouterProtocol {
             return "/v4/guests/reservation"
         case .fetchGuestsByDatetimeOffset:
             return "/v4/guests/datetime-offset"
-        case .fetchGuest(let id), .updateGuest(let id, _), .deleteGuest(let id):
-            return "/v4/guests/\(id)"
-        case .createGuest:
+        case .fetchGuest(let request):
+            return "/v4/guests/\(request.id)"
+        case .createGuest(let request):
             return "/v4/guests"
+        case .updateGuest(let request):
+            return "/v4/guests/\(request.id)"
+        case .deleteGuest(let request):
+            return "/v4/guests/\(request.id)"
         }
     }
     
@@ -81,7 +85,7 @@ enum GuestRouterService: AlamofireBaseRouterProtocol {
         switch self {
         case .createGuest(let request):
             return try? JSONEncoder().encode(request)
-        case .updateGuest(_, let request):
+        case .updateGuest(let request):
             return try? JSONEncoder().encode(request)
         default:
             return nil

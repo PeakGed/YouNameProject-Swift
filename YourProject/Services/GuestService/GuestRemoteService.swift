@@ -16,10 +16,10 @@ protocol GuestServiceProtocol: AnyObject {
     func fetchGuestsByReservation(request: GuestServiceRequest.FetchGuestsReservation) async throws -> Paginator<Guest>
     func fetchGuestsByDatetimeOffset(request: GuestServiceRequest.FetchGuestsDatetimeOffset) async throws -> Paginator<Guest>
 
-    func fetchGuest(id: Int) async throws -> Guest
+    func fetchGuest(request: GuestServiceRequest.FetchGuest) async throws -> Guest
     func createGuest(request: GuestServiceRequest.CreateGuest) async throws -> Guest
-    func updateGuest(id: Int, request: GuestServiceRequest.UpdateGuest) async throws -> Guest
-    func deleteGuest(id: Int) async throws
+    func updateGuest(request: GuestServiceRequest.UpdateGuest) async throws -> Guest
+    func deleteGuest(request: GuestServiceRequest.DeleteGuest) async throws
 }
 
 class GuestRemoteService: GuestServiceProtocol {
@@ -58,8 +58,8 @@ class GuestRemoteService: GuestServiceProtocol {
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
-    func fetchGuest(id: Int) async throws -> Guest {
-        let router = GuestRouterService.fetchGuest(id: id)
+    func fetchGuest(request: GuestServiceRequest.FetchGuest) async throws -> Guest {
+        let router = GuestRouterService.fetchGuest(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
@@ -68,13 +68,13 @@ class GuestRemoteService: GuestServiceProtocol {
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
-    func updateGuest(id: Int, request: GuestServiceRequest.UpdateGuest) async throws -> Guest {
-        let router = GuestRouterService.updateGuest(id: id, request: request)
+    func updateGuest(request: GuestServiceRequest.UpdateGuest) async throws -> Guest {
+        let router = GuestRouterService.updateGuest(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
-    func deleteGuest(id: Int) async throws {
-        let router = GuestRouterService.deleteGuest(id: id)
+    func deleteGuest(request: GuestServiceRequest.DeleteGuest) async throws {
+        let router = GuestRouterService.deleteGuest(request: request)
         try await apiManager.requestACK(router: router, requiredAuthorization: true)
     }
 }

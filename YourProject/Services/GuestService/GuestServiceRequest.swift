@@ -165,6 +165,7 @@ struct GuestServiceRequest {
         }
     }
     struct UpdateGuest: Encodable {
+        let id: Int
         let companyId: Int?
         let title: String?
         let firstName: String?
@@ -282,6 +283,14 @@ struct GuestServiceRequest {
             case description
             // id is not encoded as it's used in the URL path
         }
+    }
+    
+    struct FetchGuest {
+        let id: Int
+    }
+    
+    struct DeleteGuest {
+        let id: Int
     }
     
     struct DeleteStaff: Encodable {
