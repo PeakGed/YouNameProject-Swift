@@ -10,11 +10,12 @@ import Mockable
 
 @Mockable
 protocol GuestServiceProtocol: AnyObject {
-    func fetchGuests(request: GuestServiceRequest.FetchGuests) async throws -> Paginator<Guest>
-    func fetchGuestsQuery(request: GuestServiceRequest.FetchGuestsQuery) async throws -> Paginator<Guest>
-    func fetchGuestsCompany(request: GuestServiceRequest.FetchGuestsCompany) async throws -> Paginator<Guest>
-    func fetchGuestsReservation(request: GuestServiceRequest.FetchGuestsReservation) async throws -> Paginator<Guest>
-    func fetchGuestsDatetimeOffset(request: GuestServiceRequest.FetchGuestsDatetimeOffset) async throws -> Paginator<Guest>
+    func fetchGuestsByHotel(request: GuestServiceRequest.FetchGuests) async throws -> Paginator<Guest>
+    func fetchGuestsByQuery(request: GuestServiceRequest.FetchGuestsQuery) async throws -> Paginator<Guest>
+    func fetchGuestsByCompany(request: GuestServiceRequest.FetchGuestsCompany) async throws -> Paginator<Guest>
+    func fetchGuestsByReservation(request: GuestServiceRequest.FetchGuestsReservation) async throws -> Paginator<Guest>
+    func fetchGuestsByDatetimeOffset(request: GuestServiceRequest.FetchGuestsDatetimeOffset) async throws -> Paginator<Guest>
+
     func fetchGuest(id: Int) async throws -> Guest
     func createGuest(request: GuestServiceRequest.CreateGuest) async throws -> Guest
     func updateGuest(id: Int, request: GuestServiceRequest.UpdateGuest) async throws -> Guest
@@ -32,28 +33,28 @@ class GuestRemoteService: GuestServiceProtocol {
         self.apiManager = apiManager
     }
     
-    func fetchGuests(request: GuestServiceRequest.FetchGuests) async throws -> Paginator<Guest> {
-        let router = GuestRouterService.fetchGuests(request: request)
+    func fetchGuestsByHotel(request: GuestServiceRequest.FetchGuests) async throws -> Paginator<Guest> {
+        let router = GuestRouterService.fetchGuestsByHotel(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
-    func fetchGuestsQuery(request: GuestServiceRequest.FetchGuestsQuery) async throws -> Paginator<Guest> {
-        let router = GuestRouterService.fetchGuestsQuery(request: request)
+    func fetchGuestsByQuery(request: GuestServiceRequest.FetchGuestsQuery) async throws -> Paginator<Guest> {
+        let router = GuestRouterService.fetchGuestsByQuery(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
-    func fetchGuestsCompany(request: GuestServiceRequest.FetchGuestsCompany) async throws -> Paginator<Guest> {
-        let router = GuestRouterService.fetchGuestsCompany(request: request)
+    func fetchGuestsByCompany(request: GuestServiceRequest.FetchGuestsCompany) async throws -> Paginator<Guest> {
+        let router = GuestRouterService.fetchGuestsByCompany(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
-    func fetchGuestsReservation(request: GuestServiceRequest.FetchGuestsReservation) async throws -> Paginator<Guest> {
-        let router = GuestRouterService.fetchGuestsReservation(request: request)
+    func fetchGuestsByReservation(request: GuestServiceRequest.FetchGuestsReservation) async throws -> Paginator<Guest> {
+        let router = GuestRouterService.fetchGuestsByReservation(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
-    func fetchGuestsDatetimeOffset(request: GuestServiceRequest.FetchGuestsDatetimeOffset) async throws -> Paginator<Guest> {
-        let router = GuestRouterService.fetchGuestsDatetimeOffset(request: request)
+    func fetchGuestsByDatetimeOffset(request: GuestServiceRequest.FetchGuestsDatetimeOffset) async throws -> Paginator<Guest> {
+        let router = GuestRouterService.fetchGuestsByDatetimeOffset(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     

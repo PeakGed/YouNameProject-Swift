@@ -10,11 +10,11 @@ import Foundation
 
 enum GuestRouterService: AlamofireBaseRouterProtocol {
     
-    case fetchGuests(request: GuestServiceRequest.FetchGuests)
-    case fetchGuestsQuery(request: GuestServiceRequest.FetchGuestsQuery)
-    case fetchGuestsCompany(request: GuestServiceRequest.FetchGuestsCompany)
-    case fetchGuestsReservation(request: GuestServiceRequest.FetchGuestsReservation)
-    case fetchGuestsDatetimeOffset(request: GuestServiceRequest.FetchGuestsDatetimeOffset)
+    case fetchGuestsByHotel(request: GuestServiceRequest.FetchGuests)
+    case fetchGuestsByQuery(request: GuestServiceRequest.FetchGuestsQuery)
+    case fetchGuestsByCompany(request: GuestServiceRequest.FetchGuestsCompany)
+    case fetchGuestsByReservation(request: GuestServiceRequest.FetchGuestsReservation)
+    case fetchGuestsByDatetimeOffset(request: GuestServiceRequest.FetchGuestsDatetimeOffset)
     case fetchGuest(id: Int)
     case createGuest(request: GuestServiceRequest.CreateGuest)
     case updateGuest(id: Int, request: GuestServiceRequest.UpdateGuest)
@@ -26,15 +26,15 @@ enum GuestRouterService: AlamofireBaseRouterProtocol {
     
     var path: String {
         switch self {
-        case .fetchGuests:
+        case .fetchGuestsByHotel:
             return "/v4/guests"
-        case .fetchGuestsQuery:
+        case .fetchGuestsByQuery:
             return "/v4/guests/query"
-        case .fetchGuestsCompany:
+        case .fetchGuestsByCompany:
             return "/v4/guests/company"
-        case .fetchGuestsReservation:
+        case .fetchGuestsByReservation:
             return "/v4/guests/reservation"
-        case .fetchGuestsDatetimeOffset:
+        case .fetchGuestsByDatetimeOffset:
             return "/v4/guests/datetime-offset"
         case .fetchGuest(let id), .updateGuest(let id, _), .deleteGuest(let id):
             return "/v4/guests/\(id)"
@@ -45,7 +45,7 @@ enum GuestRouterService: AlamofireBaseRouterProtocol {
     
     var method: Alamofire.HTTPMethod {
         switch self {
-        case .fetchGuests, .fetchGuestsQuery, .fetchGuestsCompany, .fetchGuestsReservation, .fetchGuestsDatetimeOffset, .fetchGuest:
+        case .fetchGuestsByHotel, .fetchGuestsByQuery, .fetchGuestsByCompany, .fetchGuestsByReservation, .fetchGuestsByDatetimeOffset, .fetchGuest:
             return .get
         case .createGuest:
             return .post
@@ -62,15 +62,15 @@ enum GuestRouterService: AlamofireBaseRouterProtocol {
     
     var parameters: [String: Any]? {
         switch self {
-        case .fetchGuests(let request):
+        case .fetchGuestsByHotel(let request):
             return request.toDictionary()
-        case .fetchGuestsQuery(let request):
+        case .fetchGuestsByQuery(let request):
             return request.toDictionary()
-        case .fetchGuestsCompany(let request):
+        case .fetchGuestsByCompany(let request):
             return request.toDictionary()
-        case .fetchGuestsReservation(let request):
+        case .fetchGuestsByReservation(let request):
             return request.toDictionary()
-        case .fetchGuestsDatetimeOffset(let request):
+        case .fetchGuestsByDatetimeOffset(let request):
             return request.toDictionary()
         default:
             return nil
