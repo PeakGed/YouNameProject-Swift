@@ -1,0 +1,37 @@
+//
+//  MeRemoteService.swift
+//  YourProject
+//
+//  Created by IntrodexMini on 25/2/2568 BE.
+//
+import Foundation
+import Alamofire
+import Mockable
+
+@Mockable
+protocol MeServiceProtocol: AnyObject {
+    func fetchProfile() async throws -> Me
+    func updateProfile(request: MeServiceRequest.UpdateProfile) async throws -> Me
+}
+
+class MeRemoteService: MeServiceProtocol {
+    
+    private var localStorage: LocalStorageManagerProtocal
+    private let apiManager: APIManagerProtocal
+    
+    init(localStorage: LocalStorageManagerProtocal = LocalStorageManager(),
+         apiManager: APIManagerProtocal = APIManager.shared) {
+        self.localStorage = localStorage
+        self.apiManager = apiManager
+    }    
+    
+    func fetchProfile() async throws -> Me {
+        let router = MeRouterService.fetchProfile
+        return try await apiManager.request(router: router, requiredAuthorization: true)
+    }
+    
+    func updateProfile(request: MeServiceRequest.UpdateProfile) async throws -> Me {
+        let router = MeRouterService.updateProfile(request: request)
+        return try await apiManager.request(router: router, requiredAuthorization: true)
+    }
+} 
