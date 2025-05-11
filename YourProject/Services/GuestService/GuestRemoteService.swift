@@ -20,6 +20,10 @@ protocol GuestServiceProtocol: AnyObject {
     func createGuest(request: GuestServiceRequest.CreateGuest) async throws -> Guest
     func updateGuest(request: GuestServiceRequest.UpdateGuest) async throws -> Guest
     func deleteGuest(request: GuestServiceRequest.DeleteGuest) async throws
+    func hideGuest(request: GuestServiceRequest.HideGuest) async throws -> Guest
+    func unhideGuest(request: GuestServiceRequest.UnhideGuest) async throws -> Guest
+    func removeGuestCompany(request: GuestServiceRequest.RemoveGuestCompany) async throws -> Guest
+    func fetchGuestProfile(request: GuestServiceRequest.FetchGuestProfile) async throws -> GuestProfile
 }
 
 class GuestRemoteService: GuestServiceProtocol {
@@ -76,5 +80,25 @@ class GuestRemoteService: GuestServiceProtocol {
     func deleteGuest(request: GuestServiceRequest.DeleteGuest) async throws {
         let router = GuestRouterService.deleteGuest(request: request)
         try await apiManager.requestACK(router: router, requiredAuthorization: true)
+    }
+    
+    func hideGuest(request: GuestServiceRequest.HideGuest) async throws -> Guest {
+        let router = GuestRouterService.hideGuest(id: request.id)
+        return try await apiManager.request(router: router, requiredAuthorization: true)
+    }
+    
+    func unhideGuest(request: GuestServiceRequest.UnhideGuest) async throws -> Guest {
+        let router = GuestRouterService.unhideGuest(id: request.id)
+        return try await apiManager.request(router: router, requiredAuthorization: true)
+    }
+    
+    func removeGuestCompany(request: GuestServiceRequest.RemoveGuestCompany) async throws -> Guest {
+        let router = GuestRouterService.removeGuestCompany(id: request.id)
+        return try await apiManager.request(router: router, requiredAuthorization: true)
+    }
+    
+    func fetchGuestProfile(request: GuestServiceRequest.FetchGuestProfile) async throws -> GuestProfile {
+        let router = GuestRouterService.fetchGuestProfile(id: request.id)
+        return try await apiManager.request(router: router, requiredAuthorization: true)
     }
 }

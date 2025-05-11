@@ -88,6 +88,7 @@
 				DataModels/Manager/APIManager/APIErrorResponse.swift,
 				DataModels/Manager/APIManager/APIManager.swift,
 				DataModels/Manager/APIManager/AuthInterceptor.swift,
+				DataModels/Manager/APIManager/ById.swift,
 				DataModels/Manager/APIManager/JWTPayload.swift,
 				DataModels/Manager/APIManager/OAuthCredential.swift,
 				DataModels/Manager/LocalStorageManager/CryptographicHelper.swift,

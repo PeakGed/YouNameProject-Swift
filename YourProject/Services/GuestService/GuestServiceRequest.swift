@@ -8,6 +8,14 @@ import Foundation
 
 
 struct GuestServiceRequest {
+
+    typealias HideGuest = ById
+    typealias UnhideGuest = ById
+    typealias RemoveGuestCompany = ById
+    typealias FetchGuestProfile = ById
+    typealias FetchGuest = ById
+    typealias DeleteGuest = ById
+
     struct FetchGuests: Encodable {
         let page: Int?
         let perPage: Int?
@@ -285,14 +293,6 @@ struct GuestServiceRequest {
         }
     }
     
-    struct FetchGuest {
-        let id: Int
-    }
-    
-    struct DeleteGuest {
-        let id: Int
-    }
-    
     struct DeleteStaff: Encodable {
         let id: Int
         
@@ -346,4 +346,5 @@ struct GuestServiceRequest {
             // id is not encoded as it's used in the URL path
         }
     }
+
 } 

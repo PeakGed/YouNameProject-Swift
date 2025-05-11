@@ -19,6 +19,10 @@ enum GuestRouterService: AlamofireBaseRouterProtocol {
     case createGuest(request: GuestServiceRequest.CreateGuest)
     case updateGuest(request: GuestServiceRequest.UpdateGuest)
     case deleteGuest(request: GuestServiceRequest.DeleteGuest)
+    case hideGuest(id: Int)
+    case unhideGuest(id: Int)
+    case removeGuestCompany(id: Int)
+    case fetchGuestProfile(id: Int)
     
     var domain: String {
         return AppConfiguration.shared.baseURL
@@ -44,6 +48,14 @@ enum GuestRouterService: AlamofireBaseRouterProtocol {
             return "/v4/guests/\(request.id)"
         case .deleteGuest(let request):
             return "/v4/guests/\(request.id)"
+        case .hideGuest(let id):
+            return "/v4/guests/\(id)/hide"
+        case .unhideGuest(let id):
+            return "/v4/guests/\(id)/unhide"
+        case .removeGuestCompany(let id):
+            return "/v4/guests/\(id)/remove_company"
+        case .fetchGuestProfile(let id):
+            return "/v4/guests/\(id)/profile"
         }
     }
     
@@ -57,6 +69,12 @@ enum GuestRouterService: AlamofireBaseRouterProtocol {
             return .put
         case .deleteGuest:
             return .delete
+        case .hideGuest, .unhideGuest:
+            return .post
+        case .removeGuestCompany:
+            return .delete
+        case .fetchGuestProfile:
+            return .get
         }
     }
     
