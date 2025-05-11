@@ -105,4 +105,36 @@ struct MeServiceRequest {
             case lineOperatorBroadcastMessage = "line_operator_broadcast_message"
         }
     }
+
+    struct EmailLoginResendCode: Encodable {
+        let code: String
+    }
+
+    struct EmailLoginLink: Encodable {
+        let code: String
+        let password: String
+        let confirmPassword: String
+        enum CodingKeys: String, CodingKey {
+            case code
+            case password
+            case confirmPassword = "confirm_password"
+        }
+    }
+
+    struct EmailLoginSendCode: Encodable {
+        let email: String
+    }
+
+    struct AppleLoginLink: Encodable {
+        let code: String
+    }
+
+    struct AppleLoginUnlink: Encodable {
+        let password: String
+        let confirmPassword: String
+        enum CodingKeys: String, CodingKey {
+            case password
+            case confirmPassword = "confirm_password"
+        }
+    }
 } 

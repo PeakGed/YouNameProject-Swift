@@ -17,6 +17,12 @@ enum MeRouterService: AlamofireBaseRouterProtocol {
     case verification(request: MeServiceRequest.Verification)
     case getNotificationSettings
     case updateNotificationSettings(request: MeServiceRequest.NotificationSettings)
+    case emailLoginResendCode(request: MeServiceRequest.EmailLoginResendCode)
+    case emailLoginLink(request: MeServiceRequest.EmailLoginLink)
+    case emailLoginSendCode(request: MeServiceRequest.EmailLoginSendCode)
+    case appleLoginLink(request: MeServiceRequest.AppleLoginLink)
+    case appleLoginUnlink(request: MeServiceRequest.AppleLoginUnlink)
+    case fetchDevices
     
     var domain: String {
         return AppConfiguration.shared.baseURL
@@ -36,6 +42,18 @@ enum MeRouterService: AlamofireBaseRouterProtocol {
             return "/v4/me/verification"
         case .getNotificationSettings, .updateNotificationSettings:
             return "/v4/me/notification-settings"
+        case .emailLoginResendCode:
+            return "/v4/me/email-login/resend-code"
+        case .emailLoginLink:
+            return "/v4/me/email-login/link"
+        case .emailLoginSendCode:
+            return "/v4/me/email-login/send-code"
+        case .appleLoginLink:
+            return "/v4/me/apple-login/link"
+        case .appleLoginUnlink:
+            return "/v4/me/apple-login/unlink"
+        case .fetchDevices:
+            return "/v4/me/devices"
         }
     }
     
@@ -55,6 +73,10 @@ enum MeRouterService: AlamofireBaseRouterProtocol {
             return .get
         case .updateNotificationSettings:
             return .put
+        case .emailLoginResendCode, .emailLoginLink, .emailLoginSendCode, .appleLoginLink, .appleLoginUnlink:
+            return .post
+        case .fetchDevices:
+            return .get
         }
     }
     
@@ -79,6 +101,16 @@ enum MeRouterService: AlamofireBaseRouterProtocol {
         case .verification(let request):
             return try? JSONEncoder().encode(request)
         case .updateNotificationSettings(let request):
+            return try? JSONEncoder().encode(request)
+        case .emailLoginResendCode(let request):
+            return try? JSONEncoder().encode(request)
+        case .emailLoginLink(let request):
+            return try? JSONEncoder().encode(request)
+        case .emailLoginSendCode(let request):
+            return try? JSONEncoder().encode(request)
+        case .appleLoginLink(let request):
+            return try? JSONEncoder().encode(request)
+        case .appleLoginUnlink(let request):
             return try? JSONEncoder().encode(request)
         default:
             return nil

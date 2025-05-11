@@ -15,8 +15,18 @@ protocol MeServiceProtocol: AnyObject {
     func changeEmail(request: MeServiceRequest.ChangeEmail) async throws -> Me
     func changePassword(request: MeServiceRequest.ChangePassword) async throws -> Me
     func verification(userId: Int, request: MeServiceRequest.Verification) async throws -> Me
+    
     func getNotificationSettings() async throws -> NotificationSettings
     func updateNotificationSettings(request: MeServiceRequest.NotificationSettings) async throws -> Me
+    
+    func emailLoginResendCode(request: MeServiceRequest.EmailLoginResendCode) async throws
+    func emailLoginLink(request: MeServiceRequest.EmailLoginLink) async throws -> Me
+    func emailLoginSendCode(request: MeServiceRequest.EmailLoginSendCode) async throws
+    
+    func appleLoginLink(request: MeServiceRequest.AppleLoginLink) async throws
+    func appleLoginUnlink(request: MeServiceRequest.AppleLoginUnlink) async throws
+    
+    func fetchDevices() async throws -> Devices
 }
 
 class MeRemoteService: MeServiceProtocol {
@@ -62,6 +72,37 @@ class MeRemoteService: MeServiceProtocol {
     
     func updateNotificationSettings(request: MeServiceRequest.NotificationSettings) async throws -> Me {
         let router = MeRouterService.updateNotificationSettings(request: request)
+        return try await apiManager.request(router: router, requiredAuthorization: true)
+    }
+    
+    func emailLoginResendCode(request: MeServiceRequest.EmailLoginResendCode) async throws {
+        let router = MeRouterService.emailLoginResendCode(request: request)
+        try await apiManager.requestACK(router: router,
+                                        requiredAuthorization: true)
+    }
+    
+    func emailLoginLink(request: MeServiceRequest.EmailLoginLink) async throws -> Me {
+        let router = MeRouterService.emailLoginLink(request: request)
+        return try await apiManager.request(router: router, requiredAuthorization: true)
+    }
+    
+    func emailLoginSendCode(request: MeServiceRequest.EmailLoginSendCode) async throws {
+        let router = MeRouterService.emailLoginSendCode(request: request)
+        try await apiManager.requestACK(router: router, requiredAuthorization: true)
+    }
+    
+    func appleLoginLink(request: MeServiceRequest.AppleLoginLink) async throws {
+        let router = MeRouterService.appleLoginLink(request: request)
+        try await apiManager.requestACK(router: router, requiredAuthorization: true)
+    }
+    
+    func appleLoginUnlink(request: MeServiceRequest.AppleLoginUnlink) async throws {
+        let router = MeRouterService.appleLoginUnlink(request: request)
+        try await apiManager.requestACK(router: router, requiredAuthorization: true)
+    }
+    
+    func fetchDevices() async throws -> Devices {
+        let router = MeRouterService.fetchDevices
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
 }
