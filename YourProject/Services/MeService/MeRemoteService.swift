@@ -12,6 +12,9 @@ import Mockable
 protocol MeServiceProtocol: AnyObject {
     func fetchProfile() async throws -> Me
     func updateProfile(request: MeServiceRequest.UpdateProfile) async throws -> Me
+    func changeEmail(request: MeServiceRequest.ChangeEmail) async throws -> Me
+    func changePassword(request: MeServiceRequest.ChangePassword) async throws -> Me
+    func verification(userId: Int, request: MeServiceRequest.Verification) async throws -> Me
 }
 
 class MeRemoteService: MeServiceProtocol {
@@ -32,6 +35,21 @@ class MeRemoteService: MeServiceProtocol {
     
     func updateProfile(request: MeServiceRequest.UpdateProfile) async throws -> Me {
         let router = MeRouterService.updateProfile(request: request)
+        return try await apiManager.request(router: router, requiredAuthorization: true)
+    }
+    
+    func changeEmail(request: MeServiceRequest.ChangeEmail) async throws -> Me {
+        let router = MeRouterService.changeEmail(request: request)
+        return try await apiManager.request(router: router, requiredAuthorization: true)
+    }
+    
+    func changePassword(request: MeServiceRequest.ChangePassword) async throws -> Me {
+        let router = MeRouterService.changePassword(request: request)
+        return try await apiManager.request(router: router, requiredAuthorization: true)
+    }
+    
+    func verification(userId: Int, request: MeServiceRequest.Verification) async throws -> Me {
+        let router = MeRouterService.verification(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
 } 

@@ -5,13 +5,16 @@
 //  Created by IntrodexMini on 25/2/2568 BE.
 //
 
-import Alamofire
 import Foundation
+import Alamofire
 
 enum MeRouterService: AlamofireBaseRouterProtocol {
     
     case fetchProfile
     case updateProfile(request: MeServiceRequest.UpdateProfile)
+    case changeEmail(request: MeServiceRequest.ChangeEmail)
+    case changePassword(request: MeServiceRequest.ChangePassword)
+    case verification(request: MeServiceRequest.Verification)
     
     var domain: String {
         return AppConfiguration.shared.baseURL
@@ -23,6 +26,12 @@ enum MeRouterService: AlamofireBaseRouterProtocol {
             return "/v4/me/profile"
         case .updateProfile(_):
             return "/v4/me"
+        case .changeEmail(_):
+            return "/v4/me/change-email"
+        case .changePassword(_):
+            return "/v4/me/change-password"
+        case .verification(_):
+            return "/v4/me/verification"
         }
     }
     
@@ -32,6 +41,12 @@ enum MeRouterService: AlamofireBaseRouterProtocol {
             return .get
         case .updateProfile(_):
             return .put
+        case .changeEmail(_):
+            return .post
+        case .changePassword(_):
+            return .put
+        case .verification(_):
+            return .post
         }
     }
     
@@ -48,6 +63,12 @@ enum MeRouterService: AlamofireBaseRouterProtocol {
     var body: Data? {
         switch self {
         case .updateProfile(let request):
+            return try? JSONEncoder().encode(request)
+        case .changeEmail(let request):
+            return try? JSONEncoder().encode(request)
+        case .changePassword(let request):
+            return try? JSONEncoder().encode(request)
+        case .verification(let request):
             return try? JSONEncoder().encode(request)
         default:
             return nil
