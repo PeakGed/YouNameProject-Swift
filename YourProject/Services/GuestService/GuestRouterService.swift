@@ -38,7 +38,7 @@ enum GuestRouterService: AlamofireBaseRouterProtocol {
             return "/v4/guests/datetime-offset"
         case .fetchGuest(let request):
             return "/v4/guests/\(request.id)"
-        case .createGuest(let request):
+        case .createGuest(_):
             return "/v4/guests"
         case .updateGuest(let request):
             return "/v4/guests/\(request.id)"
