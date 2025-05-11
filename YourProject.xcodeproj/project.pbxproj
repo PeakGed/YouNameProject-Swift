@@ -104,6 +104,7 @@
 				DataModels/SortOrder.swift,
 				DataModels/Staff/Staff.swift,
 				DataModels/Staff/Staffs.swift,
+				DataModels/User/Me.swift,
 				DataModels/User/User.swift,
 				DataModels/User/Users.swift,
 				Services/AuthService/AuthRemoteService.swift,
