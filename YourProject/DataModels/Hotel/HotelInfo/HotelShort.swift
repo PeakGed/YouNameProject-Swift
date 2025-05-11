@@ -50,10 +50,12 @@ struct HotelShort: Codable {
                                                     forKey: .bannerImage)
         logoImage = try container.decodeIfPresent(String.self,
                                                   forKey: .logoImage)
+        
+        let dateFormat = FormConfig.DateFormat.datetimeISO
         createdAt = try container.decode(String.self,
-                                         forKey: .createdAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
+                                         forKey: .createdAt).tryToDate(dateFormat: dateFormat)
         updatedAt = try container.decode(String.self,
-                                         forKey: .updatedAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
+                                         forKey: .updatedAt).tryToDate(dateFormat: dateFormat)
     }
     
     init(id: Int,
@@ -96,9 +98,11 @@ struct HotelShort: Codable {
                                       forKey: .bannerImage)
         try container.encodeIfPresent(logoImage,
                                       forKey: .logoImage)
-        try container.encode(createdAt.toDateString(FormConfig.DateFormat.datetimeISO),
+        
+        let dateFormat = FormConfig.DateFormat.datetimeISO
+        try container.encode(createdAt.toDateString(dateFormat),
                              forKey: .createdAt)
-        try container.encode(updatedAt.toDateString(FormConfig.DateFormat.datetimeISO),
+        try container.encode(updatedAt.toDateString(dateFormat),
                              forKey: .updatedAt)
     }
 } 
