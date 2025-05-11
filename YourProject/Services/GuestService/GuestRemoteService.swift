@@ -20,9 +20,12 @@ protocol GuestServiceProtocol: AnyObject {
     func createGuest(request: GuestServiceRequest.CreateGuest) async throws -> Guest
     func updateGuest(request: GuestServiceRequest.UpdateGuest) async throws -> Guest
     func deleteGuest(request: GuestServiceRequest.DeleteGuest) async throws
+    
     func hideGuest(request: GuestServiceRequest.HideGuest) async throws -> Guest
     func unhideGuest(request: GuestServiceRequest.UnhideGuest) async throws -> Guest
+    
     func removeGuestCompany(request: GuestServiceRequest.RemoveGuestCompany) async throws -> Guest
+    
     func fetchGuestProfile(request: GuestServiceRequest.FetchGuestProfile) async throws -> GuestProfile
 }
 
