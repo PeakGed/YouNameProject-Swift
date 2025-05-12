@@ -1,5 +1,5 @@
 //
-//  MeRouterService.swift
+//  MeServiceRouter.swift
 //  YourProject
 //
 //  Created by IntrodexMini on 25/2/2568 BE.
@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-enum MeRouterService: AlamofireBaseRouterProtocol {
+enum MeServiceRouter: AlamofireBaseRouterProtocol {
     
     case fetchProfile
     case updateProfile(request: MeServiceRequest.UpdateProfile)

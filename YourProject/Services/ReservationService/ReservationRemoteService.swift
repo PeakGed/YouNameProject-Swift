@@ -31,43 +31,43 @@ class ReservationRemoteService: ReservationServiceProtocol {
     }
     
     func fetchReservations(request: ReservationServiceRequest.FetchReservations) async throws -> Reservations {
-        let router = ReservationRouterService.fetchReservations(request: request)
+        let router = ReservationServiceRouter.fetchReservations(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func fetchReservation(request: ReservationServiceRequest.FetchReservation) async throws -> Reservation {
-        let router = ReservationRouterService.fetchReservation(request: request)
+        let router = ReservationServiceRouter.fetchReservation(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func createReservation(request: ReservationServiceRequest.CreateReservation) async throws -> Reservation {
-        let router = ReservationRouterService.createReservation(request: request)
+        let router = ReservationServiceRouter.createReservation(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func updateReservation(request: ReservationServiceRequest.UpdateReservation) async throws -> Reservation {
-        let router = ReservationRouterService.updateReservation(request: request)
+        let router = ReservationServiceRouter.updateReservation(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func deleteReservation(request: ReservationServiceRequest.DeleteReservation) async throws {
-        let router = ReservationRouterService.deleteReservation(request: request)
+        let router = ReservationServiceRouter.deleteReservation(request: request)
         try await apiManager.requestACK(router: router,
                                         requiredAuthorization: true)
     }
     
     func checkIn(request: ReservationServiceRequest.CheckIn) async throws -> Reservation {
-        let router = ReservationRouterService.checkIn(request: request)
+        let router = ReservationServiceRouter.checkIn(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func checkOut(request: ReservationServiceRequest.CheckOut) async throws -> Reservation {
-        let router = ReservationRouterService.checkOut(request: request)
+        let router = ReservationServiceRouter.checkOut(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }

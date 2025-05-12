@@ -29,31 +29,31 @@ class FolioRemoteService: FolioServiceProtocol {
     }
     
     func fetchFolios(request: FolioServiceRequest.FetchFolios) async throws -> Paginator<Folios> {
-        let router = FolioRouterService.fetchFolios(request: request)
+        let router = FolioServiceRouter.fetchFolios(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func fetchFolio(request: FolioServiceRequest.FetchFolio) async throws -> Folio {
-        let router = FolioRouterService.fetchFolio(request: request)
+        let router = FolioServiceRouter.fetchFolio(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func createFolio(request: FolioServiceRequest.CreateFolio) async throws -> Folio {
-        let router = FolioRouterService.createFolio(request: request)
+        let router = FolioServiceRouter.createFolio(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func updateFolio(request: FolioServiceRequest.UpdateFolio) async throws -> Folio {
-        let router = FolioRouterService.updateFolio(request: request)
+        let router = FolioServiceRouter.updateFolio(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func deleteFolio(request: FolioServiceRequest.DeleteFolio) async throws {
-        let router = FolioRouterService.deleteFolio(request: request)
+        let router = FolioServiceRouter.deleteFolio(request: request)
         try await apiManager.requestACK(router: router,
                                         requiredAuthorization: true)
     }

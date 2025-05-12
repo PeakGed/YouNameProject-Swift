@@ -1,5 +1,5 @@
 //
-//  AuthRouterServiceTests.swift
+//  AuthServiceRouterTests.swift
 //  YourProject
 //
 //  Created by IntrodexMini on 1/2/2568 BE.
@@ -9,7 +9,7 @@ import XCTest
 import Alamofire
 import Mockable
 
-final class AuthRouterServiceTests: XCTestCase {
+final class AuthServiceRouterTests: XCTestCase {
     
     var baseURL: String!
     lazy var localStorage = MockLocalStorageManagerProtocal()
@@ -24,7 +24,7 @@ final class AuthRouterServiceTests: XCTestCase {
         // Given
         let loginRequest = AuthServiceRequest.EmailLogin(username: "test@example.com",
                                                          password: "password123")
-        let router = AuthRouterService.emailLogin(request: loginRequest)
+        let router = AuthServiceRouter.emailLogin(request: loginRequest)
         
         // When
         let urlRequest = try router.asURLRequest()
@@ -54,7 +54,7 @@ final class AuthRouterServiceTests: XCTestCase {
     func testRefreshTokenRequest() throws {
         // Given
         let refreshRequest = AuthServiceRequest.TokenRefresh(token: "refresh_token_123")
-        let router = AuthRouterService.refreshToken(request: refreshRequest)
+        let router = AuthServiceRouter.refreshToken(request: refreshRequest)
         
         // When
         let urlRequest = try router.asURLRequest()
@@ -82,7 +82,7 @@ final class AuthRouterServiceTests: XCTestCase {
     
     func testLogoutRequest() throws {
         // Given
-        let router = AuthRouterService.logout
+        let router = AuthServiceRouter.logout
         
         // When
         let urlRequest = try router.asURLRequest()
@@ -239,7 +239,7 @@ final class AuthRouterServiceTests: XCTestCase {
 }
 
 // MARK: - Helper Methods
-private extension AuthRouterServiceTests {
+private extension AuthServiceRouterTests {
     func parseURLEncodedBody(from data: Data?) -> [String: String]? {
         guard let data = data, !data.isEmpty,
               let bodyString = String(data: data, encoding: .utf8) else {
@@ -265,7 +265,7 @@ private extension AuthRouterServiceTests {
     }
 }
 
-extension AuthRouterServiceTests {
+extension AuthServiceRouterTests {
     struct MockError: Error {}
 }
 

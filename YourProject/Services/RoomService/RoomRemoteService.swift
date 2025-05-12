@@ -33,49 +33,49 @@ class RoomRemoteService: RoomServiceProtocol {
     }
     
     func fetchRooms(request: RoomServiceRequest.FetchRooms) async throws -> Rooms {
-        let router = RoomRouterService.fetchRooms(request: request)
+        let router = RoomServiceRouter.fetchRooms(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func fetchRoom(request: RoomServiceRequest.FetchRoom) async throws -> Room {
-        let router = RoomRouterService.fetchRoom(request: request)
+        let router = RoomServiceRouter.fetchRoom(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func createRoom(request: RoomServiceRequest.CreateRoom) async throws -> Room {
-        let router = RoomRouterService.createRoom(request: request)
+        let router = RoomServiceRouter.createRoom(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func updateRoom(request: RoomServiceRequest.UpdateRoom) async throws -> Room {
-        let router = RoomRouterService.updateRoom(request: request)
+        let router = RoomServiceRouter.updateRoom(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func deleteRoom(request: RoomServiceRequest.DeleteRoom) async throws {
-        let router = RoomRouterService.deleteRoom(request: request)
+        let router = RoomServiceRouter.deleteRoom(request: request)
         try await apiManager.requestACK(router: router,
                                         requiredAuthorization: true)
     }
     
     func changeRoomType(request: RoomServiceRequest.ChangeRoomType) async throws -> Room {
-        let router = RoomRouterService.changeRoomType(request: request)
+        let router = RoomServiceRouter.changeRoomType(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func batchCreateRooms(request: RoomServiceRequest.BatchCreateRooms) async throws -> Rooms {
-        let router = RoomRouterService.batchCreateRooms(request: request)
+        let router = RoomServiceRouter.batchCreateRooms(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func batchDeleteRooms(request: RoomServiceRequest.BatchDeleteRooms) async throws {
-        let router = RoomRouterService.batchDeleteRooms(request: request)
+        let router = RoomServiceRouter.batchDeleteRooms(request: request)
         try await apiManager.requestACK(router: router,
                                         requiredAuthorization: true)
     }

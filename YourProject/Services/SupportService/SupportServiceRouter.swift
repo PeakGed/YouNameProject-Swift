@@ -1,5 +1,5 @@
 //
-//  SupportRouterService.swift
+//  SupportServiceRouter.swift
 //  YourProject
 //
 //  Created by IntrodexMini on 27/2/2568 BE.
@@ -8,7 +8,7 @@
 import Alamofire
 import Foundation
 
-enum SupportRouterService: AlamofireBaseRouterProtocol {
+enum SupportServiceRouter: AlamofireBaseRouterProtocol {
     
     case fetchMinAppVersion
     

@@ -41,67 +41,67 @@ class GuestRemoteService: GuestServiceProtocol {
     }
     
     func fetchGuestsByHotel(request: GuestServiceRequest.FetchGuests) async throws -> Paginator<Guest> {
-        let router = GuestRouterService.fetchGuestsByHotel(request: request)
+        let router = GuestServiceRouter.fetchGuestsByHotel(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
     func fetchGuestsByQuery(request: GuestServiceRequest.FetchGuestsQuery) async throws -> Paginator<Guest> {
-        let router = GuestRouterService.fetchGuestsByQuery(request: request)
+        let router = GuestServiceRouter.fetchGuestsByQuery(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
     func fetchGuestsByCompany(request: GuestServiceRequest.FetchGuestsCompany) async throws -> Paginator<Guest> {
-        let router = GuestRouterService.fetchGuestsByCompany(request: request)
+        let router = GuestServiceRouter.fetchGuestsByCompany(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
     func fetchGuestsByReservation(request: GuestServiceRequest.FetchGuestsReservation) async throws -> Paginator<Guest> {
-        let router = GuestRouterService.fetchGuestsByReservation(request: request)
+        let router = GuestServiceRouter.fetchGuestsByReservation(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
     func fetchGuestsByDatetimeOffset(request: GuestServiceRequest.FetchGuestsDatetimeOffset) async throws -> Paginator<Guest> {
-        let router = GuestRouterService.fetchGuestsByDatetimeOffset(request: request)
+        let router = GuestServiceRouter.fetchGuestsByDatetimeOffset(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
     func fetchGuest(request: GuestServiceRequest.FetchGuest) async throws -> Guest {
-        let router = GuestRouterService.fetchGuest(request: request)
+        let router = GuestServiceRouter.fetchGuest(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
     func createGuest(request: GuestServiceRequest.CreateGuest) async throws -> Guest {
-        let router = GuestRouterService.createGuest(request: request)
+        let router = GuestServiceRouter.createGuest(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
     func updateGuest(request: GuestServiceRequest.UpdateGuest) async throws -> Guest {
-        let router = GuestRouterService.updateGuest(request: request)
+        let router = GuestServiceRouter.updateGuest(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
     func deleteGuest(request: GuestServiceRequest.DeleteGuest) async throws {
-        let router = GuestRouterService.deleteGuest(request: request)
+        let router = GuestServiceRouter.deleteGuest(request: request)
         try await apiManager.requestACK(router: router, requiredAuthorization: true)
     }
     
     func hideGuest(request: GuestServiceRequest.HideGuest) async throws -> Guest {
-        let router = GuestRouterService.hideGuest(id: request.id)
+        let router = GuestServiceRouter.hideGuest(id: request.id)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
     func unhideGuest(request: GuestServiceRequest.UnhideGuest) async throws -> Guest {
-        let router = GuestRouterService.unhideGuest(id: request.id)
+        let router = GuestServiceRouter.unhideGuest(id: request.id)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
     func removeGuestCompany(request: GuestServiceRequest.RemoveGuestCompany) async throws -> Guest {
-        let router = GuestRouterService.removeGuestCompany(id: request.id)
+        let router = GuestServiceRouter.removeGuestCompany(id: request.id)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
     func fetchGuestProfile(request: GuestServiceRequest.FetchGuestProfile) async throws -> GuestProfile {
-        let router = GuestRouterService.fetchGuestProfile(id: request.id)
+        let router = GuestServiceRouter.fetchGuestProfile(id: request.id)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
 }

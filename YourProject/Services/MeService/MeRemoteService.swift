@@ -41,68 +41,68 @@ class MeRemoteService: MeServiceProtocol {
     }    
     
     func fetchProfile() async throws -> Me {
-        let router = MeRouterService.fetchProfile
+        let router = MeServiceRouter.fetchProfile
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
     func updateProfile(request: MeServiceRequest.UpdateProfile) async throws -> Me {
-        let router = MeRouterService.updateProfile(request: request)
+        let router = MeServiceRouter.updateProfile(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
     func changeEmail(request: MeServiceRequest.ChangeEmail) async throws -> Me {
-        let router = MeRouterService.changeEmail(request: request)
+        let router = MeServiceRouter.changeEmail(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
     func changePassword(request: MeServiceRequest.ChangePassword) async throws -> Me {
-        let router = MeRouterService.changePassword(request: request)
+        let router = MeServiceRouter.changePassword(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
     func verification(userId: Int, request: MeServiceRequest.Verification) async throws -> Me {
-        let router = MeRouterService.verification(request: request)
+        let router = MeServiceRouter.verification(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
     func getNotificationSettings() async throws -> NotificationSettings {
-        let router = MeRouterService.getNotificationSettings
+        let router = MeServiceRouter.getNotificationSettings
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
     func updateNotificationSettings(request: MeServiceRequest.NotificationSettings) async throws -> Me {
-        let router = MeRouterService.updateNotificationSettings(request: request)
+        let router = MeServiceRouter.updateNotificationSettings(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
     func emailLoginResendCode(request: MeServiceRequest.EmailLoginResendCode) async throws {
-        let router = MeRouterService.emailLoginResendCode(request: request)
+        let router = MeServiceRouter.emailLoginResendCode(request: request)
         try await apiManager.requestACK(router: router,
                                         requiredAuthorization: true)
     }
     
     func emailLoginLink(request: MeServiceRequest.EmailLoginLink) async throws -> Me {
-        let router = MeRouterService.emailLoginLink(request: request)
+        let router = MeServiceRouter.emailLoginLink(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
     func emailLoginSendCode(request: MeServiceRequest.EmailLoginSendCode) async throws {
-        let router = MeRouterService.emailLoginSendCode(request: request)
+        let router = MeServiceRouter.emailLoginSendCode(request: request)
         try await apiManager.requestACK(router: router, requiredAuthorization: true)
     }
     
     func appleLoginLink(request: MeServiceRequest.AppleLoginLink) async throws {
-        let router = MeRouterService.appleLoginLink(request: request)
+        let router = MeServiceRouter.appleLoginLink(request: request)
         try await apiManager.requestACK(router: router, requiredAuthorization: true)
     }
     
     func appleLoginUnlink(request: MeServiceRequest.AppleLoginUnlink) async throws {
-        let router = MeRouterService.appleLoginUnlink(request: request)
+        let router = MeServiceRouter.appleLoginUnlink(request: request)
         try await apiManager.requestACK(router: router, requiredAuthorization: true)
     }
     
     func fetchDevices() async throws -> Devices {
-        let router = MeRouterService.fetchDevices
+        let router = MeServiceRouter.fetchDevices
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
 }

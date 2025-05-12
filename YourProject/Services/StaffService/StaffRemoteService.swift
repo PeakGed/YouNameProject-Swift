@@ -33,31 +33,31 @@ class StaffRemoteService: StaffServiceProtocol {
     }
     
     func fetchStaffs(request: StaffServiceRequest.FetchStaffs) async throws -> Staffs {
-        let router = StaffRouterService.fetchStaffs(request: request)
+        let router = StaffServiceRouter.fetchStaffs(request: request)
         return try await apiManager.request(router: router,
                                             requiredAuthorization: true)
     }
     
     func fetchStaff(request: StaffServiceRequest.FetchStaff) async throws -> Staff {
-        let router = StaffRouterService.fetchStaff(request: request)
+        let router = StaffServiceRouter.fetchStaff(request: request)
         return try await apiManager.request(router: router,
                                             requiredAuthorization: true)
     }
     
     func createStaff(request: StaffServiceRequest.CreateStaff) async throws -> Staff {
-        let router = StaffRouterService.createStaff(request: request)
+        let router = StaffServiceRouter.createStaff(request: request)
         return try await apiManager.request(router: router,
                                             requiredAuthorization: true)
     }
     
     func updateStaff(request: StaffServiceRequest.UpdateStaff) async throws -> Staff {
-        let router = StaffRouterService.updateStaff(request: request)
+        let router = StaffServiceRouter.updateStaff(request: request)
         return try await apiManager.request(router: router,
                                             requiredAuthorization: true)
     }
     
     func deleteStaff(request: StaffServiceRequest.DeleteStaff) async throws {
-        let router = StaffRouterService.deleteStaff(request: request)
+        let router = StaffServiceRouter.deleteStaff(request: request)
         try await apiManager
             .requestACK(
                 router: router,
@@ -68,19 +68,19 @@ class StaffRemoteService: StaffServiceProtocol {
     // Implementation of new methods
     
     func changeHotel(request: StaffServiceRequest.ChangeHotel) async throws -> Staff {
-        let router = StaffRouterService.changeHotel(request: request)
+        let router = StaffServiceRouter.changeHotel(request: request)
         return try await apiManager.request(router: router,
                                             requiredAuthorization: true)
     }
     
     func changePassword(request: StaffServiceRequest.ChangePassword) async throws -> Staff {
-        let router = StaffRouterService.changePassword(request: request)
+        let router = StaffServiceRouter.changePassword(request: request)
         return try await apiManager.request(router: router,
                                             requiredAuthorization: true)
     }
     
     func updateStaffDetails(request: StaffServiceRequest.UpdateStaffDetails) async throws -> Staff {
-        let router = StaffRouterService.updateStaffDetails(request: request)
+        let router = StaffServiceRouter.updateStaffDetails(request: request)
         return try await apiManager.request(router: router,
                                             requiredAuthorization: true)
     }

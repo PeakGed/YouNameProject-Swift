@@ -30,7 +30,7 @@ class AuthRemoteService: AuthServiceProtocol {
     }
     
     func emailLogin(request: AuthServiceRequest.EmailLogin) async throws {
-        let router = AuthRouterService.emailLogin(request: request)
+        let router = AuthServiceRouter.emailLogin(request: request)
         
         let response: AuthTokenResponse = try await apiManager.request(router: router,
                                                                        requiredAuthorization: false)
@@ -38,14 +38,14 @@ class AuthRemoteService: AuthServiceProtocol {
     }
     
     func tokenRefresh(request: AuthServiceRequest.TokenRefresh) async throws {
-        let router = AuthRouterService.refreshToken(request: request)
+        let router = AuthServiceRouter.refreshToken(request: request)
         let response: AuthTokenResponse = try await apiManager.request(router: router,
                                                                        requiredAuthorization: true)
         localStorage.setToken(response)
     }
     
     func logout() async {
-        let router = AuthRouterService.logout
+        let router = AuthServiceRouter.logout
         do {
             try await apiManager.requestACK(router: router,
                                             requiredAuthorization: true)
@@ -56,19 +56,19 @@ class AuthRemoteService: AuthServiceProtocol {
     }
 
     func resendEmailConfirmation(request: AuthServiceRequest.ResendEmailConfirmation) async throws {
-        let router = AuthRouterService.resendEmailConfirmation(request: request)
+        let router = AuthServiceRouter.resendEmailConfirmation(request: request)
         try await apiManager.requestACK(router: router,
                                             requiredAuthorization: false)
     }
 
     func passwordReset(request: AuthServiceRequest.PasswordReset) async throws {
-        let router = AuthRouterService.passwordReset(request: request)
+        let router = AuthServiceRouter.passwordReset(request: request)
         try await apiManager.requestACK(router: router,
                                             requiredAuthorization: true)
     }
     
     func signup(request: AuthServiceRequest.Signup) async throws {
-        let router = AuthRouterService.signup(request: request)
+        let router = AuthServiceRouter.signup(request: request)
         try await apiManager.requestACK(router: router,
                                         requiredAuthorization: false)
     }

@@ -1,5 +1,5 @@
 //
-//  LoginService.swift
+//  AuthServiceRouter.swift
 //  YourProject
 //
 //  Created by IntrodexMini on 30/1/2568 BE.
@@ -8,7 +8,7 @@
 import Alamofire
 import Foundation
 
-enum AuthRouterService: AlamofireBaseRouterProtocol {
+enum AuthServiceRouter: AlamofireBaseRouterProtocol {
     
     case emailLogin(request: AuthServiceRequest.EmailLogin)
     case appleIdLogin(request: AuthServiceRequest.AppleIdLogin)

@@ -29,31 +29,31 @@ class LocalPriceCardRemoteService: LocalPriceCardServiceProtocol {
     }
     
     func fetchPriceCards(request: LocalPriceCardServiceRequest.FetchPriceCards) async throws -> LocalPriceCards {
-        let router = LocalPriceCardRouterService.fetchPriceCards(request: request)
+        let router = LocalPriceCardServiceRouter.fetchPriceCards(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func getPriceCard(request: LocalPriceCardServiceRequest.GetPriceCard) async throws -> LocalPriceCards {
-        let router = LocalPriceCardRouterService.getPriceCard(request: request)
+        let router = LocalPriceCardServiceRouter.getPriceCard(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func createPriceCard(request: LocalPriceCardServiceRequest.CreatePriceCard) async throws -> LocalPriceCards {
-        let router = LocalPriceCardRouterService.createPriceCard(request: request)
+        let router = LocalPriceCardServiceRouter.createPriceCard(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func updatePriceCard(request: LocalPriceCardServiceRequest.UpdatePriceCard) async throws -> LocalPriceCards {
-        let router = LocalPriceCardRouterService.updatePriceCard(request: request)
+        let router = LocalPriceCardServiceRouter.updatePriceCard(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func deletePriceCard(request: LocalPriceCardServiceRequest.DeletePriceCard) async throws {
-        let router = LocalPriceCardRouterService.deletePriceCard(request: request)
+        let router = LocalPriceCardServiceRouter.deletePriceCard(request: request)
         try await apiManager.requestACK(router: router,
                                         requiredAuthorization: true)
     }

@@ -2,7 +2,7 @@ import Foundation
 import Alamofire
 import Mockable
 
-enum ChannelRouterService: AlamofireBaseRouterProtocol {    
+enum ChannelServiceRouter: AlamofireBaseRouterProtocol {
     case fetchChannels
     case fetchChannel(request: ChannelServiceRequest.FetchChannel)
     case createChannel(request: ChannelServiceRequest.CreateChannel)

@@ -1,5 +1,5 @@
 //
-//  RoomRouterService.swift
+//  RoomServiceRouter.swift
 //  YourProject
 //
 //  Created by IntrodexMini on 25/2/2568 BE.
@@ -8,7 +8,7 @@
 import Alamofire
 import Foundation
 
-enum RoomRouterService: AlamofireBaseRouterProtocol {
+enum RoomServiceRouter: AlamofireBaseRouterProtocol {
     
     case fetchRooms(request: RoomServiceRequest.FetchRooms)
     case fetchRoom(request: RoomServiceRequest.FetchRoom)

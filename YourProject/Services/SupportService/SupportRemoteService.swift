@@ -25,7 +25,7 @@ class SupportRemoteService: SupportServiceProtocol {
     }
     
     func fetchMinAppVersion() async throws -> SupportVersion {
-        let router = SupportRouterService.fetchMinAppVersion
+        let router = SupportServiceRouter.fetchMinAppVersion
         return try await apiManager.request(router: router,
                                             requiredAuthorization: true)
     }

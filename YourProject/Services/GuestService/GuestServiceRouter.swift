@@ -1,5 +1,5 @@
 //
-//  StaffRouterService.swift
+//  GuestServiceRouter.swift
 //  YourProject
 //
 //  Created by IntrodexMini on 27/2/2568 BE.
@@ -8,7 +8,7 @@
 import Alamofire
 import Foundation
 
-enum GuestRouterService: AlamofireBaseRouterProtocol {
+enum GuestServiceRouter: AlamofireBaseRouterProtocol {
     
     case fetchGuestsByHotel(request: GuestServiceRequest.FetchGuests)
     case fetchGuestsByQuery(request: GuestServiceRequest.FetchGuestsQuery)

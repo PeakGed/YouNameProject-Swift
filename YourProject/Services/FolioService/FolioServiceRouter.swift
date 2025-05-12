@@ -1,20 +1,20 @@
 //
-//  LocalPriceCardRouterService.swift
+//  FolioServiceRouter.swift
 //  YourProject
 //
-//  Created by IntrodexMini on 28/2/2568 BE.
+//  Created by IntrodexMini on 25/2/2568 BE.
 //
 
 import Alamofire
 import Foundation
 
-enum LocalPriceCardRouterService: AlamofireBaseRouterProtocol {
+enum FolioServiceRouter: AlamofireBaseRouterProtocol {
     
-    case fetchPriceCards(request: LocalPriceCardServiceRequest.FetchPriceCards)
-    case getPriceCard(request: LocalPriceCardServiceRequest.GetPriceCard)
-    case createPriceCard(request: LocalPriceCardServiceRequest.CreatePriceCard)
-    case updatePriceCard(request: LocalPriceCardServiceRequest.UpdatePriceCard)
-    case deletePriceCard(request: LocalPriceCardServiceRequest.DeletePriceCard)
+    case fetchFolios(request: FolioServiceRequest.FetchFolios)
+    case fetchFolio(request: FolioServiceRequest.FetchFolio)
+    case createFolio(request: FolioServiceRequest.CreateFolio)
+    case updateFolio(request: FolioServiceRequest.UpdateFolio)
+    case deleteFolio(request: FolioServiceRequest.DeleteFolio)
     
     var domain: String {
         return AppConfiguration.shared.baseURL
@@ -22,45 +22,52 @@ enum LocalPriceCardRouterService: AlamofireBaseRouterProtocol {
     
     var path: String {
         switch self {
-        case .fetchPriceCards(_):
-            return "/api/v4/price-cards/period"
-        case .getPriceCard(let request):
-            return "/api/v4/price-cards/\(request.id)"
-        case .createPriceCard(_):
-            return "/api/v4/price-cards"
-        case .updatePriceCard(let request):
-            return "/api/v4/price-cards/\(request.id)"
-        case .deletePriceCard(let request):
-            return "/api/v4/price-cards/\(request.id)"
+        case .fetchFolios(_):
+            return "/v4/folios"
+        case .fetchFolio(let request):
+            return "/v4/folios/\(request.id)"
+        case .createFolio(_):
+            return "/v4/folios"
+        case .updateFolio(let request):
+            return "/v4/folios/\(request.id)"
+        case .deleteFolio(let request):
+            return "/v4/folios/\(request.id)"
         }
     }
     
     var method: Alamofire.HTTPMethod {
         switch self {
-        case .fetchPriceCards(_), .getPriceCard(_):
+        case .fetchFolios(_), .fetchFolio(_):
             return .get
-        case .createPriceCard(_):
+        case .createFolio(_):
             return .post
-        case .updatePriceCard(_):
+        case .updateFolio(_):
             return .put
-        case .deletePriceCard(_):
+        case .deleteFolio(_):
             return .delete
         }
     }
     
     var headers: [String: String]? {
-        return ["Content-Type": "application/json"]
+        return [
+            "Content-Type": "application/json"
+        ]
     }
     
     var parameters: [String: Any]? {
-        return nil
+        switch self {
+        case .fetchFolios(let request):
+            return request.parameters
+        default:
+            return nil
+        }
     }
     
     var body: Data? {
         switch self {
-        case .createPriceCard(let request):
+        case .createFolio(let request):
             return try? JSONEncoder().encode(request)
-        case .updatePriceCard(let request):
+        case .updateFolio(let request):
             return try? JSONEncoder().encode(request)
         default:
             return nil
@@ -86,4 +93,4 @@ enum LocalPriceCardRouterService: AlamofireBaseRouterProtocol {
         return try encoding.encode(request,
                                    with: parameters)
     }
-} 
+}

@@ -29,31 +29,31 @@ class RoomTypeRemoteService: RoomTypeServiceProtocol {
     }
     
     func fetchRoomTypes(request: RoomTypeServiceRequest.FetchRoomTypes) async throws -> RoomTypes {
-        let router = RoomTypeRouterService.fetchRoomTypes(request: request)
+        let router = RoomTypeServiceRouter.fetchRoomTypes(request: request)
         return try await apiManager.request(router: router,
                                             requiredAuthorization: true)
     }
     
     func fetchRoomType(request: RoomTypeServiceRequest.FetchRoomType) async throws -> RoomType {
-        let router = RoomTypeRouterService.fetchRoomType(request: request)
+        let router = RoomTypeServiceRouter.fetchRoomType(request: request)
         return try await apiManager.request(router: router,
                                             requiredAuthorization: true)
     }
     
     func createRoomType(request: RoomTypeServiceRequest.CreateRoomType) async throws -> RoomType {
-        let router = RoomTypeRouterService.createRoomType(request: request)
+        let router = RoomTypeServiceRouter.createRoomType(request: request)
         return try await apiManager.request(router: router,
                                             requiredAuthorization: true)
     }
     
     func updateRoomType(request: RoomTypeServiceRequest.UpdateRoomType) async throws -> RoomType {
-        let router = RoomTypeRouterService.updateRoomType(request: request)
+        let router = RoomTypeServiceRouter.updateRoomType(request: request)
         return try await apiManager.request(router: router,
                                             requiredAuthorization: true)
     }
     
     func deleteRoomType(request: RoomTypeServiceRequest.DeleteRoomType) async throws {
-        let router = RoomTypeRouterService.deleteRoomType(request: request)
+        let router = RoomTypeServiceRouter.deleteRoomType(request: request)
         try await apiManager
             .requestACK(
                 router: router,

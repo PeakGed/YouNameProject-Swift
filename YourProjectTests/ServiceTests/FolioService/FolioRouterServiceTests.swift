@@ -1,5 +1,5 @@
 //
-//  FolioRouterServiceTests.swift
+//  FolioServiceRouterTests.swift
 //  YourProject
 //
 //  Created by IntrodexMini on 10/5/2568 BE.
@@ -10,7 +10,7 @@ import XCTest
 import Alamofire
 import Mockable
 
-final class FolioRouterServiceTests: XCTestCase {
+final class FolioServiceRouterTests: XCTestCase {
     
     var baseURL: String!
     lazy var localStorage = MockLocalStorageManagerProtocal()
@@ -28,7 +28,7 @@ final class FolioRouterServiceTests: XCTestCase {
                                                   perPage: .twenty,
                                                   sortedBy: .id,
                                                   sortedOrder: .ascending)
-        let router = FolioRouterService.fetchFolios(request: req)
+        let router = FolioServiceRouter.fetchFolios(request: req)
         
         // When
         let urlRequest = try router.asURLRequest()
@@ -43,7 +43,7 @@ final class FolioRouterServiceTests: XCTestCase {
     func testFetchFolioRequest() throws {
         // Given
         let req = FolioServiceRequest.FetchFolio(id: 1)
-        let router = FolioRouterService.fetchFolio(request: req)
+        let router = FolioServiceRouter.fetchFolio(request: req)
         
         // When
         let urlRequest = try router.asURLRequest()
@@ -63,7 +63,7 @@ final class FolioRouterServiceTests: XCTestCase {
                                                   description: nil,
                                                   categoryId: 1,
                                                   amountVatOption: .excludedVat)
-        let router = FolioRouterService.createFolio(request: req)
+        let router = FolioServiceRouter.createFolio(request: req)
         
         // When
         let urlRequest = try router.asURLRequest()
@@ -107,7 +107,7 @@ final class FolioRouterServiceTests: XCTestCase {
             categoryId: 2,
             amountVatOption: .includedVat
         )
-        let router = FolioRouterService.updateFolio(request: req)
+        let router = FolioServiceRouter.updateFolio(request: req)
         
         // When
         let urlRequest = try router.asURLRequest()
@@ -141,7 +141,7 @@ final class FolioRouterServiceTests: XCTestCase {
     func testDeleteFolioRequest() throws {
         // Given
         let req = FolioServiceRequest.DeleteFolio(id: 1)
-        let router = FolioRouterService.deleteFolio(request: req)
+        let router = FolioServiceRouter.deleteFolio(request: req)
         
         // When
         let urlRequest = try router.asURLRequest()

@@ -1,5 +1,5 @@
 //
-//  UserRouterService.swift
+//  UserServiceRouter.swift
 //  YourProject
 //
 //  Created by IntrodexMini on 28/2/2568 BE.
@@ -8,7 +8,7 @@
 import Alamofire
 import Foundation
 
-enum UserRouterService: AlamofireBaseRouterProtocol {
+enum UserServiceRouter: AlamofireBaseRouterProtocol {
     
     case fetchUsers(request: UserServiceRequest.FetchUsers)
     case fetchUser(request: UserServiceRequest.FetchUser)

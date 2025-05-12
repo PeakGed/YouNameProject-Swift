@@ -34,61 +34,61 @@ class HotelRemoteService: HotelServiceProtocol {
     }
     
     func fetchHotels() async throws -> Hotels {
-        let router = HotelRouterService.fetchHotels
+        let router = HotelServiceRouter.fetchHotels
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func createHotel(request: HotelServiceRequest.CreateHotel) async throws -> Hotel {
-        let router = HotelRouterService.createHotel(request: request)
+        let router = HotelServiceRouter.createHotel(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func updateHotel(request: HotelServiceRequest.UpdateHotel) async throws -> Hotel {
-        let router = HotelRouterService.updateHotel(request: request)
+        let router = HotelServiceRouter.updateHotel(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func fetchHotelsShort() async throws -> HotelsShort {
-        let router = HotelRouterService.fetchHotelsShort
+        let router = HotelServiceRouter.fetchHotelsShort
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func deleteHotel(request: HotelServiceRequest.DeleteHotel) async throws {
-        let router = HotelRouterService.deleteHotel(request: request)
+        let router = HotelServiceRouter.deleteHotel(request: request)
         try await apiManager.requestACK(router: router,
                                         requiredAuthorization: true)
     }
     
     func fetchChannelManagerFeature(request: HotelServiceRequest.FetchChannelManagerFeature) async throws -> ChannelManagerFeature {
-        let router = HotelRouterService.fetchChannelManager(request: request)
+        let router = HotelServiceRouter.fetchChannelManager(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func fetchBeds24Config(request: HotelServiceRequest.FetchBeds24Config) async throws -> Beds24Config {
-        let router = HotelRouterService.fetchBeds24Config(request: request)
+        let router = HotelServiceRouter.fetchBeds24Config(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func updateBeds24Config(request: HotelServiceRequest.UpdateBeds24Config) async throws -> Beds24Config {
-        let router = HotelRouterService.updateBeds24Config(request: request)
+        let router = HotelServiceRouter.updateBeds24Config(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func fetchColorProfile(request: HotelServiceRequest.FetchColorProfile) async throws -> ColorProfile {
-        let router = HotelRouterService.fetchColorProfile(request: request)
+        let router = HotelServiceRouter.fetchColorProfile(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }
     
     func updateColorProfile(request: HotelServiceRequest.UpdateColorProfile) async throws -> ColorProfile {
-        let router = HotelRouterService.updateColorProfile(request: request)
+        let router = HotelServiceRouter.updateColorProfile(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }

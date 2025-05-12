@@ -1,5 +1,5 @@
 //
-//  HotelRouterService.swift
+//  HotelServiceRouter.swift
 //  YourProject
 //
 //  Created by IntrodexMini on 25/2/2568 BE.
@@ -8,7 +8,7 @@
 import Alamofire
 import Foundation
 
-enum HotelRouterService: AlamofireBaseRouterProtocol {
+enum HotelServiceRouter: AlamofireBaseRouterProtocol {
     
     case fetchHotels
     case createHotel(request: HotelServiceRequest.CreateHotel)
