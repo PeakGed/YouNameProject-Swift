@@ -1,5 +1,5 @@
 //
-//  ReservationRouterService.swift
+//  ReservationServiceRouter.swift
 //  YourProject
 //
 //  Created by IntrodexMini on 25/2/2568 BE.
@@ -8,7 +8,7 @@
 import Alamofire
 import Foundation
 
-enum ReservationRouterService: AlamofireBaseRouterProtocol {
+enum ReservationServiceRouter: AlamofireBaseRouterProtocol {
     
     case fetchReservations(request: ReservationServiceRequest.FetchReservations)
     case fetchReservation(request: ReservationServiceRequest.FetchReservation)
