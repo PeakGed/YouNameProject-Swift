@@ -104,6 +104,8 @@
 				DataModels/Reservation/Channel.swift,
 				DataModels/Reservation/Channels.swift,
 				DataModels/Reservation/Reservation.swift,
+				DataModels/Reservation/ReservationItem.swift,
+				DataModels/Reservation/ReservationItems.swift,
 				DataModels/Reservation/Reservations.swift,
 				DataModels/SortOrder.swift,
 				DataModels/Staff/Staff.swift,
