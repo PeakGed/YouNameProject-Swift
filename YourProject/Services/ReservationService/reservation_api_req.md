@@ -141,3 +141,78 @@ Content-Length: 1210
         "amount": 2000
     }
 }
+
+PUT /api/v4/reservations/<integer> HTTP/1.1
+Host: 157.230.37.164
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozOCwiY2xpZW50X2lkIjpudWxsLCJzdGFmZl9yb2xlIjpudWxsLCJhY2Nlc3NpYmxlX2hvdGVsc19pZHMiOlsxMDcsMTA1XSwicGFja2FnZV9leHBpcmVzX2F0IjpudWxsLCJqdGkiOiI4ZjJjNmQ2MjNlOWNiNjk5YzAxYmU1ZjU1ZjEyZjQ1ZCIsImlhdCI6MTc0Njk1NTUzOSwiZXhwIjoxNzQ2OTU2NDM5LCJzdWIiOiJobXMtcG1zLWFwaSIsImF1dGhfbWV0aG9kIjoiaG1zIn0.UbZEy54vTFDblC87_7Le_2owANg_cRuwAXyaNhOsuMA
+Content-Length: 712
+
+{
+    "adult_number": "<integer>",
+    "extra_adult_number": "<integer>",
+    "child_number": "<integer>",
+    "contact_fullname": "fullname",
+    "contact_title": "<string>",
+    "contact_email": "<string>",
+    "contact_tel": "<string>",
+    "guest_comment": "<string>",
+    "promotion": "<string>",
+    "ota_booking_id": "<string>",
+    "channel_id": "<integer>",
+    "sub_channel_id": "<string>",
+    "check_in_date": "<date>",
+    "check_out_date": "<date>",
+    "note": "<string>",
+    "canceled_reason": "<string>",
+    "document_photos": ["<string>", "<string>"],
+    "data": "<json>",
+    "customers": ["<string>", "<string>"],
+    "markers": ["<string>", "<string>"],
+    "flags": ["<string>", "<string>"],
+    "tags": ["<string>", "<string>"],
+    "emoji": "<string>",
+    "related_reservation_id": "<integer>"
+}
+
+##### Reservation Status #####
+POST /api/v4/reservations/<integer>/check-out HTTP/1.1
+Host: 157.230.37.164
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozOCwiY2xpZW50X2lkIjpudWxsLCJzdGFmZl9yb2xlIjpudWxsLCJhY2Nlc3NpYmxlX2hvdGVsc19pZHMiOlsxMDcsMTA1XSwicGFja2FnZV9leHBpcmVzX2F0IjpudWxsLCJqdGkiOiI4ZjJjNmQ2MjNlOWNiNjk5YzAxYmU1ZjU1ZjEyZjQ1ZCIsImlhdCI6MTc0Njk1NTUzOSwiZXhwIjoxNzQ2OTU2NDM5LCJzdWIiOiJobXMtcG1zLWFwaSIsImF1dGhfbWV0aG9kIjoiaG1zIn0.UbZEy54vTFDblC87_7Le_2owANg_cRuwAXyaNhOsuMA
+
+response as swift struct
+Reservation
+
+POST /api/v4/reservations/<integer>/check-in HTTP/1.1
+Host: 157.230.37.164
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozOCwiY2xpZW50X2lkIjpudWxsLCJzdGFmZl9yb2xlIjpudWxsLCJhY2Nlc3NpYmxlX2hvdGVsc19pZHMiOlsxMDcsMTA1XSwicGFja2FnZV9leHBpcmVzX2F0IjpudWxsLCJqdGkiOiI4ZjJjNmQ2MjNlOWNiNjk5YzAxYmU1ZjU1ZjEyZjQ1ZCIsImlhdCI6MTc0Njk1NTUzOSwiZXhwIjoxNzQ2OTU2NDM5LCJzdWIiOiJobXMtcG1zLWFwaSIsImF1dGhfbWV0aG9kIjoiaG1zIn0.UbZEy54vTFDblC87_7Le_2owANg_cRuwAXyaNhOsuMA
+
+response as swift struct
+Reservation
+
+POST /api/v4/reservations/<integer>/cancel HTTP/1.1
+Host: 157.230.37.164
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozOCwiY2xpZW50X2lkIjpudWxsLCJzdGFmZl9yb2xlIjpudWxsLCJhY2Nlc3NpYmxlX2hvdGVsc19pZHMiOlsxMDcsMTA1XSwicGFja2FnZV9leHBpcmVzX2F0IjpudWxsLCJqdGkiOiI4ZjJjNmQ2MjNlOWNiNjk5YzAxYmU1ZjU1ZjEyZjQ1ZCIsImlhdCI6MTc0Njk1NTUzOSwiZXhwIjoxNzQ2OTU2NDM5LCJzdWIiOiJobXMtcG1zLWFwaSIsImF1dGhfbWV0aG9kIjoiaG1zIn0.UbZEy54vTFDblC87_7Le_2owANg_cRuwAXyaNhOsuMA
+Content-Length: 28
+
+Body
+{
+    "canceled_reason": "<string>" // optional
+}
+
+response as swift struct
+Reservation
+
+
+POST /api/v4/reservations/<integer>/no-show HTTP/1.1
+Host: 157.230.37.164
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozOCwiY2xpZW50X2lkIjpudWxsLCJzdGFmZl9yb2xlIjpudWxsLCJhY2Nlc3NpYmxlX2hvdGVsc19pZHMiOlsxMDcsMTA1XSwicGFja2FnZV9leHBpcmVzX2F0IjpudWxsLCJqdGkiOiI4ZjJjNmQ2MjNlOWNiNjk5YzAxYmU1ZjU1ZjEyZjQ1ZCIsImlhdCI6MTc0Njk1NTUzOSwiZXhwIjoxNzQ2OTU2NDM5LCJzdWIiOiJobXMtcG1zLWFwaSIsImF1dGhfbWV0aG9kIjoiaG1zIn0.UbZEy54vTFDblC87_7Le_2owANg_cRuwAXyaNhOsuMA
+
+response as swift struct
+Reservation
+
