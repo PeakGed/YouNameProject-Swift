@@ -113,9 +113,9 @@ struct Reservation: Codable {
         status = try container.decode(Status.self, forKey: .status)
         checkInDate = try container.decode(String.self, forKey: .checkInDate).tryToDate(dateFormat: FormConfig.DateFormat.yyyyMMdd)
         checkOutDate = try container.decode(String.self, forKey: .checkOutDate).tryToDate(dateFormat: FormConfig.DateFormat.yyyyMMdd)
-        adultNumber = try container.decode(Int.self, forKey: .adultNumber)
-        extraAdultNumber = try container.decode(Int.self, forKey: .extraAdultNumber)
-        childNumber = try container.decode(Int.self, forKey: .childNumber)
+        adultNumber = try container.decode(String.self, forKey: .adultNumber).trytoInt()
+        extraAdultNumber = (try? container.decode(String.self, forKey: .extraAdultNumber).trytoInt()) ?? 0
+        childNumber = (try? container.decode(String.self, forKey: .childNumber).trytoInt()) ?? 0
         contacts = try container.decode(Contacts.self, forKey: .contacts)
         note = (try? container.decode(String.self, forKey: .note)) ?? ""
         canceledReason = try container.decodeIfPresent(String.self, forKey: .canceledReason)
@@ -274,8 +274,8 @@ extension Reservation {
         case departureToday(date: Date)
         case overCheckIn(date: Date)
         case beforeCheckIn(date: Date)
-        case bookingChannel(channel: ChannelWithSubChannel)
-        case bookingChannels(channels: [ChannelWithSubChannel])
+        case channel(id: Int, subChannelId: Int?)
+        case channels(channels: (id: Int, subChannelId: Int?))
         
     }
     

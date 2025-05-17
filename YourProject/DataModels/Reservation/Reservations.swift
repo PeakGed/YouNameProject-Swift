@@ -178,11 +178,11 @@ extension Reservations {
             filtered = lists.filter { $0.checkInDate.isMoreThen(date) }
         case .beforeCheckIn(let date):
             filtered = lists.filter { $0.checkInDate.isLessThen(date) }
-        case .bookingChannel(let channel):
+        case .channel(let id,let subChannelId):
 //            filtered = lists.filter { $0.channelId == channel.channel.id && $0.subChannelId == channel.subChannel?.id }
             // by pass now
             break
-        case .bookingChannels(let channels):
+        case .channels(let channels):
             // by pass now
             break
             
