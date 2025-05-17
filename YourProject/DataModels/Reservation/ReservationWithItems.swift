@@ -8,4 +8,10 @@
 struct ReservationWithItems: Decodable {
     let reservation: Reservation
     let items: ReservationItems
+    
+    // roomIDs
+    var uniqueUnitIDs: Set<Int> {
+        items.roomIDs        
+    }
+    
 }

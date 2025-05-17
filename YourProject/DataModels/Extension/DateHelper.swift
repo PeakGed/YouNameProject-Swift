@@ -59,4 +59,35 @@ extension Date {
         }
         return .orderedSame
     }
+
+    /// Creates a Date from the specified year, month and day components
+    /// 
+    /// - Parameters:
+    ///   - year: The year component
+    ///   - month: The month component (1-12)
+    ///   - day: The day component (1-31)
+    ///   - calendar: Calendar to use, defaults to current calendar
+    /// - Returns: Optional Date created from the components, nil if invalid
+    ///
+    /// Example:
+    /// ```
+    /// let date = Date.from(year: 2023, month: 5, day: 17)
+    /// // Creates date for May 17, 2023
+    /// ```
+    static func from(
+        year: Int,
+        month: Int,
+        day: Int,
+        calendar: Calendar = Calendar.current
+    ) -> Date? {
+        let components = DateComponents(
+            calendar: calendar,
+            year: year,
+            month: month,
+            day: day
+        )
+        return calendar.date(from: components)
+    }
+
+    
 }

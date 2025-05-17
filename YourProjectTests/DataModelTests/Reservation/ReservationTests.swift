@@ -178,21 +178,8 @@ final class ReservationTests: XCTestCase {
     }
     
     func test_encodingToJSON() throws {
-        // Arrange
-//        let reservation = createSampleReservation()
-//        
-//        // Act
-//        let encoder = JSONEncoder()
-//        encoder.outputFormatting = .prettyPrinted
-//        let jsonData = try encoder.encode(reservation)
-//        let jsonString = String(data: jsonData, encoding: .utf8)!
-//        
-//        // Assert
-//        XCTAssertTrue(jsonString.contains("\"id\" : 512"))
-//        XCTAssertTrue(jsonString.contains("\"uid\" : \"rsvt_5la15znqpb30lz5rmqj\""))
-//        XCTAssertTrue(jsonString.contains("\"status\" : \"checked_out\""))
-//        XCTAssertTrue(jsonString.contains("\"check_in_date\" : \"2019-11-28\""))
-//        XCTAssertTrue(jsonString.contains("\"fullname\" : \"abc\""))
+
+        
     }
     
     // MARK: - Helper Methods

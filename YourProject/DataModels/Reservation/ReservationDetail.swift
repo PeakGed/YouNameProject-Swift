@@ -6,8 +6,8 @@
 //
 
 struct ReservationDetail {
-    let reservation: Reservation
-    let reseraionItems: ReservationItems
+    let reservationWithItems: ReservationWithItems
+    
     //let finanacialRecords: FinanacialRecords
     //let additionals: Additionals
     
