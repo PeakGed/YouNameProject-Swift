@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct ReservationWithItem: Decodable {
+struct ReservationWithItem: Codable {
     let reservation: Reservation
     let items: ReservationItems
     
