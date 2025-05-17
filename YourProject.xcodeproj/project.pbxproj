@@ -109,6 +109,7 @@
 				DataModels/Reservation/ReservationItem.swift,
 				DataModels/Reservation/ReservationItems.swift,
 				DataModels/Reservation/Reservations.swift,
+				DataModels/Reservation/ReservationWithItem.swift,
 				DataModels/Reservation/ReservationWithItems.swift,
 				DataModels/SortOrder.swift,
 				DataModels/Staff/Staff.swift,
