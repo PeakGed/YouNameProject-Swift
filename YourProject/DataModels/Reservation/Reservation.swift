@@ -331,12 +331,62 @@ extension Reservation {
     }
     
     struct Contacts: Codable {
-        let title: String?
+        let title: String
         let fullname: String
         let email: String
         let tel: String
         
-        init(title: String? = nil,
+        var fullInfo: String {
+            var result = ""
+            if title.count > 0 {
+                result += title
+            }
+            
+            if fullname.count > 0 {
+                result += fullname
+            }
+            
+            return result
+        }
+        
+        var shortInfo: String {
+            if tel.count > 0 {
+                return tel
+            }
+            else if email.count > 0 {
+                return email
+            }
+            else {
+                return "-"
+            }
+        }
+        
+        // Split contact name into firstname and last name
+        var splitFullName: (firstName: String,
+                            lastName: String) {
+            
+            let splitLists = fullname.components(separatedBy: " ")
+            
+            var firstName = ""
+            var lastName = ""
+            for index in 0..<splitLists.count {
+                switch index {
+                case 0:
+                    firstName = splitLists[0]
+                    
+                default:
+                    if splitLists[index] != "" {
+                        if lastName.count > 0 {
+                            lastName += " "
+                        }
+                        lastName += splitLists[index]
+                    }
+                }
+            }
+            return (firstName , lastName)
+        }
+        
+        init(title: String = "",
              fullname: String = "",
              email: String = "",
              tel: String = "") {
@@ -344,6 +394,24 @@ extension Reservation {
             self.fullname = fullname
             self.email = email
             self.tel = tel
+        }
+        
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            
+            title = (try? container.decode(String.self, forKey: .title)) ?? ""
+            fullname = (try? container.decode(String.self, forKey: .fullname)) ?? ""
+            email = (try? container.decode(String.self, forKey: .email)) ?? ""
+            tel = (try? container.decode(String.self, forKey: .tel)) ?? ""
+        }
+        
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            
+            try container.encode(title, forKey: .title)
+            try container.encode(fullname, forKey: .fullname)
+            try container.encode(email, forKey: .email)
+            try container.encode(tel, forKey: .tel)
         }
         
         enum CodingKeys: String, CodingKey {

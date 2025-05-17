@@ -199,7 +199,7 @@ final class ReservationTests: XCTestCase {
     
     private func createSampleReservation() -> Reservation {
         let contacts = Reservation.Contacts(
-            title: nil,
+            title: "",
             fullname: "abc",
             email: "avc@email.com",
             tel: "1234567890"
