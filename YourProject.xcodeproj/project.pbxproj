@@ -61,6 +61,7 @@
 				DataModels/AuthTokenResponse.swift,
 				DataModels/Collection.swift,
 				"DataModels/Extension/Date+.swift",
+				DataModels/Extension/DateHelper.swift,
 				"DataModels/Extension/Double+.swift",
 				"DataModels/Extension/String/String+.swift",
 				"DataModels/Extension/String/String+FuzzySearch.swift",

@@ -36,14 +36,25 @@ extension ReservationItems {
     }
     
     var roomIDs: Set<Int> {
-        let result = lists
+        Set(lists
             .filter { $0.reservableType == .room }
-            .map { $0.reservableId }
-        return Set(result)
+            .map { $0.reservableId })
     }
     
     var unitCount: Int {
         roomIDs.count
+    }
+    
+    var maxMealLimit: ReservationItem? {
+        let result = lists.filter({ $0.data.mealIncluded == true }).max {
+            $0.data.adultMealLimit > $1.data.adultMealLimit &&
+            $0.data.childMealLimit > $1.data.childMealLimit
+        }
+        return result
+    }
+    
+    var mealExist: Bool {
+        lists.contains(where: { $0.data.mealIncluded == true })
     }
 }
 
@@ -78,81 +89,18 @@ extension ReservationItems {
         case .reservableId(let id):
             filtered = lists.filter { $0.reservableId == id }
         case .reservableType(let type):
-            filtered = lists.filter { $0.reservableType == type } // Adjust if you want to filter by type
+            filtered = lists.filter { $0.reservableType == type }
         case .date(let date):
-            filtered = lists.filter { $0.createdAt == date }
+            // date is equal to reservedDate
+            filtered = lists.filter { $0.reservedDate.compareDate(with: date) == .orderedSame }
         case .beforeDate(let date):
-            filtered = lists.filter { $0.createdAt < date }
+            // date is before reservedDate
+            filtered = lists.filter { $0.reservedDate.compareDate(with: date) == .orderedAscending }
         case .afterDate(let date):
-            filtered = lists.filter { $0.createdAt > date }
+            // date is after reservedDate
+            filtered = lists.filter { $0.reservedDate.compareDate(with: date) == .orderedDescending }
         }
         return .init(array: filtered)
     }
     
-//    init(from decoder: Decoder) throws {
-//        let container = try decoder.singleValueContainer()
-//        self.lists = try container.decode([ReservationItem].self)
-//    }
-//    
-//    func encode(to encoder: Encoder) throws {
-//        var container = encoder.singleValueContainer()
-//        try container.encode(lists)
-//    }
-    
-//    func filter(byID: Int) -> ReservationItem? {
-//        return lists.filter { (item) -> Bool in
-//            return item.id == byID
-//        }.first
-//    }
-//    
-//    func filter(byDate: Date) -> Self {
-//        let items = lists.filter({ reservationItem in
-//            reservationItem.reservedDate.isSameDate(byDate)
-//        })
-//        return .init(lists: items)
-//    }
-//    
-//    //filter only item before input date
-//    func filter(beforeDate: Date) -> Self {
-//        let items = lists.filter({ reservationItem in
-//            reservationItem.reservedDate.isLessThen(beforeDate)
-//        })
-//        return .init(lists: items)
-//    }
-//    
-//    func filter(reservablType: ReservationItem.ReservableType) -> Self {
-//        let items = self.lists.filter({ reservationItem in
-//            reservationItem.reservableType == reservablType
-//        })
-//        return .init(lists: items)
-//    }
-    
-//    func filter(reservableID: Int) -> Self {
-//        let items = self.lists.filter({ reservationItem in
-//            reservationItem.reservableID == reservableID
-//        })
-//        return .init(lists: items)
-//    }
-//    
-//    func sortedByDateO2N() -> Self {
-//        let items = self.lists.sorted { $0.reservedDate < $1.reservedDate }
-//        return .init(lists: items)
-//    }
-//        
-//    func sortedByDateN2O() -> Self {
-//        let items = self.lists.sorted { $0.reservedDate > $1.reservedDate }
-//        return .init(lists: items)
-//    }
-    
-    func maxMealLimit() -> ReservationItem? {
-        let result = lists.filter({ $0.data.mealIncluded == true }).max {
-            $0.data.adultMealLimit > $1.data.adultMealLimit &&
-            $0.data.childMealLimit > $1.data.childMealLimit
-        }
-        return result
-    }
-    
-    func existMeal() -> Bool {
-        return lists.contains(where: { $0.data.mealIncluded == true })
-    }
 }
