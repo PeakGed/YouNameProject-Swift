@@ -9,7 +9,7 @@ import Foundation
 
 struct ReservationItem: Codable {
     let id: Int
-    let reservedDate: String
+    let reservedDate: Date
     let totalPrice: Double
     
     let reservableType: ReservableType
@@ -42,25 +42,47 @@ struct ReservationItem: Codable {
     var extraChildMealTotal: Double {
         data.extraChildMealTotal
     }
+
+    init(id: Int,
+         reservedDate: Date,
+         totalPrice: Double,
+         reservableType: ReservableType,
+         reservableId: Int,
+         data: Data,
+         priceCard: LocalPriceCard?,
+         priceCardId: Int?,
+         createdAt: Date,
+         updatedAt: Date) {
+        self.id = id
+        self.reservedDate = reservedDate
+        self.totalPrice = totalPrice
+        self.reservableType = reservableType
+        self.reservableId = reservableId
+        self.data = data
+        self.priceCard = priceCard
+        self.priceCardId = priceCardId
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
+    }
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(Int.self, forKey: .id)
-        reservedDate = try container.decode(String.self, forKey: .reservedDate)
-        totalPrice = try container.decode(Double.self, forKey: .totalPrice)
+        reservedDate = try container.decode(String.self, forKey: .reservedDate).tryToDate(dateFormat: FormConfig.DateFormat.yyyyMMdd)
+        totalPrice = try container.decode(String.self, forKey: .totalPrice).trytoDouble()
         reservableType = try container.decode(ReservableType.self, forKey: .reservableType)
         data = try container.decode(Data.self, forKey: .data)
-        createdAt = try container.decode(String.self, forKey: .createdAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
-        updatedAt = try container.decode(String.self, forKey: .updatedAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
         priceCard = try container.decodeIfPresent(LocalPriceCard.self, forKey: .priceCard)
         reservableId = try container.decode(Int.self, forKey: .reservableId)
         priceCardId = try container.decodeIfPresent(Int.self, forKey: .priceCardId)
+        createdAt = try container.decode(String.self, forKey: .createdAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
+        updatedAt = try container.decode(String.self, forKey: .updatedAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(reservedDate, forKey: .reservedDate)
+        try container.encode(reservedDate.toDateString(FormConfig.DateFormat.yyyyMMdd), forKey: .reservedDate)
         try container.encode(totalPrice, forKey: .totalPrice)
         try container.encode(reservableType, forKey: .reservableType)
         try container.encode(data, forKey: .data)
@@ -220,20 +242,20 @@ extension ReservationItem {
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             isCustomRate = try container.decode(Bool.self, forKey: .isCustomRate)
-            selectedRate = try container.decode(Double.self, forKey: .selectedRate)
-            extraAdultRate = (try? container.decode(Double.self, forKey: .extraAdultRate)) ?? 0
-            extraAdultQty = (try? container.decode(Int.self, forKey: .extraAdultQty)) ?? 0
-            extraChildRate = (try? container.decode(Double.self, forKey: .extraChildRate)) ?? 0
-            extraChildQty = (try? container.decode(Int.self, forKey: .extraChildQty)) ?? 0
+            selectedRate = try container.decode(String.self, forKey: .selectedRate).trytoDouble()
+            extraAdultRate = (try? container.decode(String.self, forKey: .extraAdultRate).trytoDouble()) ?? 0
+            extraAdultQty = (try? container.decode(String.self, forKey: .extraAdultQty).trytoInt()) ?? 0
+            extraChildRate = (try? container.decode(String.self, forKey: .extraChildRate).trytoDouble()) ?? 0
+            extraChildQty = (try? container.decode(String.self, forKey: .extraChildQty).trytoInt()) ?? 0
             mealIncluded = (try? container.decode(Bool.self, forKey: .mealIncluded)) ?? false
-            adultMealLimit = (try? container.decode(Int.self, forKey: .adultMealLimit)) ?? 0
-            adultMealRate = (try? container.decode(Double.self, forKey: .adultMealRate)) ?? 0
-            childMealLimit = (try? container.decode(Int.self, forKey: .childMealLimit)) ?? 0
-            childMealRate = (try? container.decode(Double.self, forKey: .childMealRate)) ?? 0
-            extraAdultMealRate = (try? container.decode(Double.self, forKey: .extraAdultMealRate)) ?? 0
-            extraAdultMealQty = (try? container.decode(Int.self, forKey: .extraAdultMealQty)) ?? 0
-            extraChildMealRate = (try? container.decode(Double.self, forKey: .extraChildMealRate)) ?? 0
-            extraChildMealQty = (try? container.decode(Int.self, forKey: .extraChildMealQty)) ?? 0
+            adultMealLimit = (try? container.decode(String.self, forKey: .adultMealLimit).trytoInt()) ?? 0
+            adultMealRate = (try? container.decode(String.self, forKey: .adultMealRate).trytoDouble()) ?? 0
+            childMealLimit = (try? container.decode(String.self, forKey: .childMealLimit).trytoInt()) ?? 0
+            childMealRate = (try? container.decode(String.self, forKey: .childMealRate).trytoDouble()) ?? 0
+            extraAdultMealRate = (try? container.decode(String.self, forKey: .extraAdultMealRate).trytoDouble()) ?? 0
+            extraAdultMealQty = (try? container.decode(String.self, forKey: .extraAdultMealQty).trytoInt()) ?? 0
+            extraChildMealRate = (try? container.decode(String.self, forKey: .extraChildMealRate).trytoDouble()) ?? 0
+            extraChildMealQty = (try? container.decode(String.self, forKey: .extraChildMealQty).trytoInt()) ?? 0
         }
         
         // encode
@@ -241,20 +263,20 @@ extension ReservationItem {
             var container = encoder.container(keyedBy: CodingKeys.self)
             
             try container.encode(isCustomRate, forKey: .isCustomRate)
-            try container.encode(selectedRate, forKey: .selectedRate)
-            try container.encode(extraAdultRate, forKey: .extraAdultRate)
-            try container.encode(extraAdultQty, forKey: .extraAdultQty)
-            try container.encode(extraChildRate, forKey: .extraChildRate)
-            try container.encode(extraChildQty, forKey: .extraChildQty)
+            try container.encode(String(selectedRate), forKey: .selectedRate)
+            try container.encode(String(extraAdultRate), forKey: .extraAdultRate)
+            try container.encode(String(extraAdultQty), forKey: .extraAdultQty)
+            try container.encode(String(extraChildRate), forKey: .extraChildRate)
+            try container.encode(String(extraChildQty), forKey: .extraChildQty)
             try container.encode(mealIncluded, forKey: .mealIncluded)
-            try container.encode(adultMealLimit, forKey: .adultMealLimit)
-            try container.encode(adultMealRate, forKey: .adultMealRate)
-            try container.encode(childMealLimit, forKey: .childMealLimit)
-            try container.encode(childMealRate, forKey: .childMealRate)
-            try container.encode(extraAdultMealRate, forKey: .extraAdultMealRate)
-            try container.encode(extraAdultMealQty, forKey: .extraAdultMealQty)
-            try container.encode(extraChildMealRate, forKey: .extraChildMealRate)
-            try container.encode(extraChildMealQty, forKey: .extraChildMealQty)
+            try container.encode(String(adultMealLimit), forKey: .adultMealLimit)
+            try container.encode(String(adultMealRate), forKey: .adultMealRate)
+            try container.encode(String(childMealLimit), forKey: .childMealLimit)
+            try container.encode(String(childMealRate), forKey: .childMealRate)
+            try container.encode(String(extraAdultMealRate), forKey: .extraAdultMealRate)
+            try container.encode(String(extraAdultMealQty), forKey: .extraAdultMealQty)
+            try container.encode(String(extraChildMealRate), forKey: .extraChildMealRate)
+            try container.encode(String(extraChildMealQty), forKey: .extraChildMealQty)
         }
                 
         enum CodingKeys: String, CodingKey {
