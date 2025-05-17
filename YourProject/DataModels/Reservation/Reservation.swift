@@ -10,8 +10,8 @@ struct Reservation: Codable {
     let id: Int
     let uid: String
     let status: Status
-    let checkInDate: String
-    let checkOutDate: String
+    let checkInDate: Date
+    let checkOutDate: Date
     let adultNumber: Int
     let extraAdultNumber: Int
     let childNumber: Int
@@ -23,7 +23,7 @@ struct Reservation: Codable {
     let relatedReservationId: String?
     let guestComment: String?
     let markers: [String]
-    let flags: [String]
+    let flags: [Flag]
     let tags: [String]
     let emoji: String?
     
@@ -40,6 +40,37 @@ struct Reservation: Codable {
     let noShowAt: Date?
     let createdAt: Date
     let updatedAt: Date
+    
+    lazy var period: PeriodDate = {
+        .init(start: checkInDate,
+              end: checkOutDate)
+    }()
+    
+    lazy var checkInDateText: String = {
+        checkInDate.toDateString(FormConfig.DateFormat.yyyyMMdd)
+    }()
+    
+    lazy var checkOutDateText: String = {
+        checkOutDate.toDateString(FormConfig.DateFormat.yyyyMMdd)
+    }()
+        
+    // roomIDs
+//    var uniqueUnitIDs: Set<Int> {
+//        items.bedIDs.union(items.roomIDs)
+//    }
+    
+    // MARK:- Status flag
+
+//    var isExistCustomer: Bool {
+//        guests.count > 0
+//    }
+    var numberOfNight: Int {
+        checkInDate.numberOfDaysUntilDateTime(checkOutDate)
+    }
+    
+    var selectedFlag: Flag? {
+        flags.first
+    }
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -80,8 +111,8 @@ struct Reservation: Codable {
         id = try container.decode(Int.self, forKey: .id)
         uid = try container.decode(String.self, forKey: .uid)
         status = try container.decode(Status.self, forKey: .status)
-        checkInDate = try container.decode(String.self, forKey: .checkInDate)
-        checkOutDate = try container.decode(String.self, forKey: .checkOutDate)
+        checkInDate = try container.decode(String.self, forKey: .checkInDate).tryToDate(dateFormat: FormConfig.DateFormat.yyyyMMdd)
+        checkOutDate = try container.decode(String.self, forKey: .checkOutDate).tryToDate(dateFormat: FormConfig.DateFormat.yyyyMMdd)
         adultNumber = try container.decode(Int.self, forKey: .adultNumber)
         extraAdultNumber = try container.decode(Int.self, forKey: .extraAdultNumber)
         childNumber = try container.decode(Int.self, forKey: .childNumber)
@@ -92,9 +123,9 @@ struct Reservation: Codable {
         otaBookingId = (try? container.decode(String.self, forKey: .otaBookingId)) ?? ""
         relatedReservationId = try container.decodeIfPresent(String.self, forKey: .relatedReservationId)
         guestComment = try container.decodeIfPresent(String.self, forKey: .guestComment)
-        markers = try container.decode([String].self, forKey: .markers)
-        flags = try container.decode([String].self, forKey: .flags)
-        tags = try container.decode([String].self, forKey: .tags)
+        markers = (try? container.decode([String].self, forKey: .markers)) ?? []
+        flags = (try? container.decode([Flag].self, forKey: .flags)) ?? []
+        tags = (try? container.decode([String].self, forKey: .tags)) ?? []
         emoji = try container.decodeIfPresent(String.self, forKey: .emoji)
         
         hotelChannelReservationId = try container.decodeIfPresent(Int.self, forKey: .hotelChannelReservationId)
@@ -116,8 +147,8 @@ struct Reservation: Codable {
     init(id: Int,
          uid: String,
          status: Status,
-         checkInDate: String,
-         checkOutDate: String,
+         checkInDate: Date,
+         checkOutDate: Date,
          adultNumber: Int = 2,
          extraAdultNumber: Int = 0,
          childNumber: Int = 0,
@@ -129,7 +160,7 @@ struct Reservation: Codable {
          relatedReservationId: String? = nil,
          guestComment: String? = nil,
          markers: [String] = [],
-         flags: [String] = [],
+         flags: [Flag] = [],
          tags: [String] = [],
          emoji: String? = nil,         
          hotelChannelReservationId: Int? = nil,
@@ -177,6 +208,13 @@ struct Reservation: Codable {
         self.subChannelId = subChannelId
     }
     
+    func isStatus(status: Reservation.Status) -> Bool {
+        return self.status == status
+    }
+    
+    func isStatuses(statuses: [Reservation.Status]) -> Bool {
+        return statuses.contains(self.status)
+    }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -217,6 +255,43 @@ struct Reservation: Codable {
 }
 
 extension Reservation {
+    
+    enum FilterBy {
+        case id(id: Int)
+        case ids(ids: [Int])
+        case keyword(q: String)
+        case guestId(id: Int)
+        case roomId(id: Int)
+        case status(status: Reservation.Status)
+        case statuses(statuses: [Reservation.Status])
+        
+        case date(date: Date)
+        case checkInDate(date: Date)
+        case staythroughDate(date: Date)
+        case checkOutDate(date: Date)
+        
+        case arrivalToday(date: Date)
+        case departureToday(date: Date)
+        case overCheckIn(date: Date)
+        case beforeCheckIn(date: Date)
+        case bookingChannel(channel: ChannelWithSubChannel)
+        case bookingChannels(channels: [ChannelWithSubChannel])
+        
+    }
+    
+    enum SortBy {
+        case id
+        case contactNameAlphabet
+        case status
+        case totalCost
+        case totalPaid
+        case remainCost
+        case nightCount
+        case checkInDate
+        case checkOutDate
+        case createdAt
+        case updatedAt
+    }
     
     enum Status: String, Codable ,CaseIterable {
         case booked = "created"

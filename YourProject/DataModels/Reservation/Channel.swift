@@ -7,6 +7,11 @@
 
 import Foundation
 
+struct ChannelWithSubChannel {
+    let channel: Channel
+    let subChannels: SubChannel?
+}
+
 struct Channel: Codable {
     let id: Int
     let name: String
