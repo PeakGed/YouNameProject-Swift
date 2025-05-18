@@ -12,7 +12,6 @@ struct Additional: Codable {
     let note: String
     let dateIssue: Date
     let totalAmount: Double
-    let creator: Creator
     let createdAt: Date
     let updatedAt: Date
     let hotelId: Int
@@ -25,7 +24,6 @@ struct Additional: Codable {
         case note
         case dateIssue = "date_issue"
         case totalAmount = "total_amount"
-        case creator
         case createdAt = "created_at"
         case updatedAt = "updated_at"
         case hotelId = "hotel_id"
@@ -38,7 +36,6 @@ struct Additional: Codable {
          note: String,
          dateIssue: Date,
          totalAmount: Double,
-         creator: Creator,
          createdAt: Date,
          updatedAt: Date,
          hotelId: Int,
@@ -49,7 +46,6 @@ struct Additional: Codable {
         self.note = note
         self.dateIssue = dateIssue
         self.totalAmount = totalAmount
-        self.creator = creator
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.hotelId = hotelId
@@ -64,7 +60,6 @@ struct Additional: Codable {
         note = try container.decode(String.self, forKey: .note)
         dateIssue = try container.decode(String.self, forKey: .dateIssue).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
         totalAmount = try container.decode(String.self, forKey: .totalAmount).trytoDouble()
-        creator = try container.decode(Creator.self, forKey: .creator)
         createdAt = try container.decode(String.self, forKey: .createdAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
         updatedAt = try container.decode(String.self, forKey: .updatedAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
         hotelId = try container.decode(Int.self, forKey: .hotelId)
@@ -79,34 +74,11 @@ struct Additional: Codable {
         try container.encode(note, forKey: .note)
         try container.encode(dateIssue.toDateString(FormConfig.DateFormat.datetimeISO), forKey: .dateIssue)
         try container.encode(totalAmount.toString(), forKey: .totalAmount)
-        try container.encode(creator, forKey: .creator)
         try container.encode(createdAt.toDateString(FormConfig.DateFormat.datetimeISO), forKey: .createdAt)
         try container.encode(updatedAt.toDateString(FormConfig.DateFormat.datetimeISO), forKey: .updatedAt)
         try container.encode(hotelId, forKey: .hotelId)
         try container.encode(reservationId, forKey: .reservationId)
         try container.encode(additionalItems, forKey: .additionalItems)
-    }
-    
-    
-}
-
-extension Additional {
-    struct Creator: Codable {
-        let id: Int
-        let email: String
-        let firstName: String
-        let lastName: String
-        let logoImage: String?
-        let role: String
-        
-        private enum CodingKeys: String, CodingKey {
-            case id
-            case email
-            case firstName = "first_name"
-            case lastName = "last_name"
-            case logoImage = "logo_image"
-            case role
-        }
     }
 }
 
@@ -118,14 +90,6 @@ extension Additional {
              "note": "",
              "date_issue": "2024-04-21T00:00:00.000+07:00",
              "total_amount": "111.11",
-             "creator": {
-                 "id": 38,
-                 "email": "test1@email.com",
-                 "first_name": "John2",
-                 "last_name": "Doe2",
-                 "logo_image": null,
-                 "role": "owner"
-             },
              "created_at": "2024-04-21T13:33:16.144+07:00",
              "updated_at": "2024-04-21T13:33:16.227+07:00",
              "hotel_id": 105,
