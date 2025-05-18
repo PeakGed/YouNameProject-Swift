@@ -10,18 +10,7 @@ import XCTest
 final class AdditionalTests: XCTestCase {
     
     // MARK: - Helper Methods
-    
-    private func sampleCreator() -> Additional.Creator {
-        return Additional.Creator(
-            id: 38,
-            email: "test1@email.com", 
-            firstName: "John2",
-            lastName: "Doe2",
-            logoImage: nil,
-            role: "owner"
-        )
-    }
-    
+   
     private func sampleAdditionalItem() -> AdditionalItem {
         return AdditionalItem(
             id: 454,
@@ -48,7 +37,6 @@ final class AdditionalTests: XCTestCase {
             note: "",
             dateIssue: dateIssue,
             totalAmount: 111.11,
-            creator: sampleCreator(),
             createdAt: createdAt,
             updatedAt: updatedAt,
             hotelId: 105,
@@ -68,14 +56,6 @@ final class AdditionalTests: XCTestCase {
         XCTAssertEqual(additional.hotelId, 105)
         XCTAssertEqual(additional.reservationId, 1067)
         
-        // Test creator properties
-        XCTAssertEqual(additional.creator.id, 38)
-        XCTAssertEqual(additional.creator.email, "test1@email.com")
-        XCTAssertEqual(additional.creator.firstName, "John2")
-        XCTAssertEqual(additional.creator.lastName, "Doe2")
-        XCTAssertNil(additional.creator.logoImage)
-        XCTAssertEqual(additional.creator.role, "owner")
-        
         // Test additional items
         XCTAssertEqual(additional.additionalItems.count, 1)
         let item = additional.additionalItems[0]
@@ -93,14 +73,6 @@ final class AdditionalTests: XCTestCase {
             "note": "",
             "date_issue": "2024-04-21T00:00:00.000+07:00",
             "total_amount": "111.11",
-            "creator": {
-                "id": 38,
-                "email": "test1@email.com",
-                "first_name": "John2",
-                "last_name": "Doe2",
-                "logo_image": null,
-                "role": "owner"
-            },
             "created_at": "2024-04-21T13:33:16.144+07:00",
             "updated_at": "2024-04-21T13:33:16.227+07:00",
             "hotel_id": 105,
@@ -130,14 +102,6 @@ final class AdditionalTests: XCTestCase {
         XCTAssertEqual(additional.totalAmount, 111.11)
         XCTAssertEqual(additional.hotelId, 105)
         XCTAssertEqual(additional.reservationId, 1067)
-        
-        // Test creator
-        XCTAssertEqual(additional.creator.id, 38)
-        XCTAssertEqual(additional.creator.email, "test1@email.com")
-        XCTAssertEqual(additional.creator.firstName, "John2")
-        XCTAssertEqual(additional.creator.lastName, "Doe2")
-        XCTAssertNil(additional.creator.logoImage)
-        XCTAssertEqual(additional.creator.role, "owner")
         
         // Test additional items
         XCTAssertEqual(additional.additionalItems.count, 1)
