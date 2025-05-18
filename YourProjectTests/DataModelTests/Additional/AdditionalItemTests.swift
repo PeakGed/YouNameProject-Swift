@@ -35,24 +35,17 @@ final class AdditionalItemTests: XCTestCase {
         XCTAssertEqual(item.itemableType, .foilo)
         XCTAssertEqual(item.additionalId, 261)
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = FormConfig.DateFormat.datetimeISO
-        dateFormatter.timeZone = TimeZone(identifier: "UTC+7")
-        
-        let expectedCreatedAt = dateFormatter.date(from: "2024-03-19T05:54:36.214+07:00")
-        let expectedUpdatedAt = dateFormatter.date(from: "2024-03-19T05:54:36.214+07:00")
+        let expectedCreatedAt = try "2024-03-19T05:54:36.214+07:00".tryToDate(FormConfig.DateFormat.datetimeISO)
+        let expectedUpdatedAt = try "2024-03-19T05:54:36.214+07:00".tryToDate(FormConfig.DateFormat.datetimeISO)
         
         XCTAssertEqual(item.createdAt, expectedCreatedAt)
         XCTAssertEqual(item.updatedAt, expectedUpdatedAt)
     }
     
-    func test_encodingToJSON() throws {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = FormConfig.DateFormat.datetimeISO
-        dateFormatter.timeZone = TimeZone(identifier: "UTC+7")
+    func test_encodingToJSON() throws {        
         
-        let createdAt = dateFormatter.date(from: "2024-03-19T05:54:36.214+07:00")!
-        let updatedAt = dateFormatter.date(from: "2024-03-19T05:54:36.214+07:00")!
+        let createdAt = try "2024-03-19T05:54:36.214+07:00".tryToDate(FormConfig.DateFormat.datetimeISO)
+        let updatedAt = try "2024-03-19T05:54:36.214+07:00".tryToDate(FormConfig.DateFormat.datetimeISO)
         
         let item = AdditionalItem(
             id: 431,
