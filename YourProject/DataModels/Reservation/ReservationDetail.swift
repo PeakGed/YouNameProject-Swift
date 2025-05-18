@@ -7,10 +7,10 @@
 
 struct ReservationDetail {
     let reservationWithItems: ReservationWithItems
-    
-    //let finanacialRecords: FinanacialRecords
-    //let additionals: Additionals
+    let finanacialRecords: FinancialRecords
+    let addtionals: Additionals
+    let guests: Guests
     
     // confirmation
-    // billing
+    // billing / invoice
 }
