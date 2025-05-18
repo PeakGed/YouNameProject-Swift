@@ -120,6 +120,24 @@ struct RoomType: Codable {
     
 }
 
+extension RoomType {
+    
+    enum FilterBy {
+        case id(id: Int)
+        case ids(ids: [Int])
+        //case roomStatus(status: Room.Status)
+                
+    }
+    
+    enum SortBy {
+        case id
+        case name
+        case baseRate
+        case createdAt
+        case updatedAt
+    }
+}
+
 /*
 [
     {
