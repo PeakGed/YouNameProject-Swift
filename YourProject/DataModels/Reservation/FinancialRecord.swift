@@ -8,6 +8,72 @@
 import Foundation
 
 struct FinancialRecord: Codable {
+        
+    /*
+    json format
+    [
+      {
+        "name": "Bank Transfer",
+        "subMethods": []
+      },
+      {
+        "name": "Cash", 
+        "subMethods": []
+      },
+      {
+        "name": "Cheque",
+        "subMethods": []
+      },
+      {
+        "name": "Credit Card",
+        "subMethods": []
+      },
+      {
+        "name": "Fin Tech",
+        "subMethods": [
+          "Alipay",
+          "Apple Pay",
+          "Prompt pay", 
+          "Samsung Pay",
+          "WeChat Pay"
+        ]
+      },
+      {
+        "name": "OTA Transfer",
+        "subMethods": []
+      },
+      {
+        "name": "Paypal",
+        "subMethods": []
+      }
+    ]
+    */
+    static let paymentMethods = [
+                                 Method(name: "Bank Transfer",
+                                        subMethods: []) ,
+                                 Method(name: "Cash",
+                                        subMethods: []) ,
+                                 Method(name: "Cheque",
+                                        subMethods: []) ,
+                                 Method(name: "Credit Card",
+                                        subMethods: []) ,
+                                 Method(name: "Fin Tech",
+                                        subMethods: [
+                                    "Alipay" ,
+                                    "Apple Pay" ,
+                                    "Prompt pay" ,
+                                    "Samsung Pay" ,
+                                    "WeChat Pay"
+                                 ]) ,
+                                 Method(name: "OTA Transfer",
+                                        subMethods: []) ,
+                                 Method(name: "Paypal",
+                                        subMethods: []) ]
+    
+    static let defaultPaymentMethod = FinancialRecord.paymentMethods[1] // Cash
+    
+    internal let dateFormat = "dd MMM yyyy HH:mm"
+    
     let id: Int
     let name: String
     let paymentMethod: String
@@ -93,6 +159,20 @@ struct FinancialRecord: Codable {
         try container.encode(createdAt.toDateString(FormConfig.DateFormat.datetimeISO), forKey: .createdAt)
         try container.encode(updatedAt.toDateString(FormConfig.DateFormat.datetimeISO), forKey: .updatedAt)
     }
+}
+
+extension FinancialRecord {
+    enum CashFlowType: String {
+        case income
+        case expense
+    }
+    
+    struct Method {
+        var name: String
+        var subMethods: [String]
+    }
+
+    
 }
 
 /*
