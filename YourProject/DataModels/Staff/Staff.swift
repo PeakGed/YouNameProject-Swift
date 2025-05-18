@@ -10,7 +10,7 @@ import Foundation
 struct Staff: Codable {
     let id: Int
     let status: Status
-    let role: Role        
+    let role: Role
     let userId: Int
     let email: String
     let firstName: String
@@ -20,14 +20,14 @@ struct Staff: Codable {
     let logoImage: String?
     let signSignatureImage: String?
     let hotelId: Int
-
+    
     let createdAt: Date
     let updatedAt: Date
     
     enum CodingKeys: String, CodingKey {
         case id
         case status
-        case role                
+        case role
         case userId = "user_id"
         case email
         case firstName = "first_name"
@@ -45,7 +45,7 @@ struct Staff: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(Int.self, forKey: .id)
         status = try container.decode(Status.self, forKey: .status)
-        role = try container.decode(Role.self, forKey: .role)                        
+        role = try container.decode(Role.self, forKey: .role)
         
         userId = try container.decode(Int.self, forKey: .userId)
         email = try container.decode(String.self, forKey: .email)
@@ -56,26 +56,26 @@ struct Staff: Codable {
         logoImage = try container.decodeIfPresent(String.self, forKey: .logoImage)
         signSignatureImage = try container.decodeIfPresent(String.self, forKey: .signSignatureImage)
         hotelId = try container.decode(Int.self, forKey: .hotelId)
-
+        
         let dateFormat = FormConfig.DateFormat.datetimeISO
         createdAt = try container.decode(String.self, forKey: .createdAt).tryToDate(dateFormat: dateFormat)
         updatedAt = try container.decode(String.self, forKey: .updatedAt).tryToDate(dateFormat: dateFormat)
     }
-
+    
     init(id: Int,
-     status: Status, 
-     role: Role, 
-     userId: Int,
-      email: String, 
-      firstName: String,
-       lastName: String,
-        phoneNumber: String, 
-        idCard: String, 
-        logoImage: String?, 
-        signSignatureImage: String?, 
-        hotelId: Int, 
-        createdAt: Date = Date(), 
-        updatedAt: Date = Date()) {
+         status: Status,
+         role: Role,
+         userId: Int,
+         email: String,
+         firstName: String,
+         lastName: String,
+         phoneNumber: String,
+         idCard: String,
+         logoImage: String?,
+         signSignatureImage: String?,
+         hotelId: Int,
+         createdAt: Date = Date(),
+         updatedAt: Date = Date()) {
         self.id = id
         self.status = status
         self.role = role
@@ -96,7 +96,7 @@ struct Staff: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
         try container.encode(status, forKey: .status)
-        try container.encode(role, forKey: .role)                
+        try container.encode(role, forKey: .role)
         
         try container.encode(userId, forKey: .userId)
         try container.encode(email, forKey: .email)
@@ -107,7 +107,7 @@ struct Staff: Codable {
         try container.encodeIfPresent(logoImage, forKey: .logoImage)
         try container.encodeIfPresent(signSignatureImage, forKey: .signSignatureImage)
         try container.encode(hotelId, forKey: .hotelId)
-
+        
         let dateFormat = FormConfig.DateFormat.datetimeISO
         try container.encode(createdAt.toDateString(dateFormat), forKey: .createdAt)
         try container.encode(updatedAt.toDateString(dateFormat), forKey: .updatedAt)
@@ -126,12 +126,12 @@ extension Staff {
             case .inactive:
                 return "Inactive"
             }
-        }    
+        }
     }
-
+    
     
     enum Role: String, Codable, CaseIterable {
-        case frontDesk = "front_desk"         
+        case frontDesk = "front_desk"
         case manager = "manager"
         case admin = "ROLE_SUPPORT_SUPER_ADMIN"
         
@@ -149,24 +149,24 @@ extension Staff {
 }
 
 /*
-json response
-[
-    {
-        "id": 36,
-        "status": "active",
-        "role": "front_desk",
-        "data": {},
-        "created_at": "2021-11-16T13:17:05.109+07:00",
-        "updated_at": "2021-11-16T13:17:05.109+07:00",
-        "user_id": 127,
-        "email": "demo_staff123@email.com",
-        "first_name": "rrr",
-        "last_name": "fff",
-        "phone_number": "[[rpr[e",
-        "id_card": "3434434",
-        "logo_image": "https://hms-heroku.s3.ap-southeast-1.amazonaws.com/documents/65f988f3-b52c-47dc-8e82-5bddf1c47b8b/F9FD7BD0-356A-407C-892B-946C9EBAB000.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2I7XJ7WJNRHU7NRV%2F20250510%2Fap-southeast-1%2Fs3%2Faws4_request&X-Amz-Date=20250510T064208Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=c501957d51376b8ed9983231f8edc771606d4c5db1bb89ff340aa65f037ac6c3",
-        "sign_signature_image": null,
-        "hotel_id": 105
-    }
-]
-*/
+ json response
+ [
+ {
+ "id": 36,
+ "status": "active",
+ "role": "front_desk",
+ "data": {},
+ "created_at": "2021-11-16T13:17:05.109+07:00",
+ "updated_at": "2021-11-16T13:17:05.109+07:00",
+ "user_id": 127,
+ "email": "demo_staff123@email.com",
+ "first_name": "rrr",
+ "last_name": "fff",
+ "phone_number": "[[rpr[e",
+ "id_card": "3434434",
+ "logo_image": "https://hms-heroku.s3.ap-southeast-1.amazonaws.com/documents/65f988f3-b52c-47dc-8e82-5bddf1c47b8b/F9FD7BD0-356A-407C-892B-946C9EBAB000.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2I7XJ7WJNRHU7NRV%2F20250510%2Fap-southeast-1%2Fs3%2Faws4_request&X-Amz-Date=20250510T064208Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=c501957d51376b8ed9983231f8edc771606d4c5db1bb89ff340aa65f037ac6c3",
+ "sign_signature_image": null,
+ "hotel_id": 105
+ }
+ ]
+ */
