@@ -67,10 +67,10 @@ struct RoomType: Codable {
         self.order = try container.decode(Int.self, forKey: .order)
         self.name = try container.decode(String.self, forKey: .name)
         self.description = try container.decode(String.self, forKey: .description)
-        self.baseRate = try container.decode(Double.self, forKey: .baseRate)
+        self.baseRate = try container.decode(String.self, forKey: .baseRate).trytoDouble()
         self.baseGuestNumber = try container.decode(Int.self, forKey: .baseGuestNumber)
-        self.extraBedRate = try container.decode(Double.self, forKey: .extraBedRate)
-        self.extraGuestRate = try container.decode(Double.self, forKey: .extraGuestRate)
+        self.extraBedRate = try container.decode(String.self, forKey: .extraBedRate).trytoDouble()
+        self.extraGuestRate = try container.decode(String.self, forKey: .extraGuestRate).trytoDouble()
         self.maxExtraBedNumber = try container.decode(Int.self, forKey: .maxExtraBedNumber)
         self.maxExtraGuestNumber = try container.decode(Int.self, forKey: .maxExtraGuestNumber)
         self.limitedNumberOfCMUnits = try container.decode(Int?.self, forKey: .limitedNumberOfCMUnits)
@@ -86,10 +86,10 @@ struct RoomType: Codable {
         try container.encode(order, forKey: .order)
         try container.encode(name, forKey: .name)
         try container.encode(description, forKey: .description)
-        try container.encode(baseRate, forKey: .baseRate)
+        try container.encode(baseRate.toString(), forKey: .baseRate)
         try container.encode(baseGuestNumber, forKey: .baseGuestNumber)
-        try container.encode(extraBedRate, forKey: .extraBedRate)
-        try container.encode(extraGuestRate, forKey: .extraGuestRate)
+        try container.encode(extraBedRate.toString(), forKey: .extraBedRate)
+        try container.encode(extraGuestRate.toString(), forKey: .extraGuestRate)
         try container.encode(maxExtraBedNumber, forKey: .maxExtraBedNumber)
         try container.encode(maxExtraGuestNumber, forKey: .maxExtraGuestNumber)
         try container.encode(limitedNumberOfCMUnits, forKey: .limitedNumberOfCMUnits)
@@ -125,14 +125,14 @@ struct RoomType: Codable {
     {
         "id": 179,
         "name": "Duluxe Room",
-        "base_rate": 520.0,
+        "base_rate": "520.00",
         "base_guest_number": 30,
-        "extra_bed_rate": 500.0,
-        "extra_guest_rate": 200.0,
+        "extra_bed_rate": "500.00",
+        "extra_guest_rate": "200.00",
         "max_extra_bed_number": 1,
         "max_extra_guest_number": 1,
         "limited_number_of_cm_units": null,
-        "description": "test description",
+        "description": "test description",
         "tags": [],
         "data": null,
         "order": 0,
@@ -143,10 +143,10 @@ struct RoomType: Codable {
     {
         "id": 180,
         "name": "City View",
-        "base_rate": 500.0,
+        "base_rate": "500.00",
         "base_guest_number": 1,
-        "extra_bed_rate": 999.0,
-        "extra_guest_rate": 888.0,
+        "extra_bed_rate": "999.00",
+        "extra_guest_rate": "888.00",
         "max_extra_bed_number": 2,
         "max_extra_guest_number": 2,
         "limited_number_of_cm_units": null,
@@ -161,10 +161,10 @@ struct RoomType: Codable {
     {
         "id": 182,
         "name": "uu",
-        "base_rate": 100.0,
+        "base_rate": "100.00",
         "base_guest_number": 2,
-        "extra_bed_rate": 200.0,
-        "extra_guest_rate": 300.0,
+        "extra_bed_rate": "200.00",
+        "extra_guest_rate": "300.00",
         "max_extra_bed_number": 1,
         "max_extra_guest_number": 1,
         "limited_number_of_cm_units": null,
@@ -179,10 +179,10 @@ struct RoomType: Codable {
     {
         "id": 183,
         "name": "oo",
-        "base_rate": 100.0,
+        "base_rate": "100.00",
         "base_guest_number": 3,
-        "extra_bed_rate": 200.0,
-        "extra_guest_rate": 300.0,
+        "extra_bed_rate": "200.00",
+        "extra_guest_rate": "300.00",
         "max_extra_bed_number": 2,
         "max_extra_guest_number": 1,
         "limited_number_of_cm_units": null,
@@ -197,10 +197,10 @@ struct RoomType: Codable {
     {
         "id": 184,
         "name": "ii",
-        "base_rate": 100.0,
+        "base_rate": "100.00",
         "base_guest_number": 2,
-        "extra_bed_rate": 200.0,
-        "extra_guest_rate": 300.0,
+        "extra_bed_rate": "200.00",
+        "extra_guest_rate": "300.00",
         "max_extra_bed_number": 1,
         "max_extra_guest_number": 1,
         "limited_number_of_cm_units": null,
@@ -215,10 +215,10 @@ struct RoomType: Codable {
     {
         "id": 185,
         "name": "yy",
-        "base_rate": 200.0,
+        "base_rate": "200.00",
         "base_guest_number": 2,
-        "extra_bed_rate": 200.0,
-        "extra_guest_rate": 300.0,
+        "extra_bed_rate": "200.00",
+        "extra_guest_rate": "300.00",
         "max_extra_bed_number": 1,
         "max_extra_guest_number": 1,
         "limited_number_of_cm_units": null,
