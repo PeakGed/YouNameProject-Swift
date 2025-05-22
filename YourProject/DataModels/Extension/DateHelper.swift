@@ -42,7 +42,8 @@ extension Date {
     /// ```
 
     func compareDate(with date: Date,
-                     calendar: Calendar = Calendar.current) -> ComparisonResult {
+                     calendar: Calendar = .current,
+                     locale: Locale = .current) -> ComparisonResult {
         
         let selfComponents = calendar.dateComponents([.year, .month, .day], from: self)
         let otherComponents = calendar.dateComponents([.year, .month, .day], from: date)

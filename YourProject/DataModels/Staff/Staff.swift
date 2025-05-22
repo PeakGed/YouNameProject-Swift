@@ -129,11 +129,15 @@ extension Staff {
         }
     }
     
-    
     enum Role: String, Codable, CaseIterable {
         case frontDesk = "front_desk"
         case manager = "manager"
-        case admin = "ROLE_SUPPORT_SUPER_ADMIN"
+    
+        // sysytem role
+        case systemUser = "ROLE_USER"
+        case systemAdmin = "ROLE_ADMIN"
+        case systemSuperAdmin = "ROLE_SUPER_ADMIN"
+        case systemSupportSuperAdmin = "ROLE_SUPPORT_SUPER_ADMIN"
         
         var description: String {
             switch self {
@@ -141,7 +145,11 @@ extension Staff {
                 return "Front Desk"
             case .manager:
                 return "Manager"
-            case .admin:
+            case .systemUser:
+                return "User"
+            case .systemAdmin,
+                 .systemSuperAdmin,
+                 .systemSupportSuperAdmin:
                 return "Admin"
             }
         }
