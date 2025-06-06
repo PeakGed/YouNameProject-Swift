@@ -81,6 +81,8 @@
 				DataModels/Manager/LocalStorageManager/Wrappers/UserDefaultsWrapper.swift,
 				DataModels/Paginator/Paginator.swift,
 				DataModels/Paginator/PaginatorDatastore.swift,
+				DataModels/Property/BankAccount/BankAccount.swift,
+				DataModels/Property/BankAccount/BankAccounts.swift,
 				DataModels/Property/HotelInfo/Beds24Config.swift,
 				DataModels/Property/HotelInfo/ChannelManagerFeature.swift,
 				DataModels/Property/HotelInfo/ColorProfile.swift,
