@@ -11,6 +11,7 @@ import Mockable
 @Mockable
 protocol AuthServiceProtocol: AnyObject {
     func emailLogin(request: AuthServiceRequest.EmailLogin) async throws
+    func appleIdLogin(request: AuthServiceRequest.AppleIdLogin) async throws
     func tokenRefresh(request: AuthServiceRequest.TokenRefresh) async throws
     func logout() async throws        
     func resendEmailConfirmation(request: AuthServiceRequest.ResendEmailConfirmation) async throws
@@ -31,6 +32,14 @@ class AuthRemoteService: AuthServiceProtocol {
     
     func emailLogin(request: AuthServiceRequest.EmailLogin) async throws {
         let router = AuthServiceRouter.emailLogin(request: request)
+        
+        let response: AuthTokenResponse = try await apiManager.request(router: router,
+                                                                       requiredAuthorization: false)
+        localStorage.setToken(response)
+    }
+    
+    func appleIdLogin(request: AuthServiceRequest.AppleIdLogin) async throws {
+        let router = AuthServiceRouter.appleIdLogin(request: request)
         
         let response: AuthTokenResponse = try await apiManager.request(router: router,
                                                                        requiredAuthorization: false)

@@ -93,6 +93,80 @@ final class AuthServiceRouterTests: XCTestCase {
         XCTAssertNil(urlRequest.httpBody)
     }
     
+    func testAppleIdLoginRequest() throws {
+        // Given
+        let appleLoginRequest = AuthServiceRequest.AppleIdLogin(
+            code: "apple_auth_code_123",
+            firstName: "John",
+            lastName: "Doe",
+            email: "john.doe@example.com"
+        )
+        let router = AuthServiceRouter.appleIdLogin(request: appleLoginRequest)
+        
+        // When
+        let urlRequest = try router.asURLRequest()
+        
+        // Then
+        XCTAssertEqual(urlRequest.url?.absoluteString, baseURL + "/v4/auth/apple-login")
+        XCTAssertEqual(urlRequest.httpMethod, HTTPMethod.post.rawValue)
+        
+        // Test parameters
+        if let body = urlRequest.httpBody {
+            do {
+                if let json = try JSONSerialization.jsonObject(with: body,
+                                                               options: []) as? [String: Any] {
+                    XCTAssertEqual(json["code"] as? String, "apple_auth_code_123")
+                    XCTAssertEqual(json["first_name"] as? String, "John")
+                    XCTAssertEqual(json["last_name"] as? String, "Doe")
+                    XCTAssertEqual(json["email"] as? String, "john.doe@example.com")
+                } else {
+                    XCTFail("JSON is not a dictionary")
+                }
+            } catch {
+                XCTFail("Failed to parse JSON: \(error)")
+            }
+        } else {
+            XCTFail("HTTP body is nil")
+        }
+    }
+    
+    func testAppleIdLoginRequest_WithNilValues() throws {
+        // Given
+        let appleLoginRequest = AuthServiceRequest.AppleIdLogin(
+            code: "apple_auth_code_123",
+            firstName: nil,
+            lastName: nil,
+            email: nil
+        )
+        let router = AuthServiceRouter.appleIdLogin(request: appleLoginRequest)
+        
+        // When
+        let urlRequest = try router.asURLRequest()
+        
+        // Then
+        XCTAssertEqual(urlRequest.url?.absoluteString, baseURL + "/v4/auth/apple-login")
+        XCTAssertEqual(urlRequest.httpMethod, HTTPMethod.post.rawValue)
+        
+        // Test parameters
+        if let body = urlRequest.httpBody {
+            do {
+                if let json = try JSONSerialization.jsonObject(with: body,
+                                                               options: []) as? [String: Any] {
+                    XCTAssertEqual(json["code"] as? String, "apple_auth_code_123")
+                    XCTAssertNil(json["first_name"])
+                    XCTAssertNil(json["last_name"])
+                    XCTAssertNil(json["email"])
+                } else {
+                    XCTFail("JSON is not a dictionary")
+                }
+            } catch {
+                XCTFail("Failed to parse JSON: \(error)")
+            }
+        } else {
+            XCTFail("HTTP body is nil")
+        }
+    }
+    
     func testEmailLogin_WillGetValidResponse() async throws {
         let response = AuthTokenResponse(accessToken: "access_token",
                                           refreshToken: "refresh_token")
@@ -236,6 +310,96 @@ final class AuthServiceRouterTests: XCTestCase {
        verify(localStorage).clearToken().called(.once)
    }
     
+}
+
+// MARK: - Apple ID Login Service Tests
+extension AuthServiceRouterTests {
+    
+    func testAppleIdLogin_WillGetValidResponse() async throws {
+        // Given
+        let response = AuthTokenResponse(accessToken: "access_token",
+                                          refreshToken: "refresh_token")
+        given(apiManager).request(router: .any,
+                                  requiredAuthorization: .any).willReturn(response)
+        given(localStorage).setToken(.any).willReturn()
+        
+        let authRemoteService = AuthRemoteService(localStorage: localStorage,
+                                                  apiManager: apiManager)
+        
+        let appleLoginRequest = AuthServiceRequest.AppleIdLogin(
+            code: "apple_auth_code_123",
+            firstName: "John",
+            lastName: "Doe",
+            email: "john.doe@example.com"
+        )
+        
+        // When
+        try await authRemoteService.appleIdLogin(request: appleLoginRequest)
+        
+        // Then
+        verify(localStorage).setToken(.any).called(.atLeastOnce)
+    }
+    
+    func testAppleIdLogin_WhenAPIFails_ThrowsError() async {
+        // Given
+        let expectedError = MockError()
+        given(apiManager)
+            .request(router: .any,
+                     requiredAuthorization: .any)
+            .willProduce { a, b -> AuthTokenResponse in
+                throw expectedError
+            }
+        
+        let authRemoteService = AuthRemoteService(localStorage: localStorage,
+                                                  apiManager: apiManager)
+
+        let appleLoginRequest = AuthServiceRequest.AppleIdLogin(
+            code: "apple_auth_code_123",
+            firstName: "John",
+            lastName: "Doe",
+            email: "john.doe@example.com"
+        )
+
+        // When/Then
+        do {
+            try await authRemoteService.appleIdLogin(request: appleLoginRequest)
+            XCTFail("Should throw an error")
+        } catch {
+            if error is MockError {
+                XCTAssertTrue(true)
+            }
+            else {
+                XCTFail()
+            }
+        }
+
+        verify(localStorage).setToken(.any).called(.never)
+    }
+    
+    func testAppleIdLogin_WithMinimalData_WillGetValidResponse() async throws {
+        // Given
+        let response = AuthTokenResponse(accessToken: "access_token",
+                                          refreshToken: "refresh_token")
+        given(apiManager).request(router: .any,
+                                  requiredAuthorization: .any).willReturn(response)
+        given(localStorage).setToken(.any).willReturn()
+        
+        let authRemoteService = AuthRemoteService(localStorage: localStorage,
+                                                  apiManager: apiManager)
+        
+        let appleLoginRequest = AuthServiceRequest.AppleIdLogin(
+            code: "apple_auth_code_123",
+            firstName: nil,
+            lastName: nil,
+            email: nil
+        )
+        
+        // When
+        try await authRemoteService.appleIdLogin(request: appleLoginRequest)
+        
+        // Then
+        verify(localStorage).setToken(.any).called(.atLeastOnce)
+    }
 }
 
 // MARK: - Helper Methods

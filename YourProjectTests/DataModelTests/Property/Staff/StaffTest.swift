@@ -109,12 +109,12 @@ final class StaffTest: XCTestCase {
         // Test all cases
         XCTAssertEqual(Staff.Role.frontDesk.rawValue, "front_desk")
         XCTAssertEqual(Staff.Role.manager.rawValue, "manager")
-        XCTAssertEqual(Staff.Role.admin.rawValue, "ROLE_SUPPORT_SUPER_ADMIN")
+        XCTAssertEqual(Staff.Role.systemSupportSuperAdmin.rawValue, "ROLE_SUPPORT_SUPER_ADMIN")
         
         // Test descriptions
         XCTAssertEqual(Staff.Role.frontDesk.description, "Front Desk")
         XCTAssertEqual(Staff.Role.manager.description, "Manager")
-        XCTAssertEqual(Staff.Role.admin.description, "Admin")
+        XCTAssertEqual(Staff.Role.systemAdmin.description, "Admin")
     }
 }
 
