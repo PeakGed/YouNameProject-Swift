@@ -91,6 +91,7 @@
 				DataModels/Property/HotelInfo/Hotels.swift,
 				DataModels/Property/HotelInfo/HotelShort.swift,
 				DataModels/Property/HotelInfo/HotelsShort.swift,
+				DataModels/Property/HotelInfo/PropertyRule.swift,
 				DataModels/Property/PriceCard/LocalPriceCard.swift,
 				DataModels/Property/PriceCard/LocalPriceCards.swift,
 				DataModels/Property/PriceCard/PeriodDate.swift,
@@ -154,6 +155,9 @@
 				Services/MeService/MeRemoteService.swift,
 				Services/MeService/MeServiceRequest.swift,
 				Services/MeService/MeServiceRouter.swift,
+				Services/PropertyRuleService/PropertyRuleRemoteService.swift,
+				Services/PropertyRuleService/PropertyRuleServiceRequest.swift,
+				Services/PropertyRuleService/PropertyRuleServiceRouter.swift,
 			);
 			target = 36B587D42BF73F1900D523D0 /* YourProjectTests */;
 		};
