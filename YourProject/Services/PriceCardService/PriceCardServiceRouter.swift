@@ -1,20 +1,21 @@
 //
-//  LocalPriceCardServiceRouter.swift
+//  PriceCardServiceRouter.swift
 //  YourProject
 //
-//  Created by IntrodexMini on 28/2/2568 BE.
+//  Created by IntrodexMini on 6/6/2568 BE.
 //
 
 import Alamofire
 import Foundation
 
-enum LocalPriceCardServiceRouter: AlamofireBaseRouterProtocol {
+enum PriceCardServiceRouter: AlamofireBaseRouterProtocol {
     
-    case fetchPriceCards(request: LocalPriceCardServiceRequest.FetchPriceCards)
-    case getPriceCard(request: LocalPriceCardServiceRequest.GetPriceCard)
-    case createPriceCard(request: LocalPriceCardServiceRequest.CreatePriceCard)
-    case updatePriceCard(request: LocalPriceCardServiceRequest.UpdatePriceCard)
-    case deletePriceCard(request: LocalPriceCardServiceRequest.DeletePriceCard)
+    case fetchPriceCards(request: PriceCardServiceRequest.FetchPriceCards)
+    case fetchPriceCard(request: PriceCardServiceRequest.FetchPriceCard)
+    case fetchPriceCardsByPeriod(request: PriceCardServiceRequest.FetchPriceCardsByPeriod)
+    case createPriceCard(request: PriceCardServiceRequest.CreatePriceCard)
+    case updatePriceCard(request: PriceCardServiceRequest.UpdatePriceCard)
+    case deletePriceCard(request: PriceCardServiceRequest.DeletePriceCard)
     
     var domain: String {
         return AppConfiguration.shared.baseURL
@@ -22,28 +23,30 @@ enum LocalPriceCardServiceRouter: AlamofireBaseRouterProtocol {
     
     var path: String {
         switch self {
-        case .fetchPriceCards(_):
-            return "/api/v4/price-cards/period"
-        case .getPriceCard(let request):
-            return "/api/v4/price-cards/\(request.id)"
-        case .createPriceCard(_):
-            return "/api/v4/price-cards"
+        case .fetchPriceCards:
+            return "/v4/price-cards"
+        case .fetchPriceCard(let request):
+            return "/v4/price-cards/\(request.id)"
+        case .fetchPriceCardsByPeriod:
+            return "/v4/price-cards/period"
+        case .createPriceCard:
+            return "/v4/price-cards"
         case .updatePriceCard(let request):
-            return "/api/v4/price-cards/\(request.id)"
+            return "/v4/price-cards/\(request.id)"
         case .deletePriceCard(let request):
-            return "/api/v4/price-cards/\(request.id)"
+            return "/v4/price-cards/\(request.id)"
         }
     }
     
     var method: Alamofire.HTTPMethod {
         switch self {
-        case .fetchPriceCards(_), .getPriceCard(_):
+        case .fetchPriceCards, .fetchPriceCard, .fetchPriceCardsByPeriod:
             return .get
-        case .createPriceCard(_):
+        case .createPriceCard:
             return .post
-        case .updatePriceCard(_):
+        case .updatePriceCard:
             return .put
-        case .deletePriceCard(_):
+        case .deletePriceCard:
             return .delete
         }
     }
@@ -53,7 +56,14 @@ enum LocalPriceCardServiceRouter: AlamofireBaseRouterProtocol {
     }
     
     var parameters: [String: Any]? {
-        return nil
+        switch self {
+        case .fetchPriceCards(let request):
+            return request.parameters
+        case .fetchPriceCardsByPeriod(let request):
+            return request.parameters
+        default:
+            return nil
+        }
     }
     
     var body: Data? {
@@ -71,7 +81,6 @@ enum LocalPriceCardServiceRouter: AlamofireBaseRouterProtocol {
         guard let url = URL(string: domain + path) else {
             throw APIError.invalidURL
         }
-        
         let encoding: ParameterEncoding = (method == .get) ? URLEncoding.default : JSONEncoding.default
         var request = URLRequest(url: url)
         
