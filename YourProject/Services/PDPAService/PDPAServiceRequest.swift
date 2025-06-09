@@ -14,7 +14,7 @@ struct PDPAServiceRequest {
         let id: Int
     }
     
-    struct FetchPdpas: Encodable {
+    struct FetchPdpas {
         let version: Version?
         
         var parameters: [String: Any]? {
@@ -30,18 +30,6 @@ struct PDPAServiceRequest {
             }
             
             return parameters
-        }
-        enum CodingKeys: String, CodingKey {
-            case version = "version"
-        }
-        
-        //encode
-        func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            
-            if let raw = version?.raw as? String {
-                try container.encode(raw, forKey: .version)
-            }
         }
         
     }
