@@ -171,6 +171,9 @@
 				Services/RoomService/RoomRemoteService.swift,
 				Services/RoomService/RoomServiceRequest.swift,
 				Services/RoomService/RoomServiceRouter.swift,
+				Services/StaffService/StaffRemoteService.swift,
+				Services/StaffService/StaffServiceRequest.swift,
+				Services/StaffService/StaffServiceRouter.swift,
 			);
 			target = 36B587D42BF73F1900D523D0 /* YourProjectTests */;
 		};
