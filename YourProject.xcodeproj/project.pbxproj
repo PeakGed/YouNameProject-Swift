@@ -168,6 +168,9 @@
 				Services/PropertyRuleService/PropertyRuleRemoteService.swift,
 				Services/PropertyRuleService/PropertyRuleServiceRequest.swift,
 				Services/PropertyRuleService/PropertyRuleServiceRouter.swift,
+				Services/RoomService/RoomRemoteService.swift,
+				Services/RoomService/RoomServiceRequest.swift,
+				Services/RoomService/RoomServiceRouter.swift,
 			);
 			target = 36B587D42BF73F1900D523D0 /* YourProjectTests */;
 		};

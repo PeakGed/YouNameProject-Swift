@@ -16,6 +16,7 @@ enum RoomServiceRouter: AlamofireBaseRouterProtocol {
     case updateRoom(request: RoomServiceRequest.UpdateRoom)
     case deleteRoom(request: RoomServiceRequest.DeleteRoom)
     case changeRoomType(request: RoomServiceRequest.ChangeRoomType)
+    case updateRoomsOrder(request: RoomServiceRequest.UpdateRoomsOrder)
     case batchCreateRooms(request: RoomServiceRequest.BatchCreateRooms)
     case batchDeleteRooms(request: RoomServiceRequest.BatchDeleteRooms)
     
@@ -26,21 +27,23 @@ enum RoomServiceRouter: AlamofireBaseRouterProtocol {
     var path: String {
         switch self {
         case .fetchRooms(_):
-            return "/api/v4/rooms"
+            return "/v4/rooms"
         case .fetchRoom(let request):
-            return "/api/v4/rooms/\(request.id)"
+            return "/v4/rooms/\(request.id)"
         case .createRoom(_):
-            return "/api/v4/rooms"
+            return "/v4/rooms"
         case .updateRoom(let request):
-            return "/api/v4/rooms/\(request.id)"
+            return "/v4/rooms/\(request.id)"
         case .deleteRoom(let request):
-            return "/api/v4/rooms/\(request.id)"
+            return "/v4/rooms/\(request.id)"
         case .changeRoomType(let request):
-            return "/api/v4/rooms/\(request.id)/change_room_type"
+            return "/v4/rooms/\(request.id)/change-room-type"
+        case .updateRoomsOrder(_):
+            return "/v4/rooms/update-order"
         case .batchCreateRooms(_):
-            return "/api/v4/rooms/batch_create"
+            return "/v4/rooms/batch-create"
         case .batchDeleteRooms(_):
-            return "/api/v4/rooms/batch_delete"
+            return "/v4/rooms/batch-delete"
         }
     }
     
@@ -50,7 +53,7 @@ enum RoomServiceRouter: AlamofireBaseRouterProtocol {
             return .get
         case .createRoom(_), .changeRoomType(_), .batchCreateRooms(_):
             return .post
-        case .updateRoom(_):
+        case .updateRoom(_), .updateRoomsOrder(_):
             return .put
         case .deleteRoom(_), .batchDeleteRooms(_):
             return .delete
@@ -62,7 +65,12 @@ enum RoomServiceRouter: AlamofireBaseRouterProtocol {
     }
     
     var parameters: [String: Any]? {
-        return nil
+        switch self {
+        case .fetchRooms(let request):
+            return request.parameters
+        default:
+            return nil
+        }
     }
     
     var body: Data? {
@@ -73,7 +81,11 @@ enum RoomServiceRouter: AlamofireBaseRouterProtocol {
             return try? JSONEncoder().encode(request)
         case .changeRoomType(let request):
             return try? JSONEncoder().encode(request)
+        case .updateRoomsOrder(let request):
+            return try? JSONEncoder().encode(request)
         case .batchCreateRooms(let request):
+            return try? JSONEncoder().encode(request)
+        case .batchDeleteRooms(let request):
             return try? JSONEncoder().encode(request)
         default:
             return nil

@@ -7,30 +7,38 @@
 import Foundation
 
 struct RoomServiceRequest {
+    
+    typealias FetchRoom = ById
+    typealias DeleteRoom = ById
+        
+    struct ById {
+        let id: Int
+    }
+    
+    // MARK: - Fetch Rooms with optional parameters and pagination
     struct FetchRooms: Encodable {
-        let roomTypeId: Int
         let hotelId: Int
+        let roomTypeId: Int
         
         enum CodingKeys: String, CodingKey {
-            case roomTypeId = "room_type_id"
             case hotelId = "hotel_id"
+            case roomTypeId = "room_type_id"
         }
-    }
-    
-    struct FetchRoom: Encodable {
-        let id: Int
         
-        // id is not encoded as it's used in the URL path
-        // Empty implementation since we don't need to encode anything
-        func encode(to encoder: Encoder) throws {
-            // No properties to encode
+        var parameters: [String: Any]? {
+            var params: [String: Any] = [:]            
+            params["hotel_id"] = hotelId
+            params["room_type_id"] = roomTypeId
+            
+            return params
         }
     }
     
+    // MARK: - Create Room
     struct CreateRoom: Encodable {
         let code: String
         let roomTypeId: Int
-        let hotelId: Int
+        let hotelId: Int        
         
         enum CodingKeys: String, CodingKey {
             case code
@@ -39,33 +47,22 @@ struct RoomServiceRequest {
         }
     }
     
+    // MARK: - Update Room
     struct UpdateRoom: Encodable {
         let id: Int
         let code: String?
-        let status: Room.Status?
+        let status: String?
         let needCleaning: Bool?
-        let roomTypeId: Int?
         
         enum CodingKeys: String, CodingKey {
             case code
             case status
-            case needCleaning = "need_cleaning"
-            case roomTypeId = "room_type_id"
+            case needCleaning = "need_cleaning"                      
             // id is not encoded as it's used in the URL path
         }
-
     }
     
-    struct DeleteRoom: Encodable {
-        let id: Int
-        
-        // id is not encoded as it's used in the URL path
-        // Empty implementation since we don't need to encode anything
-        func encode(to encoder: Encoder) throws {
-            // No properties to encode
-        }
-    }
-    
+    // MARK: - Change Room Type
     struct ChangeRoomType: Encodable {
         let id: Int
         let roomTypeId: Int
@@ -74,21 +71,60 @@ struct RoomServiceRequest {
             case roomTypeId = "room_type_id"
             // id is not encoded as it's used in the URL path
         }
-
     }
     
-    struct BatchCreateRooms: Encodable {
+    // MARK: - Update Rooms Order
+    struct UpdateRoomsOrder: Encodable {
         let hotelId: Int
+        let roomOrders: [RoomOrder]
+        
+        struct RoomOrder: Encodable {
+            let roomId: Int
+            let order: Int
+            
+            enum CodingKeys: String, CodingKey {
+                case roomId = "room_id"
+                case order
+            }
+        }
         
         enum CodingKeys: String, CodingKey {
             case hotelId = "hotel_id"
+            case roomOrders = "room_orders"
         }
     }
     
-    struct BatchDeleteRooms: Encodable {
-        // Empty implementation since we don't need to encode anything
-        func encode(to encoder: Encoder) throws {
-            // No properties to encode
+    // MARK: - Batch Create Rooms
+    struct BatchCreateRooms: Encodable {
+        let hotelId: Int
+        let rooms: [BatchRoom]
+        
+        enum CodingKeys: String, CodingKey {
+            case hotelId = "hotel_id"
+            case rooms
+        }
+       
+        struct BatchRoom: Encodable {
+            let code: String
+            let roomTypeId: Int
+            
+            enum CodingKeys: String, CodingKey {
+                case code
+                case roomTypeId = "room_type_id"
+            }
         }
     }
+    
+    // MARK: - Batch Delete Rooms
+    struct BatchDeleteRooms: Encodable {
+        let hotelId: Int
+        let roomIds: [Int]
+        
+        enum CodingKeys: String, CodingKey {
+            case hotelId = "hotel_id" 
+            case roomIds = "room_ids"
+        }
+        
+    }
+    
 } 
