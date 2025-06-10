@@ -1,5 +1,5 @@
 //
-//  ChannelTest.swift
+//  BookingChannelTests.swift
 //  YourProject
 //
 //  Created by IntrodexMac on 10/5/2568 BE.
@@ -7,7 +7,7 @@
 
 import XCTest
 
-final class ChannelTest: XCTestCase {
+final class BookingChannelTests: XCTestCase {
     
     func testChannelDecoding() throws {
         // Given
@@ -26,22 +26,20 @@ final class ChannelTest: XCTestCase {
                     "created_at": "2024-02-26T21:32:48.594+07:00",
                     "updated_at": "2024-02-26T21:32:48.594+07:00"
                 }
-            ],
-            "images": []
+            ]
         }
         """
         
         let jsonData = jsonString.data(using: .utf8)!
         
         // When
-        let channel = try JSONDecoder().decode(Channel.self, from: jsonData)
+        let channel = try JSONDecoder().decode(BookingChannel.self, from: jsonData)
         
         // Then
         XCTAssertEqual(channel.id, 4)
         XCTAssertEqual(channel.name, "Social Media")
         XCTAssertEqual(channel.feeRate, 1.23, accuracy: 0.0001)
-        XCTAssertEqual(channel.subChannels.count, 1)
-        XCTAssertEqual(channel.images.count, 0)
+        XCTAssertEqual(channel.subChannels.count, 1)        
         
         // Test sub-channel
         let subChannel = channel.subChannels[0]
@@ -58,7 +56,7 @@ final class ChannelTest: XCTestCase {
         let createdAt = dateFormatter.date(from: "2017-01-18T11:30:40.415+07:00")!
         let updatedAt = dateFormatter.date(from: "2017-03-09T23:51:29.629+07:00")!
         
-        let subChannel = SubChannel(
+        let subChannel = BookingChannel.SubChannel(
             id: 31,
             name: "Travel together (เที่ยวด้วยกัน)",
             feeRate: 1.23,
@@ -66,12 +64,11 @@ final class ChannelTest: XCTestCase {
             updatedAt: updatedAt
         )
         
-        let channel = Channel(
+        let channel = BookingChannel(
             id: 4,
             name: "Social Media",
             feeRate: 3.45,
             subChannels: [subChannel],
-            images: [],
             createdAt: createdAt,
             updatedAt: updatedAt
         )
@@ -79,14 +76,14 @@ final class ChannelTest: XCTestCase {
         // When
         let encoder = JSONEncoder()
         let jsonData = try encoder.encode(channel)
-        let decodedChannel = try JSONDecoder().decode(Channel.self, from: jsonData)
+        let decodedChannel = try JSONDecoder().decode(BookingChannel.self, from: jsonData)
         
         // Then
         XCTAssertEqual(decodedChannel.id, channel.id)
         XCTAssertEqual(decodedChannel.name, channel.name)
         XCTAssertEqual(decodedChannel.feeRate, channel.feeRate, accuracy: 0.0001)
         XCTAssertEqual(decodedChannel.subChannels.count, channel.subChannels.count)
-        XCTAssertEqual(decodedChannel.images.count, channel.images.count)
+        
     }
 }
 
