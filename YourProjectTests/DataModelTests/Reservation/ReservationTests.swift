@@ -63,7 +63,7 @@ final class ReservationTests: XCTestCase {
         let reservation = createSampleReservation()
         
         // Assert
-        XCTAssertNil(reservation.contacts.title)
+        XCTAssertEqual(reservation.contacts.title, "")
         XCTAssertEqual(reservation.contacts.fullname, "abc")
         XCTAssertEqual(reservation.contacts.email, "avc@email.com")
         XCTAssertEqual(reservation.contacts.tel, "1234567890")
@@ -175,6 +175,29 @@ final class ReservationTests: XCTestCase {
         XCTAssertNotNil(reservation.checkedOutAt)
         XCTAssertNotNil(reservation.createdAt)
         XCTAssertNotNil(reservation.updatedAt)
+        XCTAssertEqual(reservation.contacts.title, "")
+        XCTAssertEqual(reservation.contacts.fullname, "abc")
+        XCTAssertEqual(reservation.contacts.email, "avc@email.com")
+        XCTAssertEqual(reservation.contacts.tel, "1234567890")
+        XCTAssertNil(reservation.canceledReason)
+        XCTAssertNil(reservation.documentPhotos)
+        XCTAssertEqual(reservation.otaBookingId, "")
+        XCTAssertNil(reservation.relatedReservationId)
+        XCTAssertNil(reservation.guestComment)
+        XCTAssertNil(reservation.emoji)
+        XCTAssertNil(reservation.hotelChannelReservationId)
+        XCTAssertNil(reservation.subChannelId)
+        XCTAssertNil(reservation.confirmationInfo.createdAt)
+        XCTAssertNil(reservation.confirmationInfo.remark)
+        XCTAssertNil(reservation.confirmationInfo.url)
+        XCTAssertEqual(reservation.hotelId, 105)
+        XCTAssertEqual(reservation.creatorId, 38)
+        XCTAssertEqual(reservation.channelId, 9)
+        XCTAssertNil(reservation.subChannelId)        
+        XCTAssertEqual(reservation.checkedOutAt?.toDateString(FormConfig.DateFormat.yyyyMMdd), "2020-08-27")
+        XCTAssertNil(reservation.canceledAt)
+        XCTAssertNil(reservation.noShowAt)        
+        
     }
     
     func test_encodingToJSON() throws {

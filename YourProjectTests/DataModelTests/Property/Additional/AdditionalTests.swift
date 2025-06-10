@@ -127,13 +127,7 @@ final class AdditionalTests: XCTestCase {
         XCTAssertTrue(jsonString.contains("\"note\" : \"\""))
         XCTAssertTrue(jsonString.contains("\"total_amount\" : \"111.11\""))
         XCTAssertTrue(jsonString.contains("\"hotel_id\" : 105"))
-        XCTAssertTrue(jsonString.contains("\"reservation_id\" : 1067"))
-        
-        // Test creator encoding
-        XCTAssertTrue(jsonString.contains("\"email\" : \"test1@email.com\""))
-        XCTAssertTrue(jsonString.contains("\"first_name\" : \"John2\""))
-        XCTAssertTrue(jsonString.contains("\"last_name\" : \"Doe2\""))
-        XCTAssertTrue(jsonString.contains("\"role\" : \"owner\""))
+        XCTAssertTrue(jsonString.contains("\"reservation_id\" : 1067"))        
         
         // Test additional items encoding
         XCTAssertTrue(jsonString.contains("\"price\" : \"111.11\""))

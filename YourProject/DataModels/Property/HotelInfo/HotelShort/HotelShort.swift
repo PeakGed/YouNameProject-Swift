@@ -37,7 +37,7 @@ struct HotelShort: Codable {
         id = try container.decode(Int.self,
                                   forKey: .id)
         status = try container.decode(Status.self,
-                                      forKey: .id)
+                                      forKey: .status)
         name = try container.decode(String.self,
                                     forKey: .name)
         quote = try container.decodeIfPresent(String.self,

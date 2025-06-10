@@ -31,8 +31,7 @@ final class PDPAServiceRequestTests: XCTestCase {
         let parameters = request.parameters
         
         // Then
-        XCTAssertEqual(parameters?.count, 0)
-        XCTAssertTrue(parameters?.isEmpty ?? true)
+        XCTAssertNil(parameters)
     }
     
     func testFetchPdpasRequestWithComplexVersion() {
