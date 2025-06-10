@@ -84,6 +84,8 @@
 				DataModels/Property/BankAccount/BankAccount.swift,
 				DataModels/Property/BankAccount/BankAccounts.swift,
 				DataModels/Property/HotelInfo/Beds24Config.swift,
+				DataModels/Property/HotelInfo/BookingChannel/BookingChannel.swift,
+				DataModels/Property/HotelInfo/BookingChannel/BookingChannels.swift,
 				DataModels/Property/HotelInfo/ChannelManagerFeature.swift,
 				DataModels/Property/HotelInfo/ColorProfile.swift,
 				DataModels/Property/HotelInfo/GeoLocation.swift,
