@@ -17,7 +17,8 @@ enum StaffServiceRouter: AlamofireBaseRouterProtocol {
     case deleteStaff(request: StaffServiceRequest.DeleteStaff)
     case changeHotel(request: StaffServiceRequest.ChangeHotel)
     case changePassword(request: StaffServiceRequest.ChangePassword)
-    case updateStaffDetails(request: StaffServiceRequest.UpdateStaffDetails)
+    case updateStatus(request: StaffServiceRequest.UpdateStatus)
+    case verifyPin(request: StaffServiceRequest.VerifyPin)
     
     var domain: String {
         return AppConfiguration.shared.baseURL
@@ -39,8 +40,10 @@ enum StaffServiceRouter: AlamofireBaseRouterProtocol {
             return "/v4/staffs/\(request.id)/change-hotel"
         case .changePassword(let request):
             return "/v4/staffs/\(request.id)/change-password"
-        case .updateStaffDetails(let request):
-            return "/v4/staffs/\(request.id)"
+        case .updateStatus(let request):
+            return "/v4/staffs/\(request.id)/status"
+        case .verifyPin(let request):
+            return "/v4/staffs/\(request.id)/verify-pin"
         }
     }
     
@@ -48,9 +51,9 @@ enum StaffServiceRouter: AlamofireBaseRouterProtocol {
         switch self {
         case .fetchStaffs(_), .fetchStaff(_):
             return .get
-        case .createStaff(_):
+        case .createStaff(_), .verifyPin(_):
             return .post
-        case .updateStaff(_), .changeHotel(_), .changePassword(_), .updateStaffDetails(_):
+        case .updateStaff(_), .changeHotel(_), .changePassword(_), .updateStatus(_):
             return .put
         case .deleteStaff(_):
             return .delete
@@ -62,7 +65,12 @@ enum StaffServiceRouter: AlamofireBaseRouterProtocol {
     }
     
     var parameters: [String: Any]? {
-        return nil
+        switch self {
+        case .fetchStaffs(let request):
+            return request.parameters
+        default:
+            return nil
+        }
     }
     
     var body: Data? {
@@ -75,7 +83,9 @@ enum StaffServiceRouter: AlamofireBaseRouterProtocol {
             return try? JSONEncoder().encode(request)
         case .changePassword(let request):
             return try? JSONEncoder().encode(request)
-        case .updateStaffDetails(let request):
+        case .updateStatus(let request):
+            return try? JSONEncoder().encode(request)
+        case .verifyPin(let request):
             return try? JSONEncoder().encode(request)
         default:
             return nil
