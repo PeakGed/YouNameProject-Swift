@@ -15,14 +15,18 @@ enum MeServiceRouter: AlamofireBaseRouterProtocol {
     case changeEmail(request: MeServiceRequest.ChangeEmail)
     case changePassword(request: MeServiceRequest.ChangePassword)
     case verification(request: MeServiceRequest.Verification)
+    
+    case fetchDevices
+    
     case getNotificationSettings
     case updateNotificationSettings(request: MeServiceRequest.NotificationSettings)
+    
     case emailLoginResendCode(request: MeServiceRequest.EmailLoginResendCode)
     case emailLoginLink(request: MeServiceRequest.EmailLoginLink)
     case emailLoginSendCode(request: MeServiceRequest.EmailLoginSendCode)
+    
     case appleLoginLink(request: MeServiceRequest.AppleLoginLink)
     case appleLoginUnlink(request: MeServiceRequest.AppleLoginUnlink)
-    case fetchDevices
     
     var domain: String {
         return AppConfiguration.shared.baseURL
