@@ -161,9 +161,7 @@ final class RoomTypeRemoteServiceTests: XCTestCase {
             maxExtraBedNumber: 1,
             maxExtraGuestNumber: 2,
             limitedNumberOfCmUnits: 8,
-            description: "Executive business room",
-            tagList: "executive,business",
-            data: nil
+            description: "Executive business room"
         )
 
         // When
@@ -211,9 +209,7 @@ final class RoomTypeRemoteServiceTests: XCTestCase {
             maxExtraBedNumber: 1,
             maxExtraGuestNumber: 2,
             limitedNumberOfCmUnits: 12,
-            description: "Updated standard room",
-            tagList: "standard,renovated",
-            data: nil
+            description: "Updated standard room"
         )
 
         // When

@@ -34,9 +34,7 @@ final class RoomTypeServiceRequestTests: XCTestCase {
             maxExtraBedNumber: 1,
             maxExtraGuestNumber: 2,
             limitedNumberOfCmUnits: 8,
-            description: "Executive business room",
-            tagList: "executive,business",
-            data: nil
+            description: "Executive business room"
         )
         
         // When
@@ -55,7 +53,6 @@ final class RoomTypeServiceRequestTests: XCTestCase {
         XCTAssertEqual(json?["max_extra_guest_number"] as? Int, 2)
         XCTAssertEqual(json?["limited_number_of_cm_units"] as? Int, 8)
         XCTAssertEqual(json?["description"] as? String, "Executive business room")
-        XCTAssertEqual(json?["tag_list"] as? String, "executive,business")
     }
     
     func testUpdateRoomTypesOrderRequest() throws {

@@ -64,9 +64,7 @@ final class RoomTypeServiceRouterTests: XCTestCase {
             maxExtraBedNumber: 1,
             maxExtraGuestNumber: 2,
             limitedNumberOfCmUnits: 8,
-            description: "Executive business room",
-            tagList: "executive,business",
-            data: nil
+            description: "Executive business room"
         )
         let router = RoomTypeServiceRouter.createRoomType(request: request)
         
@@ -91,7 +89,6 @@ final class RoomTypeServiceRouterTests: XCTestCase {
             XCTAssertEqual(json?["max_extra_guest_number"] as? Int, 2)
             XCTAssertEqual(json?["limited_number_of_cm_units"] as? Int, 8)
             XCTAssertEqual(json?["description"] as? String, "Executive business room")
-            XCTAssertEqual(json?["tag_list"] as? String, "executive,business")
         } else {
             XCTFail("Request should have a body")
         }
@@ -109,9 +106,7 @@ final class RoomTypeServiceRouterTests: XCTestCase {
             maxExtraBedNumber: 1,
             maxExtraGuestNumber: 2,
             limitedNumberOfCmUnits: 10,
-            description: "Updated executive business room",
-            tagList: "executive,business,premium",
-            data: nil
+            description: "Updated executive business room"
         )
         let router = RoomTypeServiceRouter.updateRoomType(request: request)
         
@@ -135,7 +130,6 @@ final class RoomTypeServiceRouterTests: XCTestCase {
             XCTAssertEqual(json?["max_extra_guest_number"] as? Int, 2)
             XCTAssertEqual(json?["limited_number_of_cm_units"] as? Int, 10)
             XCTAssertEqual(json?["description"] as? String, "Updated executive business room")
-            XCTAssertEqual(json?["tag_list"] as? String, "executive,business,premium")
             XCTAssertNil(json?["id"]) // ID should not be in the body since it's in the URL
         } else {
             XCTFail("Request should have a body")

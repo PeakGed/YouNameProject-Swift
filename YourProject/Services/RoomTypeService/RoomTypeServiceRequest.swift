@@ -35,8 +35,6 @@ struct RoomTypeServiceRequest {
         let maxExtraGuestNumber: Int?
         let limitedNumberOfCmUnits: Int?
         let description: String?
-        let tagList: String?
-        let data: [String: Any]?
         
         enum CodingKeys: String, CodingKey {
             case hotelId = "hotel_id"
@@ -49,8 +47,6 @@ struct RoomTypeServiceRequest {
             case maxExtraGuestNumber = "max_extra_guest_number"
             case limitedNumberOfCmUnits = "limited_number_of_cm_units"
             case description
-            case tagList = "tag_list"
-            case data
         }
 
         //encode to json
@@ -66,7 +62,6 @@ struct RoomTypeServiceRequest {
             try container.encode(maxExtraGuestNumber, forKey: .maxExtraGuestNumber)
             try container.encode(limitedNumberOfCmUnits, forKey: .limitedNumberOfCmUnits)
             try container.encode(description, forKey: .description)
-            try container.encodeIfPresent(tagList, forKey: .tagList)
             // Skip encoding data dictionary for now as it requires special handling
         }
     }
@@ -82,8 +77,6 @@ struct RoomTypeServiceRequest {
         let maxExtraGuestNumber: Int?
         let limitedNumberOfCmUnits: Int?
         let description: String?
-        let tagList: String?
-        let data: [String: Any]?
         
         enum CodingKeys: String, CodingKey {
             case name
@@ -95,8 +88,6 @@ struct RoomTypeServiceRequest {
             case maxExtraGuestNumber = "max_extra_guest_number"
             case limitedNumberOfCmUnits = "limited_number_of_cm_units"
             case description
-            case tagList = "tag_list"
-            case data
         }
 
         func encode(to encoder: Encoder) throws {
@@ -110,7 +101,6 @@ struct RoomTypeServiceRequest {
             try container.encodeIfPresent(maxExtraGuestNumber, forKey: .maxExtraGuestNumber)
             try container.encodeIfPresent(limitedNumberOfCmUnits, forKey: .limitedNumberOfCmUnits)
             try container.encodeIfPresent(description, forKey: .description)
-            try container.encodeIfPresent(tagList, forKey: .tagList)
             // Skip encoding data dictionary for now as it requires special handling
         }
     }
