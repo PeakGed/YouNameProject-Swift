@@ -21,9 +21,9 @@ struct AdditionalItem: Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(Int.self, forKey: .id)
-        price = try container.decode(String.self, forKey: .price).trytoDouble()
+        price = try container.decode(String.self, forKey: .price).tryToDouble()
         quantity = try container.decode(Int.self, forKey: .quantity)
-        totalAmount = try container.decode(String.self, forKey: .totalAmount).trytoDouble()
+        totalAmount = try container.decode(String.self, forKey: .totalAmount).tryToDouble()
         itemableId = try container.decode(Int.self, forKey: .itemableId)
         itemableType = try container.decode(ItemType.self, forKey: .itemableType)
         createdAt = try container.decode(String.self, forKey: .createdAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)

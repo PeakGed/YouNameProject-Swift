@@ -69,7 +69,7 @@ struct ReservationItem: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(Int.self, forKey: .id)
         reservedDate = try container.decode(String.self, forKey: .reservedDate).tryToDate(dateFormat: FormConfig.DateFormat.yyyyMMdd)
-        totalPrice = try container.decode(String.self, forKey: .totalPrice).trytoDouble()
+        totalPrice = try container.decode(String.self, forKey: .totalPrice).tryToDouble()
         reservableType = try container.decode(ReservableType.self, forKey: .reservableType)
         data = try container.decode(Data.self, forKey: .data)
         priceCard = try container.decodeIfPresent(LocalPriceCard.self, forKey: .priceCard)
@@ -242,19 +242,19 @@ extension ReservationItem {
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             isCustomRate = try container.decode(Bool.self, forKey: .isCustomRate)
-            selectedRate = try container.decode(String.self, forKey: .selectedRate).trytoDouble()
-            extraAdultRate = (try? container.decode(String.self, forKey: .extraAdultRate).trytoDouble()) ?? 0
+            selectedRate = try container.decode(String.self, forKey: .selectedRate).tryToDouble()
+            extraAdultRate = (try? container.decode(String.self, forKey: .extraAdultRate).tryToDouble()) ?? 0
             extraAdultQty = (try? container.decode(String.self, forKey: .extraAdultQty).trytoInt()) ?? 0
-            extraChildRate = (try? container.decode(String.self, forKey: .extraChildRate).trytoDouble()) ?? 0
+            extraChildRate = (try? container.decode(String.self, forKey: .extraChildRate).tryToDouble()) ?? 0
             extraChildQty = (try? container.decode(String.self, forKey: .extraChildQty).trytoInt()) ?? 0
             mealIncluded = (try? container.decode(Bool.self, forKey: .mealIncluded)) ?? false
             adultMealLimit = (try? container.decode(String.self, forKey: .adultMealLimit).trytoInt()) ?? 0
-            adultMealRate = (try? container.decode(String.self, forKey: .adultMealRate).trytoDouble()) ?? 0
+            adultMealRate = (try? container.decode(String.self, forKey: .adultMealRate).tryToDouble()) ?? 0
             childMealLimit = (try? container.decode(String.self, forKey: .childMealLimit).trytoInt()) ?? 0
-            childMealRate = (try? container.decode(String.self, forKey: .childMealRate).trytoDouble()) ?? 0
-            extraAdultMealRate = (try? container.decode(String.self, forKey: .extraAdultMealRate).trytoDouble()) ?? 0
+            childMealRate = (try? container.decode(String.self, forKey: .childMealRate).tryToDouble()) ?? 0
+            extraAdultMealRate = (try? container.decode(String.self, forKey: .extraAdultMealRate).tryToDouble()) ?? 0
             extraAdultMealQty = (try? container.decode(String.self, forKey: .extraAdultMealQty).trytoInt()) ?? 0
-            extraChildMealRate = (try? container.decode(String.self, forKey: .extraChildMealRate).trytoDouble()) ?? 0
+            extraChildMealRate = (try? container.decode(String.self, forKey: .extraChildMealRate).tryToDouble()) ?? 0
             extraChildMealQty = (try? container.decode(String.self, forKey: .extraChildMealQty).trytoInt()) ?? 0
         }
         

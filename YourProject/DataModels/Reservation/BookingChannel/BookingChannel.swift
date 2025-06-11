@@ -34,7 +34,7 @@ struct BookingChannel: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(Int.self, forKey: .id)
         name = try container.decode(String.self, forKey: .name)
-        feeRate = try container.decode(String.self, forKey: .feeRate).trytoDouble()
+        feeRate = try container.decode(String.self, forKey: .feeRate).tryToDouble()
         subChannels = try container.decode([SubChannel].self, forKey: .subChannels)
         
         let dateFormat = FormConfig.DateFormat.datetimeISO
@@ -87,7 +87,7 @@ extension BookingChannel {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             id = try container.decode(Int.self, forKey: .id)
             name = try container.decode(String.self, forKey: .name)
-            feeRate = try container.decode(String.self, forKey: .feeRate).trytoDouble()
+            feeRate = try container.decode(String.self, forKey: .feeRate).tryToDouble()
             
             let dateFormat = FormConfig.DateFormat.datetimeISO
             createdAt = try container.decode(String.self, forKey: .createdAt).tryToDate(dateFormat: dateFormat)

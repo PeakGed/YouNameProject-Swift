@@ -59,7 +59,7 @@ struct Additional: Codable {
         status = try container.decode(String.self, forKey: .status)
         note = try container.decode(String.self, forKey: .note)
         dateIssue = try container.decode(String.self, forKey: .dateIssue).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
-        totalAmount = try container.decode(String.self, forKey: .totalAmount).trytoDouble()
+        totalAmount = try container.decode(String.self, forKey: .totalAmount).tryToDouble()
         createdAt = try container.decode(String.self, forKey: .createdAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
         updatedAt = try container.decode(String.self, forKey: .updatedAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
         hotelId = try container.decode(Int.self, forKey: .hotelId)

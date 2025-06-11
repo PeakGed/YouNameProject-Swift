@@ -199,7 +199,7 @@ extension String {
         return date
     }
         
-    func trytoDouble() throws -> Double {
+    func tryToDouble() throws -> Double {
         guard let double = self.toDouble else {
             throw NSError(domain: "Cannot convert string to double",
                           code: 0,

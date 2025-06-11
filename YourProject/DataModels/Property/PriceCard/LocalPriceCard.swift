@@ -428,9 +428,9 @@ extension LocalPriceCard {
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             
-            self.price = try (container.decodeIfPresent(String.self, forKey: .price) ?? "0").trytoDouble()
+            self.price = try (container.decodeIfPresent(String.self, forKey: .price) ?? "0").tryToDouble()
             self.limit = try (container.decodeIfPresent(Int.self, forKey: .limit) ?? 0)
-            self.extraRate = try (container.decodeIfPresent(String.self, forKey: .extraRate) ?? "0").trytoDouble()
+            self.extraRate = try (container.decodeIfPresent(String.self, forKey: .extraRate) ?? "0").tryToDouble()
             self.extraLimit = try (container.decodeIfPresent(Int.self, forKey: .extraLimit) ?? 0)
         }
         

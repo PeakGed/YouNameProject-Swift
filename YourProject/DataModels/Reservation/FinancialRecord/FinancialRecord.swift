@@ -135,7 +135,7 @@ struct FinancialRecord: Codable {
         paymentMethod = try container.decode(String.self, forKey: .paymentMethod)
         note = try container.decodeIfPresent(String.self, forKey: .note)
         timestamp = try container.decode(String.self, forKey: .timestamp).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
-        amount = try container.decode(String.self, forKey: .amount).trytoDouble()
+        amount = try container.decode(String.self, forKey: .amount).tryToDouble()
         recordableId = try container.decode(Int.self, forKey: .recordableId)
         recordableType = try container.decode(String.self, forKey: .recordableType)
         hotelId = try container.decode(Int.self, forKey: .hotelId)
