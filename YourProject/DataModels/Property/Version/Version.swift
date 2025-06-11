@@ -10,6 +10,9 @@ import Foundation
 
 // Ex. 1.1.2 => major.minor.build
 struct Version {
+    
+    static let _1_0_0: Version = .init(major: 1, minor: 0, build: 0)
+    
     let majorNumber: Int
     let minorNumber: Int
     let buildNumber: Int

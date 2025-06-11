@@ -142,6 +142,7 @@
 				DataModels/User/Device/Devices.swift,
 				DataModels/User/Me.swift,
 				DataModels/User/NotificationSetting.swift,
+				DataModels/User/Support/SupportVersion.swift,
 				DataModels/User/User/User.swift,
 				DataModels/User/User/Users.swift,
 				Services/AuthService/AuthRemoteService.swift,
@@ -180,6 +181,9 @@
 				Services/StaffService/StaffRemoteService.swift,
 				Services/StaffService/StaffServiceRequest.swift,
 				Services/StaffService/StaffServiceRouter.swift,
+				Services/SupportService/SupportRemoteService.swift,
+				Services/SupportService/SupportServiceRequest.swift,
+				Services/SupportService/SupportServiceRouter.swift,
 			);
 			target = 36B587D42BF73F1900D523D0 /* YourProjectTests */;
 		};
