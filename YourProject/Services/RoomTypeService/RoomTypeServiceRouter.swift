@@ -15,6 +15,7 @@ enum RoomTypeServiceRouter: AlamofireBaseRouterProtocol {
     case createRoomType(request: RoomTypeServiceRequest.CreateRoomType)
     case updateRoomType(request: RoomTypeServiceRequest.UpdateRoomType)
     case deleteRoomType(request: RoomTypeServiceRequest.DeleteRoomType)
+    case updateRoomTypesOrder(request: RoomTypeServiceRequest.UpdateRoomTypesOrder)
     
     var domain: String {
         return AppConfiguration.shared.baseURL
@@ -23,15 +24,17 @@ enum RoomTypeServiceRouter: AlamofireBaseRouterProtocol {
     var path: String {
         switch self {
         case .fetchRoomTypes(_):
-            return "/api/v4/room-types"
+            return "/v4/room-types"
         case .fetchRoomType(let request):
-            return "/api/v4/room-types/\(request.id)"
+            return "/v4/room-types/\(request.id)"
         case .createRoomType(_):
-            return "/api/v4/room-types"
+            return "/v4/room-types"
         case .updateRoomType(let request):
-            return "/api/v4/room-types/\(request.id)"
+            return "/v4/room-types/\(request.id)"
         case .deleteRoomType(let request):
-            return "/api/v4/room-types/\(request.id)"
+            return "/v4/room-types/\(request.id)"
+        case .updateRoomTypesOrder(_):
+            return "/v4/room-types/update-order"
         }
     }
     
@@ -41,7 +44,7 @@ enum RoomTypeServiceRouter: AlamofireBaseRouterProtocol {
             return .get
         case .createRoomType(_):
             return .post
-        case .updateRoomType(_):
+        case .updateRoomType(_), .updateRoomTypesOrder(_):
             return .put
         case .deleteRoomType(_):
             return .delete
@@ -66,6 +69,8 @@ enum RoomTypeServiceRouter: AlamofireBaseRouterProtocol {
         case .createRoomType(let request):
             return try? JSONEncoder().encode(request)
         case .updateRoomType(let request):
+            return try? JSONEncoder().encode(request)
+        case .updateRoomTypesOrder(let request):
             return try? JSONEncoder().encode(request)
         default:
             return nil

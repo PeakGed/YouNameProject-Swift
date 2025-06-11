@@ -101,7 +101,7 @@ extension Reservations {
         by: Reservation.SortBy = .id,
         orderBy: SortOrderBy = .ascending
     ) -> Reservations {
-        let sorted: [Reservation]
+        
         switch by {
         case .id:
             sorted = lists.sorted { orderBy == .ascending ? $0.id < $1.id : $0.id > $1.id }
@@ -136,7 +136,7 @@ extension Reservations {
     }
     
     func filteredBy(by: Reservation.FilterBy) -> Reservations {
-        let filtered: [Reservation]
+        
         switch by {
         case .id(let id):
             filtered = lists.filter { $0.id == id }

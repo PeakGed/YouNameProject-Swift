@@ -15,6 +15,7 @@ protocol RoomTypeServiceProtocol: AnyObject {
     func createRoomType(request: RoomTypeServiceRequest.CreateRoomType) async throws -> RoomType
     func updateRoomType(request: RoomTypeServiceRequest.UpdateRoomType) async throws -> RoomType
     func deleteRoomType(request: RoomTypeServiceRequest.DeleteRoomType) async throws
+    func updateRoomTypesOrder(request: RoomTypeServiceRequest.UpdateRoomTypesOrder) async throws
 }
 
 class RoomTypeRemoteService: RoomTypeServiceProtocol {
@@ -54,6 +55,15 @@ class RoomTypeRemoteService: RoomTypeServiceProtocol {
     
     func deleteRoomType(request: RoomTypeServiceRequest.DeleteRoomType) async throws {
         let router = RoomTypeServiceRouter.deleteRoomType(request: request)
+        try await apiManager
+            .requestACK(
+                router: router,
+                requiredAuthorization: true
+            )
+    }
+    
+    func updateRoomTypesOrder(request: RoomTypeServiceRequest.UpdateRoomTypesOrder) async throws {
+        let router = RoomTypeServiceRouter.updateRoomTypesOrder(request: request)
         try await apiManager
             .requestACK(
                 router: router,

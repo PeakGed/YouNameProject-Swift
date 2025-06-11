@@ -8,6 +8,14 @@ import Foundation
 
 
 struct RoomTypeServiceRequest {
+
+    typealias FetchRoomType = ById
+    typealias DeleteRoomType = ById
+
+    struct ById {
+        let id: Int
+    }
+
     struct FetchRoomTypes: Encodable {
         let hotelId: Int
         
@@ -16,31 +24,19 @@ struct RoomTypeServiceRequest {
         }
     }
     
-    struct FetchRoomType: Encodable {
-        let id: Int
-        
-        enum CodingKeys: String, CodingKey {
-            // This is a placeholder case to make the enum valid
-            case placeholder
-            // id is not encoded as it's used in the URL path
-        }
-        
-        func encode(to encoder: Encoder) throws {
-            // Nothing to encode as id is used in the URL path
-        }
-    }
-    
     struct CreateRoomType: Encodable {
         let hotelId: Int
         let name: String
-        let baseRate: Float
+        let baseRate: Double
         let baseGuestNumber: Int
-        let extraBedRate: Float?
-        let extraGuestRate: Float?
+        let extraBedRate: Double?
+        let extraGuestRate: Double?
         let maxExtraBedNumber: Int?
         let maxExtraGuestNumber: Int?
         let limitedNumberOfCmUnits: Int?
         let description: String?
+        let tagList: String?
+        let data: [String: Any]?
         
         enum CodingKeys: String, CodingKey {
             case hotelId = "hotel_id"
@@ -53,20 +49,41 @@ struct RoomTypeServiceRequest {
             case maxExtraGuestNumber = "max_extra_guest_number"
             case limitedNumberOfCmUnits = "limited_number_of_cm_units"
             case description
+            case tagList = "tag_list"
+            case data
+        }
+
+        //encode to json
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(hotelId, forKey: .hotelId)
+            try container.encode(name, forKey: .name)
+            try container.encode(String(baseRate), forKey: .baseRate)
+            try container.encode(baseGuestNumber, forKey: .baseGuestNumber)
+            try container.encodeIfPresent(extraBedRate != nil ? String(extraBedRate!) : nil, forKey: .extraBedRate)
+            try container.encodeIfPresent(extraGuestRate != nil ? String(extraGuestRate!) : nil, forKey: .extraGuestRate)
+            try container.encode(maxExtraBedNumber, forKey: .maxExtraBedNumber)
+            try container.encode(maxExtraGuestNumber, forKey: .maxExtraGuestNumber)
+            try container.encode(limitedNumberOfCmUnits, forKey: .limitedNumberOfCmUnits)
+            try container.encode(description, forKey: .description)
+            try container.encodeIfPresent(tagList, forKey: .tagList)
+            // Skip encoding data dictionary for now as it requires special handling
         }
     }
     
     struct UpdateRoomType: Encodable {
         let id: Int
         let name: String?
-        let baseRate: Float?
+        let baseRate: Double?
         let baseGuestNumber: Int?
-        let extraBedRate: Float?
-        let extraGuestRate: Float?
+        let extraBedRate: Double?
+        let extraGuestRate: Double?
         let maxExtraBedNumber: Int?
         let maxExtraGuestNumber: Int?
         let limitedNumberOfCmUnits: Int?
         let description: String?
+        let tagList: String?
+        let data: [String: Any]?
         
         enum CodingKeys: String, CodingKey {
             case name
@@ -78,21 +95,44 @@ struct RoomTypeServiceRequest {
             case maxExtraGuestNumber = "max_extra_guest_number"
             case limitedNumberOfCmUnits = "limited_number_of_cm_units"
             case description
-            // id is not encoded as it's used in the URL path
+            case tagList = "tag_list"
+            case data
+        }
+
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encodeIfPresent(name, forKey: .name)
+            try container.encodeIfPresent(baseRate != nil ? String(baseRate!) : nil, forKey: .baseRate)
+            try container.encodeIfPresent(baseGuestNumber, forKey: .baseGuestNumber)
+            try container.encodeIfPresent(extraBedRate != nil ? String(extraBedRate!) : nil, forKey: .extraBedRate)
+            try container.encodeIfPresent(extraGuestRate != nil ? String(extraGuestRate!) : nil, forKey: .extraGuestRate)
+            try container.encodeIfPresent(maxExtraBedNumber, forKey: .maxExtraBedNumber)
+            try container.encodeIfPresent(maxExtraGuestNumber, forKey: .maxExtraGuestNumber)
+            try container.encodeIfPresent(limitedNumberOfCmUnits, forKey: .limitedNumberOfCmUnits)
+            try container.encodeIfPresent(description, forKey: .description)
+            try container.encodeIfPresent(tagList, forKey: .tagList)
+            // Skip encoding data dictionary for now as it requires special handling
+        }
+    }
+
+    struct UpdateRoomTypesOrder: Encodable {
+        let hotelId: Int
+        let roomTypeOrders: [RoomTypeOrder]
+        
+        enum CodingKeys: String, CodingKey {
+            case hotelId = "hotel_id"
+            case roomTypeOrders = "room_type_orders"
+        }
+        
+        struct RoomTypeOrder: Encodable {
+            let roomTypeId: Int
+            let order: Int
+            
+            enum CodingKeys: String, CodingKey {
+                case roomTypeId = "room_type_id"
+                case order
+            }
         }
     }
     
-    struct DeleteRoomType: Encodable {
-        let id: Int
-        
-        enum CodingKeys: String, CodingKey {
-            // This is a placeholder case to make the enum valid
-            case placeholder
-            // id is not encoded as it's used in the URL path
-        }
-        
-        func encode(to encoder: Encoder) throws {
-            // Nothing to encode as id is used in the URL path
-        }
-    }
 } 
