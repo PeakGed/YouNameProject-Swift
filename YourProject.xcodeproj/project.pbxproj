@@ -91,6 +91,8 @@
 				DataModels/Property/HotelInfo/Hotel/Hotels.swift,
 				DataModels/Property/HotelInfo/HotelShort/HotelShort.swift,
 				DataModels/Property/HotelInfo/HotelShort/HotelsShort.swift,
+				DataModels/Property/HotelInfo/NotificationItem.swift,
+				DataModels/Property/HotelInfo/NotificationItemCount.swift,
 				DataModels/Property/HotelInfo/PDPA/Pdpa.swift,
 				DataModels/Property/HotelInfo/PDPA/Pdpas.swift,
 				DataModels/Property/HotelInfo/PropertyRule.swift,
