@@ -191,8 +191,8 @@ final class RoomTypeServiceRouterTests: XCTestCase {
             
             // Check second order
             let secondOrder = roomTypeOrders?[1]
-            XCTAssertEqual(secondOrder["room_type_id"] as? Int, 2)
-            XCTAssertEqual(secondOrder["order"] as? Int, 1)
+            XCTAssertEqual(secondOrder?["room_type_id"] as? Int, 2)
+            XCTAssertEqual(secondOrder?["order"] as? Int, 1)
             
             // Check third order
             let thirdOrder = roomTypeOrders?.last

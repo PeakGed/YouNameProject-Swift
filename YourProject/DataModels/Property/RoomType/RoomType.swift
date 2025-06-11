@@ -30,18 +30,18 @@ struct RoomType: Codable {
 
     //init
     init(id: Int,
+         order: Int = 0,
          hotelId: Int,
-         order: Int,
          name: String,
-         description: String,
+         description: String = "",
          baseRate: Double,
          baseGuestNumber: Int,
          extraBedRate: Double,
          extraGuestRate: Double,
          maxExtraBedNumber: Int,
          maxExtraGuestNumber: Int,
-         limitedNumberOfCMUnits: Int?,
-         createdAt: Date,   
+         limitedNumberOfCmUnits: Int? = nil,
+         createdAt: Date,
          updatedAt: Date) {
         self.id = id
         self.hotelId = hotelId
@@ -54,7 +54,7 @@ struct RoomType: Codable {
         self.extraGuestRate = extraGuestRate
         self.maxExtraBedNumber = maxExtraBedNumber
         self.maxExtraGuestNumber = maxExtraGuestNumber
-        self.limitedNumberOfCMUnits = limitedNumberOfCMUnits
+        self.limitedNumberOfCMUnits = limitedNumberOfCmUnits
         self.createdAt = createdAt
         self.updatedAt = updatedAt
     }

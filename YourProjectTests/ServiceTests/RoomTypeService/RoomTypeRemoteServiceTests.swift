@@ -17,37 +17,35 @@ final class RoomTypeRemoteServiceTests: XCTestCase {
         let expectedRoomTypes = RoomTypes(array: [
             RoomType(
                 id: 1,
+                order: 0,
+                hotelId: 123,
                 name: "Standard Room",
+                description: "Comfortable standard room",
                 baseRate: 1500.0,
                 baseGuestNumber: 2,
                 extraBedRate: 500.0,
                 extraGuestRate: 300.0,
                 maxExtraBedNumber: 1,
                 maxExtraGuestNumber: 2,
-                hotelId: 123,
-                createdAt: Date(),
-                updatedAt: Date(),
                 limitedNumberOfCmUnits: 10,
-                description: "Comfortable standard room",
-                tags: ["standard", "city-view"],
-                data: nil
+                createdAt: Date(),
+                updatedAt: Date()
             ),
             RoomType(
                 id: 2,
+                order: 0,
+                hotelId: 123,
                 name: "Deluxe Room",
+                description: "Luxurious deluxe room",
                 baseRate: 2500.0,
                 baseGuestNumber: 2,
                 extraBedRate: 700.0,
                 extraGuestRate: 400.0,
                 maxExtraBedNumber: 1,
                 maxExtraGuestNumber: 2,
-                hotelId: 123,
-                createdAt: Date(),
-                updatedAt: Date(),
                 limitedNumberOfCmUnits: 5,
-                description: "Luxurious deluxe room",
-                tags: ["deluxe", "ocean-view"],
-                data: nil
+                createdAt: Date(),
+                updatedAt: Date()
             )
         ])
         given(apiManager)
@@ -95,20 +93,19 @@ final class RoomTypeRemoteServiceTests: XCTestCase {
         // Given
         let expectedRoomType = RoomType(
             id: 1,
+            order: 0,
+            hotelId: 123,
             name: "Suite Room",
+            description: "Premium suite room",
             baseRate: 3500.0,
             baseGuestNumber: 4,
             extraBedRate: 800.0,
             extraGuestRate: 500.0,
             maxExtraBedNumber: 2,
             maxExtraGuestNumber: 4,
-            hotelId: 123,
-            createdAt: Date(),
-            updatedAt: Date(),
             limitedNumberOfCmUnits: 3,
-            description: "Premium suite room",
-            tags: ["suite", "balcony", "city-view"],
-            data: nil
+            createdAt: Date(),
+            updatedAt: Date()
         )
         given(apiManager)
             .request(router: .any, requiredAuthorization: .any)
@@ -128,27 +125,25 @@ final class RoomTypeRemoteServiceTests: XCTestCase {
         XCTAssertEqual(result.baseGuestNumber, expectedRoomType.baseGuestNumber)
         XCTAssertEqual(result.hotelId, expectedRoomType.hotelId)
         XCTAssertEqual(result.description, expectedRoomType.description)
-        XCTAssertEqual(result.tags, expectedRoomType.tags)
     }
 
     func testCreateRoomType_WillGetValidResponse() async throws {
         // Given
         let expectedRoomType = RoomType(
             id: 3,
+            order: 0,
+            hotelId: 123,
             name: "Executive Room",
+            description: "Executive business room",
             baseRate: 2000.0,
             baseGuestNumber: 2,
             extraBedRate: 600.0,
             extraGuestRate: 350.0,
             maxExtraBedNumber: 1,
             maxExtraGuestNumber: 2,
-            hotelId: 123,
-            createdAt: Date(),
-            updatedAt: Date(),
             limitedNumberOfCmUnits: 8,
-            description: "Executive business room",
-            tags: ["executive", "business"],
-            data: nil
+            createdAt: Date(),
+            updatedAt: Date()
         )
         given(apiManager)
             .request(router: .any, requiredAuthorization: .any)
@@ -186,20 +181,19 @@ final class RoomTypeRemoteServiceTests: XCTestCase {
         // Given
         let expectedRoomType = RoomType(
             id: 1,
+            order: 0,
+            hotelId: 123,
             name: "Updated Standard Room",
+            description: "Updated standard room",
             baseRate: 1800.0,
             baseGuestNumber: 2,
             extraBedRate: 550.0,
             extraGuestRate: 320.0,
             maxExtraBedNumber: 1,
             maxExtraGuestNumber: 2,
-            hotelId: 123,
-            createdAt: Date(),
-            updatedAt: Date(),
             limitedNumberOfCmUnits: 12,
-            description: "Updated standard room",
-            tags: ["standard", "renovated"],
-            data: nil
+            createdAt: Date(),
+            updatedAt: Date()
         )
         given(apiManager)
             .request(router: .any, requiredAuthorization: .any)

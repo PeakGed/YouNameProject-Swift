@@ -32,22 +32,20 @@ final class RoomTypeTests: XCTestCase {
     
     func test_initWithOptionalPropertiesAsNil() throws {
         // Arrange & Act
-        let roomType = RoomType(
-            id: 1,
-            hotelId: 105,
-            order: 1,
-            name: "Test Room",
-            description: "Test Description",
-            baseRate: 500.0,
-            baseGuestNumber: 2,
-            extraBedRate: 200.0,
-            extraGuestRate: 300.0,
-            maxExtraBedNumber: 1,
-            maxExtraGuestNumber: 2,
-            limitedNumberOfCMUnits: nil,
-            createdAt: Date(timeIntervalSince1970: 1000),
-            updatedAt: Date(timeIntervalSince1970: 2000)
-        )
+        let roomType = RoomType(id: 1,
+                                order: 1,
+                                hotelId: 105,
+                                name: "Test Room",
+                                description: "Test Description",
+                                baseRate: 500.0,
+                                baseGuestNumber: 2,
+                                extraBedRate: 200.0,
+                                extraGuestRate: 300.0,
+                                maxExtraBedNumber: 1,
+                                maxExtraGuestNumber: 2,
+                                limitedNumberOfCmUnits: nil,
+                                createdAt: Date(timeIntervalSince1970: 1000),
+                                updatedAt: Date(timeIntervalSince1970: 2000))
         
         // Assert
         XCTAssertNil(roomType.limitedNumberOfCMUnits)
@@ -120,21 +118,19 @@ final class RoomTypeTests: XCTestCase {
     // MARK: - Helper Methods
     
     private func createSampleRoomType() -> RoomType {
-        return RoomType(
-            id: 1,
-            hotelId: 105,
-            order: 1,
-            name: "Test Room",
-            description: "Test Description",
-            baseRate: 500.0,
-            baseGuestNumber: 2,
-            extraBedRate: 200.0,
-            extraGuestRate: 300.0,
-            maxExtraBedNumber: 1,
-            maxExtraGuestNumber: 2,
-            limitedNumberOfCMUnits: 5,
-            createdAt: Date(timeIntervalSince1970: 1000),
-            updatedAt: Date(timeIntervalSince1970: 2000)
-        )
+        return RoomType(id: 1,
+                        order: 1,
+                        hotelId: 105,
+                        name: "Test Room",
+                        description: "Test Description",
+                        baseRate: 500.0,
+                        baseGuestNumber: 2,
+                        extraBedRate: 200.0,
+                        extraGuestRate: 300.0,
+                        maxExtraBedNumber: 1,
+                        maxExtraGuestNumber: 2,
+                        limitedNumberOfCmUnits: 5,
+                        createdAt: Date(timeIntervalSince1970: 1000),
+                        updatedAt: Date(timeIntervalSince1970: 2000))
     }
 }
