@@ -5,6 +5,98 @@
 //  Created by IntrodexMac on 11/6/2568 BE.
 //
 
+import Foundation
+
+struct NotificationItem: Codable {
+    let id: Int
+    let notificationType: NotificationType
+    let checkInDate: Date
+    let checkOutDate: Date
+    let notifiableId: Int
+    let notifiableType: ItemKind
+    let readed: Bool
+    let readedAt: Date?
+    let channelId: Int?
+    let subChannelId: Int?
+    let createdAt: Date
+    let updatedAt: Date
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case notificationType = "notification_type"
+        case checkInDate = "check_in_date"
+        case checkOutDate = "check_out_date"
+        case notifiableId = "notifiable_id"
+        case notifiableType = "notifiable_type"
+        case readed
+        case readedAt = "readed_at"
+        case channelId = "channel_id"
+        case subChannelId = "sub_channel_id"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(Int.self, forKey: .id)
+        notificationType = try container.decode(NotificationType.self, forKey: .notificationType)
+        
+        let dateFormat = FormConfig.DateFormat.yyyyMMdd
+        checkInDate = try container.decode(String.self, forKey: .checkInDate).tryToDate(dateFormat: dateFormat)
+        checkOutDate = try container.decode(String.self, forKey: .checkOutDate).tryToDate(dateFormat: dateFormat)
+        
+        notifiableId = try container.decode(Int.self, forKey: .notifiableId)
+        notifiableType = try container.decode(ItemKind.self, forKey: .notifiableType)
+        readed = try container.decode(Bool.self, forKey: .readed)
+        
+        let isoFormat = FormConfig.DateFormat.datetimeISO
+        readedAt = try container.decodeIfPresent(String.self, forKey: .readedAt)?.tryToDate(dateFormat: isoFormat)
+        channelId = try container.decodeIfPresent(Int.self, forKey: .channelId)
+        subChannelId = try container.decodeIfPresent(Int.self, forKey: .subChannelId)
+        createdAt = try container.decode(String.self, forKey: .createdAt).tryToDate(dateFormat: isoFormat)
+        updatedAt = try container.decode(String.self, forKey: .updatedAt).tryToDate(dateFormat: isoFormat)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(notificationType.rawValue, forKey: .notificationType)
+        
+        let dateFormat = FormConfig.DateFormat.yyyyMMdd
+        try container.encodeIfPresent(checkInDate.toDateString(dateFormat), forKey: .checkInDate)
+        try container.encodeIfPresent(checkOutDate.toDateString(dateFormat), forKey: .checkOutDate)
+        
+        try container.encode(notifiableId, forKey: .notifiableId)
+        try container.encode(notifiableType.rawValue, forKey: .notifiableType)
+        try container.encode(readed, forKey: .readed)
+        
+        let isoFormat = FormConfig.DateFormat.datetimeISO
+        try container.encodeIfPresent(readedAt?.toDateString(isoFormat), forKey: .readedAt)
+        try container.encodeIfPresent(channelId, forKey: .channelId)
+        try container.encodeIfPresent(subChannelId, forKey: .subChannelId)
+        try container.encode(createdAt.toDateString(isoFormat), forKey: .createdAt)
+        try container.encode(updatedAt.toDateString(isoFormat), forKey: .updatedAt)
+    }
+}
+
+extension NotificationItem {
+    
+    public enum NotificationType: String, Decodable {
+        case newCmBooking = "new_cm_booking"
+        
+        case newHmsReservation = "new_hms_reservation"
+        case updatedHmsReservation = "hms_reservation_was_updated"
+        case cancelledHmsReservation = "hms_reservation_was_cancelled"
+    }
+    
+    enum ItemKind: String, Decodable {
+        case reservation = "Reservation"
+        case cmBooking = "CmBooking"
+        
+    }
+}
+
+
 /*
  {
      "items": [
@@ -21,95 +113,7 @@
              "sub_channel_name": null,
              "readed": true,
              "readed_at": "2024-06-09T07:43:44.953Z",
-             "data": {
-                 "bookId": "55455169",
-                 "roomId": "233519",
-                 "unitId": "1",
-                 "roomQty": "1",
-                 "status": "5",
-                 "substatus": "0",
-                 "firstNight": "2024-05-31",
-                 "lastNight": "2024-05-31",
-                 "numAdult": "2",
-                 "numChild": "0",
-                 "guestTitle": "",
-                 "guestFirstName": "Boonyarit",
-                 "guestName": "Kalayanamit",
-                 "guestEmail": "bkalay.629209@guest.booking.com",
-                 "guestPhone": "+66 81 925 8841",
-                 "guestMobile": "",
-                 "guestFax": "",
-                 "guestCompany": "",
-                 "guestAddress": "",
-                 "guestCity": ".",
-                 "guestState": "",
-                 "guestPostcode": "",
-                 "guestCountry": "",
-                 "guestCountry2": "TH",
-                 "guestArrivalTime": "",
-                 "guestVoucher": "",
-                 "guestComments": "ท่านได้รับบัตรเครดิตเสมือนจริงสำหรับเรียกชำระการจองนี้ท่านสามารถเรียกชำระได้ตั้งแต่ 2024-05-27\r\nการจองนี้เ",
-                 "notes": "",
-                 "message": "",
-                 "groupNote": "",
-                 "custom1": "",
-                 "custom2": "",
-                 "custom3": "",
-                 "custom4": "",
-                 "custom5": "",
-                 "custom6": "",
-                 "custom7": "",
-                 "custom8": "",
-                 "custom9": "",
-                 "custom10": "",
-                 "flagColor": "",
-                 "flagText": "",
-                 "statusCode": "0",
-                 "lang": "",
-                 "price": "1900.00",
-                 "deposit": "0.00",
-                 "tax": "0.00",
-                 "commission": "285.00",
-                 "currency": "THB",
-                 "rateDescription": "2024-05-31 (1294261 Standard Rate) THB 1900\r\nTotal Commission: 285\r\n",
-                 "offerId": "0",
-                 "referer": "homemadestay",
-                 "refererEditable": "Booking.com",
-                 "reference": "",
-                 "apiSource": "0",
-                 "apiReference": "",
-                 "apiMessage": "Room: ห้องดีลักซ์เตียงใหญ่\r\nThis double room's standout feature is the infinity pool. The spacious double room offers air conditioning, a private entrance, a terrace with sea views as well as a private bathroom boasting a walk-in shower. The unit has 1 bed.\r\n\r\nอาหารเช้ารวมในราคาห้องพัก\r\nหากต้องการอาหารกลางวัน จ่าย THB 250 ต่อท่านต่อคืน\r\nหากต้องการอาหารเย็น จ่าย THB 250 ต่อท่านต่อคืน นโยบายสำหรับเด็กและเตียงเสริม: เด็กทุกวัยสามารถเข้าพักได้ เด็ก 1 ท่าน (อายุไม่เกิน 6 ปี) จะพักในอัตรา THB 300 ต่อเด็ก 1 ท่าน ต่อคืน หากใช้เปลเด็ก (ถ้ามี) จำนวนเตียงเสริมที่ให้บริการได้เป็น \"0\" จำนวนเปลเด็กสูงสุดคือ 1 เปล จำนวนผู้เข้าพักรวมสูงสุดคือ 2 ท่าน  นโยบายการมัดจำ: ไม่จำเป็นต้องชำระเงินล่วงหน้า  นโยบายการยกเลิก: ลูกค้าสามารถยกเลิกการจองโดยไม่มีค่าธรรมเนียมหากเหลือเวลาไม่น้อยกว่า 4 วันก่อนเช็คอิน หากยกเลิกในช่วง 4 วันก่อนเช็คอิน ลูกค้าจะถูกเรียกชำระ ราคารวมของการจอง\r\n\r\nMeal Plan: อาหารเช้ารวมในราคาห้องพัก\r\nหากต้องการอาหารกลางวัน จ่าย THB 250 ต่อท่านต่อคืน\r\nหากต้องการอาหารเย็น จ่าย THB 250 ต่อท่านต่อคืน\r\n\r\nRoom Rservation Id: 4895175184",
-                 "allowChannelUpdate": "1",
-                 "allowAutoAction": "1",
-                 "allowReview": "1",
-                 "cancelUntil": "-1",
-                 "stripeToken": "",
-                 "propId": "102230",
-                 "ownerId": "56401",
-                 "invoiceeId": "",
-                 "bookingTime": "2024-05-22 21:24:45",
-                 "modified": "2024-05-22 21:24:59",
-                 "cancelTime": "",
-                 "masterId": "",
-                 "invoiceNumber": "",
-                 "invoiceDate": "",
-                 "invoice": [
-                     {
-                         "invoiceId": "93460665",
-                         "description": "City View Friday, 31 May, 2024 - Saturday,  1 June, 2024",
-                         "status": "",
-                         "qty": "1",
-                         "price": "1900.00",
-                         "vatRate": "0.00",
-                         "type": "8",
-                         "type2": "0",
-                         "invoiceeId": "",
-                         "createBy": "56401",
-                         "createTime": "2024-05-22 21:24:45"
-                     }
-                 ],
-                 "infoItems": []
-             },
+             "data": {},
              "created_at": "2024-05-23T08:32:02.592+07:00",
              "updated_at": "2024-06-03T15:43:19.014+07:00"
          },
@@ -146,112 +150,7 @@
              "data": {},
              "created_at": "2024-05-23T08:56:47.632+07:00",
              "updated_at": "2024-06-03T15:43:19.056+07:00"
-         },
-         {
-             "id": 3581,
-             "notification_type": "cm_booking_was_updated",
-             "check_in_date": null,
-             "check_out_date": null,
-             "first_night_date": "2024-05-23",
-             "last_night_date": "2024-05-23",
-             "notifiable_id": 81,
-             "notifiable_type": "CmBooking",
-             "channel_name": null,
-             "sub_channel_name": null,
-             "readed": true,
-             "readed_at": "2024-06-09T07:43:44.953Z",
-             "data": {
-                 "bookId": "55382909",
-                 "roomId": "232710",
-                 "unitId": "1",
-                 "roomQty": "1",
-                 "status": "5",
-                 "substatus": "0",
-                 "firstNight": "2024-05-23",
-                 "lastNight": "2024-05-23",
-                 "numAdult": "2",
-                 "numChild": "0",
-                 "guestTitle": "",
-                 "guestFirstName": "suchada",
-                 "guestName": "lertpongwipusana",
-                 "guestEmail": "0s2dmpzd2p8z0c9tv5xch79k5sb0@agoda-messaging.com",
-                 "guestPhone": "66 0819043668",
-                 "guestMobile": "",
-                 "guestFax": "",
-                 "guestCompany": "",
-                 "guestAddress": "",
-                 "guestCity": "",
-                 "guestState": "",
-                 "guestPostcode": "",
-                 "guestCountry": "",
-                 "guestCountry2": "TH",
-                 "guestArrivalTime": "",
-                 "guestVoucher": "",
-                 "guestComments": "NonSmoke\r\nTwinBeds\r\n",
-                 "notes": "Drinking water\r\nBreakfast\r\nParking\r\nFree WiFi\r\n",
-                 "message": "",
-                 "groupNote": "",
-                 "custom1": "",
-                 "custom2": "",
-                 "custom3": "",
-                 "custom4": "",
-                 "custom5": "",
-                 "custom6": "",
-                 "custom7": "",
-                 "custom8": "",
-                 "custom9": "",
-                 "custom10": "",
-                 "flagColor": "",
-                 "flagText": "",
-                 "statusCode": "0",
-                 "lang": "",
-                 "price": "1390.77",
-                 "deposit": "0.00",
-                 "tax": "0.00",
-                 "commission": "0.00",
-                 "currency": "THB",
-                 "rateDescription": "Agoda Collect\r\nDeluxe Seaside Twin Room - Non-Smoking\r\n510862 Breakfast\r\nCxl code = 7D1N_100P",
-                 "offerId": "0",
-                 "referer": "homemadestay",
-                 "refererEditable": "Agoda.com",
-                 "reference": "",
-                 "apiSource": "0",
-                 "apiReference": "",
-                 "apiMessage": "<prices currency=\"THB\" net_inclusive_amt=\"2781.54\" refsell_amt=\"3400.0\"><price date=\"2024-05-23\" net_inclusive_amt=\"2781.54\" refsell_amt=\"3400.0\" type=\"Room\"/></prices>",
-                 "allowChannelUpdate": "1",
-                 "allowAutoAction": "1",
-                 "allowReview": "1",
-                 "cancelUntil": "-1",
-                 "stripeToken": "",
-                 "propId": "102230",
-                 "ownerId": "56401",
-                 "invoiceeId": "",
-                 "bookingTime": "2024-05-21 07:54:10",
-                 "modified": "2024-05-23 01:57:20",
-                 "cancelTime": "",
-                 "masterId": "",
-                 "invoiceNumber": "",
-                 "invoiceDate": "",
-                 "invoice": [
-                     {
-                         "invoiceId": "93318883",
-                         "description": "Duluxe Room Thursday, 23 May, 2024 - Friday, 24 May, 2024",
-                         "status": "",
-                         "qty": "1",
-                         "price": "1390.77",
-                         "vatRate": "0.00",
-                         "type": "8",
-                         "type2": "0",
-                         "invoiceeId": "",
-                         "createBy": "56401",
-                         "createTime": "2024-05-21 07:54:10"
-                     }
-                 ],
-                 "infoItems": []
-             },
-             "created_at": "2024-05-23T08:58:02.518+07:00",
-             "updated_at": "2024-06-03T15:43:19.063+07:00"
-         },
+         }
          {
              "id": 3591,
              "notification_type": "new_cm_booking",
