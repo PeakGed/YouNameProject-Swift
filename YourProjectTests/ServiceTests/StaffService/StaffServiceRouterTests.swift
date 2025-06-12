@@ -58,7 +58,7 @@ final class StaffServiceRouterTests: XCTestCase {
         let request = StaffServiceRequest.CreateStaff(
             hotelId: 105,
             password: "password123",
-            email: "staff@example.com",
+            username: "staff@example.com",
             role: .frontDesk
         )
         let router = StaffServiceRouter.createStaff(request: request)
@@ -76,7 +76,7 @@ final class StaffServiceRouterTests: XCTestCase {
             let json = try JSONSerialization.jsonObject(with: body) as? [String: Any]
             XCTAssertEqual(json?["hotel_id"] as? Int, 105)
             XCTAssertEqual(json?["password"] as? String, "password123")
-            XCTAssertEqual(json?["email"] as? String, "staff@example.com")
+            XCTAssertEqual(json?["username"] as? String, "staff@example.com")
             XCTAssertEqual(json?["role"] as? String, "front_desk")
         } else {
             XCTFail("Request should have a body")

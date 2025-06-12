@@ -34,14 +34,14 @@ struct StaffServiceRequest {
     struct CreateStaff: Encodable {
         let hotelId: Int
         let password: String
-        let email: String
-        //let username: String // not use for now
+        //let email: String
+        let username: String // not use for now
         let role: Staff.Role
         
         enum CodingKeys: String, CodingKey {
             case hotelId = "hotel_id"
             case password
-            case email
+            //case email
             case username
             case role
         }
@@ -52,8 +52,8 @@ struct StaffServiceRequest {
             
             try container.encode(hotelId, forKey: .hotelId)
             try container.encode(password, forKey: .password)
-            try container.encode(email, forKey: .email)
-            //try container.encode(username, forKey: .username) // not use for now
+            //try container.encode(email, forKey: .email)
+            try container.encode(username, forKey: .username) // not use for now
             try container.encode(role.rawValue, forKey: .role)
         }
     }

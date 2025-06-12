@@ -34,7 +34,7 @@ final class StaffServiceRequestTests: XCTestCase {
         let request = StaffServiceRequest.CreateStaff(
             hotelId: 105,
             password: "password123",
-            email: "staff@example.com",
+            username: "staffABC",
             role: .frontDesk
         )
         
@@ -45,7 +45,7 @@ final class StaffServiceRequestTests: XCTestCase {
         // Then
         XCTAssertEqual(json?["hotel_id"] as? Int, 105)
         XCTAssertEqual(json?["password"] as? String, "password123")
-        XCTAssertEqual(json?["email"] as? String, "staff@example.com")
+        XCTAssertEqual(json?["username"] as? String, "staffABC")
         XCTAssertEqual(json?["role"] as? String, "front_desk")
     }
     
@@ -54,7 +54,7 @@ final class StaffServiceRequestTests: XCTestCase {
         let request = StaffServiceRequest.CreateStaff(
             hotelId: 105,
             password: "password123",
-            email: "staff@example.com",
+            username: "staffABC",
             role: .manager
         )
         
@@ -66,7 +66,7 @@ final class StaffServiceRequestTests: XCTestCase {
         // Then
         XCTAssertNotNil(json?["hotel_id"])
         XCTAssertNotNil(json?["password"])
-        XCTAssertNotNil(json?["email"])
+        XCTAssertNotNil(json?["username"])
         XCTAssertNotNil(json?["role"])
         XCTAssertNil(json?["hotelId"]) // Should use snake_case
         XCTAssertEqual(json?["role"] as? String, "manager")
