@@ -83,6 +83,8 @@ extension NotificationItem {
     
     public enum NotificationType: String, Decodable {
         case newCmBooking = "new_cm_booking"
+        case updatedCmBooking = "cm_booking_was_updated"
+        case cancelledCmBooking = "cm_booking_was_cancelled"
         
         case newHmsReservation = "new_hms_reservation"
         case updatedHmsReservation = "hms_reservation_was_updated"

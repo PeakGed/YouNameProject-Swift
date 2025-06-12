@@ -51,6 +51,8 @@ final class NotificationItemTests: XCTestCase {
     
     func test_notificationTypeRawValues() throws {
         XCTAssertEqual(NotificationItem.NotificationType.newCmBooking.rawValue, "new_cm_booking")
+        XCTAssertEqual(NotificationItem.NotificationType.updatedCmBooking.rawValue, "cm_booking_was_updated")
+        XCTAssertEqual(NotificationItem.NotificationType.cancelledCmBooking.rawValue, "cm_booking_was_cancelled")
         XCTAssertEqual(NotificationItem.NotificationType.newHmsReservation.rawValue, "new_hms_reservation")
         XCTAssertEqual(NotificationItem.NotificationType.updatedHmsReservation.rawValue, "hms_reservation_was_updated")
         XCTAssertEqual(NotificationItem.NotificationType.cancelledHmsReservation.rawValue, "hms_reservation_was_cancelled")
