@@ -35,6 +35,32 @@ struct NotificationItem: Codable {
         case createdAt = "created_at"
         case updatedAt = "updated_at"
     }
+
+    init(id: Int,
+    notificationType: NotificationType,
+     checkInDate: Date,
+      checkOutDate: Date, 
+      notifiableId: Int,
+       notifiableType: ItemKind, 
+       readed: Bool, 
+       readedAt: Date?,
+        channelId: Int?,
+         subChannelId: Int?, 
+         createdAt: Date,
+          updatedAt: Date) {
+        self.id = id
+        self.notificationType = notificationType
+        self.checkInDate = checkInDate
+        self.checkOutDate = checkOutDate
+        self.notifiableId = notifiableId
+        self.notifiableType = notifiableType
+        self.readed = readed
+        self.readedAt = readedAt
+        self.channelId = channelId
+        self.subChannelId = subChannelId
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
+    }
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
