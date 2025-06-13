@@ -26,7 +26,6 @@ protocol GuestServiceProtocol: AnyObject {
     
     func removeGuestCompany(request: GuestServiceRequest.RemoveGuestCompany) async throws -> Guest
     
-    func fetchGuestProfile(request: GuestServiceRequest.FetchGuestProfile) async throws -> GuestProfile
 }
 
 class GuestRemoteService: GuestServiceProtocol {
@@ -100,8 +99,4 @@ class GuestRemoteService: GuestServiceProtocol {
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
-    func fetchGuestProfile(request: GuestServiceRequest.FetchGuestProfile) async throws -> GuestProfile {
-        let router = GuestServiceRouter.fetchGuestProfile(id: request.id)
-        return try await apiManager.request(router: router, requiredAuthorization: true)
-    }
 }

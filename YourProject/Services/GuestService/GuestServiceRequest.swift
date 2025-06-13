@@ -12,7 +12,6 @@ struct GuestServiceRequest {
     typealias HideGuest = ById
     typealias UnhideGuest = ById
     typealias RemoveGuestCompany = ById
-    typealias FetchGuestProfile = ById
     typealias FetchGuest = ById
     typealias DeleteGuest = ById
 
@@ -24,15 +23,15 @@ struct GuestServiceRequest {
         let hotelId: Int?
         let includeHidden: Bool?
         
-        func toDictionary() -> [String: Any] {
-            var dict: [String: Any] = [:]
-            if let page = page { dict["page"] = page }
-            if let perPage = perPage { dict["per_page"] = perPage }
-            if let sortedBy = sortedBy { dict["sorted_by"] = sortedBy }
-            if let sortedOrder = sortedOrder { dict["sorted_order"] = sortedOrder }
-            if let hotelId = hotelId { dict["hotel_id"] = hotelId }
-            if let includeHidden = includeHidden { dict["include_hidden"] = includeHidden }
-            return dict
+        var parameters: [String: Any]? {
+            var parameters: [String: Any] = [:]
+            if let page = page { parameters["page"] = page }
+            if let perPage = perPage { parameters["per_page"] = perPage }
+            if let sortedBy = sortedBy { parameters["sorted_by"] = sortedBy }
+            if let sortedOrder = sortedOrder { parameters["sorted_order"] = sortedOrder }
+            if let hotelId = hotelId { parameters["hotel_id"] = hotelId }
+            if let includeHidden = includeHidden { parameters["include_hidden"] = includeHidden.toString() }
+            return parameters.isEmpty ? nil : parameters
         }
     }
     struct FetchGuestsQuery: Encodable {
@@ -44,16 +43,16 @@ struct GuestServiceRequest {
         let q: String?
         let includeHidden: Bool?
         
-        func toDictionary() -> [String: Any] {
-            var dict: [String: Any] = [:]
-            if let page = page { dict["page"] = page }
-            if let perPage = perPage { dict["per_page"] = perPage }
-            if let sortedBy = sortedBy { dict["sorted_by"] = sortedBy }
-            if let sortedOrder = sortedOrder { dict["sorted_order"] = sortedOrder }
-            if let hotelId = hotelId { dict["hotel_id"] = hotelId }
-            if let q = q { dict["q"] = q }
-            if let includeHidden = includeHidden { dict["include_hidden"] = includeHidden }
-            return dict
+        var parameters: [String: Any]? {
+            var parameters: [String: Any] = [:]
+            if let page = page { parameters["page"] = page }
+            if let perPage = perPage { parameters["per_page"] = perPage }
+            if let sortedBy = sortedBy { parameters["sorted_by"] = sortedBy }
+            if let sortedOrder = sortedOrder { parameters["sorted_order"] = sortedOrder }
+            if let hotelId = hotelId { parameters["hotel_id"] = hotelId }
+            if let q = q { parameters["q"] = q }
+            if let includeHidden = includeHidden { parameters["include_hidden"] = includeHidden.toString() }
+            return parameters.isEmpty ? nil : parameters
         }
     }
     struct FetchGuestsCompany: Encodable {
@@ -65,16 +64,16 @@ struct GuestServiceRequest {
         let companyId: Int?
         let includeHidden: Bool?
         
-        func toDictionary() -> [String: Any] {
-            var dict: [String: Any] = [:]
-            if let page = page { dict["page"] = page }
-            if let perPage = perPage { dict["per_page"] = perPage }
-            if let sortedBy = sortedBy { dict["sorted_by"] = sortedBy }
-            if let sortedOrder = sortedOrder { dict["sorted_order"] = sortedOrder }
-            if let hotelId = hotelId { dict["hotel_id"] = hotelId }
-            if let companyId = companyId { dict["company_id"] = companyId }
-            if let includeHidden = includeHidden { dict["include_hidden"] = includeHidden }
-            return dict
+        var parameters: [String: Any]? {
+            var parameters: [String: Any] = [:]
+            if let page = page { parameters["page"] = page }
+            if let perPage = perPage { parameters["per_page"] = perPage }
+            if let sortedBy = sortedBy { parameters["sorted_by"] = sortedBy }
+            if let sortedOrder = sortedOrder { parameters["sorted_order"] = sortedOrder }
+            if let hotelId = hotelId { parameters["hotel_id"] = hotelId }
+            if let companyId = companyId { parameters["company_id"] = companyId }
+            if let includeHidden = includeHidden { parameters["include_hidden"] = includeHidden.toString() }
+            return parameters.isEmpty ? nil : parameters
         }
     }
     struct FetchGuestsReservation: Encodable {
@@ -86,16 +85,16 @@ struct GuestServiceRequest {
         let reservationId: Int?
         let includeHidden: Bool?
         
-        func toDictionary() -> [String: Any] {
-            var dict: [String: Any] = [:]
-            if let page = page { dict["page"] = page }
-            if let perPage = perPage { dict["per_page"] = perPage }
-            if let sortedBy = sortedBy { dict["sorted_by"] = sortedBy }
-            if let sortedOrder = sortedOrder { dict["sorted_order"] = sortedOrder }
-            if let hotelId = hotelId { dict["hotel_id"] = hotelId }
-            if let reservationId = reservationId { dict["reservation_id"] = reservationId }
-            if let includeHidden = includeHidden { dict["include_hidden"] = includeHidden }
-            return dict
+        var parameters: [String: Any]? {
+            var parameters: [String: Any] = [:]
+            if let page = page { parameters["page"] = page }
+            if let perPage = perPage { parameters["per_page"] = perPage }
+            if let sortedBy = sortedBy { parameters["sorted_by"] = sortedBy }
+            if let sortedOrder = sortedOrder { parameters["sorted_order"] = sortedOrder }
+            if let hotelId = hotelId { parameters["hotel_id"] = hotelId }
+            if let reservationId = reservationId { parameters["reservation_id"] = reservationId }
+            if let includeHidden = includeHidden { parameters["include_hidden"] = includeHidden.toString() }
+            return parameters.isEmpty ? nil : parameters
         }
     }
     struct FetchGuestsDatetimeOffset: Encodable {
@@ -107,16 +106,16 @@ struct GuestServiceRequest {
         let datetimeOffset: String?
         let includeHidden: Bool?
         
-        func toDictionary() -> [String: Any] {
-            var dict: [String: Any] = [:]
-            if let page = page { dict["page"] = page }
-            if let perPage = perPage { dict["per_page"] = perPage }
-            if let sortedBy = sortedBy { dict["sorted_by"] = sortedBy }
-            if let sortedOrder = sortedOrder { dict["sorted_order"] = sortedOrder }
-            if let hotelId = hotelId { dict["hotel_id"] = hotelId }
-            if let datetimeOffset = datetimeOffset { dict["datetime_offset"] = datetimeOffset }
-            if let includeHidden = includeHidden { dict["include_hidden"] = includeHidden }
-            return dict
+        var parameters: [String: Any]? {
+            var parameters: [String: Any] = [:]
+            if let page = page { parameters["page"] = page }
+            if let perPage = perPage { parameters["per_page"] = perPage }
+            if let sortedBy = sortedBy { parameters["sorted_by"] = sortedBy }
+            if let sortedOrder = sortedOrder { parameters["sorted_order"] = sortedOrder }
+            if let hotelId = hotelId { parameters["hotel_id"] = hotelId }
+            if let datetimeOffset = datetimeOffset { parameters["datetime_offset"] = datetimeOffset }
+            if let includeHidden = includeHidden { parameters["include_hidden"] = includeHidden.toString() }
+            return parameters.isEmpty ? nil : parameters
         }
     }
     struct CreateGuest: Encodable {
@@ -132,7 +131,7 @@ struct GuestServiceRequest {
         let dateOfBirth: String?
         let idCardNo: String?
         let passportNo: String?
-        let gender: String?
+        let gender: Guest.Gender?
         let email: String?
         let occupation: String?
         let phone: String?
@@ -144,6 +143,35 @@ struct GuestServiceRequest {
         let nickname: String?
         let photos: [String]?
         let documentPhotos: [String]?
+
+        //encode
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(firstName, forKey: .firstName)
+            try container.encode(lastName, forKey: .lastName)
+            try container.encode(nationality, forKey: .nationality)
+            try container.encode(country, forKey: .country)
+            try container.encode(reservationId, forKey: .reservationId)
+            try container.encode(companyId, forKey: .companyId)
+            try container.encode(hotelId, forKey: .hotelId)
+            try container.encode(title, forKey: .title)
+            try container.encode(middleName, forKey: .middleName)
+            try container.encode(dateOfBirth, forKey: .dateOfBirth)
+            try container.encode(idCardNo, forKey: .idCardNo)
+            try container.encode(passportNo, forKey: .passportNo)
+            try container.encode(gender?.rawValue, forKey: .gender)
+            try container.encode(email, forKey: .email)
+            try container.encode(occupation, forKey: .occupation)
+            try container.encode(phone, forKey: .phone)
+            try container.encode(address, forKey: .address)
+            try container.encode(district, forKey: .district)
+            try container.encode(province, forKey: .province)
+            try container.encode(zipCode, forKey: .zipCode)
+            try container.encode(note, forKey: .note)
+            try container.encode(nickname, forKey: .nickname)
+            try container.encode(photos, forKey: .photos)
+            try container.encode(documentPhotos, forKey: .documentPhotos)
+        }
         
         enum CodingKeys: String, CodingKey {
             case firstName = "first_name"
@@ -184,7 +212,7 @@ struct GuestServiceRequest {
         let dateOfBirth: String?
         let idCardNo: String?
         let passportNo: String?
-        let gender: String?
+        let gender: Guest.Gender?
         let email: String?
         let occupation: String?
         let phone: String?
@@ -196,6 +224,33 @@ struct GuestServiceRequest {
         let nickname: String?
         let photos: [String]?
         let documentPhotos: [String]?
+        
+        //encode
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encodeIfPresent(companyId, forKey: .companyId)
+            try container.encodeIfPresent(title, forKey: .title)
+            try container.encodeIfPresent(firstName, forKey: .firstName)
+            try container.encodeIfPresent(middleName, forKey: .middleName)
+            try container.encodeIfPresent(lastName, forKey: .lastName)
+            try container.encodeIfPresent(nationality, forKey: .nationality)
+            try container.encodeIfPresent(country, forKey: .country)
+            try container.encodeIfPresent(dateOfBirth, forKey: .dateOfBirth)
+            try container.encodeIfPresent(idCardNo, forKey: .idCardNo)
+            try container.encodeIfPresent(passportNo, forKey: .passportNo)
+            try container.encodeIfPresent(gender?.rawValue, forKey: .gender)
+            try container.encodeIfPresent(email, forKey: .email)
+            try container.encodeIfPresent(occupation, forKey: .occupation)
+            try container.encodeIfPresent(phone, forKey: .phone)
+            try container.encodeIfPresent(address, forKey: .address)
+            try container.encodeIfPresent(district, forKey: .district)
+            try container.encodeIfPresent(province, forKey: .province)
+            try container.encodeIfPresent(zipCode, forKey: .zipCode)
+            try container.encodeIfPresent(note, forKey: .note)
+            try container.encodeIfPresent(nickname, forKey: .nickname)
+            try container.encodeIfPresent(photos, forKey: .photos)
+            try container.encodeIfPresent(documentPhotos, forKey: .documentPhotos)
+        }
         
         enum CodingKeys: String, CodingKey {
             case companyId = "company_id"
@@ -220,130 +275,6 @@ struct GuestServiceRequest {
             case nickname
             case photos
             case documentPhotos = "document_photos"
-        }
-    }
-    
-    struct FetchStaffs: Encodable {
-        // Query parameters can be added here if needed
-    }
-    
-    struct FetchStaff: Encodable {
-        let id: Int
-        
-        enum CodingKeys: String, CodingKey {
-            // This is a placeholder case to make the enum valid
-            case placeholder
-            // id is not encoded as it's used in the URL path
-        }
-        
-        func encode(to encoder: Encoder) throws {
-            // Nothing to encode as id is used in the URL path
-        }
-    }
-    
-    struct CreateStaff: Encodable {
-        let hotelId: Int
-        let name: String
-        let baseRate: Float
-        let baseGuestNumber: Int
-        let extraBedRate: Float?
-        let extraGuestRate: Float?
-        let maxExtraBedNumber: Int?
-        let maxExtraGuestNumber: Int?
-        let limitedNumberOfCmUnits: Int?
-        let description: String?
-        
-        enum CodingKeys: String, CodingKey {
-            case hotelId = "hotel_id"
-            case name
-            case baseRate = "base_rate"
-            case baseGuestNumber = "base_guest_number"
-            case extraBedRate = "extra_bed_rate"
-            case extraGuestRate = "extra_guest_rate"
-            case maxExtraBedNumber = "max_extra_bed_number"
-            case maxExtraGuestNumber = "max_extra_guest_number"
-            case limitedNumberOfCmUnits = "limited_number_of_cm_units"
-            case description
-        }
-    }
-    
-    struct UpdateStaff: Encodable {
-        let id: Int
-        let name: String?
-        let baseRate: Float?
-        let baseGuestNumber: Int?
-        let extraBedRate: Float?
-        let extraGuestRate: Float?
-        let maxExtraBedNumber: Int?
-        let maxExtraGuestNumber: Int?
-        let limitedNumberOfCmUnits: Int?
-        let description: String?
-        
-        enum CodingKeys: String, CodingKey {
-            case name
-            case baseRate = "base_rate"
-            case baseGuestNumber = "base_guest_number"
-            case extraBedRate = "extra_bed_rate"
-            case extraGuestRate = "extra_guest_rate"
-            case maxExtraBedNumber = "max_extra_bed_number"
-            case maxExtraGuestNumber = "max_extra_guest_number"
-            case limitedNumberOfCmUnits = "limited_number_of_cm_units"
-            case description
-            // id is not encoded as it's used in the URL path
-        }
-    }
-    
-    struct DeleteStaff: Encodable {
-        let id: Int
-        
-        enum CodingKeys: String, CodingKey {
-            // This is a placeholder case to make the enum valid
-            case placeholder
-            // id is not encoded as it's used in the URL path
-        }
-        
-        func encode(to encoder: Encoder) throws {
-            // Nothing to encode as id is used in the URL path
-        }
-    }
-    
-    // New request structures for the additional endpoints
-    
-    struct ChangeHotel: Encodable {
-        let id: Int
-        let hotelId: Int
-        
-        enum CodingKeys: String, CodingKey {
-            case hotelId = "hotel_id"
-            // id is not encoded as it's used in the URL path
-        }
-    }
-    
-    struct ChangePassword: Encodable {
-        let id: Int
-        let password: String
-        
-        enum CodingKeys: String, CodingKey {
-            case password
-            // id is not encoded as it's used in the URL path
-        }
-    }
-    
-    struct UpdateStaffDetails: Encodable {
-        let id: Int
-        let firstName: String?
-        let lastName: String?
-        let phoneNumber: String?
-        let pinCode: String?
-        let idCard: String?
-        
-        enum CodingKeys: String, CodingKey {
-            case firstName = "first_name"
-            case lastName = "last_name"
-            case phoneNumber = "phone_number"
-            case pinCode = "pin_code"
-            case idCard = "id_card"
-            // id is not encoded as it's used in the URL path
         }
     }
 

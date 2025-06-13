@@ -85,15 +85,15 @@ enum GuestServiceRouter: AlamofireBaseRouterProtocol {
     var parameters: [String: Any]? {
         switch self {
         case .fetchGuestsByHotel(let request):
-            return request.toDictionary()
+            return request.parameters
         case .fetchGuestsByQuery(let request):
-            return request.toDictionary()
+            return request.parameters
         case .fetchGuestsByCompany(let request):
-            return request.toDictionary()
+            return request.parameters
         case .fetchGuestsByReservation(let request):
-            return request.toDictionary()
+            return request.parameters
         case .fetchGuestsByDatetimeOffset(let request):
-            return request.toDictionary()
+            return request.parameters
         default:
             return nil
         }
