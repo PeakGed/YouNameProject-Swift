@@ -32,7 +32,7 @@ final class GuestServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters["sorted_by"] as? String, "ID")
         XCTAssertEqual(parameters["sorted_order"] as? String, "ASC")
         XCTAssertEqual(parameters["hotel_id"] as? Int, 105)
-        XCTAssertEqual(parameters["include_hidden"] as? Bool, true)
+        XCTAssertEqual(parameters["include_hidden"] as? String, "true")
     }
     
     func testFetchGuestsRequest_ToDictionaryWithNilValues() {

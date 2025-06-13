@@ -132,6 +132,8 @@
 				DataModels/Reservation/Contact/Nationality.swift,
 				DataModels/Reservation/FinancialRecord/FinancialRecord.swift,
 				DataModels/Reservation/FinancialRecord/FinancialRecords.swift,
+				DataModels/Reservation/FolioForm/FolioForm.swift,
+				DataModels/Reservation/FolioForm/FolioForms.swift,
 				DataModels/Reservation/Reservation.swift,
 				DataModels/Reservation/ReservationDetail.swift,
 				DataModels/Reservation/ReservationItem/ReservationItem.swift,
