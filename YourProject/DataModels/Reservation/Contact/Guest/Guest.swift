@@ -187,14 +187,8 @@ extension Guest {
         self.passportNo = (try? container.decode(String.self, forKey: .passportNo)) ?? ""
                 
         self.titleCode = (try? container.decode(String.self, forKey: .title))
-        
-        if let _birthdateString = try? container.decode(String.self, forKey: .birthdate) {
-            self.birthdate = _birthdateString.toDate(dateFormat: FormConfig.DateFormat.yyyyMMdd)
-        }
-        else {
-            self.birthdate = nil
-        }
-        
+                
+        self.birthdate = try? container.decode(String.self, forKey: .birthdate).tryToDate(FormConfig.DateFormat.yyyyMMdd)
         self.gender = (try? container.decode(Gender.self, forKey: .gender)) ?? Gender.unknow
         
         self.email = (try? container.decode(String.self, forKey: .email)) ?? ""
@@ -259,7 +253,8 @@ extension Guest {
         try container.encode(hotelID, forKey: .hotelID)
         try container.encode(companyID, forKey: .companyID)
         
-        try container.encode(isHidden, forKey: .isHidden)
+        try container.encode(isHidden, forKey: .isHidden)        
+        try container.encode(isFirst, forKey: .isFirst)
         
         let dateFormat = FormConfig.DateFormat.datetimeISO
         try container.encode(createdAt.toDateString(dateFormat),
