@@ -27,8 +27,8 @@ struct Guest: Codable {
     let address: Address
     let occupation: String
     let note: String
-    let hotelID: Int
-    let companyID: Int?
+    let hotelId: Int
+    let companyId: Int?
     let isHidden: Bool
     let createdAt: Date
     let updatedAt: Date
@@ -119,8 +119,8 @@ struct Guest: Codable {
          email: String,
          phone: String,
          note: String,
-         hotelID: Int,
-         companyID: Int?,
+         hotelId: Int,
+         companyId: Int?,
          isFirst: Bool,
          isHidden: Bool,
          address: Address,
@@ -144,8 +144,8 @@ struct Guest: Codable {
         self.address = address
         self.occupation = occupation
         self.note = note
-        self.hotelID = hotelID
-        self.companyID = companyID
+        self.hotelId = hotelId
+        self.companyId = companyId
         self.isFirst = isFirst
         self.isHidden = isHidden
         self.createdAt = createdAt
@@ -171,7 +171,7 @@ extension Guest {
         self.id = try container.decode(Int.self, forKey: .id)
         self.nationalityCode = try container.decode(String.self, forKey: .nationalityCode)
         self.countryCode = try container.decode(String.self, forKey: .countryCode)
-        self.hotelID = try container.decode(Int.self, forKey: .hotelID)
+        self.hotelId = try container.decode(Int.self, forKey: .hotelId)
                 
         let dateFormat = FormConfig.DateFormat.datetimeISO
         createdAt = try container.decode(String.self,
@@ -208,7 +208,7 @@ extension Guest {
         self.occupation = (try? container.decode(String.self, forKey: .occupation)) ?? ""
         self.note = (try? container.decode(String.self, forKey: .note)) ?? ""
         
-        self.companyID = try? container.decode(Int.self, forKey: .companyID)
+        self.companyId = try? container.decode(Int.self, forKey: .companyId)
         self.isFirst = (try? container.decode(Bool.self, forKey: .isFirst)) ?? false
         self.isHidden = (try? container.decode(Bool.self, forKey: .isHidden)) ?? false
         
@@ -250,8 +250,8 @@ extension Guest {
         try container.encode(occupation, forKey: .occupation)
         try container.encode(note, forKey: .note)
         
-        try container.encode(hotelID, forKey: .hotelID)
-        try container.encode(companyID, forKey: .companyID)
+        try container.encode(hotelId, forKey: .hotelId)
+        try container.encode(companyId, forKey: .companyId)
         
         try container.encode(isHidden, forKey: .isHidden)        
         try container.encode(isFirst, forKey: .isFirst)
@@ -285,8 +285,8 @@ extension Guest {
         case province
         case zipCode = "zip_code"
         case note
-        case hotelID = "hotel_id"
-        case companyID = "company_id"
+        case hotelId = "hotel_id"
+        case companyId = "company_id"
         case isFirst = "first_guest"
         case isHidden = "hidden"
         case createdAt = "created_at"

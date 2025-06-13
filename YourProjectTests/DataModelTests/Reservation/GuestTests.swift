@@ -30,8 +30,8 @@ final class GuestTests: XCTestCase {
             email: "john@email.com",
             phone: "0812345678",
             note: "VIP guest",
-            hotelID: 101,
-            companyID: 202,
+            hotelId: 101,
+            companyId: 202,
             isFirst: true,
             isHidden: false,
             address: sampleAddress(),
@@ -60,8 +60,8 @@ final class GuestTests: XCTestCase {
         XCTAssertEqual(guest.address.houseNumber, "123")
         XCTAssertEqual(guest.occupation, "Engineer")
         XCTAssertEqual(guest.note, "VIP guest")
-        XCTAssertEqual(guest.hotelID, 101)
-        XCTAssertEqual(guest.companyID, 202)
+        XCTAssertEqual(guest.hotelId, 101)
+        XCTAssertEqual(guest.companyId, 202)
         XCTAssertEqual(guest.isFirst, true)
         XCTAssertEqual(guest.isHidden, false)
     }
@@ -101,8 +101,8 @@ final class GuestTests: XCTestCase {
             email: "alex@email.com",
             phone: "0898765432",
             note: "",
-            hotelID: 102,
-            companyID: nil,
+            hotelId: 102,
+            companyId: nil,
             isFirst: false,
             isHidden: false,
             address: sampleAddress(),
@@ -134,8 +134,8 @@ final class GuestTests: XCTestCase {
             email: "anna@email.com",
             phone: "0876543210",
             note: "",
-            hotelID: 103,
-            companyID: nil,
+            hotelId: 103,
+            companyId: nil,
             isFirst: false,
             isHidden: false,
             address: sampleAddress(),
@@ -164,8 +164,8 @@ final class GuestTests: XCTestCase {
             email: "",
             phone: "",
             note: "",
-            hotelID: 0,
-            companyID: nil,
+            hotelId: 0,
+            companyId: nil,
             isFirst: false,
             isHidden: false,
             address: sampleAddress(),
@@ -208,8 +208,8 @@ final class GuestTests: XCTestCase {
         XCTAssertEqual(decoded.address.houseNumber, guest.address.houseNumber)
         XCTAssertEqual(decoded.occupation, guest.occupation)
         XCTAssertEqual(decoded.note, guest.note)
-        XCTAssertEqual(decoded.hotelID, guest.hotelID)
-        XCTAssertEqual(decoded.companyID, guest.companyID)
+        XCTAssertEqual(decoded.hotelId, guest.hotelId)
+        XCTAssertEqual(decoded.companyId, guest.companyId)
         XCTAssertEqual(decoded.isFirst, guest.isFirst)
         XCTAssertEqual(decoded.isHidden, guest.isHidden)
     }
