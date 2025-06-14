@@ -16,7 +16,7 @@ struct PdfUrl: Decodable {
             let urlPath
         else { return nil }
         
-        let reqUrl = APIManager.shared.baseURL + urlPath
+        let reqUrl = hostUrl + urlPath
         
         return Foundation.URL(string: reqUrl)
     }
