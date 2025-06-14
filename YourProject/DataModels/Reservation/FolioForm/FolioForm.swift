@@ -61,7 +61,7 @@ struct FolioForm: Codable {
     }
     
     init(id: Int,
-         status: Status,         
+         status: Status,
          number: String,
          vatIncluded: Bool,
          vatPercentage: Int,
@@ -189,6 +189,11 @@ extension FolioForm {
             }
         }
     }
+}
+
+// MARK: PreviewEmailInfo
+extension FolioForm {
+   
 }
 
 /*
