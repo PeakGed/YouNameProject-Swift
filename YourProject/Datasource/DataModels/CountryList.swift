@@ -17,18 +17,16 @@ struct CountryList {
         self.country(alpha3Ccode: "THA")
     }
     
-    //fix later
     init() {
-//        guard
-//            let jsonData = JsonFile(path: "JSONDatasource").data(from: "Other/CountryAndNationality")
-//        else {
-//            self.lists = []
-//            return
-//        }
+        guard
+            let jsonData = JsonFile(path: "Datasource").data(from: "Other/CountryAndNationality")
+        else {
+            self.lists = []
+            return
+        }
         
-//        self.lists = (try? JSONDecoder().decode([Country].self,
-//                                               from: jsonData)) ?? []
-        self.lists = []
+        self.lists = (try? JSONDecoder().decode([Country].self,
+                                               from: jsonData)) ?? []
     }
     
     init(array: [Country]) {

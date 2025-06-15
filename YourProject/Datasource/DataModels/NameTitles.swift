@@ -13,23 +13,20 @@ struct NameTitleList: Codable {
     static let shared: NameTitleList = NameTitleList()
     
     let lists: [NameTitle]
-    
     var count: Int { return lists.count }
             
-    // Fix later
     init() {
-//        let jsonData = JsonFile(path: "JSONDatasource").data(from: "Other/NameTitles")
-//        
-//        guard
-//            let jsonData
-//        else {
-//            self.lists = []
-//            return
-//        }
-//        
-//        self.lists = (try? JSONDecoder().decode([NameTitle].self,
-//                                                from: jsonData)) ?? []
-        lists = []
+        let jsonData = JsonFile(path: "Datasource").data(from: "Other/NameTitles")
+        
+        guard
+            let jsonData
+        else {
+            self.lists = []
+            return
+        }
+        
+        self.lists = (try? JSONDecoder().decode([NameTitle].self,
+                                                from: jsonData)) ?? []
     }
     
     func title(key: String) -> NameTitle? {
