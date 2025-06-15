@@ -8,69 +8,7 @@
 import Foundation
 
 struct FinancialRecord: Codable {
-        
-    /*
-    json format
-    [
-      {
-        "name": "Bank Transfer",
-        "subMethods": []
-      },
-      {
-        "name": "Cash", 
-        "subMethods": []
-      },
-      {
-        "name": "Cheque",
-        "subMethods": []
-      },
-      {
-        "name": "Credit Card",
-        "subMethods": []
-      },
-      {
-        "name": "Fin Tech",
-        "subMethods": [
-          "Alipay",
-          "Apple Pay",
-          "Prompt pay", 
-          "Samsung Pay",
-          "WeChat Pay"
-        ]
-      },
-      {
-        "name": "OTA Transfer",
-        "subMethods": []
-      },
-      {
-        "name": "Paypal",
-        "subMethods": []
-      }
-    ]
-    */
-    static let paymentMethods = [
-                                 Method(name: "Bank Transfer",
-                                        subMethods: []) ,
-                                 Method(name: "Cash",
-                                        subMethods: []) ,
-                                 Method(name: "Cheque",
-                                        subMethods: []) ,
-                                 Method(name: "Credit Card",
-                                        subMethods: []) ,
-                                 Method(name: "Fin Tech",
-                                        subMethods: [
-                                    "Alipay" ,
-                                    "Apple Pay" ,
-                                    "Prompt pay" ,
-                                    "Samsung Pay" ,
-                                    "WeChat Pay"
-                                 ]) ,
-                                 Method(name: "OTA Transfer",
-                                        subMethods: []) ,
-                                 Method(name: "Paypal",
-                                        subMethods: []) ]
-    
-    static let defaultPaymentMethod = FinancialRecord.paymentMethods[1] // Cash
+    static let defaultPaymentMethod = PaymentMethods.shared.first
     
     internal let dateFormat = "dd MMM yyyy HH:mm"
     
@@ -81,11 +19,18 @@ struct FinancialRecord: Codable {
     let timestamp: Date
     let amount: Double
     let recordableId: Int
-    let recordableType: String
+    let recordableType: RecordType
     let createdAt: Date
     let updatedAt: Date
     let hotelId: Int
-    let bankAccount: String?
+    let bankAccountId: Int?
+    
+    var cashFlowType: CashFlowType {
+        if amount >= 0 {
+            return .income
+        }
+        return .expense
+    }
     
     private enum CodingKeys: String, CodingKey {
         case id
@@ -109,11 +54,11 @@ struct FinancialRecord: Codable {
          timestamp: Date,
          amount: Double,
          recordableId: Int,
-         recordableType: String,
+         recordableType: RecordType,
          createdAt: Date,
          updatedAt: Date,
          hotelId: Int,
-         bankAccount: String?) {
+         bankAccountId: Int?) {
         self.id = id
         self.name = name
         self.paymentMethod = paymentMethod
@@ -125,23 +70,25 @@ struct FinancialRecord: Codable {
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.hotelId = hotelId
-        self.bankAccount = bankAccount
+        self.bankAccountId = bankAccountId
     }
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        let dateTimeISO = FormConfig.DateFormat.datetimeISO
+        
         id = try container.decode(Int.self, forKey: .id)
         name = try container.decode(String.self, forKey: .name)
         paymentMethod = try container.decode(String.self, forKey: .paymentMethod)
         note = try container.decodeIfPresent(String.self, forKey: .note)
-        timestamp = try container.decode(String.self, forKey: .timestamp).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
         amount = try container.decode(String.self, forKey: .amount).tryToDouble()
         recordableId = try container.decode(Int.self, forKey: .recordableId)
-        recordableType = try container.decode(String.self, forKey: .recordableType)
+        recordableType = try container.decode(RecordType.self, forKey: .recordableType)
         hotelId = try container.decode(Int.self, forKey: .hotelId)
-        bankAccount = try container.decodeIfPresent(String.self, forKey: .bankAccount)
-        createdAt = try container.decode(String.self, forKey: .createdAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
-        updatedAt = try container.decode(String.self, forKey: .updatedAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
+        bankAccountId = try container.decodeIfPresent(Int.self, forKey: .bankAccount)
+        timestamp = try container.decode(String.self, forKey: .timestamp).tryToDate(dateFormat: dateTimeISO)
+        createdAt = try container.decode(String.self, forKey: .createdAt).tryToDate(dateFormat: dateTimeISO)
+        updatedAt = try container.decode(String.self, forKey: .updatedAt).tryToDate(dateFormat: dateTimeISO)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -150,44 +97,46 @@ struct FinancialRecord: Codable {
         try container.encode(name, forKey: .name)
         try container.encode(paymentMethod, forKey: .paymentMethod)
         try container.encode(note, forKey: .note)
-        try container.encode(timestamp.toDateString(FormConfig.DateFormat.datetimeISO), forKey: .timestamp)
-        try container.encode(String(amount), forKey: .amount)
+        try container.encode(amount.toString(), forKey: .amount)
         try container.encode(recordableId, forKey: .recordableId)
-        try container.encode(recordableType, forKey: .recordableType)
+        try container.encode(recordableType.rawValue, forKey: .recordableType)
         try container.encode(hotelId, forKey: .hotelId)
-        try container.encode(bankAccount, forKey: .bankAccount)
+        try container.encode(bankAccountId, forKey: .bankAccount)
+        try container.encode(timestamp.toDateString(FormConfig.DateFormat.datetimeISO), forKey: .timestamp)
         try container.encode(createdAt.toDateString(FormConfig.DateFormat.datetimeISO), forKey: .createdAt)
         try container.encode(updatedAt.toDateString(FormConfig.DateFormat.datetimeISO), forKey: .updatedAt)
     }
 }
 
 extension FinancialRecord {
-    enum CashFlowType: String {
+    
+    enum CashFlowType {
         case income
         case expense
     }
-    
-    struct Method {
-        var name: String
-        var subMethods: [String]
-    }
 
+    
+    enum RecordType: String, Codable {
+        case reservation = "Reservation"
+        case accountItem = "AccountItem"
+        case additional = "Additional"
+    }
     
 }
 
 /*
  {
-            "id": 440,
-            "name": "PAYMENT",
-            "payment_method": "Bank Transfer",
-            "note": null,
-            "timestamp": "2024-04-21T13:33:54.748+07:00",
-            "amount": 2111,
-            "recordable_id": 1067,
-            "recordable_type": "Reservation",
-            "created_at": "2024-04-21T13:33:54.756+07:00",
-            "updated_at": "2024-04-21T13:33:54.756+07:00",
-            "hotel_id": 105,
-            "bank_account": null
-        }
+             "id": 439,
+             "name": "PAYMENT",
+             "payment_method": "Bank Transfer",
+             "note": null,
+             "timestamp": "2024-04-16T15:52:17.285+07:00",
+             "amount": "3940.0",
+             "recordable_id": 1061,
+             "recordable_type": "Reservation",
+             "created_at": "2024-04-16T15:52:17.286+07:00",
+             "updated_at": "2024-04-16T15:52:17.286+07:00",
+             "hotel_id": 105,
+             "bank_account_id": null
+         }
  */

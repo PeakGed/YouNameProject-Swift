@@ -20,11 +20,11 @@ final class FinancialRecordTests: XCTestCase {
             timestamp: Date(timeIntervalSince1970: 1000),
             amount: 2111.11,
             recordableId: 1067,
-            recordableType: "Reservation",
+            recordableType: .reservation,
             createdAt: Date(timeIntervalSince1970: 1000),
             updatedAt: Date(timeIntervalSince1970: 2000),
             hotelId: 105,
-            bankAccount: nil
+            bankAccountId: nil
         )
     }
     
@@ -41,9 +41,9 @@ final class FinancialRecordTests: XCTestCase {
         XCTAssertNil(record.note)
         XCTAssertEqual(record.amount, 2111.11)
         XCTAssertEqual(record.recordableId, 1067)
-        XCTAssertEqual(record.recordableType, "Reservation")
+        XCTAssertEqual(record.recordableType, .reservation)
         XCTAssertEqual(record.hotelId, 105)
-        XCTAssertNil(record.bankAccount)
+        XCTAssertNil(record.bankAccountId)
     }
     
     func test_initWithOptionalPropertiesPresent() {
@@ -56,16 +56,16 @@ final class FinancialRecordTests: XCTestCase {
             timestamp: Date(timeIntervalSince1970: 1000),
             amount: 2111.11,
             recordableId: 1067,
-            recordableType: "Reservation",
+            recordableType: .reservation,
             createdAt: Date(timeIntervalSince1970: 1000),
             updatedAt: Date(timeIntervalSince1970: 2000),
             hotelId: 105,
-            bankAccount: "1234567890"
+            bankAccountId: 1234567890
         )
         
         // Assert
         XCTAssertEqual(record.note, "Test note")
-        XCTAssertEqual(record.bankAccount, "1234567890")
+        XCTAssertEqual(record.bankAccountId, 1234567890)
     }
     
     // MARK: - Codable Tests
@@ -99,9 +99,9 @@ final class FinancialRecordTests: XCTestCase {
         XCTAssertNil(record.note)
         XCTAssertEqual(record.amount, 2111.11)
         XCTAssertEqual(record.recordableId, 1067)
-        XCTAssertEqual(record.recordableType, "Reservation")
+        XCTAssertEqual(record.recordableType, .reservation)
         XCTAssertEqual(record.hotelId, 105)
-        XCTAssertNil(record.bankAccount)
+        XCTAssertNil(record.bankAccountId)
     }
     
     func test_encodingToJSON() throws {
@@ -122,5 +122,49 @@ final class FinancialRecordTests: XCTestCase {
         XCTAssertTrue(jsonString.contains("\"recordable_id\" : 1067"))
         XCTAssertTrue(jsonString.contains("\"recordable_type\" : \"Reservation\""))
         XCTAssertTrue(jsonString.contains("\"hotel_id\" : 105"))
+    }
+    
+    // MARK: - CashFlowType Tests
+    
+    func test_cashFlowType_income() {
+        // Arrange
+        let record = FinancialRecord(
+            id: 1,
+            name: "PAYMENT",
+            paymentMethod: "Cash",
+            note: nil,
+            timestamp: Date(),
+            amount: 1000.0,
+            recordableId: 1,
+            recordableType: .reservation,
+            createdAt: Date(),
+            updatedAt: Date(),
+            hotelId: 1,
+            bankAccountId: nil
+        )
+        
+        // Act & Assert
+        XCTAssertEqual(record.cashFlowType, .income)
+    }
+    
+    func test_cashFlowType_expense() {
+        // Arrange
+        let record = FinancialRecord(
+            id: 1,
+            name: "REFUND",
+            paymentMethod: "Cash",
+            note: nil,
+            timestamp: Date(),
+            amount: -500.0,
+            recordableId: 1,
+            recordableType: .reservation,
+            createdAt: Date(),
+            updatedAt: Date(),
+            hotelId: 1,
+            bankAccountId: nil
+        )
+        
+        // Act & Assert
+        XCTAssertEqual(record.cashFlowType, .expense)
     }
 }

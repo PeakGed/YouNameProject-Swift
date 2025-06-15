@@ -12,6 +12,7 @@ struct PaymentMethods: Decodable {
     
     let lists: [PaymentMethod]
     var count: Int { return lists.count }
+    var first: PaymentMethod? { return lists.first }
     
     init() {
         guard
