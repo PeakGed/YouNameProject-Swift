@@ -154,6 +154,8 @@
 				DataModels/User/Support/SupportVersion.swift,
 				DataModels/User/User/User.swift,
 				DataModels/User/User/Users.swift,
+				Datasource/DataModels/PaymentMethods.swift,
+				Datasource/JsonFile.swift,
 				Services/AuthService/AuthRemoteService.swift,
 				Services/AuthService/AuthServiceRequest.swift,
 				Services/AuthService/AuthServiceRouter.swift,
