@@ -7,7 +7,7 @@
 
 import XCTest
 import Alamofire
-@testable import YourProject
+
 
 class NotificationItemServiceRouterTests: XCTestCase {
 

@@ -7,7 +7,7 @@
 
 import XCTest
 import Alamofire
-@testable import YourProject
+
 
 final class DeviceServiceRouterTests: XCTestCase {
     

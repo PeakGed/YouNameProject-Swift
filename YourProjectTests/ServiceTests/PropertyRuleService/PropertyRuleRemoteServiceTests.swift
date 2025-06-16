@@ -7,7 +7,7 @@
 
 import XCTest
 import Mockable
-@testable import YourProject
+
 
 final class PropertyRuleRemoteServiceTests: XCTestCase {
     lazy var localStorage = MockLocalStorageManagerProtocal()

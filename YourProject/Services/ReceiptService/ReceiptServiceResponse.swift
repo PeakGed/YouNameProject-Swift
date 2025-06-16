@@ -1,11 +1,13 @@
-//  FolioFormServiceResponse.swift
+//
+//  ReceiptServiceResponse.swift
 //  YourProject
 //
-//  Created by IntrodexMini on 13/6/2568 BE.
+//  Created by AI Assistant
 //
+
 import Foundation
 
-struct FolioFormServiceResponse {
+struct ReceiptServiceResponse {
     
     struct PreviewEmail: Decodable {
         let info: PreviewUrl
