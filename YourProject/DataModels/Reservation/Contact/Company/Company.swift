@@ -166,10 +166,6 @@ struct Company: Codable {
 
 extension Company {
     
-}
-
-extension Company {
-    
     enum BusinessType: String, Codable {
         case corporate = "corporate"
         case individual = "individual"
