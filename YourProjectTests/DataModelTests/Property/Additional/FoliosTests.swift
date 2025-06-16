@@ -77,6 +77,8 @@ final class FoliosTests: XCTestCase {
         let folios = Folios(array: [
             Folio(
                 id: 130,
+                hotelId: 105,
+                status: Folio.Status.available,
                 name: "Room Service",
                 amount: 111.11,
                 amountBeforeVat: 111.11,
@@ -84,15 +86,15 @@ final class FoliosTests: XCTestCase {
                 barcode: nil,
                 code: nil,
                 categoryId: nil,
-                status: "available",
                 description: "Dinner service",
                 vatIncluded: false,
-                hotelId: 105,
                 createdAt: date,
                 updatedAt: date
             ),
             Folio(
                 id: 131,
+                hotelId: 105,
+                status: Folio.Status.available,
                 name: "Mini Bar",
                 amount: 222.22,
                 amountBeforeVat: 222.22,
@@ -100,10 +102,8 @@ final class FoliosTests: XCTestCase {
                 barcode: nil,
                 code: nil,
                 categoryId: nil,
-                status: "available", 
                 description: "Beverages",
                 vatIncluded: false,
-                hotelId: 105,
                 createdAt: date,
                 updatedAt: date
             )

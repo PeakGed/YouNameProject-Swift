@@ -48,6 +48,8 @@ final class FolioRemoteServiceTests: XCTestCase {
         // Given
         let expectedFolio = Folio(
             id: 1,
+            hotelId: 101,
+            status: Folio.Status.available,
             name: "Test Folio",
             amount: 100.0,
             amountBeforeVat: 93.46,
@@ -55,10 +57,8 @@ final class FolioRemoteServiceTests: XCTestCase {
             barcode: nil,
             code: nil,
             categoryId: 1,
-            status: "created",
             description: "Test Description",
             vatIncluded: true,
-            hotelId: 101,
             createdAt: Date(),
             updatedAt: Date()
         )
@@ -81,6 +81,8 @@ final class FolioRemoteServiceTests: XCTestCase {
         // Given
         let expectedFolio = Folio(
             id: 2,
+            hotelId: 102,
+            status: Folio.Status.available,
             name: "Created Folio",
             amount: 200.0,
             amountBeforeVat: 186.92,
@@ -88,10 +90,8 @@ final class FolioRemoteServiceTests: XCTestCase {
             barcode: nil,
             code: nil,
             categoryId: 2,
-            status: "created",
             description: "Created Description",
             vatIncluded: false,
-            hotelId: 102,
             createdAt: Date(),
             updatedAt: Date()
         )
@@ -121,6 +121,8 @@ final class FolioRemoteServiceTests: XCTestCase {
         // Given
         let expectedFolio = Folio(
             id: 3,
+            hotelId: 103,
+            status: Folio.Status.available,
             name: "Updated Folio",
             amount: 300.0,
             amountBeforeVat: 280.39,
@@ -128,10 +130,8 @@ final class FolioRemoteServiceTests: XCTestCase {
             barcode: nil,
             code: nil,
             categoryId: 3,
-            status: "updated",
             description: "Updated Description",
             vatIncluded: true,
-            hotelId: 103,
             createdAt: Date(),
             updatedAt: Date()
         )

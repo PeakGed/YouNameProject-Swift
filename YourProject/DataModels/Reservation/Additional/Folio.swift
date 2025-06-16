@@ -9,22 +9,24 @@ import Foundation
 struct Folio: Codable {
    
     let id: Int
+    let hotelId: Int
+    let status: Status
     let name: String
     let amount: Double
     let amountBeforeVat: Double
     let vatAmount: Double
     let barcode: String?
     let code: String?
-    let categoryId: Int?
-    let status: String
+    let categoryId: Int?    
     let description: String
     let vatIncluded: Bool
     let createdAt: Date
     let updatedAt: Date
-    let hotelId: Int
-    
+        
     private enum CodingKeys: String, CodingKey {
         case id
+        case status
+        case hotelId = "hotel_id"
         case name
         case amount
         case amountBeforeVat = "amount_before_vat"
@@ -32,15 +34,15 @@ struct Folio: Codable {
         case barcode
         case code
         case categoryId = "category_id"
-        case status
         case description
         case vatIncluded = "vat_included"
         case createdAt = "created_at"
         case updatedAt = "updated_at"
-        case hotelId = "hotel_id"
     }
     
     init(id: Int,
+         hotelId: Int,
+         status: Status,
          name: String,
          amount: Double,
          amountBeforeVat: Double,
@@ -48,13 +50,12 @@ struct Folio: Codable {
          barcode: String? = nil,
          code: String? = nil,
          categoryId: Int? = nil,
-         status: String,
          description: String,
          vatIncluded: Bool,
-         hotelId: Int,
          createdAt: Date,
          updatedAt: Date) {
         self.id = id
+        self.status = status
         self.name = name
         self.amount = amount
         self.amountBeforeVat = amountBeforeVat
@@ -62,7 +63,6 @@ struct Folio: Codable {
         self.barcode = barcode
         self.code = code
         self.categoryId = categoryId
-        self.status = status
         self.description = description
         self.vatIncluded = vatIncluded
         self.hotelId = hotelId
@@ -73,6 +73,8 @@ struct Folio: Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(Int.self, forKey: .id)
+        hotelId = try container.decode(Int.self, forKey: .hotelId)
+        status = try container.decode(Status.self, forKey: .status)
         name = try container.decode(String.self, forKey: .name)
         amount = try container.decode(String.self, forKey: .amount).tryToDouble()
         amountBeforeVat = try container.decode(String.self, forKey: .amountBeforeVat).tryToDouble()
@@ -80,18 +82,20 @@ struct Folio: Codable {
         barcode = try container.decodeIfPresent(String.self, forKey: .barcode)
         code = try container.decodeIfPresent(String.self, forKey: .code)
         categoryId = try container.decodeIfPresent(Int.self, forKey: .categoryId)
-        status = try container.decode(String.self, forKey: .status)
         description = (try? container.decode(String.self, forKey: .description)) ?? ""
         vatIncluded = try container.decode(Bool.self, forKey: .vatIncluded)
-        hotelId = try container.decode(Int.self, forKey: .hotelId)
+        
         createdAt = try container.decode(String.self, forKey: .createdAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
         updatedAt = try container.decode(String.self, forKey: .updatedAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
     }
 
     //encode
     func encode(to encoder: Encoder) throws {
+        let datetimeISO = FormConfig.DateFormat.datetimeISO
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
+        try container.encode(hotelId, forKey: .hotelId)
+        try container.encode(status, forKey: .status)
         try container.encode(name, forKey: .name)
         try container.encode(amount.toString(), forKey: .amount)
         try container.encode(amountBeforeVat.toString(), forKey: .amountBeforeVat)
@@ -99,12 +103,10 @@ struct Folio: Codable {
         try container.encode(barcode, forKey: .barcode)
         try container.encode(code, forKey: .code)
         try container.encode(categoryId, forKey: .categoryId)
-        try container.encode(status, forKey: .status)
         try container.encode(description, forKey: .description)
         try container.encode(vatIncluded, forKey: .vatIncluded)
-        try container.encode(hotelId, forKey: .hotelId)
-        try container.encode(createdAt.toDateString(FormConfig.DateFormat.datetimeISO), forKey: .createdAt)
-        try container.encode(updatedAt.toDateString(FormConfig.DateFormat.datetimeISO), forKey: .updatedAt)
+        try container.encode(createdAt.toDateString(datetimeISO), forKey: .createdAt)
+        try container.encode(updatedAt.toDateString(datetimeISO), forKey: .updatedAt)
     }
 
 }
@@ -126,7 +128,8 @@ extension Folio {
     }
     
     enum Status: String, Codable {
-        case created = "created"
+        case available = "available"
+        case unavailable = "unavailable"
     }
 }
 

@@ -24,7 +24,7 @@ final class FolioTests: XCTestCase {
         XCTAssertEqual(folio.barcode, "123456789")
         XCTAssertEqual(folio.code, "FOL001")
         XCTAssertEqual(folio.categoryId, 1)
-        XCTAssertEqual(folio.status, "created")
+        XCTAssertEqual(folio.status, Folio.Status.available)
         XCTAssertEqual(folio.description, "Test Description")
         XCTAssertTrue(folio.vatIncluded)
         XCTAssertEqual(folio.hotelId, 105)
@@ -34,6 +34,8 @@ final class FolioTests: XCTestCase {
         // Arrange & Act
         let folio = Folio(
             id: 1,
+            hotelId: 105,
+            status: Folio.Status.available,
             name: "Test Folio",
             amount: 500.0,
             amountBeforeVat: 467.29,
@@ -41,10 +43,8 @@ final class FolioTests: XCTestCase {
             barcode: nil,
             code: nil,
             categoryId: nil,
-            status: "created",
             description: "",
             vatIncluded: true,
-            hotelId: 105,
             createdAt: Date(timeIntervalSince1970: 1000),
             updatedAt: Date(timeIntervalSince1970: 2000)
         )
@@ -90,7 +90,7 @@ final class FolioTests: XCTestCase {
         XCTAssertNil(folio.barcode)
         XCTAssertNil(folio.code)
         XCTAssertNil(folio.categoryId)
-        XCTAssertEqual(folio.status, "available")
+        XCTAssertEqual(folio.status, Folio.Status.available)
         XCTAssertEqual(folio.description, "")
         XCTAssertFalse(folio.vatIncluded)
         XCTAssertEqual(folio.hotelId, 105)
@@ -114,7 +114,7 @@ final class FolioTests: XCTestCase {
         XCTAssertTrue(jsonString.contains("\"amount_before_vat\" : \"467.29\""))
         XCTAssertTrue(jsonString.contains("\"vat_amount\" : \"32.71\""))
         XCTAssertTrue(jsonString.contains("\"barcode\" : \"123456789\""))
-        XCTAssertTrue(jsonString.contains("\"status\" : \"created\""))
+        XCTAssertTrue(jsonString.contains("\"status\" : \"available\""))
         XCTAssertTrue(jsonString.contains("\"vat_included\" : true"))
         XCTAssertTrue(jsonString.contains("\"hotel_id\" : 105"))
     }
@@ -124,6 +124,8 @@ final class FolioTests: XCTestCase {
     private func createSampleFolio() -> Folio {
         return Folio(
             id: 1,
+            hotelId: 105,
+            status: Folio.Status.available,
             name: "Test Folio",
             amount: 500.0,
             amountBeforeVat: 467.29,
@@ -131,10 +133,8 @@ final class FolioTests: XCTestCase {
             barcode: "123456789",
             code: "FOL001",
             categoryId: 1,
-            status: "created",
             description: "Test Description",
             vatIncluded: true,
-            hotelId: 105,
             createdAt: Date(timeIntervalSince1970: 1000),
             updatedAt: Date(timeIntervalSince1970: 2000)
         )
