@@ -16,13 +16,13 @@ struct Contact: Codable {
     let address: String
     let branchName: String
     let branchCode: String
-    let mobile: String?
+    let mobile: String
     let email: String
     let phone: String
-    let faxNumber: String?
+    let faxNumber: String
     let taxId: String
-    let website: String?
-    let creditDate: String?
+    let website: String
+    let creditDate: String
     let hotelId: Int
     let customerId: Int?
     let companyId: Int?
@@ -38,15 +38,15 @@ struct Contact: Codable {
         contactType = try container.decode(ContactType.self, forKey: .contactType)
         contactId = try container.decode(Int?.self, forKey: .contactId)
         address = try container.decode(String.self, forKey: .address)
-        branchName = try container.decode(String.self, forKey: .branchName)
-        branchCode = try container.decode(String.self, forKey: .branchCode)
-        mobile = try container.decode(String?.self, forKey: .mobile)
+        branchName = try container.decodeIfPresent(String.self, forKey: .branchName) ?? ""
+        branchCode = try container.decodeIfPresent(String.self, forKey: .branchCode) ?? ""
+        mobile = try container.decodeIfPresent(String.self, forKey: .mobile) ?? ""
         email = try container.decode(String.self, forKey: .email)
         phone = try container.decode(String.self, forKey: .phone)
-        faxNumber = try container.decode(String?.self, forKey: .faxNumber)
+        faxNumber = try container.decodeIfPresent(String.self, forKey: .faxNumber) ?? ""
         taxId = try container.decode(String.self, forKey: .taxId)
-        website = try container.decode(String?.self, forKey: .website)
-        creditDate = try container.decode(String?.self, forKey: .creditDate)
+        website = try container.decodeIfPresent(String.self, forKey: .website) ?? ""
+        creditDate = try container.decodeIfPresent(String.self, forKey: .creditDate) ?? ""
         hotelId = try container.decode(Int.self, forKey: .hotelId)
         customerId = try container.decode(Int?.self, forKey: .customerId)
         companyId = try container.decode(Int?.self, forKey: .companyId)
@@ -86,13 +86,13 @@ struct Contact: Codable {
         self.address = address
         self.branchName = branchName
         self.branchCode = branchCode
-        self.mobile = mobile
+        self.mobile = mobile ?? ""
         self.email = email
         self.phone = phone
-        self.faxNumber = faxNumber
+        self.faxNumber = faxNumber ?? ""
         self.taxId = taxId
-        self.website = website
-        self.creditDate = creditDate
+        self.website = website ?? ""
+        self.creditDate = creditDate ?? ""
         self.hotelId = hotelId
         self.customerId = customerId
         self.companyId = companyId
@@ -105,9 +105,9 @@ struct Contact: Codable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(businessType, forKey: .businessType)
+        try container.encode(businessType.rawValue, forKey: .businessType)
         try container.encode(companyName, forKey: .companyName)
-        try container.encode(contactType, forKey: .contactType)
+        try container.encode(contactType.rawValue, forKey: .contactType)
         try container.encode(contactId, forKey: .contactId)
         try container.encode(address, forKey: .address)
         try container.encode(branchName, forKey: .branchName)
