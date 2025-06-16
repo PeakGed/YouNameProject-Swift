@@ -32,7 +32,7 @@ final class GuestServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters["sorted_by"] as? String, "ID")
         XCTAssertEqual(parameters["sorted_order"] as? String, "ASC")
         XCTAssertEqual(parameters["hotel_id"] as? Int, 105)
-        XCTAssertEqual(parameters["include_hidden"] as? String, "true")
+        XCTAssertEqual(parameters["include_hidden"] as? Int, 1)
     }
     
     func testFetchGuestsRequest_WithNilValues_WillGenerateMinimalParameters() {
@@ -76,7 +76,7 @@ final class GuestServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters["sorted_by"] as? String, "CREATED_AT")
         XCTAssertEqual(parameters["sorted_order"] as? String, "DESC")
         XCTAssertEqual(parameters["hotel_id"] as? Int, 105)
-        XCTAssertEqual(parameters["include_hidden"] as? String, "false")
+        XCTAssertEqual(parameters["include_hidden"] as? Int, 0)
     }
     
     func testCreateGuestRequest_WillGenerateCorrectBody() throws {

@@ -67,7 +67,7 @@ struct GuestServiceRequest {
             try container.encodeIfPresent(hotelId, forKey: .hotelId)
             
             if let includeHidden {
-                try container.encode(includeHidden.toString(), forKey: .includeHidden)
+                try container.encode(includeHidden, forKey: .includeHidden)
             }
         }
     }
@@ -117,7 +117,7 @@ struct GuestServiceRequest {
             try container.encodeIfPresent(q, forKey: .q)
             
             if let includeHidden {
-                try container.encode(includeHidden.toString(), forKey: .includeHidden)
+                try container.encode(includeHidden, forKey: .includeHidden)
             }
         }
     }
@@ -167,7 +167,7 @@ struct GuestServiceRequest {
             try container.encodeIfPresent(companyId, forKey: .companyId)
             
             if let includeHidden {
-                try container.encode(includeHidden.toString(), forKey: .includeHidden)
+                try container.encode(includeHidden, forKey: .includeHidden)
             }
             
         }
@@ -218,7 +218,7 @@ struct GuestServiceRequest {
             try container.encodeIfPresent(reservationId, forKey: .reservationId)
             
             if let includeHidden {
-                try container.encode(includeHidden.toString(), forKey: .includeHidden)
+                try container.encode(includeHidden, forKey: .includeHidden)
             }
         }
     }
@@ -268,7 +268,7 @@ struct GuestServiceRequest {
             try container.encodeIfPresent(datetimeOffset, forKey: .datetimeOffset)
             
             if let includeHidden {
-                try container.encode(includeHidden.toString(), forKey: .includeHidden)
+                try container.encode(includeHidden, forKey: .includeHidden)
             }
         }
     }

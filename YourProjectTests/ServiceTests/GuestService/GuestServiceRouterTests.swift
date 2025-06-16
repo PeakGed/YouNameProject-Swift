@@ -39,7 +39,7 @@ final class GuestServiceRouterTests: XCTestCase {
         XCTAssertTrue(queryItems.contains { $0.name == "sorted_by" && $0.value == "ID" })
         XCTAssertTrue(queryItems.contains { $0.name == "sorted_order" && $0.value == "ASC" })
         XCTAssertTrue(queryItems.contains { $0.name == "hotel_id" && $0.value == "105" })
-        XCTAssertTrue(queryItems.contains { $0.name == "include_hidden" && $0.value == "true" })
+        XCTAssertTrue(queryItems.contains { $0.name == "include_hidden" && $0.value == "1" })
         XCTAssertEqual(urlRequest.httpMethod, HTTPMethod.get.rawValue)
     }
     
