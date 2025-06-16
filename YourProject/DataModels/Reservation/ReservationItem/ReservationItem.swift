@@ -16,7 +16,6 @@ struct ReservationItem: Codable {
     let reservableId: Int
     
     let data: Data
-    let priceCard: LocalPriceCard?
     let priceCardId: Int?
     
     let createdAt: Date
@@ -49,7 +48,6 @@ struct ReservationItem: Codable {
          reservableType: ReservableType,
          reservableId: Int,
          data: Data,
-         priceCard: LocalPriceCard?,
          priceCardId: Int?,
          createdAt: Date,
          updatedAt: Date) {
@@ -59,7 +57,6 @@ struct ReservationItem: Codable {
         self.reservableType = reservableType
         self.reservableId = reservableId
         self.data = data
-        self.priceCard = priceCard
         self.priceCardId = priceCardId
         self.createdAt = createdAt
         self.updatedAt = updatedAt
@@ -72,7 +69,6 @@ struct ReservationItem: Codable {
         totalPrice = try container.decode(String.self, forKey: .totalPrice).tryToDouble()
         reservableType = try container.decode(ReservableType.self, forKey: .reservableType)
         data = try container.decode(Data.self, forKey: .data)
-        priceCard = try container.decodeIfPresent(LocalPriceCard.self, forKey: .priceCard)
         reservableId = try container.decode(Int.self, forKey: .reservableId)
         priceCardId = try container.decodeIfPresent(Int.self, forKey: .priceCardId)
         createdAt = try container.decode(String.self, forKey: .createdAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
@@ -86,7 +82,6 @@ struct ReservationItem: Codable {
         try container.encode(totalPrice, forKey: .totalPrice)
         try container.encode(reservableType, forKey: .reservableType)
         try container.encode(data, forKey: .data)
-        try container.encodeIfPresent(priceCard, forKey: .priceCard)
         try container.encode(reservableId, forKey: .reservableId)
         try container.encodeIfPresent(priceCardId, forKey: .priceCardId)
         try container.encode(createdAt.toDateString(FormConfig.DateFormat.datetimeISO), forKey: .createdAt)
@@ -102,7 +97,6 @@ struct ReservationItem: Codable {
         case data
         case createdAt = "created_at"
         case updatedAt = "updated_at"
-        case priceCard = "price_card"
         case reservableId = "reservable_id"
         case priceCardId = "price_card_id"
     }
@@ -327,7 +321,7 @@ extension ReservationItem {
         },
         "created_at": "2024-06-01T08:19:07.185+07:00",
         "updated_at": "2024-06-01T08:19:07.185+07:00", 
-        "price_card": null,
+        //"price_card": null,
         "reservable_id": "623",
         "price_card_id": null
     }

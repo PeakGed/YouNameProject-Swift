@@ -45,7 +45,6 @@ final class ReservationItemsTests: XCTestCase {
             reservableType: reservableType,
             reservableId: reservableId,
             data: sampleData(),
-            priceCard: nil,
             priceCardId: nil,
             createdAt: Date(timeIntervalSince1970: 1000),
             updatedAt: Date(timeIntervalSince1970: 2000)
@@ -205,7 +204,6 @@ final class ReservationItemsTests: XCTestCase {
             reservableType: .room,
             reservableId: 10,
             data: data1,
-            priceCard: nil,
             priceCardId: nil,
             createdAt: Date(),
             updatedAt: Date()
@@ -218,7 +216,6 @@ final class ReservationItemsTests: XCTestCase {
             reservableType: .room,
             reservableId: 20,
             data: data2,
-            priceCard: nil,
             priceCardId: nil,
             createdAt: Date(),
             updatedAt: Date()

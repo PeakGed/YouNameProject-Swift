@@ -61,7 +61,6 @@ final class ReservationItemTests: XCTestCase {
             reservableType: .room,
             reservableId: 10,
             data: sampleData(),
-            priceCard: includePriceCard ? samplePriceCard() : nil,
             priceCardId: includePriceCard ? 1 : nil,
             createdAt: Date(timeIntervalSince1970: 1000),
             updatedAt: Date(timeIntervalSince1970: 2000)
@@ -78,7 +77,6 @@ final class ReservationItemTests: XCTestCase {
         XCTAssertEqual(item.totalPrice, 2000)
         XCTAssertEqual(item.reservableType, .room)
         XCTAssertEqual(item.reservableId, 10)
-        XCTAssertNotNil(item.priceCard)
         XCTAssertEqual(item.priceCardId, 1)
         XCTAssertEqual(item.createdAt.timeIntervalSince1970, 1000)
         XCTAssertEqual(item.updatedAt.timeIntervalSince1970, 2000)
@@ -86,7 +84,6 @@ final class ReservationItemTests: XCTestCase {
 
     func test_initWithOptionalPriceCardNil() throws {
         let item = try sampleReservationItem(includePriceCard: false)
-        XCTAssertNil(item.priceCard)
         XCTAssertNil(item.priceCardId)
     }
 
@@ -130,7 +127,6 @@ final class ReservationItemTests: XCTestCase {
             },
             "created_at": "2024-06-01T08:19:07.185+07:00",
             "updated_at": "2024-06-01T08:19:07.185+07:00",
-            "price_card": null,
             "reservable_id": 623,
             "price_card_id": null
         }
@@ -144,7 +140,6 @@ final class ReservationItemTests: XCTestCase {
         XCTAssertEqual(item.totalPrice, 1390.77, accuracy: 0.001)
         XCTAssertEqual(item.reservableType, .room)
         XCTAssertEqual(item.reservableId, 623)
-        XCTAssertNil(item.priceCard)
         XCTAssertNil(item.priceCardId)
 
         XCTAssertEqual(item.data.selectedRate, 1390.77, accuracy: 0.001)
