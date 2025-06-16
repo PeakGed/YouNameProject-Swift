@@ -18,7 +18,6 @@ struct CompanyServiceRequest {
     enum SortedBy: String {
         case id = "ID"
         case name = "NAME"
-        case businessType = "BUSINESS_TYPE"
         case createdAt = "CREATED_AT"
         case updatedAt = "UPDATED_AT"
     }
@@ -31,6 +30,7 @@ struct CompanyServiceRequest {
         let sortedOrder: ServiceSortedOrder?
         let query: String?
         let onlyHidden: Bool?
+        let businessType: Company.BusinessType?
         
         enum CodingKeys: String, CodingKey {
             case hotelId = "hotel_id"
@@ -40,28 +40,32 @@ struct CompanyServiceRequest {
             case sortedOrder = "sorted_order"
             case query
             case onlyHidden = "only_hidden"
+            case businessType = "business_type"
         }
         
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(hotelId, forKey: .hotelId)
-            if let page = page, page >= 1 {
+            if let page, page >= 1 {
                 try container.encode(page, forKey: .page)
             }
-            if let perPage = perPage {
+            if let perPage {
                 try container.encode(perPage.rawValue, forKey: .perPage)
             }
-            if let sortedBy = sortedBy {
+            if let sortedBy {
                 try container.encode(sortedBy.rawValue, forKey: .sortedBy)
             }
-            if let sortedOrder = sortedOrder {
+            if let sortedOrder {
                 try container.encode(sortedOrder.rawValue, forKey: .sortedOrder)
             }
-            if let query = query {
+            if let query {
                 try container.encode(query, forKey: .query)
             }
-            if let onlyHidden = onlyHidden {
+            if let onlyHidden {
                 try container.encode(onlyHidden, forKey: .onlyHidden)
+            }
+            if let businessType {
+                try container.encode(businessType.rawValue, forKey: .businessType)
             }
         }
         
@@ -80,6 +84,7 @@ struct CompanyServiceRequest {
         let perPage: PerPage?
         let sortedBy: SortedBy?
         let sortedOrder: ServiceSortedOrder?
+        let businessType: Company.BusinessType?
 
         enum CodingKeys: String, CodingKey {
             case guestId = "guest_id"
@@ -87,22 +92,26 @@ struct CompanyServiceRequest {
             case perPage = "per_page"
             case sortedBy = "sorted_by"
             case sortedOrder = "sorted_order"
+            case businessType = "business_type"
         }
         
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(guestId, forKey: .guestId)
-            if let page = page, page >= 1 {
+            if let page, page >= 1 {
                 try container.encode(page, forKey: .page)
             }
-            if let perPage = perPage {
+            if let perPage {
                 try container.encode(perPage.rawValue, forKey: .perPage)
             }
-            if let sortedBy = sortedBy {
+            if let sortedBy {
                 try container.encode(sortedBy.rawValue, forKey: .sortedBy)
             }
-            if let sortedOrder = sortedOrder {
+            if let sortedOrder {
                 try container.encode(sortedOrder.rawValue, forKey: .sortedOrder)
+            }
+            if let businessType {
+                try container.encode(businessType.rawValue, forKey: .businessType)
             }
         }
 

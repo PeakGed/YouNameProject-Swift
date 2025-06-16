@@ -26,6 +26,8 @@ struct ContactServiceRequest {
         let perPage: PerPage?
         let sortedBy: SortedBy?
         let sortedOrder: ServiceSortedOrder?
+        let businessType: Contact.BusinessType?
+        let contactType: Contact.ContactType?
         
         enum CodingKeys: String, CodingKey {
             case hotelId = "hotel_id"
@@ -33,23 +35,32 @@ struct ContactServiceRequest {
             case perPage = "per_page"
             case sortedBy = "sorted_by"
             case sortedOrder = "sorted_order"
+            case businessType = "business_type"
+            case contactType = "contact_type"
         }
         
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(hotelId, forKey: .hotelId)
-            if let page = page, page >= 1 {
+            if let page , page >= 1 {
                 try container.encode(page, forKey: .page)
             }
-            if let perPage = perPage {
+            if let perPage {
                 try container.encode(perPage.rawValue, forKey: .perPage)
             }
-            if let sortedBy = sortedBy {
+            if let sortedBy {
                 try container.encode(sortedBy.rawValue, forKey: .sortedBy)
             }
-            if let sortedOrder = sortedOrder {
+            if let sortedOrder {
                 try container.encode(sortedOrder.rawValue, forKey: .sortedOrder)
             }
+            if let businessType {
+                try container.encode(businessType.rawValue, forKey: .businessType)
+            }
+            if let contactType {
+                try container.encode(contactType.rawValue, forKey: .contactType)
+            }
+            
         }
         
         var parameters: [String: Any]? {
@@ -68,6 +79,8 @@ struct ContactServiceRequest {
         let perPage: PerPage?
         let sortedBy: SortedBy?
         let sortedOrder: ServiceSortedOrder?
+        let businessType: Contact.BusinessType?
+        let contactType: Contact.ContactType?
 
         enum CodingKeys: String, CodingKey {
             case hotelId = "hotel_id"
@@ -76,24 +89,33 @@ struct ContactServiceRequest {
             case perPage = "per_page"
             case sortedBy = "sorted_by"
             case sortedOrder = "sorted_order"
+            case businessType = "business_type"
+            case contactType = "contact_type"            
         }
         
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(hotelId, forKey: .hotelId)
             try container.encode(companyId, forKey: .companyId)
-            if let page = page, page >= 1 {
+            if let page, page >= 1 {
                 try container.encode(page, forKey: .page)
             }
-            if let perPage = perPage {
+            if let perPage {
                 try container.encode(perPage.rawValue, forKey: .perPage)
             }
-            if let sortedBy = sortedBy {
+            if let sortedBy {
                 try container.encode(sortedBy.rawValue, forKey: .sortedBy)
             }
-            if let sortedOrder = sortedOrder {
+            if let sortedOrder {
                 try container.encode(sortedOrder.rawValue, forKey: .sortedOrder)
             }
+            if let businessType {
+                try container.encode(businessType.rawValue, forKey: .businessType)
+            }
+            if let contactType {
+                try container.encode(contactType.rawValue, forKey: .contactType)
+            }
+            
         }
 
         var parameters: [String: Any]? {
@@ -112,6 +134,8 @@ struct ContactServiceRequest {
         let perPage: PerPage?
         let sortedBy: SortedBy?
         let sortedOrder: ServiceSortedOrder?
+        let businessType: Contact.BusinessType?
+        let contactType: Contact.ContactType?
 
         enum CodingKeys: String, CodingKey {
             case hotelId = "hotel_id"
@@ -120,23 +144,31 @@ struct ContactServiceRequest {
             case perPage = "per_page"
             case sortedBy = "sorted_by"
             case sortedOrder = "sorted_order"
+            case businessType = "business_type"
+            case contactType = "contact_type"
         }
         
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(hotelId, forKey: .hotelId)
             try container.encode(customerId, forKey: .customerId)
-            if let page = page, page >= 1 {
+            if let page, page >= 1 {
                 try container.encode(page, forKey: .page)
             }
-            if let perPage = perPage {
+            if let perPage {
                 try container.encode(perPage.rawValue, forKey: .perPage)
             }
-            if let sortedBy = sortedBy {
+            if let sortedBy {
                 try container.encode(sortedBy.rawValue, forKey: .sortedBy)
             }
-            if let sortedOrder = sortedOrder {
+            if let sortedOrder {
                 try container.encode(sortedOrder.rawValue, forKey: .sortedOrder)
+            }
+            if let businessType {
+                try container.encode(businessType.rawValue, forKey: .businessType)
+            }
+            if let contactType {
+                try container.encode(contactType.rawValue, forKey: .contactType)
             }
         }
 

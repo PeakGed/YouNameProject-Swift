@@ -20,7 +20,8 @@ class CompanyServiceRouterTests: XCTestCase {
             sortedBy: .id,
             sortedOrder: .ascending,
             query: "Test Company",
-            onlyHidden: false
+            onlyHidden: false,
+            businessType: .corporate
         )
         let router = CompanyServiceRouter.fetchByHotel(request: request)
         
@@ -39,7 +40,8 @@ class CompanyServiceRouterTests: XCTestCase {
             page: 1,
             perPage: .ten,
             sortedBy: .name,
-            sortedOrder: .ascending
+            sortedOrder: .ascending,
+            businessType: .corporate
         )
         let router = CompanyServiceRouter.fetchByGuest(request: request)
         
@@ -182,7 +184,8 @@ class CompanyServiceRouterTests: XCTestCase {
             sortedBy: nil,
             sortedOrder: nil,
             query: nil,
-            onlyHidden: nil
+            onlyHidden: nil,
+            businessType: nil
         )
         let createRequest = CompanyServiceRequest.CreateCompany(
             userID: nil,
@@ -212,7 +215,8 @@ class CompanyServiceRouterTests: XCTestCase {
                 page: nil,
                 perPage: nil,
                 sortedBy: nil,
-                sortedOrder: nil
+                sortedOrder: nil,
+                businessType: nil
             )),
             .fetchById(request: CompanyServiceRequest.FetchById(id: 1)),
             .createCompany(request: createRequest),
@@ -260,7 +264,8 @@ class CompanyServiceRouterTests: XCTestCase {
             sortedBy: .id,
             sortedOrder: .ascending,
             query: "Test",
-            onlyHidden: false
+            onlyHidden: false,
+            businessType: .corporate
         )
         let router = CompanyServiceRouter.fetchByHotel(request: request)
         

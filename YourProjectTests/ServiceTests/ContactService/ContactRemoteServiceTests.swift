@@ -37,7 +37,9 @@ class ContactRemoteServiceTests: XCTestCase {
             page: 1,
             perPage: .twenty,
             sortedBy: .id,
-            sortedOrder: .ascending
+            sortedOrder: .ascending,
+            businessType: nil,
+            contactType: nil
         )
         
         let expectedContacts = [ContactStub.corporate]
@@ -75,7 +77,9 @@ class ContactRemoteServiceTests: XCTestCase {
             page: 1,
             perPage: .ten,
             sortedBy: .name,
-            sortedOrder: .ascending
+            sortedOrder: .ascending,
+            businessType: nil,
+            contactType: nil
         )
         
         let expectedContacts = [ContactStub.corporate]
@@ -113,7 +117,9 @@ class ContactRemoteServiceTests: XCTestCase {
             page: 1,
             perPage: .fifty,
             sortedBy: .createdAt,
-            sortedOrder: .descending
+            sortedOrder: .descending,
+            businessType: nil,
+            contactType: nil
         )
         
         let expectedContacts = [ContactStub.individual]

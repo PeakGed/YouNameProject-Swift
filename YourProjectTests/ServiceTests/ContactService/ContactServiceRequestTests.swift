@@ -18,7 +18,9 @@ class ContactServiceRequestTests: XCTestCase {
             page: 1,
             perPage: .twenty,
             sortedBy: .id,
-            sortedOrder: .ascending
+            sortedOrder: .ascending,
+            businessType: .corporate,
+            contactType: .client
         )
         
         // Act
@@ -31,6 +33,8 @@ class ContactServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["per_page"] as? String, "20")
         XCTAssertEqual(parameters?["sorted_by"] as? String, "ID")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "ASC")
+        XCTAssertEqual(parameters?["business_type"] as? String, "corporate")
+        XCTAssertEqual(parameters?["contact_type"] as? String, "client")
     }
     
     func test_fetchByHotel_withMinimalParameters_correctSerialization() throws {
@@ -40,7 +44,9 @@ class ContactServiceRequestTests: XCTestCase {
             page: nil,
             perPage: nil,
             sortedBy: nil,
-            sortedOrder: nil
+            sortedOrder: nil,
+            businessType: nil,
+            contactType: nil
         )
         
         // Act
@@ -53,6 +59,8 @@ class ContactServiceRequestTests: XCTestCase {
         XCTAssertNil(parameters?["per_page"])
         XCTAssertNil(parameters?["sorted_by"])
         XCTAssertNil(parameters?["sorted_order"])
+        XCTAssertNil(parameters?["business_type"])
+        XCTAssertNil(parameters?["contact_type"])
     }
     
     func test_fetchByHotel_withPageZero_excludesPageFromParameters() throws {
@@ -62,7 +70,9 @@ class ContactServiceRequestTests: XCTestCase {
             page: 0,
             perPage: .fifty,
             sortedBy: .id,
-            sortedOrder: .descending
+            sortedOrder: .descending,
+            businessType: .individual,
+            contactType: .host
         )
         
         // Act
@@ -75,6 +85,34 @@ class ContactServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["per_page"] as? String, "50")
         XCTAssertEqual(parameters?["sorted_by"] as? String, "ID")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "DESC")
+        XCTAssertEqual(parameters?["business_type"] as? String, "individual")
+        XCTAssertEqual(parameters?["contact_type"] as? String, "host")
+    }
+    
+    func test_fetchByHotel_withUpdatedAtSorting_correctSerialization() throws {
+        // Arrange
+        let request = ContactServiceRequest.FetchByHotel(
+            hotelId: 105,
+            page: 1,
+            perPage: .ten,
+            sortedBy: .updatedAt,
+            sortedOrder: .ascending,
+            businessType: nil,
+            contactType: nil
+        )
+        
+        // Act
+        let parameters = request.parameters
+        
+        // Assert
+        XCTAssertNotNil(parameters)
+        XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
+        XCTAssertEqual(parameters?["page"] as? Int, 1)
+        XCTAssertEqual(parameters?["per_page"] as? String, "10")
+        XCTAssertEqual(parameters?["sorted_by"] as? String, "UPDATED_AT")
+        XCTAssertEqual(parameters?["sorted_order"] as? String, "ASC")
+        XCTAssertNil(parameters?["business_type"])
+        XCTAssertNil(parameters?["contact_type"])
     }
     
     // MARK: - FetchByCompany Tests
@@ -87,7 +125,9 @@ class ContactServiceRequestTests: XCTestCase {
             page: 2,
             perPage: .hundred,
             sortedBy: .createdAt,
-            sortedOrder: .ascending
+            sortedOrder: .ascending,
+            businessType: .corporate,
+            contactType: .client
         )
         
         // Act
@@ -101,6 +141,8 @@ class ContactServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["per_page"] as? String, "100")
         XCTAssertEqual(parameters?["sorted_by"] as? String, "CREATED_AT")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "ASC")
+        XCTAssertEqual(parameters?["business_type"] as? String, "corporate")
+        XCTAssertEqual(parameters?["contact_type"] as? String, "client")
     }
     
     func test_fetchByCompany_withMinimalParameters_correctSerialization() throws {
@@ -111,7 +153,9 @@ class ContactServiceRequestTests: XCTestCase {
             page: nil,
             perPage: nil,
             sortedBy: nil,
-            sortedOrder: nil
+            sortedOrder: nil,
+            businessType: nil,
+            contactType: nil
         )
         
         // Act
@@ -125,6 +169,36 @@ class ContactServiceRequestTests: XCTestCase {
         XCTAssertNil(parameters?["per_page"])
         XCTAssertNil(parameters?["sorted_by"])
         XCTAssertNil(parameters?["sorted_order"])
+        XCTAssertNil(parameters?["business_type"])
+        XCTAssertNil(parameters?["contact_type"])
+    }
+    
+    func test_fetchByCompany_withUpdatedAtSorting_correctSerialization() throws {
+        // Arrange
+        let request = ContactServiceRequest.FetchByCompany(
+            hotelId: 105,
+            companyId: 789,
+            page: 1,
+            perPage: .twenty,
+            sortedBy: .updatedAt,
+            sortedOrder: .descending,
+            businessType: .individual,
+            contactType: .host
+        )
+        
+        // Act
+        let parameters = request.parameters
+        
+        // Assert
+        XCTAssertNotNil(parameters)
+        XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
+        XCTAssertEqual(parameters?["company_id"] as? Int, 789)
+        XCTAssertEqual(parameters?["page"] as? Int, 1)
+        XCTAssertEqual(parameters?["per_page"] as? String, "20")
+        XCTAssertEqual(parameters?["sorted_by"] as? String, "UPDATED_AT")
+        XCTAssertEqual(parameters?["sorted_order"] as? String, "DESC")
+        XCTAssertEqual(parameters?["business_type"] as? String, "individual")
+        XCTAssertEqual(parameters?["contact_type"] as? String, "host")
     }
     
     // MARK: - FetchByCustomer Tests
@@ -137,7 +211,9 @@ class ContactServiceRequestTests: XCTestCase {
             page: 1,
             perPage: .ten,
             sortedBy: .name,
-            sortedOrder: .descending
+            sortedOrder: .descending,
+            businessType: .corporate,
+            contactType: .client
         )
         
         // Act
@@ -151,6 +227,8 @@ class ContactServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["per_page"] as? String, "10")
         XCTAssertEqual(parameters?["sorted_by"] as? String, "NAME")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "DESC")
+        XCTAssertEqual(parameters?["business_type"] as? String, "corporate")
+        XCTAssertEqual(parameters?["contact_type"] as? String, "client")
     }
     
     func test_fetchByCustomer_withMinimalParameters_correctSerialization() throws {
@@ -161,7 +239,9 @@ class ContactServiceRequestTests: XCTestCase {
             page: nil,
             perPage: nil,
             sortedBy: nil,
-            sortedOrder: nil
+            sortedOrder: nil,
+            businessType: nil,
+            contactType: nil
         )
         
         // Act
@@ -175,6 +255,108 @@ class ContactServiceRequestTests: XCTestCase {
         XCTAssertNil(parameters?["per_page"])
         XCTAssertNil(parameters?["sorted_by"])
         XCTAssertNil(parameters?["sorted_order"])
+        XCTAssertNil(parameters?["business_type"])
+        XCTAssertNil(parameters?["contact_type"])
+    }
+    
+    func test_fetchByCustomer_withAllSortingOptions_correctSerialization() throws {
+        // Arrange & Act & Assert for each sorting option
+        let sortingTests: [(ContactServiceRequest.SortedBy, String)] = [
+            (.id, "ID"),
+            (.name, "NAME"),
+            (.createdAt, "CREATED_AT"),
+            (.updatedAt, "UPDATED_AT")
+        ]
+        
+        for (sortedBy, expectedValue) in sortingTests {
+            let request = ContactServiceRequest.FetchByCustomer(
+                hotelId: 105,
+                customerId: 555,
+                page: 1,
+                perPage: .fifty,
+                sortedBy: sortedBy,
+                sortedOrder: .ascending,
+                businessType: nil,
+                contactType: nil
+            )
+            
+            let parameters = request.parameters
+            
+            XCTAssertNotNil(parameters)
+            XCTAssertEqual(parameters?["sorted_by"] as? String, expectedValue, "Failed for sortedBy: \(sortedBy)")
+        }
+    }
+    
+    // MARK: - Filter Parameters Tests
+    
+    func test_fetchByHotel_withFilterParameters_correctSerialization() throws {
+        // Arrange
+        let request = ContactServiceRequest.FetchByHotel(
+            hotelId: 105,
+            page: 1,
+            perPage: .twenty,
+            sortedBy: .name,
+            sortedOrder: .ascending,
+            businessType: .individual,
+            contactType: .host
+        )
+        
+        // Act
+        let parameters = request.parameters
+        
+        // Assert
+        XCTAssertNotNil(parameters)
+        XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
+        XCTAssertEqual(parameters?["business_type"] as? String, "individual")
+        XCTAssertEqual(parameters?["contact_type"] as? String, "host")
+    }
+    
+    func test_fetchByCompany_withFilterParameters_correctSerialization() throws {
+        // Arrange
+        let request = ContactServiceRequest.FetchByCompany(
+            hotelId: 105,
+            companyId: 123,
+            page: 1,
+            perPage: .ten,
+            sortedBy: .id,
+            sortedOrder: .descending,
+            businessType: .corporate,
+            contactType: .client
+        )
+        
+        // Act
+        let parameters = request.parameters
+        
+        // Assert
+        XCTAssertNotNil(parameters)
+        XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
+        XCTAssertEqual(parameters?["company_id"] as? Int, 123)
+        XCTAssertEqual(parameters?["business_type"] as? String, "corporate")
+        XCTAssertEqual(parameters?["contact_type"] as? String, "client")
+    }
+    
+    func test_fetchByCustomer_withFilterParameters_correctSerialization() throws {
+        // Arrange
+        let request = ContactServiceRequest.FetchByCustomer(
+            hotelId: 105,
+            customerId: 456,
+            page: 1,
+            perPage: .fifty,
+            sortedBy: .createdAt,
+            sortedOrder: .ascending,
+            businessType: .individual,
+            contactType: .host
+        )
+        
+        // Act
+        let parameters = request.parameters
+        
+        // Assert
+        XCTAssertNotNil(parameters)
+        XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
+        XCTAssertEqual(parameters?["customer_id"] as? Int, 456)
+        XCTAssertEqual(parameters?["business_type"] as? String, "individual")
+        XCTAssertEqual(parameters?["contact_type"] as? String, "host")
     }
     
     // MARK: - CreateContact Tests

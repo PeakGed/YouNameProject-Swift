@@ -20,7 +20,8 @@ class CompanyServiceRequestTests: XCTestCase {
             sortedBy: .id,
             sortedOrder: .ascending,
             query: "Test Company",
-            onlyHidden: false
+            onlyHidden: false,
+            businessType: .corporate
         )
         
         // Act
@@ -35,6 +36,7 @@ class CompanyServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["sorted_order"] as? String, "ASC")
         XCTAssertEqual(parameters?["query"] as? String, "Test Company")
         XCTAssertEqual(parameters?["only_hidden"] as? Bool, false)
+        XCTAssertEqual(parameters?["business_type"] as? String, "corporate")
     }
     
     func test_fetchByHotel_withMinimalParameters_correctSerialization() throws {
@@ -46,7 +48,8 @@ class CompanyServiceRequestTests: XCTestCase {
             sortedBy: nil,
             sortedOrder: nil,
             query: nil,
-            onlyHidden: nil
+            onlyHidden: nil,
+            businessType: nil
         )
         
         // Act
@@ -61,6 +64,7 @@ class CompanyServiceRequestTests: XCTestCase {
         XCTAssertNil(parameters?["sorted_order"])
         XCTAssertNil(parameters?["query"])
         XCTAssertNil(parameters?["only_hidden"])
+        XCTAssertNil(parameters?["business_type"])
     }
     
     func test_fetchByHotel_withPageZero_excludesPageFromParameters() throws {
@@ -72,7 +76,8 @@ class CompanyServiceRequestTests: XCTestCase {
             sortedBy: .name,
             sortedOrder: .descending,
             query: "Search Term",
-            onlyHidden: true
+            onlyHidden: true,
+            businessType: .individual
         )
         
         // Act
@@ -87,6 +92,7 @@ class CompanyServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["sorted_order"] as? String, "DESC")
         XCTAssertEqual(parameters?["query"] as? String, "Search Term")
         XCTAssertEqual(parameters?["only_hidden"] as? Bool, true)
+        XCTAssertEqual(parameters?["business_type"] as? String, "individual")
     }
     
     // MARK: - FetchByGuest Tests
@@ -98,7 +104,8 @@ class CompanyServiceRequestTests: XCTestCase {
             page: 2,
             perPage: .hundred,
             sortedBy: .createdAt,
-            sortedOrder: .ascending
+            sortedOrder: .ascending,
+            businessType: .corporate
         )
         
         // Act
@@ -111,6 +118,7 @@ class CompanyServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["per_page"] as? String, "100")
         XCTAssertEqual(parameters?["sorted_by"] as? String, "CREATED_AT")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "ASC")
+        XCTAssertEqual(parameters?["business_type"] as? String, "corporate")
     }
     
     func test_fetchByGuest_withMinimalParameters_correctSerialization() throws {
@@ -120,7 +128,8 @@ class CompanyServiceRequestTests: XCTestCase {
             page: nil,
             perPage: nil,
             sortedBy: nil,
-            sortedOrder: nil
+            sortedOrder: nil,
+            businessType: nil
         )
         
         // Act
@@ -133,6 +142,7 @@ class CompanyServiceRequestTests: XCTestCase {
         XCTAssertNil(parameters?["per_page"])
         XCTAssertNil(parameters?["sorted_by"])
         XCTAssertNil(parameters?["sorted_order"])
+        XCTAssertNil(parameters?["business_type"])
     }
     
     // MARK: - CreateCompany Tests

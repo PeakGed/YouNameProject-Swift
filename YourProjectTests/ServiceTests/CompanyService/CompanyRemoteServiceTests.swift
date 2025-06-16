@@ -39,7 +39,8 @@ class CompanyRemoteServiceTests: XCTestCase {
             sortedBy: .id,
             sortedOrder: .ascending,
             query: "Test Company",
-            onlyHidden: false
+            onlyHidden: false,
+            businessType: .corporate
         )
         
         let expectedCompanies = [CompanyStub.corporate]
@@ -76,7 +77,8 @@ class CompanyRemoteServiceTests: XCTestCase {
             page: 1,
             perPage: .ten,
             sortedBy: .name,
-            sortedOrder: .ascending
+            sortedOrder: .ascending,
+            businessType: .individual
         )
         
         let expectedCompanies = [CompanyStub.individual]
@@ -98,6 +100,156 @@ class CompanyRemoteServiceTests: XCTestCase {
         // Assert
         XCTAssertEqual(result.items.count, 1)
         XCTAssertEqual(result.items.first?.name, CompanyStub.individual.name)
+        
+        verify(mockAPIManager)
+            .request(router: .any, requiredAuthorization: .value(true))
+            .called(1)
+    }
+    
+    // MARK: - FetchByHotel with BusinessType Filter Tests
+    
+    func test_fetchByHotel_withBusinessTypeFilter_callsAPIManagerWithCorrectRouter() async throws {
+        // Arrange
+        let request = CompanyServiceRequest.FetchByHotel(
+            hotelId: 105,
+            page: 1,
+            perPage: .fifty,
+            sortedBy: .name,
+            sortedOrder: .descending,
+            query: nil,
+            onlyHidden: nil,
+            businessType: .individual
+        )
+        
+        let expectedCompanies = [CompanyStub.individual]
+        let expectedPaginator = Paginator(
+            items: Collection(array: expectedCompanies),
+            totalItems: 1,
+            totalPages: 1,
+            perPage: 50,
+            page: 1
+        )
+        
+        given(mockAPIManager)
+            .request(router: .any, requiredAuthorization: .any)
+            .willReturn(expectedPaginator)
+        
+        // Act
+        let result = try await sut.fetchByHotel(request: request)
+        
+        // Assert
+        XCTAssertEqual(result.items.count, 1)
+        XCTAssertEqual(result.items.first?.busineseType, .individual)
+        
+        verify(mockAPIManager)
+            .request(router: .any, requiredAuthorization: .value(true))
+            .called(1)
+    }
+    
+    func test_fetchByHotel_withNilBusinessType_callsAPIManagerWithCorrectRouter() async throws {
+        // Arrange
+        let request = CompanyServiceRequest.FetchByHotel(
+            hotelId: 105,
+            page: 1,
+            perPage: .twenty,
+            sortedBy: .id,
+            sortedOrder: .ascending,
+            query: nil,
+            onlyHidden: false,
+            businessType: nil
+        )
+        
+        let expectedCompanies = [CompanyStub.corporate, CompanyStub.individual]
+        let expectedPaginator = Paginator(
+            items: Collection(array: expectedCompanies),
+            totalItems: 2,
+            totalPages: 1,
+            perPage: 20,
+            page: 1
+        )
+        
+        given(mockAPIManager)
+            .request(router: .any, requiredAuthorization: .any)
+            .willReturn(expectedPaginator)
+        
+        // Act
+        let result = try await sut.fetchByHotel(request: request)
+        
+        // Assert
+        XCTAssertEqual(result.items.count, 2)
+        
+        verify(mockAPIManager)
+            .request(router: .any, requiredAuthorization: .value(true))
+            .called(1)
+    }
+    
+    // MARK: - FetchByGuest with BusinessType Filter Tests
+    
+    func test_fetchByGuest_withBusinessTypeFilter_callsAPIManagerWithCorrectRouter() async throws {
+        // Arrange
+        let request = CompanyServiceRequest.FetchByGuest(
+            guestId: 310,
+            page: 1,
+            perPage: .hundred,
+            sortedBy: .createdAt,
+            sortedOrder: .ascending,
+            businessType: .corporate
+        )
+        
+        let expectedCompanies = [CompanyStub.corporate]
+        let expectedPaginator = Paginator(
+            items: Collection(array: expectedCompanies),
+            totalItems: 1,
+            totalPages: 1,
+            perPage: 100,
+            page: 1
+        )
+        
+        given(mockAPIManager)
+            .request(router: .any, requiredAuthorization: .any)
+            .willReturn(expectedPaginator)
+        
+        // Act
+        let result = try await sut.fetchByGuest(request: request)
+        
+        // Assert
+        XCTAssertEqual(result.items.count, 1)
+        XCTAssertEqual(result.items.first?.busineseType, .corporate)
+        
+        verify(mockAPIManager)
+            .request(router: .any, requiredAuthorization: .value(true))
+            .called(1)
+    }
+    
+    func test_fetchByGuest_withNilBusinessType_callsAPIManagerWithCorrectRouter() async throws {
+        // Arrange
+        let request = CompanyServiceRequest.FetchByGuest(
+            guestId: 310,
+            page: nil,
+            perPage: nil,
+            sortedBy: nil,
+            sortedOrder: nil,
+            businessType: nil
+        )
+        
+        let expectedCompanies = [CompanyStub.corporate, CompanyStub.individual]
+        let expectedPaginator = Paginator(
+            items: Collection(array: expectedCompanies),
+            totalItems: 2,
+            totalPages: 1,
+            perPage: 20,
+            page: 1
+        )
+        
+        given(mockAPIManager)
+            .request(router: .any, requiredAuthorization: .any)
+            .willReturn(expectedPaginator)
+        
+        // Act
+        let result = try await sut.fetchByGuest(request: request)
+        
+        // Assert
+        XCTAssertEqual(result.items.count, 2)
         
         verify(mockAPIManager)
             .request(router: .any, requiredAuthorization: .value(true))
