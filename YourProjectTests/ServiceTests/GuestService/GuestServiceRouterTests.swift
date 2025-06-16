@@ -19,9 +19,9 @@ final class GuestServiceRouterTests: XCTestCase {
     func testFetchGuestsByHotelRequest() throws {
         let req = GuestServiceRequest.FetchGuests(
             page: 1,
-            perPage: 20,
-            sortedBy: "ID",
-            sortedOrder: "ASC",
+            perPage: .twenty,
+            sortedBy: .id,
+            sortedOrder: .ascending,
             hotelId: 105,
             includeHidden: true
         )
@@ -52,6 +52,7 @@ final class GuestServiceRouterTests: XCTestCase {
     }
     
     func testCreateGuestRequest() throws {
+        let dateOfBirth = Date(timeIntervalSince1970: 631152000) // 1990-01-01
         let req = GuestServiceRequest.CreateGuest(
             firstName: "John",
             lastName: "Doe",
@@ -62,7 +63,7 @@ final class GuestServiceRouterTests: XCTestCase {
             hotelId: 789,
             title: "Mr.",
             middleName: "Middle",
-            dateOfBirth: "1990-01-01",
+            dateOfBirth: dateOfBirth,
             idCardNo: "1234567890123",
             passportNo: "A1234567",
             gender: .male,
@@ -87,12 +88,14 @@ final class GuestServiceRouterTests: XCTestCase {
             XCTAssertEqual(json?["first_name"] as? String, "John")
             XCTAssertEqual(json?["last_name"] as? String, "Doe")
             XCTAssertEqual(json?["gender"] as? String, "male")
+            XCTAssertEqual(json?["date_of_birth"] as? String, "1990-01-01")
         } else {
             XCTFail("HTTP body is nil")
         }
     }
     
     func testUpdateGuestRequest() throws {
+        let dateOfBirth = Date(timeIntervalSince1970: 631152000) // 1990-01-01
         let req = GuestServiceRequest.UpdateGuest(
             id: 1,
             companyId: 456,
@@ -102,7 +105,7 @@ final class GuestServiceRouterTests: XCTestCase {
             lastName: "Doe",
             nationality: "THA",
             country: "THA",
-            dateOfBirth: "1990-01-01",
+            dateOfBirth: dateOfBirth,
             idCardNo: "1234567890123",
             passportNo: "A1234567",
             gender: .male,
@@ -127,6 +130,9 @@ final class GuestServiceRouterTests: XCTestCase {
             XCTAssertEqual(json?["first_name"] as? String, "John")
             XCTAssertEqual(json?["last_name"] as? String, "Doe")
             XCTAssertEqual(json?["gender"] as? String, "male")
+            XCTAssertEqual(json?["date_of_birth"] as? String, "1990-01-01")
+            // id should not be in the JSON body
+            XCTAssertNil(json?["id"])
         } else {
             XCTFail("HTTP body is nil")
         }

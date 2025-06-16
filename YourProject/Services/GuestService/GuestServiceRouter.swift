@@ -97,9 +97,9 @@ enum GuestServiceRouter: AlamofireBaseRouterProtocol {
     var body: Data? {
         switch self {
         case .createGuest(let request):
-            return try? JSONEncoder().encode(request)
+            return request.body
         case .updateGuest(let request):
-            return try? JSONEncoder().encode(request)
+            return request.body
         default:
             return nil
         }

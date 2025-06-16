@@ -19,109 +19,260 @@ struct GuestServiceRequest {
         let id: Int
     }
 
+    enum SortedBy: String {
+        case id = "ID"
+        case createdAt = "CREATED_AT"
+        case updatedAt = "UPDATED_AT"
+    }
+
     struct FetchGuests: Encodable {
         let page: Int?
-        let perPage: Int?
-        let sortedBy: String?
-        let sortedOrder: String?
+        let perPage: PerPage?
+        let sortedBy: SortedBy?
+        let sortedOrder: ServiceSortedOrder?
         let hotelId: Int?
         let includeHidden: Bool?
         
         var parameters: [String: Any]? {
-            var parameters: [String: Any] = [:]
-            if let page = page { parameters["page"] = page }
-            if let perPage = perPage { parameters["per_page"] = perPage }
-            if let sortedBy = sortedBy { parameters["sorted_by"] = sortedBy }
-            if let sortedOrder = sortedOrder { parameters["sorted_order"] = sortedOrder }
-            if let hotelId = hotelId { parameters["hotel_id"] = hotelId }
-            if let includeHidden = includeHidden { parameters["include_hidden"] = includeHidden.toString() }
-            return parameters.isEmpty ? nil : parameters
+            guard let data = try? JSONEncoder().encode(self),
+                  let dict = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+                return nil
+            }
+            return dict
+        }
+        
+        enum CodingKeys: String, CodingKey {
+            case page
+            case perPage = "per_page"
+            case sortedBy = "sorted_by"
+            case sortedOrder = "sorted_order"
+            case hotelId = "hotel_id"
+            case includeHidden = "include_hidden"
+        }
+        
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            if let page = page, page >= 1 {
+                try container.encode(page, forKey: .page)
+            }
+            if let perPage = perPage {
+                try container.encode(perPage.rawValue, forKey: .perPage)
+            }
+            if let sortedBy = sortedBy {
+                try container.encode(sortedBy.rawValue, forKey: .sortedBy)
+            }
+            if let sortedOrder = sortedOrder {
+                try container.encode(sortedOrder.rawValue, forKey: .sortedOrder)
+            }
+            try container.encodeIfPresent(hotelId, forKey: .hotelId)
+            
+            if let includeHidden {
+                try container.encode(includeHidden.toString(), forKey: .includeHidden)
+            }
         }
     }
+    
     struct FetchGuestsQuery: Encodable {
         let page: Int?
-        let perPage: Int?
-        let sortedBy: String?
-        let sortedOrder: String?
+        let perPage: PerPage?
+        let sortedBy: SortedBy?
+        let sortedOrder: ServiceSortedOrder?
         let hotelId: Int?
         let q: String?
         let includeHidden: Bool?
         
         var parameters: [String: Any]? {
-            var parameters: [String: Any] = [:]
-            if let page = page { parameters["page"] = page }
-            if let perPage = perPage { parameters["per_page"] = perPage }
-            if let sortedBy = sortedBy { parameters["sorted_by"] = sortedBy }
-            if let sortedOrder = sortedOrder { parameters["sorted_order"] = sortedOrder }
-            if let hotelId = hotelId { parameters["hotel_id"] = hotelId }
-            if let q = q { parameters["q"] = q }
-            if let includeHidden = includeHidden { parameters["include_hidden"] = includeHidden.toString() }
-            return parameters.isEmpty ? nil : parameters
+            guard let data = try? JSONEncoder().encode(self),
+                  let dict = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+                return nil
+            }
+            return dict
+        }
+        
+        enum CodingKeys: String, CodingKey {
+            case page
+            case perPage = "per_page"
+            case sortedBy = "sorted_by"
+            case sortedOrder = "sorted_order"
+            case hotelId = "hotel_id"
+            case q
+            case includeHidden = "include_hidden"
+        }
+        
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            if let page = page, page >= 1 {
+                try container.encode(page, forKey: .page)
+            }
+            if let perPage = perPage {
+                try container.encode(perPage.rawValue, forKey: .perPage)
+            }
+            if let sortedBy = sortedBy {
+                try container.encode(sortedBy.rawValue, forKey: .sortedBy)
+            }
+            if let sortedOrder = sortedOrder {
+                try container.encode(sortedOrder.rawValue, forKey: .sortedOrder)
+            }
+            try container.encodeIfPresent(hotelId, forKey: .hotelId)
+            try container.encodeIfPresent(q, forKey: .q)
+            
+            if let includeHidden {
+                try container.encode(includeHidden.toString(), forKey: .includeHidden)
+            }
         }
     }
+    
     struct FetchGuestsCompany: Encodable {
         let page: Int?
-        let perPage: Int?
-        let sortedBy: String?
-        let sortedOrder: String?
+        let perPage: PerPage?
+        let sortedBy: SortedBy?
+        let sortedOrder: ServiceSortedOrder?
         let hotelId: Int?
         let companyId: Int?
         let includeHidden: Bool?
         
         var parameters: [String: Any]? {
-            var parameters: [String: Any] = [:]
-            if let page = page { parameters["page"] = page }
-            if let perPage = perPage { parameters["per_page"] = perPage }
-            if let sortedBy = sortedBy { parameters["sorted_by"] = sortedBy }
-            if let sortedOrder = sortedOrder { parameters["sorted_order"] = sortedOrder }
-            if let hotelId = hotelId { parameters["hotel_id"] = hotelId }
-            if let companyId = companyId { parameters["company_id"] = companyId }
-            if let includeHidden = includeHidden { parameters["include_hidden"] = includeHidden.toString() }
-            return parameters.isEmpty ? nil : parameters
+            guard let data = try? JSONEncoder().encode(self),
+                  let dict = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+                return nil
+            }
+            return dict
+        }
+        
+        enum CodingKeys: String, CodingKey {
+            case page
+            case perPage = "per_page"
+            case sortedBy = "sorted_by"
+            case sortedOrder = "sorted_order"
+            case hotelId = "hotel_id"
+            case companyId = "company_id"
+            case includeHidden = "include_hidden"
+        }
+        
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            if let page = page, page >= 1 {
+                try container.encode(page, forKey: .page)
+            }
+            if let perPage = perPage {
+                try container.encode(perPage.rawValue, forKey: .perPage)
+            }
+            if let sortedBy = sortedBy {
+                try container.encode(sortedBy.rawValue, forKey: .sortedBy)
+            }
+            if let sortedOrder = sortedOrder {
+                try container.encode(sortedOrder.rawValue, forKey: .sortedOrder)
+            }
+            try container.encodeIfPresent(hotelId, forKey: .hotelId)
+            try container.encodeIfPresent(companyId, forKey: .companyId)
+            
+            if let includeHidden {
+                try container.encode(includeHidden.toString(), forKey: .includeHidden)
+            }
+            
         }
     }
+    
     struct FetchGuestsReservation: Encodable {
         let page: Int?
-        let perPage: Int?
-        let sortedBy: String?
-        let sortedOrder: String?
+        let perPage: PerPage?
+        let sortedBy: SortedBy?
+        let sortedOrder: ServiceSortedOrder?
         let hotelId: Int?
         let reservationId: Int?
         let includeHidden: Bool?
         
         var parameters: [String: Any]? {
-            var parameters: [String: Any] = [:]
-            if let page = page { parameters["page"] = page }
-            if let perPage = perPage { parameters["per_page"] = perPage }
-            if let sortedBy = sortedBy { parameters["sorted_by"] = sortedBy }
-            if let sortedOrder = sortedOrder { parameters["sorted_order"] = sortedOrder }
-            if let hotelId = hotelId { parameters["hotel_id"] = hotelId }
-            if let reservationId = reservationId { parameters["reservation_id"] = reservationId }
-            if let includeHidden = includeHidden { parameters["include_hidden"] = includeHidden.toString() }
-            return parameters.isEmpty ? nil : parameters
+            guard let data = try? JSONEncoder().encode(self),
+                  let dict = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+                return nil
+            }
+            return dict
+        }
+        
+        enum CodingKeys: String, CodingKey {
+            case page
+            case perPage = "per_page"
+            case sortedBy = "sorted_by"
+            case sortedOrder = "sorted_order"
+            case hotelId = "hotel_id"
+            case reservationId = "reservation_id"
+            case includeHidden = "include_hidden"
+        }
+        
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            if let page = page, page >= 1 {
+                try container.encode(page, forKey: .page)
+            }
+            if let perPage = perPage {
+                try container.encode(perPage.rawValue, forKey: .perPage)
+            }
+            if let sortedBy = sortedBy {
+                try container.encode(sortedBy.rawValue, forKey: .sortedBy)
+            }
+            if let sortedOrder = sortedOrder {
+                try container.encode(sortedOrder.rawValue, forKey: .sortedOrder)
+            }
+            try container.encodeIfPresent(hotelId, forKey: .hotelId)
+            try container.encodeIfPresent(reservationId, forKey: .reservationId)
+            
+            if let includeHidden {
+                try container.encode(includeHidden.toString(), forKey: .includeHidden)
+            }
         }
     }
+    
     struct FetchGuestsDatetimeOffset: Encodable {
         let page: Int?
-        let perPage: Int?
-        let sortedBy: String?
-        let sortedOrder: String?
+        let perPage: PerPage?
+        let sortedBy: SortedBy?
+        let sortedOrder: ServiceSortedOrder?
         let hotelId: Int?
         let datetimeOffset: String?
         let includeHidden: Bool?
         
         var parameters: [String: Any]? {
-            var parameters: [String: Any] = [:]
-            if let page = page { parameters["page"] = page }
-            if let perPage = perPage { parameters["per_page"] = perPage }
-            if let sortedBy = sortedBy { parameters["sorted_by"] = sortedBy }
-            if let sortedOrder = sortedOrder { parameters["sorted_order"] = sortedOrder }
-            if let hotelId = hotelId { parameters["hotel_id"] = hotelId }
-            if let datetimeOffset = datetimeOffset { parameters["datetime_offset"] = datetimeOffset }
-            if let includeHidden = includeHidden { parameters["include_hidden"] = includeHidden.toString() }
-            return parameters.isEmpty ? nil : parameters
+            guard let data = try? JSONEncoder().encode(self),
+                  let dict = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+                return nil
+            }
+            return dict
+        }
+        
+        enum CodingKeys: String, CodingKey {
+            case page
+            case perPage = "per_page"
+            case sortedBy = "sorted_by"
+            case sortedOrder = "sorted_order"
+            case hotelId = "hotel_id"
+            case datetimeOffset = "datetime_offset"
+            case includeHidden = "include_hidden"
+        }
+        
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            if let page = page, page >= 1 {
+                try container.encode(page, forKey: .page)
+            }
+            if let perPage {
+                try container.encode(perPage.rawValue, forKey: .perPage)
+            }
+            if let sortedBy {
+                try container.encode(sortedBy.rawValue, forKey: .sortedBy)
+            }
+            if let sortedOrder {
+                try container.encode(sortedOrder.rawValue, forKey: .sortedOrder)
+            }
+            try container.encodeIfPresent(hotelId, forKey: .hotelId)
+            try container.encodeIfPresent(datetimeOffset, forKey: .datetimeOffset)
+            
+            if let includeHidden {
+                try container.encode(includeHidden.toString(), forKey: .includeHidden)
+            }
         }
     }
+    
     struct CreateGuest: Encodable {
         let firstName: String
         let lastName: String
@@ -132,7 +283,7 @@ struct GuestServiceRequest {
         let hotelId: Int
         let title: String?
         let middleName: String?
-        let dateOfBirth: String?
+        let dateOfBirth: Date?
         let idCardNo: String?
         let passportNo: String?
         let gender: Guest.Gender?
@@ -148,35 +299,10 @@ struct GuestServiceRequest {
         let photos: [String]?
         let documentPhotos: [String]?
 
-        //encode
-        func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(firstName, forKey: .firstName)
-            try container.encode(lastName, forKey: .lastName)
-            try container.encode(nationality, forKey: .nationality)
-            try container.encode(country, forKey: .country)
-            try container.encode(reservationId, forKey: .reservationId)
-            try container.encode(companyId, forKey: .companyId)
-            try container.encode(hotelId, forKey: .hotelId)
-            try container.encode(title, forKey: .title)
-            try container.encode(middleName, forKey: .middleName)
-            try container.encode(dateOfBirth, forKey: .dateOfBirth)
-            try container.encode(idCardNo, forKey: .idCardNo)
-            try container.encode(passportNo, forKey: .passportNo)
-            try container.encode(gender?.rawValue, forKey: .gender)
-            try container.encode(email, forKey: .email)
-            try container.encode(occupation, forKey: .occupation)
-            try container.encode(phone, forKey: .phone)
-            try container.encode(address, forKey: .address)
-            try container.encode(district, forKey: .district)
-            try container.encode(province, forKey: .province)
-            try container.encode(zipCode, forKey: .zipCode)
-            try container.encode(note, forKey: .note)
-            try container.encode(nickname, forKey: .nickname)
-            try container.encode(photos, forKey: .photos)
-            try container.encode(documentPhotos, forKey: .documentPhotos)
+        var body: Data? {
+            try? JSONEncoder().encode(self)
         }
-        
+
         enum CodingKeys: String, CodingKey {
             case firstName = "first_name"
             case lastName = "last_name"
@@ -203,7 +329,36 @@ struct GuestServiceRequest {
             case photos
             case documentPhotos = "document_photos"
         }
+
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(firstName, forKey: .firstName)
+            try container.encode(lastName, forKey: .lastName)
+            try container.encode(nationality, forKey: .nationality)
+            try container.encode(country, forKey: .country)
+            try container.encodeIfPresent(reservationId, forKey: .reservationId)
+            try container.encodeIfPresent(companyId, forKey: .companyId)
+            try container.encode(hotelId, forKey: .hotelId)
+            try container.encodeIfPresent(title, forKey: .title)
+            try container.encodeIfPresent(middleName, forKey: .middleName)
+            try container.encodeIfPresent(dateOfBirth?.toDateString(FormConfig.DateFormat.yyyyMMdd), forKey: .dateOfBirth)
+            try container.encodeIfPresent(idCardNo, forKey: .idCardNo)
+            try container.encodeIfPresent(passportNo, forKey: .passportNo)
+            try container.encodeIfPresent(gender?.rawValue, forKey: .gender)
+            try container.encodeIfPresent(email, forKey: .email)
+            try container.encodeIfPresent(occupation, forKey: .occupation)
+            try container.encodeIfPresent(phone, forKey: .phone)
+            try container.encodeIfPresent(address, forKey: .address)
+            try container.encodeIfPresent(district, forKey: .district)
+            try container.encodeIfPresent(province, forKey: .province)
+            try container.encodeIfPresent(zipCode, forKey: .zipCode)
+            try container.encodeIfPresent(note, forKey: .note)
+            try container.encodeIfPresent(nickname, forKey: .nickname)
+            try container.encodeIfPresent(photos, forKey: .photos)
+            try container.encodeIfPresent(documentPhotos, forKey: .documentPhotos)
+        }
     }
+    
     struct UpdateGuest: Encodable {
         let id: Int
         let companyId: Int?
@@ -213,7 +368,7 @@ struct GuestServiceRequest {
         let lastName: String?
         let nationality: String?
         let country: String?
-        let dateOfBirth: String?
+        let dateOfBirth: Date?
         let idCardNo: String?
         let passportNo: String?
         let gender: Guest.Gender?
@@ -229,31 +384,8 @@ struct GuestServiceRequest {
         let photos: [String]?
         let documentPhotos: [String]?
         
-        //encode
-        func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encodeIfPresent(companyId, forKey: .companyId)
-            try container.encodeIfPresent(title, forKey: .title)
-            try container.encodeIfPresent(firstName, forKey: .firstName)
-            try container.encodeIfPresent(middleName, forKey: .middleName)
-            try container.encodeIfPresent(lastName, forKey: .lastName)
-            try container.encodeIfPresent(nationality, forKey: .nationality)
-            try container.encodeIfPresent(country, forKey: .country)
-            try container.encodeIfPresent(dateOfBirth, forKey: .dateOfBirth)
-            try container.encodeIfPresent(idCardNo, forKey: .idCardNo)
-            try container.encodeIfPresent(passportNo, forKey: .passportNo)
-            try container.encodeIfPresent(gender?.rawValue, forKey: .gender)
-            try container.encodeIfPresent(email, forKey: .email)
-            try container.encodeIfPresent(occupation, forKey: .occupation)
-            try container.encodeIfPresent(phone, forKey: .phone)
-            try container.encodeIfPresent(address, forKey: .address)
-            try container.encodeIfPresent(district, forKey: .district)
-            try container.encodeIfPresent(province, forKey: .province)
-            try container.encodeIfPresent(zipCode, forKey: .zipCode)
-            try container.encodeIfPresent(note, forKey: .note)
-            try container.encodeIfPresent(nickname, forKey: .nickname)
-            try container.encodeIfPresent(photos, forKey: .photos)
-            try container.encodeIfPresent(documentPhotos, forKey: .documentPhotos)
+        var body: Data? {
+            try? JSONEncoder().encode(self)
         }
         
         enum CodingKeys: String, CodingKey {
@@ -279,6 +411,33 @@ struct GuestServiceRequest {
             case nickname
             case photos
             case documentPhotos = "document_photos"
+            // id is not encoded as it's used in the URL path
+        }
+
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encodeIfPresent(companyId, forKey: .companyId)
+            try container.encodeIfPresent(title, forKey: .title)
+            try container.encodeIfPresent(firstName, forKey: .firstName)
+            try container.encodeIfPresent(middleName, forKey: .middleName)
+            try container.encodeIfPresent(lastName, forKey: .lastName)
+            try container.encodeIfPresent(nationality, forKey: .nationality)
+            try container.encodeIfPresent(country, forKey: .country)
+            try container.encodeIfPresent(dateOfBirth?.toDateString(FormConfig.DateFormat.yyyyMMdd), forKey: .dateOfBirth)
+            try container.encodeIfPresent(idCardNo, forKey: .idCardNo)
+            try container.encodeIfPresent(passportNo, forKey: .passportNo)
+            try container.encodeIfPresent(gender?.rawValue, forKey: .gender)
+            try container.encodeIfPresent(email, forKey: .email)
+            try container.encodeIfPresent(occupation, forKey: .occupation)
+            try container.encodeIfPresent(phone, forKey: .phone)
+            try container.encodeIfPresent(address, forKey: .address)
+            try container.encodeIfPresent(district, forKey: .district)
+            try container.encodeIfPresent(province, forKey: .province)
+            try container.encodeIfPresent(zipCode, forKey: .zipCode)
+            try container.encodeIfPresent(note, forKey: .note)
+            try container.encodeIfPresent(nickname, forKey: .nickname)
+            try container.encodeIfPresent(photos, forKey: .photos)
+            try container.encodeIfPresent(documentPhotos, forKey: .documentPhotos)
         }
     }
 

@@ -26,9 +26,9 @@ final class GuestRemoteServiceTests: XCTestCase {
         let service = GuestRemoteService(localStorage: localStorage, apiManager: apiManager)
         let request = GuestServiceRequest.FetchGuests(
             page: 1,
-            perPage: 20,
-            sortedBy: "ID",
-            sortedOrder: "ASC",
+            perPage: .twenty,
+            sortedBy: .id,
+            sortedOrder: .ascending,
             hotelId: 105,
             includeHidden: true
         )
@@ -113,6 +113,7 @@ final class GuestRemoteServiceTests: XCTestCase {
             .request(router: .any, requiredAuthorization: .any)
             .willReturn(expectedGuest)
         let service = GuestRemoteService(localStorage: localStorage, apiManager: apiManager)
+        let dateOfBirth = Date(timeIntervalSince1970: 631152000) // 1990-01-01
         let request = GuestServiceRequest.CreateGuest(
             firstName: "John",
             lastName: "Doe",
@@ -123,7 +124,7 @@ final class GuestRemoteServiceTests: XCTestCase {
             hotelId: 789,
             title: "Mr.",
             middleName: "Middle",
-            dateOfBirth: "1990-01-01",
+            dateOfBirth: dateOfBirth,
             idCardNo: "1234567890123",
             passportNo: "A1234567",
             gender: .male,
@@ -191,6 +192,7 @@ final class GuestRemoteServiceTests: XCTestCase {
             .request(router: .any, requiredAuthorization: .any)
             .willReturn(expectedGuest)
         let service = GuestRemoteService(localStorage: localStorage, apiManager: apiManager)
+        let dateOfBirth = Date(timeIntervalSince1970: 631152000) // 1990-01-01
         let request = GuestServiceRequest.UpdateGuest(
             id: 1,
             companyId: 456,
@@ -200,7 +202,7 @@ final class GuestRemoteServiceTests: XCTestCase {
             lastName: "Doe",
             nationality: "THA",
             country: "THA",
-            dateOfBirth: "1990-01-01",
+            dateOfBirth: dateOfBirth,
             idCardNo: "1234567890123",
             passportNo: "A1234567",
             gender: .male,

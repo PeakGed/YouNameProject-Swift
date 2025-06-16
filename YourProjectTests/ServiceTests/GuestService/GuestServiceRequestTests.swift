@@ -9,13 +9,13 @@ import XCTest
 
 final class GuestServiceRequestTests: XCTestCase {
     
-    func testFetchGuestsRequest_ToDictionary() {
+    func testFetchGuestsRequest_WillGenerateCorrectParameters() {
         // Given
         let request = GuestServiceRequest.FetchGuests(
             page: 1,
-            perPage: 20,
-            sortedBy: "ID",
-            sortedOrder: "ASC",
+            perPage: .twenty,
+            sortedBy: .id,
+            sortedOrder: .ascending,
             hotelId: 105,
             includeHidden: true
         )
@@ -28,14 +28,14 @@ final class GuestServiceRequestTests: XCTestCase {
         
         // Then
         XCTAssertEqual(parameters["page"] as? Int, 1)
-        XCTAssertEqual(parameters["per_page"] as? Int, 20)
+        XCTAssertEqual(parameters["per_page"] as? String, "20")
         XCTAssertEqual(parameters["sorted_by"] as? String, "ID")
         XCTAssertEqual(parameters["sorted_order"] as? String, "ASC")
         XCTAssertEqual(parameters["hotel_id"] as? Int, 105)
         XCTAssertEqual(parameters["include_hidden"] as? String, "true")
     }
     
-    func testFetchGuestsRequest_ToDictionaryWithNilValues() {
+    func testFetchGuestsRequest_WithNilValues_WillGenerateMinimalParameters() {
         // Given
         let request = GuestServiceRequest.FetchGuests(
             page: nil,
@@ -53,8 +53,35 @@ final class GuestServiceRequestTests: XCTestCase {
         XCTAssertTrue(parameters?.isEmpty ?? true)
     }
     
-    func testCreateGuestRequest_Encoding() throws {
+    func testFetchGuestsRequest_WithInvalidPage_WillExcludePageParameter() {
         // Given
+        let request = GuestServiceRequest.FetchGuests(
+            page: 0, // Invalid page
+            perPage: .ten,
+            sortedBy: .createdAt,
+            sortedOrder: .descending,
+            hotelId: 105,
+            includeHidden: false
+        )
+        
+        // When
+        guard let parameters = request.parameters else {
+            XCTFail("Parameters should not be nil")
+            return
+        }
+        
+        // Then
+        XCTAssertNil(parameters["page"]) // Should be excluded because page < 1
+        XCTAssertEqual(parameters["per_page"] as? String, "10")
+        XCTAssertEqual(parameters["sorted_by"] as? String, "CREATED_AT")
+        XCTAssertEqual(parameters["sorted_order"] as? String, "DESC")
+        XCTAssertEqual(parameters["hotel_id"] as? Int, 105)
+        XCTAssertEqual(parameters["include_hidden"] as? String, "false")
+    }
+    
+    func testCreateGuestRequest_WillGenerateCorrectBody() throws {
+        // Given
+        let dateOfBirth = Date(timeIntervalSince1970: 631152000) // 1990-01-01
         let request = GuestServiceRequest.CreateGuest(
             firstName: "John",
             lastName: "Doe",
@@ -65,7 +92,7 @@ final class GuestServiceRequestTests: XCTestCase {
             hotelId: 789,
             title: "Mr.",
             middleName: "Middle",
-            dateOfBirth: "1990-01-01",
+            dateOfBirth: dateOfBirth,
             idCardNo: "1234567890123",
             passportNo: "A1234567",
             gender: .male,
@@ -83,11 +110,14 @@ final class GuestServiceRequestTests: XCTestCase {
         )
         
         // When
-        let encoder = JSONEncoder()
-        let data = try encoder.encode(request)
-        let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+        guard let body = request.body else {
+            XCTFail()
+            return
+        }
         
         // Then
+        let json = try JSONSerialization.jsonObject(with: body, options: []) as? [String: Any]
+        
         XCTAssertNotNil(json)
         XCTAssertEqual(json?["first_name"] as? String, "John")
         XCTAssertEqual(json?["last_name"] as? String, "Doe")
@@ -115,8 +145,9 @@ final class GuestServiceRequestTests: XCTestCase {
         XCTAssertEqual(json?["document_photos"] as? [String], ["doc1.jpg", "doc2.jpg"])
     }
     
-    func testUpdateGuestRequest_Encoding() throws {
+    func testUpdateGuestRequest_WillGenerateCorrectBody() throws {
         // Given
+        let dateOfBirth = Date(timeIntervalSince1970: 631152000) // 1990-01-01
         let request = GuestServiceRequest.UpdateGuest(
             id: 1,
             companyId: 456,
@@ -126,7 +157,7 @@ final class GuestServiceRequestTests: XCTestCase {
             lastName: "Doe",
             nationality: "THA",
             country: "THA",
-            dateOfBirth: "1990-01-01",
+            dateOfBirth: dateOfBirth,
             idCardNo: "1234567890123",
             passportNo: "A1234567",
             gender: .male,
@@ -144,11 +175,14 @@ final class GuestServiceRequestTests: XCTestCase {
         )
         
         // When
-        let encoder = JSONEncoder()
-        let data = try encoder.encode(request)
-        let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+        guard let body = request.body else {
+            XCTFail()
+            return
+        }
         
         // Then
+        let json = try JSONSerialization.jsonObject(with: body, options: []) as? [String: Any]
+        
         XCTAssertNotNil(json)
         XCTAssertEqual(json?["company_id"] as? Int, 456)
         XCTAssertEqual(json?["title"] as? String, "Mr.")
@@ -174,5 +208,23 @@ final class GuestServiceRequestTests: XCTestCase {
         XCTAssertEqual(json?["document_photos"] as? [String], ["doc1.jpg", "doc2.jpg"])
         // id should not be encoded as it's used in the URL path
         XCTAssertNil(json?["id"])
+    }
+    
+    // MARK: - ByID Tests
+    
+    func testFetchGuest_WillHaveCorrectId() {
+        // Given
+        let request = GuestServiceRequest.FetchGuest(id: 12345)
+        
+        // When/Then
+        XCTAssertEqual(request.id, 12345)
+    }
+    
+    // MARK: - SortedBy Enum Tests
+    
+    func testSortedBy_WillHaveCorrectRawValues() {
+        XCTAssertEqual(GuestServiceRequest.SortedBy.id.rawValue, "ID")
+        XCTAssertEqual(GuestServiceRequest.SortedBy.createdAt.rawValue, "CREATED_AT")
+        XCTAssertEqual(GuestServiceRequest.SortedBy.updatedAt.rawValue, "UPDATED_AT")
     }
 } 
