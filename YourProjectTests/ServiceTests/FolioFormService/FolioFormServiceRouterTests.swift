@@ -25,9 +25,9 @@ final class FolioFormServiceRouterTests: XCTestCase {
         let req = FolioFormServiceRequest.FetchByHotel(
             hotelId: 105,
             page: 1,
-            perPage: 20,
-            sortedBy: "ID",
-            sortedOrder: "ASC"
+            perPage: .twenty,
+            sortedBy: .id,
+            sortedOrder: .ascending
         )
         let router = FolioFormServiceRouter.fetchByHotel(request: req)
         
@@ -62,9 +62,9 @@ final class FolioFormServiceRouterTests: XCTestCase {
             hotelId: 105,
             query: "test query",
             page: 2,
-            perPage: 10,
-            sortedBy: "CREATED_AT",
-            sortedOrder: "DESC"
+            perPage: .ten,
+            sortedBy: .createdAt,
+            sortedOrder: .descending
         )
         let router = FolioFormServiceRouter.fetchByQuery(request: req)
         
@@ -96,14 +96,17 @@ final class FolioFormServiceRouterTests: XCTestCase {
     
     func testFetchByPeriodRequest() throws {
         // Given
+        let startDate = Date(timeIntervalSince1970: 1704067200) // 2024-01-01
+        let endDate = Date(timeIntervalSince1970: 1735689600) // 2025-01-01
+        let period = PeriodDate(start: startDate, end: endDate)
+        
         let req = FolioFormServiceRequest.FetchByPeriod(
             hotelId: 105,
-            startDate: "2024-01-01",
-            endDate: "2024-12-31",
+            period: period,
             page: 1,
-            perPage: 50,
-            sortedBy: "UPDATED_AT",
-            sortedOrder: "ASC"
+            perPage: .fifty,
+            sortedBy: .updatedAt,
+            sortedOrder: .ascending
         )
         let router = FolioFormServiceRouter.fetchByPeriod(request: req)
         
@@ -125,7 +128,7 @@ final class FolioFormServiceRouterTests: XCTestCase {
         
         XCTAssertTrue(queryItems.contains { $0.name == "hotel_id" && $0.value == "105" })
         XCTAssertTrue(queryItems.contains { $0.name == "start_date" && $0.value == "2024-01-01" })
-        XCTAssertTrue(queryItems.contains { $0.name == "end_date" && $0.value == "2024-12-31" })
+        XCTAssertTrue(queryItems.contains { $0.name == "end_date" && $0.value == "2025-01-01" })
         XCTAssertTrue(queryItems.contains { $0.name == "page" && $0.value == "1" })
         XCTAssertTrue(queryItems.contains { $0.name == "per_page" && $0.value == "50" })
         XCTAssertTrue(queryItems.contains { $0.name == "sorted_by" && $0.value == "UPDATED_AT" })
@@ -140,9 +143,9 @@ final class FolioFormServiceRouterTests: XCTestCase {
             hotelId: 105,
             reservationId: 512,
             page: 1,
-            perPage: 20,
-            sortedBy: "ID",
-            sortedOrder: "ASC"
+            perPage: .twenty,
+            sortedBy: .id,
+            sortedOrder: .ascending
         )
         let router = FolioFormServiceRouter.fetchByReservation(request: req)
         

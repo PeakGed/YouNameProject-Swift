@@ -15,22 +15,50 @@ struct FolioFormServiceRequest {
 
     struct ByID { let id: Int }
 
+    enum SortedBy: String {
+        case id = "ID"
+        case name = "NAME"
+        case createdAt = "CREATED_AT"
+        case updatedAt = "UPDATED_AT"
+    }
+
     struct FetchByHotel: Encodable {
         let hotelId: Int
         let page: Int?
-        let perPage: Int?
-        let sortedBy: String?
-        let sortedOrder: String?
+        let perPage: PerPage?
+        let sortedBy: SortedBy?
+        let sortedOrder: ServiceSortedOrder?
+        
+        enum CodingKeys: String, CodingKey {
+            case hotelId = "hotel_id"
+            case page
+            case perPage = "per_page"
+            case sortedBy = "sorted_by"
+            case sortedOrder = "sorted_order"
+        }
+        
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(hotelId, forKey: .hotelId)
+            if let page = page, page >= 1 {
+                try container.encode(page, forKey: .page)
+            }
+            if let perPage = perPage {
+                try container.encode(perPage.rawValue, forKey: .perPage)
+            }
+            if let sortedBy = sortedBy {
+                try container.encode(sortedBy.rawValue, forKey: .sortedBy)
+            }
+            if let sortedOrder = sortedOrder {
+                try container.encode(sortedOrder.rawValue, forKey: .sortedOrder)
+            }
+        }
         
         var parameters: [String: Any]? {
-            var dict: [String: Any] = ["hotel_id": hotelId]
-            if let page = page { dict["page"] = page }
-            if let perPage = perPage { dict["per_page"] = perPage }
-            if let sortedBy = sortedBy { dict["sorted_by"] = sortedBy }
-            if let sortedOrder = sortedOrder { dict["sorted_order"] = sortedOrder }
-
-            if dict.isEmpty { return nil }
-
+            guard let data = try? JSONEncoder().encode(self),
+                  let dict = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+                return nil
+            }
             return dict
         }
     }
@@ -39,41 +67,89 @@ struct FolioFormServiceRequest {
         let hotelId: Int
         let query: String
         let page: Int?
-        let perPage: Int?
-        let sortedBy: String?
-        let sortedOrder: String?
+        let perPage: PerPage?
+        let sortedBy: SortedBy?
+        let sortedOrder: ServiceSortedOrder?
+
+        enum CodingKeys: String, CodingKey {
+            case hotelId = "hotel_id"
+            case query
+            case page
+            case perPage = "per_page"
+            case sortedBy = "sorted_by"
+            case sortedOrder = "sorted_order"
+        }
+        
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(hotelId, forKey: .hotelId)
+            try container.encode(query, forKey: .query)
+            if let page = page, page >= 1 {
+                try container.encode(page, forKey: .page)
+            }
+            if let perPage = perPage {
+                try container.encode(perPage.rawValue, forKey: .perPage)
+            }
+            if let sortedBy = sortedBy {
+                try container.encode(sortedBy.rawValue, forKey: .sortedBy)
+            }
+            if let sortedOrder = sortedOrder {
+                try container.encode(sortedOrder.rawValue, forKey: .sortedOrder)
+            }
+        }
 
         var parameters: [String: Any]? {
-            var dict: [String: Any] = ["hotel_id": hotelId, "query": query]
-            if let page = page { dict["page"] = page }
-            if let perPage = perPage { dict["per_page"] = perPage }
-            if let sortedBy = sortedBy { dict["sorted_by"] = sortedBy }
-            if let sortedOrder = sortedOrder { dict["sorted_order"] = sortedOrder }
-
-            if dict.isEmpty { return nil }
-
+            guard let data = try? JSONEncoder().encode(self),
+                  let dict = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+                return nil
+            }
             return dict
         }
     }
     
     struct FetchByPeriod: Encodable {
         let hotelId: Int
-        let startDate: String
-        let endDate: String
+        let period: PeriodDate
         let page: Int?
-        let perPage: Int?
-        let sortedBy: String?
-        let sortedOrder: String?
+        let perPage: PerPage?
+        let sortedBy: SortedBy?
+        let sortedOrder: ServiceSortedOrder?
+
+        enum CodingKeys: String, CodingKey {
+            case hotelId = "hotel_id"
+            case startDate = "start_date"
+            case endDate = "end_date"
+            case page
+            case perPage = "per_page"
+            case sortedBy = "sorted_by"
+            case sortedOrder = "sorted_order"
+        }
+        
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            let dateFormat = FormConfig.DateFormat.yyyyMMdd
+            try container.encode(hotelId, forKey: .hotelId)
+            try container.encode(period.start.toDateString(dateFormat), forKey: .startDate)
+            try container.encode(period.end.toDateString(dateFormat), forKey: .endDate)
+            if let page = page, page >= 1 {
+                try container.encode(page, forKey: .page)
+            }
+            if let perPage = perPage {
+                try container.encode(perPage.rawValue, forKey: .perPage)
+            }
+            if let sortedBy = sortedBy {
+                try container.encode(sortedBy.rawValue, forKey: .sortedBy)
+            }
+            if let sortedOrder = sortedOrder {
+                try container.encode(sortedOrder.rawValue, forKey: .sortedOrder)
+            }
+        }
 
         var parameters: [String: Any]? {
-            var dict: [String: Any] = ["hotel_id": hotelId, "start_date": startDate, "end_date": endDate]
-            if let page = page { dict["page"] = page }
-            if let perPage = perPage { dict["per_page"] = perPage }
-            if let sortedBy = sortedBy { dict["sorted_by"] = sortedBy }
-            if let sortedOrder = sortedOrder { dict["sorted_order"] = sortedOrder }
-
-            if dict.isEmpty { return nil }
-
+            guard let data = try? JSONEncoder().encode(self),
+                  let dict = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+                return nil
+            }
             return dict
         }
     }
@@ -82,19 +158,42 @@ struct FolioFormServiceRequest {
         let hotelId: Int
         let reservationId: Int
         let page: Int?
-        let perPage: Int?
-        let sortedBy: String?
-        let sortedOrder: String?
+        let perPage: PerPage?
+        let sortedBy: SortedBy?
+        let sortedOrder: ServiceSortedOrder?
+
+        enum CodingKeys: String, CodingKey {
+            case hotelId = "hotel_id"
+            case reservationId = "reservation_id"
+            case page
+            case perPage = "per_page"
+            case sortedBy = "sorted_by"
+            case sortedOrder = "sorted_order"
+        }
+        
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(hotelId, forKey: .hotelId)
+            try container.encode(reservationId, forKey: .reservationId)
+            if let page = page, page >= 1 {
+                try container.encode(page, forKey: .page)
+            }
+            if let perPage = perPage {
+                try container.encode(perPage.rawValue, forKey: .perPage)
+            }
+            if let sortedBy = sortedBy {
+                try container.encode(sortedBy.rawValue, forKey: .sortedBy)
+            }
+            if let sortedOrder = sortedOrder {
+                try container.encode(sortedOrder.rawValue, forKey: .sortedOrder)
+            }
+        }
 
         var parameters: [String: Any]? {
-            var dict: [String: Any] = ["hotel_id": hotelId, "reservation_id": reservationId]
-            if let page = page { dict["page"] = page }
-            if let perPage = perPage { dict["per_page"] = perPage }
-            if let sortedBy = sortedBy { dict["sorted_by"] = sortedBy }
-            if let sortedOrder = sortedOrder { dict["sorted_order"] = sortedOrder }
-
-            if dict.isEmpty { return nil }
-
+            guard let data = try? JSONEncoder().encode(self),
+                  let dict = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+                return nil
+            }
             return dict
         }
     }    
@@ -123,9 +222,9 @@ struct FolioFormServiceRequest {
         let paymentInfo: String
         let groupRoomCharge: Bool
         let groupAdditionalItem: Bool
-
+        
         var body: Data? {
-            return try? JSONEncoder().encode(self)
+            try? JSONEncoder().encode(self)
         }
 
         init(hotelId: Int,
@@ -195,14 +294,14 @@ struct FolioFormServiceRequest {
         let paymentInfo: String?
         let groupRoomCharge: Bool?
         let groupAdditionalItem: Bool?
-
+        
         var body: Data? {
-            return try? JSONEncoder().encode(self)
+            try? JSONEncoder().encode(self)
         }
 
         init(id: Int, 
-        hotelContactId: Int, 
-        customerContactId: Int, 
+        hotelContactId: Int?, 
+        customerContactId: Int?, 
         remark: String?, 
         internalNote: String?, 
         paymentInfo: String?, 
@@ -219,7 +318,6 @@ struct FolioFormServiceRequest {
             }
 
         enum CodingKeys: String, CodingKey {
-            case id = "id"
             case hotelContactId = "hotel_contact_id"
             case customerContactId = "customer_contact_id"
             case remark = "remark"
@@ -227,6 +325,7 @@ struct FolioFormServiceRequest {
             case paymentInfo = "payment_info"
             case groupRoomCharge = "group_room_charge"
             case groupAdditionalItem = "group_additional_item"
+            // id is not encoded as it's used in the URL path
         }
 
         func encode(to encoder: Encoder) throws {
@@ -238,7 +337,6 @@ struct FolioFormServiceRequest {
             try container.encodeIfPresent(paymentInfo, forKey: .paymentInfo)
             try container.encodeIfPresent(groupRoomCharge, forKey: .groupRoomCharge)
             try container.encodeIfPresent(groupAdditionalItem, forKey: .groupAdditionalItem)
-            try container.encodeIfPresent(remark, forKey: .remark)            
         }
     }
     

@@ -9,14 +9,14 @@ import XCTest
 
 final class FolioFormServiceRequestTests: XCTestCase {
     
-    func testFetchByHotelRequest_ToDictionary() {
+    func testFetchByHotelRequest_WillGenerateCorrectParameters() {
         // Given
         let request = FolioFormServiceRequest.FetchByHotel(
             hotelId: 105,
             page: 1,
-            perPage: 20,
-            sortedBy: "ID",
-            sortedOrder: "ASC"
+            perPage: .twenty,
+            sortedBy: .id,
+            sortedOrder: .ascending
         )
         
         // When
@@ -28,12 +28,12 @@ final class FolioFormServiceRequestTests: XCTestCase {
         // Then
         XCTAssertEqual(parameters["hotel_id"] as? Int, 105)
         XCTAssertEqual(parameters["page"] as? Int, 1)
-        XCTAssertEqual(parameters["per_page"] as? Int, 20)
+        XCTAssertEqual(parameters["per_page"] as? String, "20")
         XCTAssertEqual(parameters["sorted_by"] as? String, "ID")
         XCTAssertEqual(parameters["sorted_order"] as? String, "ASC")
     }
     
-    func testFetchByHotelRequest_ToDictionaryWithNilValues() {
+    func testFetchByHotelRequest_WithNilValues_WillGenerateMinimalParameters() {
         // Given
         let request = FolioFormServiceRequest.FetchByHotel(
             hotelId: 105,
@@ -57,15 +57,39 @@ final class FolioFormServiceRequestTests: XCTestCase {
         XCTAssertNil(parameters["sorted_order"])
     }
     
-    func testFetchByQueryRequest_ToDictionary() {
+    func testFetchByHotelRequest_WithInvalidPage_WillExcludePageParameter() {
+        // Given
+        let request = FolioFormServiceRequest.FetchByHotel(
+            hotelId: 105,
+            page: 0, // Invalid page
+            perPage: .ten,
+            sortedBy: .createdAt,
+            sortedOrder: .descending
+        )
+        
+        // When
+        guard let parameters = request.parameters else {
+            XCTFail("Parameters should not be nil")
+            return
+        }
+        
+        // Then
+        XCTAssertEqual(parameters["hotel_id"] as? Int, 105)
+        XCTAssertNil(parameters["page"]) // Should be excluded because page < 1
+        XCTAssertEqual(parameters["per_page"] as? String, "10")
+        XCTAssertEqual(parameters["sorted_by"] as? String, "CREATED_AT")
+        XCTAssertEqual(parameters["sorted_order"] as? String, "DESC")
+    }
+    
+    func testFetchByQueryRequest_WillGenerateCorrectParameters() {
         // Given
         let request = FolioFormServiceRequest.FetchByQuery(
             hotelId: 105,
             query: "test query",
             page: 2,
-            perPage: 10,
-            sortedBy: "CREATED_AT",
-            sortedOrder: "DESC"
+            perPage: .ten,
+            sortedBy: .createdAt,
+            sortedOrder: .descending
         )
         
         // When
@@ -78,21 +102,24 @@ final class FolioFormServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters["hotel_id"] as? Int, 105)
         XCTAssertEqual(parameters["query"] as? String, "test query")
         XCTAssertEqual(parameters["page"] as? Int, 2)
-        XCTAssertEqual(parameters["per_page"] as? Int, 10)
+        XCTAssertEqual(parameters["per_page"] as? String, "10")
         XCTAssertEqual(parameters["sorted_by"] as? String, "CREATED_AT")
         XCTAssertEqual(parameters["sorted_order"] as? String, "DESC")
     }
     
-    func testFetchByPeriodRequest_ToDictionary() {
+    func testFetchByPeriodRequest_WillGenerateCorrectParameters() {
         // Given
+        let startDate = Date(timeIntervalSince1970: 1704067200) // 2024-01-01
+        let endDate = Date(timeIntervalSince1970: 1735689600) // 2025-01-01
+        let period = PeriodDate(start: startDate, end: endDate)
+        
         let request = FolioFormServiceRequest.FetchByPeriod(
             hotelId: 105,
-            startDate: "2024-01-01",
-            endDate: "2024-12-31",
+            period: period,
             page: 1,
-            perPage: 50,
-            sortedBy: "UPDATED_AT",
-            sortedOrder: "ASC"
+            perPage: .fifty,
+            sortedBy: .updatedAt,
+            sortedOrder: .ascending
         )
         
         // When
@@ -104,22 +131,22 @@ final class FolioFormServiceRequestTests: XCTestCase {
         // Then
         XCTAssertEqual(parameters["hotel_id"] as? Int, 105)
         XCTAssertEqual(parameters["start_date"] as? String, "2024-01-01")
-        XCTAssertEqual(parameters["end_date"] as? String, "2024-12-31")
+        XCTAssertEqual(parameters["end_date"] as? String, "2025-01-01")
         XCTAssertEqual(parameters["page"] as? Int, 1)
-        XCTAssertEqual(parameters["per_page"] as? Int, 50)
+        XCTAssertEqual(parameters["per_page"] as? String, "50")
         XCTAssertEqual(parameters["sorted_by"] as? String, "UPDATED_AT")
         XCTAssertEqual(parameters["sorted_order"] as? String, "ASC")
     }
     
-    func testFetchByReservationRequest_ToDictionary() {
+    func testFetchByReservationRequest_WillGenerateCorrectParameters() {
         // Given
         let request = FolioFormServiceRequest.FetchByReservation(
             hotelId: 105,
             reservationId: 512,
             page: 1,
-            perPage: 20,
-            sortedBy: "ID",
-            sortedOrder: "ASC"
+            perPage: .twenty,
+            sortedBy: .id,
+            sortedOrder: .ascending
         )
         
         // When
@@ -132,12 +159,12 @@ final class FolioFormServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters["hotel_id"] as? Int, 105)
         XCTAssertEqual(parameters["reservation_id"] as? Int, 512)
         XCTAssertEqual(parameters["page"] as? Int, 1)
-        XCTAssertEqual(parameters["per_page"] as? Int, 20)
+        XCTAssertEqual(parameters["per_page"] as? String, "20")
         XCTAssertEqual(parameters["sorted_by"] as? String, "ID")
         XCTAssertEqual(parameters["sorted_order"] as? String, "ASC")
     }
     
-    func testCreateFolioFormReservationRequest_Encoding() throws {
+    func testCreateFolioFormReservationRequest_WillGenerateCorrectBody() throws {
         // Given
         let request = FolioFormServiceRequest.CreateFolioFormReservation(
             hotelId: 105,
@@ -152,11 +179,14 @@ final class FolioFormServiceRequestTests: XCTestCase {
         )
         
         // When
-        let encoder = JSONEncoder()
-        let data = try encoder.encode(request)
-        let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+        guard let body = request.body else {
+            XCTFail()
+            return
+        }
         
         // Then
+        let json = try JSONSerialization.jsonObject(with: body, options: []) as? [String: Any]
+        
         XCTAssertNotNil(json)
         XCTAssertEqual(json?["hotel_id"] as? Int, 105)
         XCTAssertEqual(json?["hotel_contact_id"] as? Int, 8)
@@ -169,7 +199,7 @@ final class FolioFormServiceRequestTests: XCTestCase {
         XCTAssertEqual(json?["group_additional_item"] as? Bool, false)
     }
     
-    func testCreateFolioFormReservationRequest_EncodingWithNilValues() throws {
+    func testCreateFolioFormReservationRequest_WithNilValues_WillGenerateCorrectBody() throws {
         // Given
         let request = FolioFormServiceRequest.CreateFolioFormReservation(
             hotelId: 105,
@@ -184,11 +214,14 @@ final class FolioFormServiceRequestTests: XCTestCase {
         )
         
         // When
-        let encoder = JSONEncoder()
-        let data = try encoder.encode(request)
-        let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+        guard let body = request.body else {
+            XCTFail()
+            return
+        }
         
         // Then
+        let json = try JSONSerialization.jsonObject(with: body, options: []) as? [String: Any]
+        
         XCTAssertNotNil(json)
         XCTAssertEqual(json?["hotel_id"] as? Int, 105)
         XCTAssertEqual(json?["hotel_contact_id"] as? Int, 8)
@@ -198,11 +231,11 @@ final class FolioFormServiceRequestTests: XCTestCase {
         XCTAssertEqual(json?["group_room_charge"] as? Bool, false)
         XCTAssertEqual(json?["group_additional_item"] as? Bool, true)
         // Nil values should not be present in JSON
-        XCTAssertTrue(json?["remark"] == nil || json?["remark"] is NSNull)
-        XCTAssertTrue(json?["internal_note"] == nil || json?["internal_note"] is NSNull)
+        XCTAssertNil(json?["remark"])
+        XCTAssertNil(json?["internal_note"])
     }
     
-    func testUpdateFolioFormRequest_Encoding() throws {
+    func testUpdateFolioFormRequest_WillGenerateCorrectBody() throws {
         // Given
         let request = FolioFormServiceRequest.UpdateFolioForm(
             id: 1,
@@ -216,12 +249,17 @@ final class FolioFormServiceRequestTests: XCTestCase {
         )
         
         // When
-        let encoder = JSONEncoder()
-        let data = try encoder.encode(request)
-        let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+        guard let body = request.body else {
+            XCTFail()
+            return
+        }
         
         // Then
+        let json = try JSONSerialization.jsonObject(with: body, options: []) as? [String: Any]
+        
         XCTAssertNotNil(json)
+        // id should not be in the JSON body as it's used in URL path
+        XCTAssertNil(json?["id"])
         XCTAssertEqual(json?["hotel_contact_id"] as? Int, 9)
         XCTAssertEqual(json?["customer_contact_id"] as? Int, 7)
         XCTAssertEqual(json?["remark"] as? String, "updated remark")
@@ -229,39 +267,60 @@ final class FolioFormServiceRequestTests: XCTestCase {
         XCTAssertEqual(json?["payment_info"] as? String, "updated payment info")
         XCTAssertEqual(json?["group_room_charge"] as? Bool, false)
         XCTAssertEqual(json?["group_additional_item"] as? Bool, true)
-        // id should not be encoded as it's used in the URL path
-        XCTAssertNil(json?["id"])
     }
     
-    func testUpdateFolioFormRequest_EncodingWithNilValues() throws {
+    func testUpdateFolioFormRequest_WithAllNilValues_WillGenerateEmptyBody() throws {
         // Given
         let request = FolioFormServiceRequest.UpdateFolioForm(
-            id: 2,
-            hotelContactId: 10,
-            customerContactId: 1,
-            remark: "partial update",
+            id: 1,
+            hotelContactId: nil,
+            customerContactId: nil,
+            remark: nil,
             internalNote: nil,
             paymentInfo: nil,
             groupRoomCharge: nil,
-            groupAdditionalItem: false
+            groupAdditionalItem: nil
         )
         
         // When
-        let encoder = JSONEncoder()
-        let data = try encoder.encode(request)
-        let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+        guard let body = request.body else {
+            XCTFail()
+            return
+        }
         
         // Then
+        let json = try JSONSerialization.jsonObject(with: body, options: []) as? [String: Any]
+        
         XCTAssertNotNil(json)
-        XCTAssertEqual(json?["hotel_contact_id"] as? Int, 10)
-        XCTAssertEqual(json?["remark"] as? String, "partial update")
-        XCTAssertEqual(json?["group_additional_item"] as? Bool, false)
-        // Nil values should not be present in JSON or be encoded as null
-        XCTAssertEqual(json?["customer_contact_id"] as? Int, 1)
-        XCTAssertTrue(json?["internal_note"] == nil || json?["internal_note"] is NSNull)
-        XCTAssertTrue(json?["payment_info"] == nil || json?["payment_info"] is NSNull)
-        XCTAssertTrue(json?["group_room_charge"] == nil || json?["group_room_charge"] is NSNull)
-        // id should not be encoded as it's used in the URL path
+        // Should not contain id as it's not encoded
         XCTAssertNil(json?["id"])
+        
+        // All optional fields should be absent
+        XCTAssertNil(json?["hotel_contact_id"])
+        XCTAssertNil(json?["customer_contact_id"])
+        XCTAssertNil(json?["remark"])
+        XCTAssertNil(json?["internal_note"])
+        XCTAssertNil(json?["payment_info"])
+        XCTAssertNil(json?["group_room_charge"])
+        XCTAssertNil(json?["group_additional_item"])
+    }
+    
+    // MARK: - ByID Tests
+    
+    func testFetchById_WillHaveCorrectId() {
+        // Given
+        let request = FolioFormServiceRequest.FetchById(id: 12345)
+        
+        // When/Then
+        XCTAssertEqual(request.id, 12345)
+    }
+    
+    // MARK: - SortedBy Enum Tests
+    
+    func testSortedBy_WillHaveCorrectRawValues() {
+        XCTAssertEqual(FolioFormServiceRequest.SortedBy.id.rawValue, "ID")
+        XCTAssertEqual(FolioFormServiceRequest.SortedBy.name.rawValue, "NAME")
+        XCTAssertEqual(FolioFormServiceRequest.SortedBy.createdAt.rawValue, "CREATED_AT")
+        XCTAssertEqual(FolioFormServiceRequest.SortedBy.updatedAt.rawValue, "UPDATED_AT")
     }
 } 

@@ -27,9 +27,9 @@ final class FolioFormRemoteServiceTests: XCTestCase {
         let request = FolioFormServiceRequest.FetchByHotel(
             hotelId: 105,
             page: 1,
-            perPage: 20,
-            sortedBy: "ID",
-            sortedOrder: "ASC"
+            perPage: .twenty,
+            sortedBy: .id,
+            sortedOrder: .ascending
         )
         let expectedResponse = createMockPaginator()
         
@@ -55,9 +55,9 @@ final class FolioFormRemoteServiceTests: XCTestCase {
         let request = FolioFormServiceRequest.FetchByHotel(
             hotelId: 105,
             page: 1,
-            perPage: 20,
-            sortedBy: "ID",
-            sortedOrder: "ASC"
+            perPage: .twenty,
+            sortedBy: .id,
+            sortedOrder: .ascending
         )
         
         let expectError = APIError.unknownError(title: "Stub Error",
@@ -97,9 +97,9 @@ final class FolioFormRemoteServiceTests: XCTestCase {
             hotelId: 105,
             query: "test query",
             page: 1,
-            perPage: 20,
-            sortedBy: "ID",
-            sortedOrder: "ASC"
+            perPage: .twenty,
+            sortedBy: .id,
+            sortedOrder: .ascending
         )
         let expectedResponse = createMockPaginator()
         
@@ -124,14 +124,17 @@ final class FolioFormRemoteServiceTests: XCTestCase {
     
     func testFetchByPeriod_Success() async throws {
         // Given
+        let startDate = Date(timeIntervalSince1970: 1704067200) // 2024-01-01
+        let endDate = Date(timeIntervalSince1970: 1735689600) // 2024-12-31
+        let period = PeriodDate(start: startDate, end: endDate)
+        
         let request = FolioFormServiceRequest.FetchByPeriod(
             hotelId: 105,
-            startDate: "2024-01-01",
-            endDate: "2024-12-31",
+            period: period,
             page: 1,
-            perPage: 20,
-            sortedBy: "ID",
-            sortedOrder: "ASC"
+            perPage: .twenty,
+            sortedBy: .id,
+            sortedOrder: .ascending
         )
         let expectedResponse = createMockPaginator()
         
@@ -160,9 +163,9 @@ final class FolioFormRemoteServiceTests: XCTestCase {
             hotelId: 105,
             reservationId: 512,
             page: 1,
-            perPage: 20,
-            sortedBy: "ID",
-            sortedOrder: "ASC"
+            perPage: .twenty,
+            sortedBy: .id,
+            sortedOrder: .ascending
         )
         let expectedResponse = createMockPaginator()
         

@@ -95,9 +95,9 @@ enum FolioFormServiceRouter: AlamofireBaseRouterProtocol {
     var body: Data? {
         switch self {
         case .createFolioFormReservation(let request):
-            return try? JSONEncoder().encode(request)
+            return request.body
         case .updateFolioForm(let request):
-            return try? JSONEncoder().encode(request)        
+            return request.body        
         default:
             return nil
         }
