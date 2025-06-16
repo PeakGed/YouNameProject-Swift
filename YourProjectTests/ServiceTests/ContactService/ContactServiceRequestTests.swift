@@ -61,7 +61,7 @@ class ContactServiceRequestTests: XCTestCase {
             hotelId: 105,
             page: 0,
             perPage: .fifty,
-            sortedBy: .companyName,
+            sortedBy: .id,
             sortedOrder: .descending
         )
         
@@ -73,7 +73,7 @@ class ContactServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
         XCTAssertNil(parameters?["page"]) // Should be excluded because page < 1
         XCTAssertEqual(parameters?["per_page"] as? String, "50")
-        XCTAssertEqual(parameters?["sorted_by"] as? String, "COMPANY_NAME")
+        XCTAssertEqual(parameters?["sorted_by"] as? String, "ID")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "DESC")
     }
     
@@ -136,7 +136,7 @@ class ContactServiceRequestTests: XCTestCase {
             customerId: 789,
             page: 1,
             perPage: .ten,
-            sortedBy: .contactType,
+            sortedBy: .name,
             sortedOrder: .descending
         )
         
@@ -149,7 +149,7 @@ class ContactServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["customer_id"] as? Int, 789)
         XCTAssertEqual(parameters?["page"] as? Int, 1)
         XCTAssertEqual(parameters?["per_page"] as? String, "10")
-        XCTAssertEqual(parameters?["sorted_by"] as? String, "CONTACT_TYPE")
+        XCTAssertEqual(parameters?["sorted_by"] as? String, "NAME")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "DESC")
     }
     

@@ -74,7 +74,7 @@ class ContactRemoteServiceTests: XCTestCase {
             companyId: 123,
             page: 1,
             perPage: .ten,
-            sortedBy: .companyName,
+            sortedBy: .name,
             sortedOrder: .ascending
         )
         
