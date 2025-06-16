@@ -134,6 +134,8 @@
 				DataModels/Reservation/PreviewAndExport/ImageUrl.swift,
 				DataModels/Reservation/PreviewAndExport/PdfUrl.swift,
 				DataModels/Reservation/PreviewAndExport/PreviewUrl.swift,
+				DataModels/Reservation/Receipt/Receipt.swift,
+				DataModels/Reservation/Receipt/Receipts.swift,
 				DataModels/Reservation/Reservation.swift,
 				DataModels/Reservation/ReservationDetail.swift,
 				DataModels/Reservation/ReservationItem/ReservationItem.swift,
