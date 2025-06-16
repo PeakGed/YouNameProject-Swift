@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct PeriodDate {
+struct PeriodDate: Codable {
     
     var start: Date
     var end: Date
@@ -56,9 +56,9 @@ struct PeriodDate {
         return "\(startString) - \(endString)"
         
     }
-
+    
     init(start: Date,
-     end: Date) {
+         end: Date) {
         self.start = start
         self.end = end
     }

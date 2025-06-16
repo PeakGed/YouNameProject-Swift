@@ -14,6 +14,10 @@ struct GuestServiceRequest {
     typealias RemoveGuestCompany = ById
     typealias FetchGuest = ById
     typealias DeleteGuest = ById
+    
+    struct ById {
+        let id: Int
+    }
 
     struct FetchGuests: Encodable {
         let page: Int?
