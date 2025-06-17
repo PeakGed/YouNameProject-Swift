@@ -108,7 +108,7 @@ class AdditionalRouterServiceTests: XCTestCase {
         
         // Assert
         XCTAssertEqual(urlRequest.httpMethod, "GET")
-        XCTAssertTrue(urlRequest.url?.absoluteString.contains("/v4/additionals/created_at") ?? false)
+        XCTAssertTrue(urlRequest.url?.absoluteString.contains("/v4/additionals/created-at") ?? false)
         XCTAssertTrue(urlRequest.url?.absoluteString.contains("hotel_id=105") ?? false)
         XCTAssertTrue(urlRequest.url?.absoluteString.contains("page=1") ?? false)
         XCTAssertTrue(urlRequest.url?.absoluteString.contains("per_page=20") ?? false)
@@ -143,7 +143,7 @@ class AdditionalRouterServiceTests: XCTestCase {
         
         // Assert
         XCTAssertEqual(urlRequest.httpMethod, "GET")
-        XCTAssertTrue(urlRequest.url?.absoluteString.contains("/v4/additionals/date_issue") ?? false)
+        XCTAssertTrue(urlRequest.url?.absoluteString.contains("/v4/additionals/date-issue") ?? false)
         XCTAssertTrue(urlRequest.url?.absoluteString.contains("hotel_id=105") ?? false)
         XCTAssertTrue(urlRequest.url?.absoluteString.contains("page=1") ?? false)
         XCTAssertTrue(urlRequest.url?.absoluteString.contains("per_page=20") ?? false)
