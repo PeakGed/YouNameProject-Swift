@@ -8,77 +8,82 @@ import Foundation
 
 struct Additional: Codable {
     let id: Int
+    let hotelId: Int
+    let reservationId: Int
     let status: String
     let note: String
     let dateIssue: Date
-    let totalAmount: Double
+    let totalAmount: Double        
+    let additionalItems: AdditionalItems
     let createdAt: Date
     let updatedAt: Date
-    let hotelId: Int
-    let reservationId: Int
-    let additionalItems: AdditionalItems
     
     private enum CodingKeys: String, CodingKey {
         case id
+        case hotelId = "hotel_id"
+        case reservationId = "reservation_id"
         case status
         case note
         case dateIssue = "date_issue"
         case totalAmount = "total_amount"
         case createdAt = "created_at"
         case updatedAt = "updated_at"
-        case hotelId = "hotel_id"
-        case reservationId = "reservation_id"
         case additionalItems = "additional_items"
     }
     
     init(id: Int,
+         hotelId: Int,
+         reservationId: Int,
          status: String,
          note: String,
          dateIssue: Date,
          totalAmount: Double,
+         additionalItems: AdditionalItems,
          createdAt: Date,
-         updatedAt: Date,
-         hotelId: Int,
-         reservationId: Int,
-         additionalItems: AdditionalItems) {
+         updatedAt: Date
+) {
         self.id = id
+        self.hotelId = hotelId
+        self.reservationId = reservationId
         self.status = status
         self.note = note
         self.dateIssue = dateIssue
         self.totalAmount = totalAmount
         self.createdAt = createdAt
         self.updatedAt = updatedAt
-        self.hotelId = hotelId
-        self.reservationId = reservationId
         self.additionalItems = additionalItems
     }
     
     init(from decoder: Decoder) throws {
+        let isoDate = FormConfig.DateFormat.datetimeISO
+        
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(Int.self, forKey: .id)
-        status = try container.decode(String.self, forKey: .status)
-        note = try container.decode(String.self, forKey: .note)
-        dateIssue = try container.decode(String.self, forKey: .dateIssue).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
-        totalAmount = try container.decode(String.self, forKey: .totalAmount).tryToDouble()
-        createdAt = try container.decode(String.self, forKey: .createdAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
-        updatedAt = try container.decode(String.self, forKey: .updatedAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
         hotelId = try container.decode(Int.self, forKey: .hotelId)
         reservationId = try container.decode(Int.self, forKey: .reservationId)
+        status = try container.decode(String.self, forKey: .status)
+        note = try container.decode(String.self, forKey: .note)
+        dateIssue = try container.decode(String.self, forKey: .dateIssue).tryToDate(dateFormat: isoDate)
+        totalAmount = try container.decode(String.self, forKey: .totalAmount).tryToDouble()
         additionalItems = try container.decode(AdditionalItems.self, forKey: .additionalItems)
+        createdAt = try container.decode(String.self, forKey: .createdAt).tryToDate(dateFormat: isoDate)
+        updatedAt = try container.decode(String.self, forKey: .updatedAt).tryToDate(dateFormat: isoDate)
     }
     
     func encode(to encoder: Encoder) throws {
+        let isoDate = FormConfig.DateFormat.datetimeISO
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(status, forKey: .status)
-        try container.encode(note, forKey: .note)
-        try container.encode(dateIssue.toDateString(FormConfig.DateFormat.datetimeISO), forKey: .dateIssue)
-        try container.encode(totalAmount.toString(), forKey: .totalAmount)
-        try container.encode(createdAt.toDateString(FormConfig.DateFormat.datetimeISO), forKey: .createdAt)
-        try container.encode(updatedAt.toDateString(FormConfig.DateFormat.datetimeISO), forKey: .updatedAt)
         try container.encode(hotelId, forKey: .hotelId)
         try container.encode(reservationId, forKey: .reservationId)
+        try container.encode(status, forKey: .status)
+        try container.encode(note, forKey: .note)
+        try container.encode(totalAmount.toString(), forKey: .totalAmount)
+        try container.encode(dateIssue.toDateString(isoDate), forKey: .dateIssue)
         try container.encode(additionalItems, forKey: .additionalItems)
+        try container.encode(createdAt.toDateString(isoDate), forKey: .createdAt)
+        try container.encode(updatedAt.toDateString(isoDate), forKey: .updatedAt)
+        
     }
 }
 

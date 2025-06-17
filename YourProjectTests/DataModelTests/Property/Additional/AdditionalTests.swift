@@ -21,7 +21,7 @@ final class AdditionalTests: XCTestCase {
             itemableType: .foilo,
             additionalId: 273,
             createdAt: Date(timeIntervalSince1970: 1000),
-            updatedAt: Date(timeIntervalSince1970: 2000),
+            updatedAt: Date(timeIntervalSince1970: 2000)
         )
     }
     
@@ -33,15 +33,15 @@ final class AdditionalTests: XCTestCase {
         let items = AdditionalItems(array: [sampleAdditionalItem()])
         return Additional(
             id: 273,
+            hotelId: 105,
+            reservationId: 1067,
             status: "active",
             note: "",
             dateIssue: dateIssue,
             totalAmount: 111.11,
+            additionalItems: items,
             createdAt: createdAt,
-            updatedAt: updatedAt,
-            hotelId: 105,
-            reservationId: 1067,
-            additionalItems: items
+            updatedAt: updatedAt
         )
     }
     
@@ -50,11 +50,11 @@ final class AdditionalTests: XCTestCase {
     func test_initWithAllProperties() throws {
         let additional = try sampleAdditional()
         XCTAssertEqual(additional.id, 273)
+        XCTAssertEqual(additional.hotelId, 105)
+        XCTAssertEqual(additional.reservationId, 1067)
         XCTAssertEqual(additional.status, "active")
         XCTAssertEqual(additional.note, "")
         XCTAssertEqual(additional.totalAmount, 111.11)
-        XCTAssertEqual(additional.hotelId, 105)
-        XCTAssertEqual(additional.reservationId, 1067)
         
         // Test additional items
         XCTAssertEqual(additional.additionalItems.count, 1)
@@ -69,14 +69,12 @@ final class AdditionalTests: XCTestCase {
         let json = """
         {
             "id": 273,
+            "hotel_id": 105,
+            "reservation_id": 1067,
             "status": "active",
             "note": "",
             "date_issue": "2024-04-21T00:00:00.000+07:00",
             "total_amount": "111.11",
-            "created_at": "2024-04-21T13:33:16.144+07:00",
-            "updated_at": "2024-04-21T13:33:16.227+07:00",
-            "hotel_id": 105,
-            "reservation_id": 1067,
             "additional_items": [
                 {
                     "id": 454,
@@ -89,7 +87,9 @@ final class AdditionalTests: XCTestCase {
                     "updated_at": "2024-04-21T13:33:16.191+07:00",
                     "additional_id": 273
                 }
-            ]
+            ],
+            "created_at": "2024-04-21T13:33:16.144+07:00",
+            "updated_at": "2024-04-21T13:33:16.227+07:00"
         }
         """
         
@@ -97,11 +97,11 @@ final class AdditionalTests: XCTestCase {
         let additional = try JSONDecoder().decode(Additional.self, from: jsonData)
         
         XCTAssertEqual(additional.id, 273)
+        XCTAssertEqual(additional.hotelId, 105)
+        XCTAssertEqual(additional.reservationId, 1067)
         XCTAssertEqual(additional.status, "active")
         XCTAssertEqual(additional.note, "")
         XCTAssertEqual(additional.totalAmount, 111.11)
-        XCTAssertEqual(additional.hotelId, 105)
-        XCTAssertEqual(additional.reservationId, 1067)
         
         // Test additional items
         XCTAssertEqual(additional.additionalItems.count, 1)
@@ -123,11 +123,11 @@ final class AdditionalTests: XCTestCase {
         let jsonString = String(data: jsonData, encoding: .utf8)!
         
         XCTAssertTrue(jsonString.contains("\"id\" : 273"))
+        XCTAssertTrue(jsonString.contains("\"hotel_id\" : 105"))
+        XCTAssertTrue(jsonString.contains("\"reservation_id\" : 1067"))
         XCTAssertTrue(jsonString.contains("\"status\" : \"active\""))
         XCTAssertTrue(jsonString.contains("\"note\" : \"\""))
         XCTAssertTrue(jsonString.contains("\"total_amount\" : \"111.11\""))
-        XCTAssertTrue(jsonString.contains("\"hotel_id\" : 105"))
-        XCTAssertTrue(jsonString.contains("\"reservation_id\" : 1067"))        
         
         // Test additional items encoding
         XCTAssertTrue(jsonString.contains("\"price\" : \"111.11\""))
