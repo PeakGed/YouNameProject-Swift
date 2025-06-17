@@ -23,7 +23,7 @@ struct PreviewUrl: Decodable {
         return Foundation.URL(string: reqUrl)
     }
     
-    init(hostUrl: String = APIManager.shared.baseURL,
+    init(hostUrl: String = AppConfiguration.shared.baseURL,
         createdAt: Date,
          urlPath: String) {
         self.hostUrl = hostUrl
@@ -33,7 +33,7 @@ struct PreviewUrl: Decodable {
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        hostUrl = APIManager.shared.baseURL
+        hostUrl = AppConfiguration.shared.baseURL
         createdAt = try container.decode(String.self,
                                          forKey: .createdAt).tryToDate(FormConfig.DateFormat.datetimeISO)
         urlPath = try? container.decode(String.self, forKey: .urlPath)

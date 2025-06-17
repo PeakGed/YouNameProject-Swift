@@ -90,7 +90,7 @@ struct FolioServiceRequest {
         
         func encode(to encoder: any Encoder) throws {
             var container: KeyedEncodingContainer<FolioServiceRequest.CreateFolio.CodingKeys> = encoder.container(keyedBy: FolioServiceRequest.CreateFolio.CodingKeys.self)
-            try container.encode(self.name, forKey: .name)
+            try container.encodeIfPresent(self.name, forKey: .name)
             try container.encodeIfPresent(self.amount?.toString(), forKey: .amount)
             try container.encodeIfPresent(self.description, forKey: .description)
             try container.encodeIfPresent(self.categoryId, forKey: .categoryId)

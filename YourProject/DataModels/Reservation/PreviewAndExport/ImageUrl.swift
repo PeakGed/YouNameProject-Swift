@@ -20,7 +20,7 @@ struct ImageUrl: Decodable {
         return Foundation.URL(string: reqUrl)
     }
     
-    init(hostUrl: String = APIManager.shared.baseURL,
+    init(hostUrl: String = AppConfiguration.shared.baseURL,
          urlPath: String) {
         self.hostUrl = hostUrl
         self.urlPath = urlPath
@@ -28,7 +28,7 @@ struct ImageUrl: Decodable {
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        hostUrl = APIManager.shared.baseURL
+        hostUrl = AppConfiguration.shared.baseURL
         urlPath = try? container.decode(String.self, forKey: .urlPath)
     }
     
