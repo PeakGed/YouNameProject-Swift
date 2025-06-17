@@ -54,9 +54,9 @@ final class AdditionalItemTests: XCTestCase {
             totalAmount: 30.0,
             itemableId: 134,
             itemableType: .foilo,
+            additionalId: 261,
             createdAt: createdAt,
-            updatedAt: updatedAt,
-            additionalId: 261
+            updatedAt: updatedAt
         )
         
         let encoder = JSONEncoder()

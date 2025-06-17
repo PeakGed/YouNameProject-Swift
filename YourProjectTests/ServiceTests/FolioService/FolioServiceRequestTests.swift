@@ -18,7 +18,8 @@ class FolioServiceRequestTests: XCTestCase {
             page: 1,
             perPage: .twenty,
             sortedBy: .id,
-            sortedOrder: .ascending
+            sortedOrder: .ascending,
+            status: .available
         )
         
         // Act
@@ -31,6 +32,7 @@ class FolioServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["per_page"] as? String, "20")
         XCTAssertEqual(parameters?["sorted_by"] as? String, "ID")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "ASC")
+        XCTAssertEqual(parameters?["status"] as? String, "available")
     }
     
     func test_fetchFolios_withMinimalParameters_correctSerialization() throws {
@@ -40,7 +42,8 @@ class FolioServiceRequestTests: XCTestCase {
             page: nil,
             perPage: nil,
             sortedBy: nil,
-            sortedOrder: nil
+            sortedOrder: nil,
+            status: nil
         )
         
         // Act
@@ -53,6 +56,7 @@ class FolioServiceRequestTests: XCTestCase {
         XCTAssertNil(parameters?["per_page"])
         XCTAssertNil(parameters?["sorted_by"])
         XCTAssertNil(parameters?["sorted_order"])
+        XCTAssertNil(parameters?["status"])        
     }
     
     func test_fetchFolios_withDifferentSortOptions_correctSerialization() throws {
@@ -62,7 +66,8 @@ class FolioServiceRequestTests: XCTestCase {
             page: 2,
             perPage: .fifty,
             sortedBy: .name,
-            sortedOrder: .descending
+            sortedOrder: .descending,
+            status: .available
         )
         
         // Act
@@ -75,6 +80,7 @@ class FolioServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["per_page"] as? String, "50")
         XCTAssertEqual(parameters?["sorted_by"] as? String, "NAME")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "DESC")
+        XCTAssertEqual(parameters?["status"] as? String, "available")
     }
     
     func test_fetchFolios_withCreatedAtSort_correctSerialization() throws {
@@ -84,7 +90,8 @@ class FolioServiceRequestTests: XCTestCase {
             page: 3,
             perPage: .hundred,
             sortedBy: .createdAt,
-            sortedOrder: .ascending
+            sortedOrder: .ascending,
+            status: .available
         )
         
         // Act
@@ -93,6 +100,7 @@ class FolioServiceRequestTests: XCTestCase {
         // Assert
         XCTAssertEqual(parameters?["sorted_by"] as? String, "CREATED_AT")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "ASC")
+        XCTAssertEqual(parameters?["status"] as? String, "available")
     }
     
     func test_fetchFolios_withUpdatedAtSort_correctSerialization() throws {
@@ -102,7 +110,8 @@ class FolioServiceRequestTests: XCTestCase {
             page: 1,
             perPage: .ten,
             sortedBy: .updatedAt,
-            sortedOrder: .descending
+            sortedOrder: .descending,
+            status: .available
         )
         
         // Act
@@ -111,6 +120,7 @@ class FolioServiceRequestTests: XCTestCase {
         // Assert
         XCTAssertEqual(parameters?["sorted_by"] as? String, "UPDATED_AT")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "DESC")
+        XCTAssertEqual(parameters?["status"] as? String, "available")
     }
     
     // MARK: - FetchFolio Tests

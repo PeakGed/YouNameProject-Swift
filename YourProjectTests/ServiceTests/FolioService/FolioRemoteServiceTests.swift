@@ -33,7 +33,8 @@ final class FolioRemoteServiceTests: XCTestCase {
             page: 1,
             perPage: .twenty,
             sortedBy: .id,
-            sortedOrder: .ascending
+            sortedOrder: .ascending,
+            status: .available
         )
 
         // When

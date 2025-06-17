@@ -23,11 +23,14 @@ final class FolioServiceRouterTests: XCTestCase {
     
     func testFetchFoliosRequest() throws {
         // Given
-        let req = FolioServiceRequest.FetchFolios(hotelId: 101,
-                                                  page: 1,
-                                                  perPage: .twenty,
-                                                  sortedBy: .id,
-                                                  sortedOrder: .ascending)
+        let req = FolioServiceRequest.FetchFolios(
+            hotelId: 101,
+            page: 1,
+            perPage: .twenty,
+            sortedBy: .id,
+            sortedOrder: .ascending,
+            status: .available
+        )
         let router = FolioServiceRouter.fetchFolios(request: req)
         
         // When
@@ -35,7 +38,7 @@ final class FolioServiceRouterTests: XCTestCase {
         
         // Then
         XCTAssertEqual(urlRequest.url?.absoluteString,
-                       baseURL + "/v4/folios?hotel_id=101&page=1&per_page=20&sorted_by=ID&sorted_order=ASC")
+                       baseURL + "/v4/folios?hotel_id=101&page=1&per_page=20&sorted_by=ID&sorted_order=ASC&status=available")
         XCTAssertEqual(urlRequest.httpMethod,
                        HTTPMethod.get.rawValue)
     }

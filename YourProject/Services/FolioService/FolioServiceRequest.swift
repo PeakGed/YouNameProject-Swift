@@ -7,6 +7,10 @@
 import Foundation
 
 struct FolioServiceRequest {
+    typealias FetchFolio = ByID
+    typealias DeleteFolio = ByID
+
+    struct ByID { let id: Int }
     
     enum SortedBy: String, Codable {
         case id = "ID"
@@ -28,16 +32,7 @@ struct FolioServiceRequest {
         let perPage: PerPage?
         let sortedBy: SortedBy?
         let sortedOrder: ServiceSortedOrder?
-        
-        var parameters: [String: Any]? {
-            var params: [String: Any] = [:]
-            params["hotel_id"] = hotelId
-            if let page = page { params["page"] = page }
-            if let perPage = perPage { params["per_page"] = perPage.rawValue }
-            if let sortedBy = sortedBy { params["sorted_by"] = sortedBy.rawValue }
-            if let sortedOrder = sortedOrder { params["sorted_order"] = sortedOrder.rawValue }
-            return params
-        }
+        let status: Folio.Status?
         
         enum CodingKeys: String, CodingKey {
             case hotelId = "hotel_id"
@@ -45,11 +40,36 @@ struct FolioServiceRequest {
             case perPage = "per_page"
             case sortedBy = "sorted_by"
             case sortedOrder = "sorted_order"
+            case status
         }
-    }
-    
-    struct FetchFolio {
-        let id: Int
+        
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(hotelId, forKey: .hotelId)
+            if let page = page, page >= 1 {
+                try container.encode(page, forKey: .page)
+            }
+            if let perPage = perPage {
+                try container.encode(perPage.rawValue, forKey: .perPage)
+            }
+            if let sortedBy = sortedBy {
+                try container.encode(sortedBy.rawValue, forKey: .sortedBy)
+            }
+            if let sortedOrder = sortedOrder {
+                try container.encode(sortedOrder.rawValue, forKey: .sortedOrder)
+            }
+            if let status = status {
+                try container.encode(status.rawValue, forKey: .status)
+            }
+        }
+        
+        var parameters: [String: Any]? {
+            guard let data = try? JSONEncoder().encode(self),
+                  let dict = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+                return nil
+            }
+            return dict
+        }
     }
     
     struct CreateFolio: Encodable {
@@ -60,16 +80,6 @@ struct FolioServiceRequest {
         let categoryId: Int?
         let amountVatOption: VatOption
         
-        func encode(to encoder: any Encoder) throws {
-            var container: KeyedEncodingContainer<FolioServiceRequest.CreateFolio.CodingKeys> = encoder.container(keyedBy: FolioServiceRequest.CreateFolio.CodingKeys.self)
-            try container.encode(self.hotelId, forKey: .hotelId)
-            try container.encode(self.name, forKey: .name)
-            try container.encode(self.amount.toString(), forKey: .amount)
-            try container.encodeIfPresent(self.description, forKey: .description)
-            try container.encodeIfPresent(self.categoryId, forKey: .categoryId)
-            try container.encode(self.amountVatOption.rawValue, forKey: .amountVatOption)
-        }
-        
         enum CodingKeys: String, CodingKey {
             case hotelId = "hotel_id"
             case name
@@ -77,6 +87,20 @@ struct FolioServiceRequest {
             case description
             case categoryId = "category_id"
             case amountVatOption = "amount_vat_option"
+        }
+        
+        var body: Data? {
+            return try? JSONEncoder().encode(self)
+        }
+
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(hotelId, forKey: .hotelId)
+            try container.encode(name, forKey: .name)
+            try container.encode("\(amount)", forKey: .amount)
+            try container.encodeIfPresent(description, forKey: .description)
+            try container.encodeIfPresent(categoryId, forKey: .categoryId)
+            try container.encode(amountVatOption.rawValue, forKey: .amountVatOption)
         }
     }
     
@@ -88,15 +112,6 @@ struct FolioServiceRequest {
         let categoryId: Int?
         let amountVatOption: VatOption?
         
-        func encode(to encoder: any Encoder) throws {
-            var container: KeyedEncodingContainer<FolioServiceRequest.CreateFolio.CodingKeys> = encoder.container(keyedBy: FolioServiceRequest.CreateFolio.CodingKeys.self)
-            try container.encodeIfPresent(self.name, forKey: .name)
-            try container.encodeIfPresent(self.amount?.toString(), forKey: .amount)
-            try container.encodeIfPresent(self.description, forKey: .description)
-            try container.encodeIfPresent(self.categoryId, forKey: .categoryId)
-            try container.encodeIfPresent(self.amountVatOption?.rawValue, forKey: .amountVatOption)
-        }
-        
         enum CodingKeys: String, CodingKey {
             case name
             case amount
@@ -105,10 +120,20 @@ struct FolioServiceRequest {
             case amountVatOption = "amount_vat_option"
             // id is not encoded as it's used in the URL path
         }
+        
+        var body: Data? {
+            return try? JSONEncoder().encode(self)
+        }
+        
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encodeIfPresent(name, forKey: .name)
+            if let amount = amount {
+                try container.encode("\(amount)", forKey: .amount)
+            }
+            try container.encodeIfPresent(description, forKey: .description)
+            try container.encodeIfPresent(categoryId, forKey: .categoryId)
+            try container.encodeIfPresent(amountVatOption?.rawValue, forKey: .amountVatOption)
+        }
     }
-    
-    struct DeleteFolio {
-        let id: Int
-    }
-   
 } 

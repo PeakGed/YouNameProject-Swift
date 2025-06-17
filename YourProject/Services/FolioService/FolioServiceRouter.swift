@@ -66,9 +66,9 @@ enum FolioServiceRouter: AlamofireBaseRouterProtocol {
     var body: Data? {
         switch self {
         case .createFolio(let request):
-            return try? JSONEncoder().encode(request)
+            return request.body
         case .updateFolio(let request):
-            return try? JSONEncoder().encode(request)
+            return request.body
         default:
             return nil
         }

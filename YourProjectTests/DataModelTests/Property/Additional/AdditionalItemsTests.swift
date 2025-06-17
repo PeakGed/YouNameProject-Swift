@@ -78,9 +78,9 @@ final class AdditionalItemsTests: XCTestCase {
                 totalAmount: 111.11,
                 itemableId: 130,
                 itemableType: .foilo,
+                additionalId: 273,
                 createdAt: date,
-                updatedAt: date,
-                additionalId: 273
+                updatedAt: date
             ),
             AdditionalItem(
                 id: 455,
@@ -89,9 +89,9 @@ final class AdditionalItemsTests: XCTestCase {
                 totalAmount: 444.44,
                 itemableId: 131,
                 itemableType: .foilo,
+                additionalId: 274,
                 createdAt: date,
-                updatedAt: date,
-                additionalId: 274
+                updatedAt: date
             )
         ])
         

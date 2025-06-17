@@ -26,9 +26,11 @@ struct AdditionalItem: Codable {
         totalAmount = try container.decode(String.self, forKey: .totalAmount).tryToDouble()
         itemableId = try container.decode(Int.self, forKey: .itemableId)
         itemableType = try container.decode(ItemType.self, forKey: .itemableType)
-        createdAt = try container.decode(String.self, forKey: .createdAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
-        updatedAt = try container.decode(String.self, forKey: .updatedAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
         additionalId = try container.decode(Int.self, forKey: .additionalId)
+        
+        let isoDate = FormConfig.DateFormat.datetimeISO
+        createdAt = try container.decode(String.self, forKey: .createdAt).tryToDate(dateFormat: isoDate)
+        updatedAt = try container.decode(String.self, forKey: .updatedAt).tryToDate(dateFormat: isoDate)        
     }
     
     init(id: Int,
@@ -37,18 +39,19 @@ struct AdditionalItem: Codable {
          totalAmount: Double,
          itemableId: Int,
          itemableType: ItemType,
+         additionalId: Int,
          createdAt: Date,
-         updatedAt: Date,
-         additionalId: Int) {
+         updatedAt: Date
+         ) {
         self.id = id
         self.price = price
         self.quantity = quantity
         self.totalAmount = totalAmount
         self.itemableId = itemableId
         self.itemableType = itemableType
+        self.additionalId = additionalId
         self.createdAt = createdAt
         self.updatedAt = updatedAt
-        self.additionalId = additionalId
     }
     
     func encode(to encoder: Encoder) throws {
@@ -58,10 +61,11 @@ struct AdditionalItem: Codable {
         try container.encode(quantity, forKey: .quantity)
         try container.encode(totalAmount.toString(), forKey: .totalAmount)
         try container.encode(itemableId, forKey: .itemableId)
-        try container.encode(itemableType, forKey: .itemableType)
-        try container.encode(createdAt.toDateString(FormConfig.DateFormat.datetimeISO), forKey: .createdAt)
-        try container.encode(updatedAt.toDateString(FormConfig.DateFormat.datetimeISO), forKey: .updatedAt)
+        try container.encode(itemableType.rawValue, forKey: .itemableType)
         try container.encode(additionalId, forKey: .additionalId)
+        let isoDate = FormConfig.DateFormat.datetimeISO
+        try container.encode(createdAt.toDateString(isoDate), forKey: .createdAt)
+        try container.encode(updatedAt.toDateString(isoDate), forKey: .updatedAt)        
     }
     
     

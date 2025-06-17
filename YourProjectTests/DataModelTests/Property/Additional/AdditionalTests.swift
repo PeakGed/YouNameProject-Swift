@@ -19,9 +19,9 @@ final class AdditionalTests: XCTestCase {
             totalAmount: 111.11,
             itemableId: 130,
             itemableType: .foilo,
+            additionalId: 273,
             createdAt: Date(timeIntervalSince1970: 1000),
             updatedAt: Date(timeIntervalSince1970: 2000),
-            additionalId: 273
         )
     }
     
