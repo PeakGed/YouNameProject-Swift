@@ -31,18 +31,17 @@ final class AdditionalTests: XCTestCase {
         let updatedAt = try "2024-04-21T13:33:16.227+07:00".tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
         
         let items = AdditionalItems(array: [sampleAdditionalItem()])
-        return Additional(
-            id: 273,
-            hotelId: 105,
-            reservationId: 1067,
-            status: "active",
-            note: "",
-            dateIssue: dateIssue,
-            totalAmount: 111.11,
-            additionalItems: items,
-            createdAt: createdAt,
-            updatedAt: updatedAt
-        )
+        
+        return Additional(id: 273,
+                          hotelId: 105,
+                          reservationId: 1067,
+                          status: .active,
+                          note: "",
+                          dateIssue: dateIssue,
+                          totalAmount: 111.11,
+                          additionalItems: items,
+                          createdAt: createdAt,
+                          updatedAt: updatedAt)
     }
     
     // MARK: - Additional Tests
@@ -52,7 +51,7 @@ final class AdditionalTests: XCTestCase {
         XCTAssertEqual(additional.id, 273)
         XCTAssertEqual(additional.hotelId, 105)
         XCTAssertEqual(additional.reservationId, 1067)
-        XCTAssertEqual(additional.status, "active")
+        XCTAssertEqual(additional.status, .active)
         XCTAssertEqual(additional.note, "")
         XCTAssertEqual(additional.totalAmount, 111.11)
         
@@ -99,7 +98,7 @@ final class AdditionalTests: XCTestCase {
         XCTAssertEqual(additional.id, 273)
         XCTAssertEqual(additional.hotelId, 105)
         XCTAssertEqual(additional.reservationId, 1067)
-        XCTAssertEqual(additional.status, "active")
+        XCTAssertEqual(additional.status, .active)
         XCTAssertEqual(additional.note, "")
         XCTAssertEqual(additional.totalAmount, 111.11)
         

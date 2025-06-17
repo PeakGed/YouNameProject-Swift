@@ -10,7 +10,7 @@ struct Additional: Codable {
     let id: Int
     let hotelId: Int
     let reservationId: Int
-    let status: String
+    let status: Status
     let note: String
     let dateIssue: Date
     let totalAmount: Double        
@@ -34,7 +34,7 @@ struct Additional: Codable {
     init(id: Int,
          hotelId: Int,
          reservationId: Int,
-         status: String,
+         status: Status,
          note: String,
          dateIssue: Date,
          totalAmount: Double,
@@ -61,7 +61,7 @@ struct Additional: Codable {
         id = try container.decode(Int.self, forKey: .id)
         hotelId = try container.decode(Int.self, forKey: .hotelId)
         reservationId = try container.decode(Int.self, forKey: .reservationId)
-        status = try container.decode(String.self, forKey: .status)
+        status = try container.decode(Status.self, forKey: .status)
         note = try container.decode(String.self, forKey: .note)
         dateIssue = try container.decode(String.self, forKey: .dateIssue).tryToDate(dateFormat: isoDate)
         totalAmount = try container.decode(String.self, forKey: .totalAmount).tryToDouble()
@@ -76,7 +76,7 @@ struct Additional: Codable {
         try container.encode(id, forKey: .id)
         try container.encode(hotelId, forKey: .hotelId)
         try container.encode(reservationId, forKey: .reservationId)
-        try container.encode(status, forKey: .status)
+        try container.encode(status.rawValue, forKey: .status)
         try container.encode(note, forKey: .note)
         try container.encode(totalAmount.toString(), forKey: .totalAmount)
         try container.encode(dateIssue.toDateString(isoDate), forKey: .dateIssue)
@@ -84,6 +84,14 @@ struct Additional: Codable {
         try container.encode(createdAt.toDateString(isoDate), forKey: .createdAt)
         try container.encode(updatedAt.toDateString(isoDate), forKey: .updatedAt)
         
+    }
+}
+
+extension Additional {
+    
+    enum Status: String, Codable {
+        case active = "active"
+        case void = "void"
     }
 }
 
