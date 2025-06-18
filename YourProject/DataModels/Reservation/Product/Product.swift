@@ -106,8 +106,8 @@ struct Product: Codable {
 
 extension Product {
     enum VatOption: String, Codable {
-        case includedVat = "included_vat"
-        case excludedVat = "excluded_vat"
+        case includedVat = "IncludedVat"
+        case excludedVat = "ExcludedVat"
     }
 }
 
@@ -121,9 +121,9 @@ extension Product {
              "code": "",
              "category_id": null,
              "selling_price": "11.11",
-             "selling_vat_option": "excluded_vat",
+             "selling_vat_option": "ExcludedVat",
              "buying_price": "22.22",
-             "buying_vat_option": "included_vat",
+             "buying_vat_option": "IncludedVat",
              "created_at": "2025-06-18T11:18:16.296+07:00",
              "updated_at": "2025-06-18T11:18:16.296+07:00",
              "hotel_id": 105

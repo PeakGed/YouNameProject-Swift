@@ -247,9 +247,9 @@ class ProductServiceRouterTests: XCTestCase {
             XCTAssertEqual(bodyDict["code"] as? String, "PROD001")
             XCTAssertEqual(bodyDict["category_id"] as? Int, 1)
             XCTAssertEqual(bodyDict["selling_price"] as? String, "100.0")
-            XCTAssertEqual(bodyDict["selling_vat_option"] as? String, "excluded_vat")
+            XCTAssertEqual(bodyDict["selling_vat_option"] as? String, "ExcludedVat")
             XCTAssertEqual(bodyDict["buying_price"] as? String, "80.0")
-            XCTAssertEqual(bodyDict["buying_vat_option"] as? String, "included_vat")
+            XCTAssertEqual(bodyDict["buying_vat_option"] as? String, "IncludedVat")
         } else {
             XCTFail("Failed to parse request body")
         }
