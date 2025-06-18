@@ -26,7 +26,9 @@ class ProductUnitServiceRouterTests: XCTestCase {
             page: 1,
             perPage: .twenty,
             sortedBy: .unit,
-            sortedOrder: .ascending
+            sortedOrder: .ascending,
+            kind: nil,
+            query: nil
         )
         let router = ProductUnitServiceRouter.fetchByHotel(request: request)
         
@@ -43,7 +45,9 @@ class ProductUnitServiceRouterTests: XCTestCase {
             page: 1,
             perPage: .twenty,
             sortedBy: .unit,
-            sortedOrder: .ascending
+            sortedOrder: .ascending,
+            kind: nil,
+            query: nil
         )
         let router = ProductUnitServiceRouter.fetchByHotel(request: request)
         
@@ -62,7 +66,9 @@ class ProductUnitServiceRouterTests: XCTestCase {
             page: 1,
             perPage: .twenty,
             sortedBy: .unit,
-            sortedOrder: .ascending
+            sortedOrder: .ascending,
+            kind: nil,
+            query: nil
         )
         let router = ProductUnitServiceRouter.fetchByHotel(request: request)
         
@@ -85,7 +91,9 @@ class ProductUnitServiceRouterTests: XCTestCase {
             page: 1,
             perPage: .twenty,
             sortedBy: .unit,
-            sortedOrder: .ascending
+            sortedOrder: .ascending,
+            kind: nil,
+            query: nil
         )
         let router = ProductUnitServiceRouter.fetchByHotel(request: request)
         
@@ -254,11 +262,86 @@ class ProductUnitServiceRouterTests: XCTestCase {
         XCTAssertNil(urlRequest.httpBody)
     }
     
+    // MARK: - Test fetchByHotel with filters
+    
+    func testFetchByHotel_WithKindFilter_Parameters() {
+        // Given
+        let request = ProductUnitServiceRequest.FetchByHotel(
+            hotelId: 105,
+            page: 1,
+            perPage: .twenty,
+            sortedBy: .unit,
+            sortedOrder: .ascending,
+            kind: .product,
+            query: nil
+        )
+        let router = ProductUnitServiceRouter.fetchByHotel(request: request)
+        
+        // When
+        let parameters = router.parameters
+        
+        // Then
+        XCTAssertNotNil(parameters)
+        XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
+        XCTAssertEqual(parameters?["kind"] as? String, "Product")
+        XCTAssertNil(parameters?["q"])
+    }
+    
+    func testFetchByHotel_WithQueryFilter_Parameters() {
+        // Given
+        let request = ProductUnitServiceRequest.FetchByHotel(
+            hotelId: 105,
+            page: 1,
+            perPage: .fifty,
+            sortedBy: .unit,
+            sortedOrder: .descending,
+            kind: nil,
+            query: "piece"
+        )
+        let router = ProductUnitServiceRouter.fetchByHotel(request: request)
+        
+        // When
+        let parameters = router.parameters
+        
+        // Then
+        XCTAssertNotNil(parameters)
+        XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
+        XCTAssertNil(parameters?["kind"])
+        XCTAssertEqual(parameters?["q"] as? String, "piece")
+    }
+    
+    func testFetchByHotel_WithBothFilters_Parameters() {
+        // Given
+        let request = ProductUnitServiceRequest.FetchByHotel(
+            hotelId: 105,
+            page: 2,
+            perPage: .hundred,
+            sortedBy: .kind,
+            sortedOrder: .ascending,
+            kind: .service,
+            query: "hour"
+        )
+        let router = ProductUnitServiceRouter.fetchByHotel(request: request)
+        
+        // When
+        let parameters = router.parameters
+        
+        // Then
+        XCTAssertNotNil(parameters)
+        XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
+        XCTAssertEqual(parameters?["page"] as? Int, 2)
+        XCTAssertEqual(parameters?["per_page"] as? String, "100")
+        XCTAssertEqual(parameters?["sorted_by"] as? String, "KIND")
+        XCTAssertEqual(parameters?["sorted_order"] as? String, "ASC")
+        XCTAssertEqual(parameters?["kind"] as? String, "Service")
+        XCTAssertEqual(parameters?["q"] as? String, "hour")
+    }
+    
     // MARK: - Test Headers for All Cases
     
     func testHeaders_ConsistentAcrossAllCases() {
         let testCases: [ProductUnitServiceRouter] = [
-            .fetchByHotel(request: ProductUnitServiceRequest.FetchByHotel(hotelId: 105, page: nil, perPage: nil, sortedBy: nil, sortedOrder: nil)),
+            .fetchByHotel(request: ProductUnitServiceRequest.FetchByHotel(hotelId: 105, page: nil, perPage: nil, sortedBy: nil, sortedOrder: nil, kind: nil, query: nil)),
             .fetchById(request: ProductUnitServiceRequest.FetchById(id: 1)),
             .createProductUnit(request: ProductUnitServiceRequest.CreateProductUnit(hotelId: 105, unit: "test", kind: .product)),
             .updateProductUnit(request: ProductUnitServiceRequest.UpdateProductUnit(id: 1, hotelId: 105, unit: "test", kind: .product)),

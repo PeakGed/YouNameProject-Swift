@@ -19,7 +19,9 @@ class ProductUnitServiceRequestTests: XCTestCase {
             page: 1,
             perPage: .twenty,
             sortedBy: .unit,
-            sortedOrder: .ascending
+            sortedOrder: .ascending,
+            kind: .product,
+            query: "test search"
         )
         
         // When
@@ -32,6 +34,8 @@ class ProductUnitServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["per_page"] as? String, "20")
         XCTAssertEqual(parameters?["sorted_by"] as? String, "UNIT")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "ASC")
+        XCTAssertEqual(parameters?["kind"] as? String, "Product")
+        XCTAssertEqual(parameters?["q"] as? String, "test search")
     }
     
     func testFetchByHotel_EncodingWithMinimalParameters() throws {
@@ -41,7 +45,9 @@ class ProductUnitServiceRequestTests: XCTestCase {
             page: nil,
             perPage: nil,
             sortedBy: nil,
-            sortedOrder: nil
+            sortedOrder: nil,
+            kind: nil,
+            query: nil
         )
         
         // When
@@ -54,6 +60,60 @@ class ProductUnitServiceRequestTests: XCTestCase {
         XCTAssertNil(parameters?["per_page"])
         XCTAssertNil(parameters?["sorted_by"])
         XCTAssertNil(parameters?["sorted_order"])
+        XCTAssertNil(parameters?["kind"])
+        XCTAssertNil(parameters?["q"])
+    }
+    
+    func testFetchByHotel_EncodingWithServiceKind() throws {
+        // Given
+        let request = ProductUnitServiceRequest.FetchByHotel(
+            hotelId: 105,
+            page: 1,
+            perPage: .fifty,
+            sortedBy: .kind,
+            sortedOrder: .descending,
+            kind: .service,
+            query: nil
+        )
+        
+        // When
+        let parameters = request.parameters
+        
+        // Then
+        XCTAssertNotNil(parameters)
+        XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
+        XCTAssertEqual(parameters?["page"] as? Int, 1)
+        XCTAssertEqual(parameters?["per_page"] as? String, "50")
+        XCTAssertEqual(parameters?["sorted_by"] as? String, "KIND")
+        XCTAssertEqual(parameters?["sorted_order"] as? String, "DESC")
+        XCTAssertEqual(parameters?["kind"] as? String, "Service")
+        XCTAssertNil(parameters?["q"])
+    }
+    
+    func testFetchByHotel_EncodingWithQueryOnly() throws {
+        // Given
+        let request = ProductUnitServiceRequest.FetchByHotel(
+            hotelId: 105,
+            page: nil,
+            perPage: nil,
+            sortedBy: nil,
+            sortedOrder: nil,
+            kind: nil,
+            query: "piece"
+        )
+        
+        // When
+        let parameters = request.parameters
+        
+        // Then
+        XCTAssertNotNil(parameters)
+        XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
+        XCTAssertNil(parameters?["page"])
+        XCTAssertNil(parameters?["per_page"])
+        XCTAssertNil(parameters?["sorted_by"])
+        XCTAssertNil(parameters?["sorted_order"])
+        XCTAssertNil(parameters?["kind"])
+        XCTAssertEqual(parameters?["q"] as? String, "piece")
     }
     
     func testFetchByHotel_EncodingWithInvalidPage() throws {
@@ -63,7 +123,9 @@ class ProductUnitServiceRequestTests: XCTestCase {
             page: 0, // Invalid page number
             perPage: .twenty,
             sortedBy: .unit,
-            sortedOrder: .ascending
+            sortedOrder: .ascending,
+            kind: .product,
+            query: nil
         )
         
         // When
@@ -72,6 +134,7 @@ class ProductUnitServiceRequestTests: XCTestCase {
         // Then
         XCTAssertNotNil(parameters)
         XCTAssertNil(parameters?["page"]) // Should be nil for invalid page
+        XCTAssertEqual(parameters?["kind"] as? String, "Product")
     }
     
     func testFetchByHotel_AllSortedByOptions() throws {
@@ -87,7 +150,9 @@ class ProductUnitServiceRequestTests: XCTestCase {
                 page: 1,
                 perPage: .twenty,
                 sortedBy: sortedBy,
-                sortedOrder: .ascending
+                sortedOrder: .ascending,
+                kind: nil,
+                query: nil
             )
             
             // When

@@ -40,7 +40,9 @@ class ProductUnitRemoteServiceTests: XCTestCase {
             page: 1,
             perPage: .twenty,
             sortedBy: .unit,
-            sortedOrder: .ascending
+            sortedOrder: .ascending,
+            kind: nil,
+            query: nil
         )
         
         given(mockAPIManager)
@@ -67,7 +69,9 @@ class ProductUnitRemoteServiceTests: XCTestCase {
             page: 1,
             perPage: .twenty,
             sortedBy: .unit,
-            sortedOrder: .ascending
+            sortedOrder: .ascending,
+            kind: nil,
+            query: nil
         )
         
         let error = APIError.unknownError(title: "Stub Error",
@@ -298,6 +302,97 @@ class ProductUnitRemoteServiceTests: XCTestCase {
                 XCTFail("Unexpected error type")
             }
         }
+    }
+    
+    // MARK: - Test fetchByHotel with filtering
+    
+    func testFetchByHotel_WithKindFilter_Success() async throws {
+        // Arrange
+        let expectedPaginator = createMockProductUnitPaginator()
+        
+        let request = ProductUnitServiceRequest.FetchByHotel(
+            hotelId: 105,
+            page: 1,
+            perPage: .twenty,
+            sortedBy: .unit,
+            sortedOrder: .ascending,
+            kind: .product,
+            query: nil
+        )
+        
+        given(mockAPIManager)
+            .request(router: .any, requiredAuthorization: .any)
+            .willReturn(expectedPaginator)
+        
+        // Act
+        let result = try await sut.fetchByHotel(request: request)
+        
+        // Assert
+        XCTAssertEqual(result.items.lists.count, 2)
+        XCTAssertEqual(result.items.lists.first?.kind, .product)
+        
+        verify(mockAPIManager)
+            .request(router: .any, requiredAuthorization: .value(true))
+            .called(1)
+    }
+    
+    func testFetchByHotel_WithQueryFilter_Success() async throws {
+        // Arrange
+        let expectedPaginator = createMockProductUnitPaginator()
+        
+        let request = ProductUnitServiceRequest.FetchByHotel(
+            hotelId: 105,
+            page: 1,
+            perPage: .twenty,
+            sortedBy: .unit,
+            sortedOrder: .ascending,
+            kind: nil,
+            query: "piece"
+        )
+        
+        given(mockAPIManager)
+            .request(router: .any, requiredAuthorization: .any)
+            .willReturn(expectedPaginator)
+        
+        // Act
+        let result = try await sut.fetchByHotel(request: request)
+        
+        // Assert
+        XCTAssertEqual(result.items.lists.count, 2)
+        XCTAssertEqual(result.items.lists.first?.unit, "piece")
+        
+        verify(mockAPIManager)
+            .request(router: .any, requiredAuthorization: .value(true))
+            .called(1)
+    }
+    
+    func testFetchByHotel_WithBothKindAndQueryFilter_Success() async throws {
+        // Arrange
+        let expectedPaginator = createMockProductUnitPaginator()
+        
+        let request = ProductUnitServiceRequest.FetchByHotel(
+            hotelId: 105,
+            page: 1,
+            perPage: .fifty,
+            sortedBy: .kind,
+            sortedOrder: .descending,
+            kind: .service,
+            query: "hour"
+        )
+        
+        given(mockAPIManager)
+            .request(router: .any, requiredAuthorization: .any)
+            .willReturn(expectedPaginator)
+        
+        // Act
+        let result = try await sut.fetchByHotel(request: request)
+        
+        // Assert
+        XCTAssertEqual(result.items.lists.count, 2)
+        
+        verify(mockAPIManager)
+            .request(router: .any, requiredAuthorization: .value(true))
+            .called(1)
     }
     
     // MARK: - Helper Methods

@@ -27,6 +27,8 @@ struct ProductUnitServiceRequest {
         let perPage: PerPage?
         let sortedBy: SortedBy?
         let sortedOrder: ServiceSortedOrder?
+        let kind: ProductUnit.Kind?
+        let query: String?
         
         enum CodingKeys: String, CodingKey {
             case hotelId = "hotel_id"
@@ -34,6 +36,8 @@ struct ProductUnitServiceRequest {
             case perPage = "per_page"
             case sortedBy = "sorted_by"
             case sortedOrder = "sorted_order"
+            case kind
+            case query = "q"
         }
         
         func encode(to encoder: Encoder) throws {
@@ -50,6 +54,12 @@ struct ProductUnitServiceRequest {
             }
             if let sortedOrder = sortedOrder {
                 try container.encode(sortedOrder.rawValue, forKey: .sortedOrder)
+            }
+            if let kind = kind {
+                try container.encode(kind.rawValue, forKey: .kind)
+            }
+            if let query = query {
+                try container.encode(query, forKey: .query)
             }
         }
         
