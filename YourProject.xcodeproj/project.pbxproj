@@ -132,6 +132,8 @@
 				DataModels/Reservation/FinancialRecord/FinancialRecords.swift,
 				DataModels/Reservation/FolioForm/FolioForm.swift,
 				DataModels/Reservation/FolioForm/FolioForms.swift,
+				DataModels/Reservation/GuestRegisterCard/GuestRegisterCard.swift,
+				DataModels/Reservation/GuestRegisterCard/GuestRegisterCards.swift,
 				DataModels/Reservation/PreviewAndExport/ImageUrl.swift,
 				DataModels/Reservation/PreviewAndExport/PdfUrl.swift,
 				DataModels/Reservation/PreviewAndExport/PreviewUrl.swift,
