@@ -540,4 +540,7 @@ class {ServiceName}RouterServiceTests: XCTestCase {
 - Use ISO date formats where needed
 - Create comprehensive mock data in helper methods
 
+### Do not do
+- do not run xbuild , i will run it manually
+
 Follow these patterns exactly when generating new service files and tests. Maintain consistency with existing services like ReceiptService and BankAccountService. 
