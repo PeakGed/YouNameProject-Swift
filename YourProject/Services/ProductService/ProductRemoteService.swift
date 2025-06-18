@@ -11,8 +11,6 @@ import Mockable
 @Mockable
 protocol ProductServiceProtocol: AnyObject {
     func fetchByHotel(request: ProductServiceRequest.FetchByHotel) async throws -> Paginator<Product>
-    func fetchByQuery(request: ProductServiceRequest.FetchByQuery) async throws -> Paginator<Product>
-    func fetchByCategory(request: ProductServiceRequest.FetchByCategory) async throws -> Paginator<Product>
     
     func fetchById(request: ProductServiceRequest.FetchById) async throws -> Product
     
@@ -34,17 +32,7 @@ class ProductRemoteService: ProductServiceProtocol {
     func fetchByHotel(request: ProductServiceRequest.FetchByHotel) async throws -> Paginator<Product> {
         let router = ProductServiceRouter.fetchByHotel(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
-    }
-    
-    func fetchByQuery(request: ProductServiceRequest.FetchByQuery) async throws -> Paginator<Product> {
-        let router = ProductServiceRouter.fetchByQuery(request: request)
-        return try await apiManager.request(router: router, requiredAuthorization: true)
-    }
-    
-    func fetchByCategory(request: ProductServiceRequest.FetchByCategory) async throws -> Paginator<Product> {
-        let router = ProductServiceRouter.fetchByCategory(request: request)
-        return try await apiManager.request(router: router, requiredAuthorization: true)
-    }
+    }    
     
     func fetchById(request: ProductServiceRequest.FetchById) async throws -> Product {
         let router = ProductServiceRouter.fetchById(request: request)

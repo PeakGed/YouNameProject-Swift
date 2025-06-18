@@ -1,5 +1,5 @@
 //
-//  ProductServiceRouter.swift
+//  ProductUnitServiceRouter.swift
 //  YourProject
 //
 //  Created by AI Assistant
@@ -8,14 +8,13 @@
 import Alamofire
 import Foundation
 
-enum ProductServiceRouter: AlamofireBaseRouterProtocol {
-    case fetchByHotel(request: ProductServiceRequest.FetchByHotel)
+enum ProductUnitServiceRouter: AlamofireBaseRouterProtocol {
+    case fetchByHotel(request: ProductUnitServiceRequest.FetchByHotel)
     
-    case fetchById(request: ProductServiceRequest.FetchById)
-    
-    case createProduct(request: ProductServiceRequest.CreateProduct)
-    case updateProduct(request: ProductServiceRequest.UpdateProduct)
-    case deleteProduct(request: ProductServiceRequest.DeleteProduct)
+    case fetchById(request: ProductUnitServiceRequest.FetchById)
+    case createProductUnit(request: ProductUnitServiceRequest.CreateProductUnit)
+    case updateProductUnit(request: ProductUnitServiceRequest.UpdateProductUnit)
+    case deleteProductUnit(request: ProductUnitServiceRequest.DeleteProductUnit)
 
     var domain: String {
         return AppConfiguration.shared.baseURL
@@ -24,15 +23,15 @@ enum ProductServiceRouter: AlamofireBaseRouterProtocol {
     var path: String {
         switch self {
         case .fetchByHotel:
-            return "/v4/products"
+            return "/v4/product-units"
         case .fetchById(let request):
-            return "/v4/products/\(request.id)"
-        case .createProduct:
-            return "/v4/products"
-        case .updateProduct(let request):
-            return "/v4/products/\(request.id)"
-        case .deleteProduct(let request):
-            return "/v4/products/\(request.id)"
+            return "/v4/product-units/\(request.id)"
+        case .createProductUnit:
+            return "/v4/product-units"
+        case .updateProductUnit(let request):
+            return "/v4/product-units/\(request.id)"
+        case .deleteProductUnit(let request):
+            return "/v4/product-units/\(request.id)"
         }
     }
 
@@ -40,11 +39,11 @@ enum ProductServiceRouter: AlamofireBaseRouterProtocol {
         switch self {
         case .fetchByHotel, .fetchById:
             return .get
-        case .createProduct:
+        case .createProductUnit:
             return .post
-        case .updateProduct:
+        case .updateProductUnit:
             return .put
-        case .deleteProduct:
+        case .deleteProductUnit:
             return .delete
         }
     }
@@ -66,9 +65,9 @@ enum ProductServiceRouter: AlamofireBaseRouterProtocol {
 
     var body: Data? {
         switch self {
-        case .createProduct(let request):
+        case .createProductUnit(let request):
             return request.body
-        case .updateProduct(let request):
+        case .updateProductUnit(let request):
             return request.body
         default:
             return nil

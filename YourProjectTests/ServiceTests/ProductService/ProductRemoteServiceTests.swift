@@ -7,7 +7,6 @@
 
 import XCTest
 import Mockable
-@testable import YourProject
 
 class ProductRemoteServiceTests: XCTestCase {
     
@@ -40,7 +39,9 @@ class ProductRemoteServiceTests: XCTestCase {
             page: 1,
             perPage: .twenty,
             sortedBy: .name,
-            sortedOrder: .ascending
+            sortedOrder: .ascending,
+            categoryId: 1,
+            query: "abc"
         )
         
         given(mockAPIManager)
@@ -66,7 +67,9 @@ class ProductRemoteServiceTests: XCTestCase {
             page: 1,
             perPage: .twenty,
             sortedBy: .name,
-            sortedOrder: .ascending
+            sortedOrder: .ascending,
+            categoryId: 1,
+            query: "abc"
         )
         
         let error = APIError.unknownError(title: "Stub Error",
@@ -96,67 +99,7 @@ class ProductRemoteServiceTests: XCTestCase {
             .request(router: .any, requiredAuthorization: .value(true))
             .called(1)
     }
-    
-    // MARK: - Test fetchByQuery
-    
-    func testFetchByQuery_Success() async throws {
-        // Arrange
-        let expectedPaginator = createMockPaginator()
-        
-        let request = ProductServiceRequest.FetchByQuery(
-            hotelId: 105,
-            query: "Test",
-            page: 1,
-            perPage: .twenty,
-            sortedBy: .name,
-            sortedOrder: .ascending
-        )
-        
-        given(mockAPIManager)
-            .request(router: .any, requiredAuthorization: .any)
-            .willReturn(expectedPaginator)
-        
-        // Act
-        let result = try await sut.fetchByQuery(request: request)
-        
-        // Assert
-        XCTAssertEqual(result.items.lists.count, 2)
-        
-        verify(mockAPIManager)
-            .request(router: .any, requiredAuthorization: .value(true))
-            .called(1)
-    }
-    
-    // MARK: - Test fetchByCategory
-    
-    func testFetchByCategory_Success() async throws {
-        // Arrange
-        let expectedPaginator = createMockPaginator()
-        
-        let request = ProductServiceRequest.FetchByCategory(
-            hotelId: 105,
-            categoryId: 1,
-            page: 1,
-            perPage: .twenty,
-            sortedBy: .name,
-            sortedOrder: .ascending
-        )
-        
-        given(mockAPIManager)
-            .request(router: .any, requiredAuthorization: .any)
-            .willReturn(expectedPaginator)
-        
-        // Act
-        let result = try await sut.fetchByCategory(request: request)
-        
-        // Assert
-        XCTAssertEqual(result.items.lists.count, 2)
-        
-        verify(mockAPIManager)
-            .request(router: .any, requiredAuthorization: .value(true))
-            .called(1)
-    }
-    
+     
     // MARK: - Test fetchById
     
     func testFetchById_Success() async throws {

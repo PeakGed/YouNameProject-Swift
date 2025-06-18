@@ -19,7 +19,9 @@ class ProductServiceRequestTests: XCTestCase {
             page: 1,
             perPage: .twenty,
             sortedBy: .name,
-            sortedOrder: .ascending
+            sortedOrder: .ascending,
+            categoryId: 1,
+            query: "test"
         )
         
         // When
@@ -32,6 +34,8 @@ class ProductServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["per_page"] as? String, "20")
         XCTAssertEqual(parameters?["sorted_by"] as? String, "NAME")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "ASC")
+        XCTAssertEqual(parameters?["category_id"] as? Int, 1)
+        XCTAssertEqual(parameters?["q"] as? String, "test")
     }
     
     func testFetchByHotel_EncodingWithMinimalParameters() throws {
@@ -41,7 +45,9 @@ class ProductServiceRequestTests: XCTestCase {
             page: nil,
             perPage: nil,
             sortedBy: nil,
-            sortedOrder: nil
+            sortedOrder: nil,
+            categoryId: nil,
+            query: nil
         )
         
         // When
@@ -54,6 +60,8 @@ class ProductServiceRequestTests: XCTestCase {
         XCTAssertNil(parameters?["per_page"])
         XCTAssertNil(parameters?["sorted_by"])
         XCTAssertNil(parameters?["sorted_order"])
+        XCTAssertNil(parameters?["category_id"])
+        XCTAssertNil(parameters?["query"])
     }
     
     func testFetchByHotel_EncodingWithInvalidPage() throws {
@@ -63,7 +71,9 @@ class ProductServiceRequestTests: XCTestCase {
             page: 0, // Invalid page number
             perPage: .twenty,
             sortedBy: .name,
-            sortedOrder: .ascending
+            sortedOrder: .ascending,
+            categoryId: nil,
+            query: nil
         )
         
         // When
@@ -72,82 +82,6 @@ class ProductServiceRequestTests: XCTestCase {
         // Then
         XCTAssertNotNil(parameters)
         XCTAssertNil(parameters?["page"]) // Should be nil for invalid page
-    }
-    
-    // MARK: - Test FetchByQuery
-    
-    func testFetchByQuery_EncodingWithAllParameters() throws {
-        // Given
-        let request = ProductServiceRequest.FetchByQuery(
-            hotelId: 105,
-            query: "Test Product",
-            page: 2,
-            perPage: .fifty,
-            sortedBy: .sellingPrice,
-            sortedOrder: .descending
-        )
-        
-        // When
-        let parameters = request.parameters
-        
-        // Then
-        XCTAssertNotNil(parameters)
-        XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
-        XCTAssertEqual(parameters?["query"] as? String, "Test Product")
-        XCTAssertEqual(parameters?["page"] as? Int, 2)
-        XCTAssertEqual(parameters?["per_page"] as? String, "50")
-        XCTAssertEqual(parameters?["sorted_by"] as? String, "SELLING_PRICE")
-        XCTAssertEqual(parameters?["sorted_order"] as? String, "DESC")
-    }
-    
-    func testFetchByQuery_EncodingWithMinimalParameters() throws {
-        // Given
-        let request = ProductServiceRequest.FetchByQuery(
-            hotelId: 105,
-            query: "Test",
-            page: nil,
-            perPage: nil,
-            sortedBy: nil,
-            sortedOrder: nil
-        )
-        
-        // When
-        let parameters = request.parameters
-        
-        // Then
-        XCTAssertNotNil(parameters)
-        XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
-        XCTAssertEqual(parameters?["query"] as? String, "Test")
-        XCTAssertNil(parameters?["page"])
-        XCTAssertNil(parameters?["per_page"])
-        XCTAssertNil(parameters?["sorted_by"])
-        XCTAssertNil(parameters?["sorted_order"])
-    }
-    
-    // MARK: - Test FetchByCategory
-    
-    func testFetchByCategory_EncodingWithAllParameters() throws {
-        // Given
-        let request = ProductServiceRequest.FetchByCategory(
-            hotelId: 105,
-            categoryId: 3,
-            page: 1,
-            perPage: .hundred,
-            sortedBy: .buyingPrice,
-            sortedOrder: .ascending
-        )
-        
-        // When
-        let parameters = request.parameters
-        
-        // Then
-        XCTAssertNotNil(parameters)
-        XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
-        XCTAssertEqual(parameters?["category_id"] as? Int, 3)
-        XCTAssertEqual(parameters?["page"] as? Int, 1)
-        XCTAssertEqual(parameters?["per_page"] as? String, "100")
-        XCTAssertEqual(parameters?["sorted_by"] as? String, "BUYING_PRICE")
-        XCTAssertEqual(parameters?["sorted_order"] as? String, "ASC")
     }
     
     // MARK: - Test CreateProduct

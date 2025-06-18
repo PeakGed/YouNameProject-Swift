@@ -28,6 +28,8 @@ struct ProductServiceRequest {
         let perPage: PerPage?
         let sortedBy: SortedBy?
         let sortedOrder: ServiceSortedOrder?
+        let categoryId: Int?
+        let query: String?
         
         enum CodingKeys: String, CodingKey {
             case hotelId = "hotel_id"
@@ -35,99 +37,13 @@ struct ProductServiceRequest {
             case perPage = "per_page"
             case sortedBy = "sorted_by"
             case sortedOrder = "sorted_order"
-        }
-        
-        func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(hotelId, forKey: .hotelId)
-            if let page = page, page >= 1 {
-                try container.encode(page, forKey: .page)
-            }
-            if let perPage = perPage {
-                try container.encode(perPage.rawValue, forKey: .perPage)
-            }
-            if let sortedBy = sortedBy {
-                try container.encode(sortedBy.rawValue, forKey: .sortedBy)
-            }
-            if let sortedOrder = sortedOrder {
-                try container.encode(sortedOrder.rawValue, forKey: .sortedOrder)
-            }
-        }
-        
-        var parameters: [String: Any]? {
-            guard let data = try? JSONEncoder().encode(self),
-                  let dict = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
-                return nil
-            }
-            return dict
-        }
-    }
-    
-    struct FetchByQuery: Encodable {
-        let hotelId: Int
-        let query: String
-        let page: Int?
-        let perPage: PerPage?
-        let sortedBy: SortedBy?
-        let sortedOrder: ServiceSortedOrder?
-
-        enum CodingKeys: String, CodingKey {
-            case hotelId = "hotel_id"
-            case query
-            case page
-            case perPage = "per_page"
-            case sortedBy = "sorted_by"
-            case sortedOrder = "sorted_order"
-        }
-        
-        func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(hotelId, forKey: .hotelId)
-            try container.encode(query, forKey: .query)
-            if let page = page, page >= 1 {
-                try container.encode(page, forKey: .page)
-            }
-            if let perPage = perPage {
-                try container.encode(perPage.rawValue, forKey: .perPage)
-            }
-            if let sortedBy = sortedBy {
-                try container.encode(sortedBy.rawValue, forKey: .sortedBy)
-            }
-            if let sortedOrder = sortedOrder {
-                try container.encode(sortedOrder.rawValue, forKey: .sortedOrder)
-            }
-        }
-
-        var parameters: [String: Any]? {
-            guard let data = try? JSONEncoder().encode(self),
-                  let dict = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
-                return nil
-            }
-            return dict
-        }
-    }
-    
-    struct FetchByCategory: Encodable {
-        let hotelId: Int
-        let categoryId: Int
-        let page: Int?
-        let perPage: PerPage?
-        let sortedBy: SortedBy?
-        let sortedOrder: ServiceSortedOrder?
-
-        enum CodingKeys: String, CodingKey {
-            case hotelId = "hotel_id"
             case categoryId = "category_id"
-            case page
-            case perPage = "per_page"
-            case sortedBy = "sorted_by"
-            case sortedOrder = "sorted_order"
+            case query = "q"
         }
         
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(hotelId, forKey: .hotelId)
-            try container.encode(categoryId, forKey: .categoryId)
             if let page = page, page >= 1 {
                 try container.encode(page, forKey: .page)
             }
@@ -140,8 +56,14 @@ struct ProductServiceRequest {
             if let sortedOrder = sortedOrder {
                 try container.encode(sortedOrder.rawValue, forKey: .sortedOrder)
             }
+            if let categoryId = categoryId {
+                try container.encode(categoryId, forKey: .categoryId)
+            }
+            if let query = query {
+                try container.encode(query, forKey: .query)
+            }
         }
-
+        
         var parameters: [String: Any]? {
             guard let data = try? JSONEncoder().encode(self),
                   let dict = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {

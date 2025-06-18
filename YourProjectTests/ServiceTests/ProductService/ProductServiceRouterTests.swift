@@ -7,7 +7,6 @@
 
 import XCTest
 import Alamofire
-@testable import YourProject
 
 class ProductServiceRouterTests: XCTestCase {
     
@@ -26,7 +25,9 @@ class ProductServiceRouterTests: XCTestCase {
             page: 1,
             perPage: .twenty,
             sortedBy: .name,
-            sortedOrder: .ascending
+            sortedOrder: .ascending,
+            categoryId: 1,
+            query: "test"
         )
         let router = ProductServiceRouter.fetchByHotel(request: request)
         
@@ -43,7 +44,9 @@ class ProductServiceRouterTests: XCTestCase {
             page: 1,
             perPage: .twenty,
             sortedBy: .name,
-            sortedOrder: .ascending
+            sortedOrder: .ascending,
+            categoryId: 1,
+            query: "test"
         )
         let router = ProductServiceRouter.fetchByHotel(request: request)
         
@@ -62,7 +65,9 @@ class ProductServiceRouterTests: XCTestCase {
             page: 1,
             perPage: .twenty,
             sortedBy: .name,
-            sortedOrder: .ascending
+            sortedOrder: .ascending,
+            categoryId: 1,
+            query: "test"
         )
         let router = ProductServiceRouter.fetchByHotel(request: request)
         
@@ -76,6 +81,8 @@ class ProductServiceRouterTests: XCTestCase {
         XCTAssertEqual(parameters?["per_page"] as? String, "20")
         XCTAssertEqual(parameters?["sorted_by"] as? String, "NAME")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "ASC")
+        XCTAssertEqual(parameters?["category_id"] as? Int, 1)
+        XCTAssertEqual(parameters?["q"] as? String, "test")
     }
     
     func testFetchByHotel_URLRequest() throws {
@@ -85,7 +92,9 @@ class ProductServiceRouterTests: XCTestCase {
             page: 1,
             perPage: .twenty,
             sortedBy: .name,
-            sortedOrder: .ascending
+            sortedOrder: .ascending,
+            categoryId: 1,
+            query: "test"
         )
         let router = ProductServiceRouter.fetchByHotel(request: request)
         
@@ -98,69 +107,6 @@ class ProductServiceRouterTests: XCTestCase {
         XCTAssertTrue(urlRequest.url!.absoluteString.contains("/v4/products"))
         XCTAssertEqual(urlRequest.httpMethod, "GET")
         XCTAssertEqual(urlRequest.value(forHTTPHeaderField: "Content-Type"), "application/json")
-    }
-    
-    // MARK: - Test fetchByQuery
-    
-    func testFetchByQuery_PathAndMethod() {
-        // Given
-        let request = ProductServiceRequest.FetchByQuery(
-            hotelId: 105,
-            query: "Test Product",
-            page: 1,
-            perPage: .twenty,
-            sortedBy: .name,
-            sortedOrder: .ascending
-        )
-        let router = ProductServiceRouter.fetchByQuery(request: request)
-        
-        // When & Then
-        XCTAssertEqual(router.path, "/v4/products")
-        XCTAssertEqual(router.method, .get)
-    }
-    
-    func testFetchByQuery_Parameters() {
-        // Given
-        let request = ProductServiceRequest.FetchByQuery(
-            hotelId: 105,
-            query: "Test Product",
-            page: 2,
-            perPage: .fifty,
-            sortedBy: .sellingPrice,
-            sortedOrder: .descending
-        )
-        let router = ProductServiceRouter.fetchByQuery(request: request)
-        
-        // When
-        let parameters = router.parameters
-        
-        // Then
-        XCTAssertNotNil(parameters)
-        XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
-        XCTAssertEqual(parameters?["query"] as? String, "Test Product")
-        XCTAssertEqual(parameters?["page"] as? Int, 2)
-        XCTAssertEqual(parameters?["per_page"] as? String, "50")
-        XCTAssertEqual(parameters?["sorted_by"] as? String, "SELLING_PRICE")
-        XCTAssertEqual(parameters?["sorted_order"] as? String, "DESC")
-    }
-    
-    // MARK: - Test fetchByCategory
-    
-    func testFetchByCategory_PathAndMethod() {
-        // Given
-        let request = ProductServiceRequest.FetchByCategory(
-            hotelId: 105,
-            categoryId: 3,
-            page: 1,
-            perPage: .hundred,
-            sortedBy: .buyingPrice,
-            sortedOrder: .ascending
-        )
-        let router = ProductServiceRouter.fetchByCategory(request: request)
-        
-        // When & Then
-        XCTAssertEqual(router.path, "/v4/products")
-        XCTAssertEqual(router.method, .get)
     }
     
     // MARK: - Test fetchById
