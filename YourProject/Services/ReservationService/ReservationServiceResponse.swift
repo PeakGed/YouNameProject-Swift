@@ -5,7 +5,7 @@
 //  Created by IntrodexMini on 19/6/2568 BE.
 //
 
-struct RerservationServiceResponse {
+struct ReservationServiceResponse {
     
     struct ConfirmationInfo: Codable {
         let createdAt: String?

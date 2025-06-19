@@ -10,15 +10,15 @@ import Mockable
 @Mockable
 protocol ReservationServiceProtocol: AnyObject {
     // MARK: - Fetch Methods
-    func fetchReservations(request: ReservationServiceRequest.FetchReservations) async throws -> Paginator<Reservations>
-    func fetchReservationsByFlags(request: ReservationServiceRequest.FetchReservationsByFlags) async throws -> Paginator<Reservations>
-    func fetchReservationsByGuest(request: ReservationServiceRequest.FetchReservationsByGuest) async throws -> Paginator<Reservations>
-    func fetchReservationsByCompany(request: ReservationServiceRequest.FetchReservationsByCompany) async throws -> Paginator<Reservations>
-    func fetchReservationsByPeriod(request: ReservationServiceRequest.FetchReservationsByPeriod) async throws -> Paginator<Reservations>
-    func fetchReservationsByCreatedAt(request: ReservationServiceRequest.FetchReservationsByCreatedAt) async throws -> Paginator<Reservations>
-    func fetchReservationsByTags(request: ReservationServiceRequest.FetchReservationsByTags) async throws -> Paginator<Reservations>
-    func fetchReservationsByKeyword(request: ReservationServiceRequest.FetchReservationsByKeyword) async throws -> Paginator<Reservations>
-    func fetchReservationsByBatchIds(request: ReservationServiceRequest.FetchReservationsByBatchIds) async throws -> Paginator<Reservations>
+    func fetchReservations(request: ReservationServiceRequest.FetchReservations) async throws -> Paginator<Reservation>
+    func fetchReservationsByFlags(request: ReservationServiceRequest.FetchReservationsByFlags) async throws -> Paginator<Reservation>
+    func fetchReservationsByGuest(request: ReservationServiceRequest.FetchReservationsByGuest) async throws -> Paginator<Reservation>
+    func fetchReservationsByCompany(request: ReservationServiceRequest.FetchReservationsByCompany) async throws -> Paginator<Reservation>
+    func fetchReservationsByPeriod(request: ReservationServiceRequest.FetchReservationsByPeriod) async throws -> Paginator<Reservation>
+    func fetchReservationsByCreatedAt(request: ReservationServiceRequest.FetchReservationsByCreatedAt) async throws -> Paginator<Reservation>
+    func fetchReservationsByTags(request: ReservationServiceRequest.FetchReservationsByTags) async throws -> Paginator<Reservation>
+    func fetchReservationsByKeyword(request: ReservationServiceRequest.FetchReservationsByKeyword) async throws -> Paginator<Reservation>
+    func fetchReservationsByBatchIds(request: ReservationServiceRequest.FetchReservationsByBatchIds) async throws -> Paginator<Reservation>
     func fetchReservationByUid(request: ReservationServiceRequest.FetchReservationByUid) async throws -> Reservation
     func fetchReservation(request: ReservationServiceRequest.FetchById) async throws -> Reservation
     
@@ -36,15 +36,15 @@ protocol ReservationServiceProtocol: AnyObject {
     func cancel(request: ReservationServiceRequest.Cancel) async throws -> Reservation
     func noShow(request: ReservationServiceRequest.NoShow) async throws -> Reservation
     
-    // MARK: - Customer Management
+    // MARK: - Guest Management
     func getFirstGuest(request: ReservationServiceRequest.SetFirstGuest) async throws -> Reservation
-    func dropCustomer(request: ReservationServiceRequest.DropCustomer) async throws -> Reservation
-    func appendCustomer(request: ReservationServiceRequest.AppendCustomer) async throws -> Reservation
-    func replaceCustomers(request: ReservationServiceRequest.ReplaceCustomers) async throws -> Reservation
+    func dropGuest(request: ReservationServiceRequest.DropGuest) async throws -> Reservation
+    func appendGuest(request: ReservationServiceRequest.AppendGuest) async throws -> Reservation
+    func replaceGuests(request: ReservationServiceRequest.ReplaceGuests) async throws -> Reservation
     
     // MARK: - Additional Operations
-    func fetchConfirmation(request: ReservationServiceRequest.FetchConfirmation) async throws -> RerservationServiceResponse.ConfirmationInfo
-    func createConfirmation(request: ReservationServiceRequest.CreateConfirmation) async throws -> RerservationServiceResponse.ConfirmationInfo
+    func fetchConfirmation(request: ReservationServiceRequest.FetchConfirmation) async throws -> ReservationServiceResponse.ConfirmationInfo
+    func createConfirmation(request: ReservationServiceRequest.CreateConfirmation) async throws -> ReservationServiceResponse.ConfirmationInfo
     func splitReservation(request: ReservationServiceRequest.SplitReservation) async throws -> Reservations
 }
 
@@ -61,47 +61,47 @@ class ReservationRemoteService: ReservationServiceProtocol {
     
     // MARK: - Fetch Methods
     
-    func fetchReservations(request: ReservationServiceRequest.FetchReservations) async throws -> Paginator<Reservations> {
+    func fetchReservations(request: ReservationServiceRequest.FetchReservations) async throws -> Paginator<Reservation> {
         let router = ReservationServiceRouter.fetchReservations(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
-    func fetchReservationsByFlags(request: ReservationServiceRequest.FetchReservationsByFlags) async throws -> Paginator<Reservations> {
+    func fetchReservationsByFlags(request: ReservationServiceRequest.FetchReservationsByFlags) async throws -> Paginator<Reservation> {
         let router = ReservationServiceRouter.fetchReservationsByFlags(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
-    func fetchReservationsByGuest(request: ReservationServiceRequest.FetchReservationsByGuest) async throws -> Paginator<Reservations> {
+    func fetchReservationsByGuest(request: ReservationServiceRequest.FetchReservationsByGuest) async throws -> Paginator<Reservation> {
         let router = ReservationServiceRouter.fetchReservationsByGuest(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
-    func fetchReservationsByCompany(request: ReservationServiceRequest.FetchReservationsByCompany) async throws -> Paginator<Reservations> {
+    func fetchReservationsByCompany(request: ReservationServiceRequest.FetchReservationsByCompany) async throws -> Paginator<Reservation> {
         let router = ReservationServiceRouter.fetchReservationsByCompany(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
-    func fetchReservationsByPeriod(request: ReservationServiceRequest.FetchReservationsByPeriod) async throws -> Paginator<Reservations> {
+    func fetchReservationsByPeriod(request: ReservationServiceRequest.FetchReservationsByPeriod) async throws -> Paginator<Reservation> {
         let router = ReservationServiceRouter.fetchReservationsByPeriod(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
-    func fetchReservationsByCreatedAt(request: ReservationServiceRequest.FetchReservationsByCreatedAt) async throws -> Paginator<Reservations> {
+    func fetchReservationsByCreatedAt(request: ReservationServiceRequest.FetchReservationsByCreatedAt) async throws -> Paginator<Reservation> {
         let router = ReservationServiceRouter.fetchReservationsByCreatedAt(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
-    func fetchReservationsByTags(request: ReservationServiceRequest.FetchReservationsByTags) async throws -> Paginator<Reservations> {
+    func fetchReservationsByTags(request: ReservationServiceRequest.FetchReservationsByTags) async throws -> Paginator<Reservation> {
         let router = ReservationServiceRouter.fetchReservationsByTags(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
-    func fetchReservationsByKeyword(request: ReservationServiceRequest.FetchReservationsByKeyword) async throws -> Paginator<Reservations> {
+    func fetchReservationsByKeyword(request: ReservationServiceRequest.FetchReservationsByKeyword) async throws -> Paginator<Reservation> {
         let router = ReservationServiceRouter.fetchReservationsByKeyword(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
-    func fetchReservationsByBatchIds(request: ReservationServiceRequest.FetchReservationsByBatchIds) async throws -> Paginator<Reservations> {
+    func fetchReservationsByBatchIds(request: ReservationServiceRequest.FetchReservationsByBatchIds) async throws -> Paginator<Reservation> {
         let router = ReservationServiceRouter.fetchReservationsByBatchIds(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
@@ -162,36 +162,36 @@ class ReservationRemoteService: ReservationServiceProtocol {
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
-    // MARK: - Customer Management
+    // MARK: - Guest Management
     
     func getFirstGuest(request: ReservationServiceRequest.SetFirstGuest) async throws -> Reservation {
         let router = ReservationServiceRouter.getFirstGuest(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
-    func dropCustomer(request: ReservationServiceRequest.DropCustomer) async throws -> Reservation {
-        let router = ReservationServiceRouter.dropCustomer(request: request)
+    func dropGuest(request: ReservationServiceRequest.DropGuest) async throws -> Reservation {
+        let router = ReservationServiceRouter.dropGuest(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
-    func appendCustomer(request: ReservationServiceRequest.AppendCustomer) async throws -> Reservation {
-        let router = ReservationServiceRouter.appendCustomer(request: request)
+    func appendGuest(request: ReservationServiceRequest.AppendGuest) async throws -> Reservation {
+        let router = ReservationServiceRouter.appendGuest(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
-    func replaceCustomers(request: ReservationServiceRequest.ReplaceCustomers) async throws -> Reservation {
-        let router = ReservationServiceRouter.replaceCustomers(request: request)
+    func replaceGuests(request: ReservationServiceRequest.ReplaceGuests) async throws -> Reservation {
+        let router = ReservationServiceRouter.replaceGuests(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
     // MARK: - Additional Operations
     
-    func fetchConfirmation(request: ReservationServiceRequest.FetchConfirmation) async throws -> RerservationServiceResponse.ConfirmationInfo {
+    func fetchConfirmation(request: ReservationServiceRequest.FetchConfirmation) async throws -> ReservationServiceResponse.ConfirmationInfo {
         let router = ReservationServiceRouter.getConfirmation(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
-    func createConfirmation(request: ReservationServiceRequest.CreateConfirmation) async throws -> RerservationServiceResponse.ConfirmationInfo {
+    func createConfirmation(request: ReservationServiceRequest.CreateConfirmation) async throws -> ReservationServiceResponse.ConfirmationInfo {
         let router = ReservationServiceRouter.createConfirmation(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }

@@ -15,11 +15,11 @@ class ReservationServiceRequestTests: XCTestCase {
         // Arrange
         let request = ReservationServiceRequest.FetchReservations(
             hotelId: 105,
+            status: .confirmed,
             page: 1,
             perPage: .twenty,
             sortedBy: .id,
-            sortedOrder: .ascending,
-            status: "CONFIRMED"
+            sortedOrder: .ascending
         )
         
         // Act
@@ -28,22 +28,22 @@ class ReservationServiceRequestTests: XCTestCase {
         // Assert
         XCTAssertNotNil(parameters)
         XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
+        XCTAssertEqual(parameters?["status"] as? String, "CONFIRMED")
         XCTAssertEqual(parameters?["page"] as? Int, 1)
         XCTAssertEqual(parameters?["per_page"] as? String, "20")
         XCTAssertEqual(parameters?["sorted_by"] as? String, "ID")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "ASC")
-        XCTAssertEqual(parameters?["status"] as? String, "CONFIRMED")
     }
     
     func test_fetchReservations_optionalFields_nil() throws {
         // Arrange
         let request = ReservationServiceRequest.FetchReservations(
             hotelId: 105,
+            status: nil,
             page: nil,
             perPage: nil,
             sortedBy: nil,
-            sortedOrder: nil,
-            status: nil
+            sortedOrder: nil
         )
         
         // Act
@@ -52,11 +52,11 @@ class ReservationServiceRequestTests: XCTestCase {
         // Assert
         XCTAssertNotNil(parameters)
         XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
+        XCTAssertNil(parameters?["status"])
         XCTAssertNil(parameters?["page"])
         XCTAssertNil(parameters?["per_page"])
         XCTAssertNil(parameters?["sorted_by"])
         XCTAssertNil(parameters?["sorted_order"])
-        XCTAssertNil(parameters?["status"])
     }
     
     // MARK: - Test FetchReservationsByFlags
@@ -65,7 +65,7 @@ class ReservationServiceRequestTests: XCTestCase {
         // Arrange
         let request = ReservationServiceRequest.FetchReservationsByFlags(
             hotelId: 105,
-            flags: "FLAG_RED,FLAG_BLUE",
+            flags: [.red, .blue],
             page: 2,
             perPage: .fifty,
             sortedBy: .checkInDate,
@@ -85,6 +85,58 @@ class ReservationServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["sorted_order"] as? String, "DESC")
     }
     
+    // MARK: - Test FetchReservationsByGuest
+    
+    func test_fetchReservationsByGuest_encodesCorrectly() throws {
+        // Arrange
+        let request = ReservationServiceRequest.FetchReservationsByGuest(
+            hotelId: 105,
+            guestId: 123,
+            page: 1,
+            perPage: .ten,
+            sortedBy: .createdAt,
+            sortedOrder: .ascending
+        )
+        
+        // Act
+        let parameters = request.parameters
+        
+        // Assert
+        XCTAssertNotNil(parameters)
+        XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
+        XCTAssertEqual(parameters?["guest_id"] as? Int, 123)
+        XCTAssertEqual(parameters?["page"] as? Int, 1)
+        XCTAssertEqual(parameters?["per_page"] as? String, "10")
+        XCTAssertEqual(parameters?["sorted_by"] as? String, "CREATED_AT")
+        XCTAssertEqual(parameters?["sorted_order"] as? String, "ASC")
+    }
+    
+    // MARK: - Test FetchReservationsByCompany
+    
+    func test_fetchReservationsByCompany_encodesCorrectly() throws {
+        // Arrange
+        let request = ReservationServiceRequest.FetchReservationsByCompany(
+            hotelId: 105,
+            companyId: 456,
+            page: 1,
+            perPage: .twenty,
+            sortedBy: .checkInDate,
+            sortedOrder: .descending
+        )
+        
+        // Act
+        let parameters = request.parameters
+        
+        // Assert
+        XCTAssertNotNil(parameters)
+        XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
+        XCTAssertEqual(parameters?["company_id"] as? Int, 456)
+        XCTAssertEqual(parameters?["page"] as? Int, 1)
+        XCTAssertEqual(parameters?["per_page"] as? String, "20")
+        XCTAssertEqual(parameters?["sorted_by"] as? String, "CHECK_IN_DATE")
+        XCTAssertEqual(parameters?["sorted_order"] as? String, "DESC")
+    }
+    
     // MARK: - Test FetchReservationsByPeriod
     
     func test_fetchReservationsByPeriod_encodesCorrectly() throws {
@@ -96,7 +148,7 @@ class ReservationServiceRequestTests: XCTestCase {
         let request = ReservationServiceRequest.FetchReservationsByPeriod(
             hotelId: 105,
             period: period,
-            status: "CHECKED_IN",
+            status: .checkedIn,
             page: 1,
             perPage: .hundred,
             sortedBy: .checkOutDate,
@@ -122,13 +174,13 @@ class ReservationServiceRequestTests: XCTestCase {
     
     func test_fetchReservationsByCreatedAt_encodesCorrectly() throws {
         // Arrange
-        let startAt = Date(timeIntervalSince1970: 1700000000)
-        let endAt = Date(timeIntervalSince1970: 1700086400)
+        let startDate = Date(timeIntervalSince1970: 1700000000)
+        let endDate = Date(timeIntervalSince1970: 1700086400)
+        let period = PeriodDate(start: startDate, end: endDate)
         
         let request = ReservationServiceRequest.FetchReservationsByCreatedAt(
             hotelId: 105,
-            startAt: startAt,
-            endAt: endAt,
+            period: period,
             page: 1,
             perPage: .ten,
             sortedBy: .createdAt,
@@ -147,6 +199,32 @@ class ReservationServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["per_page"] as? String, "10")
         XCTAssertEqual(parameters?["sorted_by"] as? String, "CREATED_AT")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "DESC")
+    }
+    
+    // MARK: - Test FetchReservationsByTags
+    
+    func test_fetchReservationsByTags_encodesCorrectly() throws {
+        // Arrange
+        let request = ReservationServiceRequest.FetchReservationsByTags(
+            hotelId: 105,
+            tags: ["VIP", "Corporate"],
+            page: 1,
+            perPage: .twenty,
+            sortedBy: .checkInDate,
+            sortedOrder: .ascending
+        )
+        
+        // Act
+        let parameters = request.parameters
+        
+        // Assert
+        XCTAssertNotNil(parameters)
+        XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
+        XCTAssertEqual(parameters?["tags"] as? String, "VIP,Corporate")
+        XCTAssertEqual(parameters?["page"] as? Int, 1)
+        XCTAssertEqual(parameters?["per_page"] as? String, "20")
+        XCTAssertEqual(parameters?["sorted_by"] as? String, "CHECK_IN_DATE")
+        XCTAssertEqual(parameters?["sorted_order"] as? String, "ASC")
     }
     
     // MARK: - Test FetchReservationsByBatchIds
@@ -173,10 +251,10 @@ class ReservationServiceRequestTests: XCTestCase {
         // Arrange
         let request = ReservationServiceRequest.FetchReservationsByKeyword(
             hotelId: 105,
-            keyword: "สมชาย",
+            keyword: "John Smith",
             page: 1,
             perPage: .twenty,
-            sortedBy: .contactName,
+            sortedBy: .checkInDate,
             sortedOrder: .ascending
         )
         
@@ -186,10 +264,10 @@ class ReservationServiceRequestTests: XCTestCase {
         // Assert
         XCTAssertNotNil(parameters)
         XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
-        XCTAssertEqual(parameters?["keyword"] as? String, "สมชาย")
+        XCTAssertEqual(parameters?["keyword"] as? String, "John Smith")
         XCTAssertEqual(parameters?["page"] as? Int, 1)
         XCTAssertEqual(parameters?["per_page"] as? String, "20")
-        XCTAssertEqual(parameters?["sorted_by"] as? String, "CONTACT_NAME")
+        XCTAssertEqual(parameters?["sorted_by"] as? String, "CHECK_IN_DATE")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "ASC")
     }
     
@@ -216,31 +294,38 @@ class ReservationServiceRequestTests: XCTestCase {
     func test_createReservation_encodesCorrectly() throws {
         // Arrange
         let checkInDate = Date(timeIntervalSince1970: 1700000000)
-        let checkOutDate = Date(timeIntervalSince1970: 1700259200)
-        let contacts = ReservationContacts(
-            title: "คุณ",
-            fullname: "สมชาย ใจดี",
-            email: "somchai@example.com",
-            tel: "0812345678"
-        )
-        
-        let request = ReservationServiceRequest.CreateReservation(
-            hotelId: 105,
-            roomTypeId: 5,
-            roomId: 101,
-            checkInDate: checkInDate,
-            checkOutDate: checkOutDate,
-            adultNumber: 2,
-            extraAdultNumber: 1,
-            childNumber: 1,
-            contacts: contacts,
-            note: "ห้องติดกัน",
-            otaBookingId: "BOOKING_12345",
-            relatedReservationId: "RELATED_001",
-            guestComment: "ต้องการห้องชั้นสูง",
-            channelId: 1,
-            subChannelId: 2
-        )
+        let checkOutDate = checkInDate.addingTimeInterval(24 * 60 * 60) // Add 1 day
+      
+        let items = [
+            ReservationServiceRequest.CreateReservationItem(reservableId: 5,
+                                                            reservableType: .room,
+                                                            reservedDate: checkInDate,
+                                                            totalPrice: 111.11,
+                                                            priceCardId: nil,
+                                                            data: .init(isCustomRate: false,
+                                                                        selectedRate: 111.11,
+                                                                        extraAdultRate: 0,
+                                                                        extraAdultQty: 0,
+                                                                        extraChildRate: 0,
+                                                                        extraChildQty: 0,
+                                                                        mealIncluded: false))
+        ]
+        let request = ReservationServiceRequest.CreateReservation(hotelId: 105,
+                                                                  period: .init(start: checkInDate,
+                                                                                end: checkOutDate),
+                                                                  adultNumber: 2,
+                                                                  extraAdultNumber: 1,
+                                                                  contactName: "สมชาย ใจดี",
+                                                                  contactEmail: "somchai@example.com",
+                                                                  contactTel: "0812345678",
+                                                                  items: items,
+                                                                  note: "ห้องติดกัน",
+                                                                  guestComment: "ต้องการห้องชั้นสูง",
+                                                                  channelId: 1,
+                                                                  subChannelId: 2,
+                                                                  otaBookingId: "BOOKING_12345",
+                                                                  relatedReservationId: 123,
+                                                                  guestIds: [123, 456])
         
         // Act
         let bodyData = request.body
@@ -251,56 +336,41 @@ class ReservationServiceRequestTests: XCTestCase {
         let json = try JSONSerialization.jsonObject(with: bodyData!, options: []) as? [String: Any]
         XCTAssertNotNil(json)
         XCTAssertEqual(json?["hotel_id"] as? Int, 105)
-        XCTAssertEqual(json?["room_type_id"] as? Int, 5)
-        XCTAssertEqual(json?["room_id"] as? Int, 101)
         XCTAssertEqual(json?["check_in_date"] as? String, "2023-11-15")
-        XCTAssertEqual(json?["check_out_date"] as? String, "2023-11-18")
+        XCTAssertEqual(json?["check_out_date"] as? String, "2023-11-16")
         XCTAssertEqual(json?["adult_number"] as? Int, 2)
         XCTAssertEqual(json?["extra_adult_number"] as? Int, 1)
-        XCTAssertEqual(json?["child_number"] as? Int, 1)
+        XCTAssertEqual(json?["contact_fullname"] as? String, "สมชาย ใจดี")
+        XCTAssertEqual(json?["contact_email"] as? String, "somchai@example.com")
+        XCTAssertEqual(json?["contact_tel"] as? String, "0812345678")
         XCTAssertEqual(json?["note"] as? String, "ห้องติดกัน")
-        XCTAssertEqual(json?["ota_booking_id"] as? String, "BOOKING_12345")
-        XCTAssertEqual(json?["related_reservation_id"] as? String, "RELATED_001")
         XCTAssertEqual(json?["guest_comment"] as? String, "ต้องการห้องชั้นสูง")
         XCTAssertEqual(json?["channel_id"] as? Int, 1)
         XCTAssertEqual(json?["sub_channel_id"] as? Int, 2)
-        
-        let contactsJson = json?["contacts"] as? [String: Any]
-        XCTAssertNotNil(contactsJson)
-        XCTAssertEqual(contactsJson?["title"] as? String, "คุณ")
-        XCTAssertEqual(contactsJson?["fullname"] as? String, "สมชาย ใจดี")
-        XCTAssertEqual(contactsJson?["email"] as? String, "somchai@example.com")
-        XCTAssertEqual(contactsJson?["tel"] as? String, "0812345678")
+        XCTAssertEqual(json?["ota_booking_id"] as? String, "BOOKING_12345")
+        XCTAssertEqual(json?["related_reservation_id"] as? Int, 123)
+        XCTAssertEqual(json?["guest_ids"] as? [Int], [123, 456])
     }
     
     // MARK: - Test UpdateReservation
     
     func test_updateReservation_encodesCorrectly() throws {
         // Arrange
-        let checkInDate = Date(timeIntervalSince1970: 1700000000)
-        let contacts = ReservationContacts(
-            title: "คุณหญิง",
-            fullname: "สมใส ใจดี",
-            email: "somsai@example.com",
-            tel: "0887654321"
-        )
-        
-        let request = ReservationServiceRequest.UpdateReservation(
-            id: 512,
-            roomTypeId: 6,
-            roomId: 102,
-            checkInDate: checkInDate,
-            checkOutDate: nil,
-            adultNumber: 3,
-            extraAdultNumber: nil,
-            childNumber: 0,
-            contacts: contacts,
-            note: "เปลี่ยนเป็นห้องใหญ่",
-            otaBookingId: nil,
-            relatedReservationId: nil,
-            guestComment: "ต้องการเตียงเสริม",
-            status: "CONFIRMED"
-        )
+        let request = ReservationServiceRequest.UpdateReservation(id: 105,
+                                                                  adultNumber: 3,
+                                                                  extraAdultNumber: nil,
+                                                                  contactName: "สมใส ใจดี",
+                                                                  contactEmail: "somsai@example.com",
+                                                                  contactTel: "0887654321",
+                                                                  note: "เปลี่ยนเป็นห้องใหญ่",
+                                                                  guestComment: "ต้องการเตียงเสริม",
+                                                                  flags: [.red],
+                                                                  emoji: "👍",
+                                                                  channelId: 1,
+                                                                  subChannelId: 2,
+                                                                  otaBookingId: nil,
+                                                                  relatedReservationId: nil,
+                                                                  guestIds: [123, 456])
         
         // Act
         let bodyData = request.body
@@ -310,34 +380,33 @@ class ReservationServiceRequestTests: XCTestCase {
         
         let json = try JSONSerialization.jsonObject(with: bodyData!, options: []) as? [String: Any]
         XCTAssertNotNil(json)
-        XCTAssertEqual(json?["room_type_id"] as? Int, 6)
-        XCTAssertEqual(json?["room_id"] as? Int, 102)
-        XCTAssertEqual(json?["check_in_date"] as? String, "2023-11-15")
         XCTAssertEqual(json?["adult_number"] as? Int, 3)
-        XCTAssertEqual(json?["child_number"] as? Int, 0)
         XCTAssertEqual(json?["note"] as? String, "เปลี่ยนเป็นห้องใหญ่")
         XCTAssertEqual(json?["guest_comment"] as? String, "ต้องการเตียงเสริม")
-        XCTAssertEqual(json?["status"] as? String, "CONFIRMED")
+        XCTAssertEqual(json?["flags"] as? [String], ["FLAG_RED"])
+        XCTAssertEqual(json?["emoji"] as? String, "👍")
+        XCTAssertEqual(json?["channel_id"] as? Int, 1)
+        XCTAssertEqual(json?["sub_channel_id"] as? Int, 2)
+        XCTAssertEqual(json?["ota_booking_id"] as? String, nil)
+        XCTAssertEqual(json?["related_reservation_id"] as? Int, nil)
+        XCTAssertEqual(json?["guest_ids"] as? [Int], [123, 456])
         
         // Verify nil fields are not encoded
-        XCTAssertNil(json?["check_out_date"])
-        XCTAssertNil(json?["extra_adult_number"])
-        XCTAssertNil(json?["ota_booking_id"])
-        XCTAssertNil(json?["related_reservation_id"])
-        
-        let contactsJson = json?["contacts"] as? [String: Any]
-        XCTAssertNotNil(contactsJson)
-        XCTAssertEqual(contactsJson?["title"] as? String, "คุณหญิง")
-        XCTAssertEqual(contactsJson?["fullname"] as? String, "สมใส ใจดี")
+        XCTAssertNil(json?["check_out_date"])        
+        XCTAssertNil(json?["extra_adult_number"])  
+
+        XCTAssertEqual(json?["contact_fullname"] as? String, "สมใส ใจดี")
+        XCTAssertEqual(json?["contact_email"] as? String, "somsai@example.com")
+        XCTAssertEqual(json?["contact_tel"] as? String, "0887654321")                       
     }
     
-    // MARK: - Test Customer Management
+    // MARK: - Test Guest Management
     
-    func test_dropCustomer_encodesCorrectly() throws {
+    func test_dropGuest_encodesCorrectly() throws {
         // Arrange
-        let request = ReservationServiceRequest.DropCustomer(
+        let request = ReservationServiceRequest.DropGuest(
             id: 512,
-            customerId: 789
+            guestId: 789
         )
         
         // Act
@@ -348,14 +417,14 @@ class ReservationServiceRequestTests: XCTestCase {
         
         let json = try JSONSerialization.jsonObject(with: bodyData!, options: []) as? [String: Any]
         XCTAssertNotNil(json)
-        XCTAssertEqual(json?["customer_id"] as? Int, 789)
+        XCTAssertEqual(json?["guest_id"] as? Int, 789)
     }
     
-    func test_appendCustomer_encodesCorrectly() throws {
+    func test_appendGuest_encodesCorrectly() throws {
         // Arrange
-        let request = ReservationServiceRequest.AppendCustomer(
+        let request = ReservationServiceRequest.AppendGuest(
             id: 512,
-            customerId: 890
+            guestId: 890
         )
         
         // Act
@@ -366,14 +435,14 @@ class ReservationServiceRequestTests: XCTestCase {
         
         let json = try JSONSerialization.jsonObject(with: bodyData!, options: []) as? [String: Any]
         XCTAssertNotNil(json)
-        XCTAssertEqual(json?["customer_id"] as? Int, 890)
+        XCTAssertEqual(json?["guest_id"] as? Int, 890)
     }
     
-    func test_replaceCustomers_encodesCorrectly() throws {
+    func test_replaceGuests_encodesCorrectly() throws {
         // Arrange
-        let request = ReservationServiceRequest.ReplaceCustomers(
+        let request = ReservationServiceRequest.ReplaceGuests(
             id: 512,
-            customerIds: [789, 890, 901]
+            guestIds: [789, 890, 901]
         )
         
         // Act
@@ -385,22 +454,21 @@ class ReservationServiceRequestTests: XCTestCase {
         let json = try JSONSerialization.jsonObject(with: bodyData!, options: []) as? [String: Any]
         XCTAssertNotNil(json)
         
-        let customerIds = json?["customer_ids"] as? [Int]
-        XCTAssertNotNil(customerIds)
-        XCTAssertEqual(customerIds?.count, 3)
-        XCTAssertTrue(customerIds?.contains(789) == true)
-        XCTAssertTrue(customerIds?.contains(890) == true)
-        XCTAssertTrue(customerIds?.contains(901) == true)
+        let guestIds = json?["guest_ids"] as? [Int]
+        XCTAssertNotNil(guestIds)
+        XCTAssertEqual(guestIds?.count, 3)
+        XCTAssertTrue(guestIds?.contains(789) == true)
+        XCTAssertTrue(guestIds?.contains(890) == true)
+        XCTAssertTrue(guestIds?.contains(901) == true)
     }
     
     // MARK: - Test PostConfirmation
     
     func test_postConfirmation_encodesCorrectly() throws {
         // Arrange
-        let request = ReservationServiceRequest.PostConfirmation(
+        let request = ReservationServiceRequest.CreateConfirmation(
             id: 512,
-            remark: "การจองได้รับการยืนยันแล้ว",
-            url: "https://hotel.example.com/confirmation/512"
+            remark: "การจองได้รับการยืนยันแล้ว"
         )
         
         // Act
@@ -412,14 +480,13 @@ class ReservationServiceRequestTests: XCTestCase {
         let json = try JSONSerialization.jsonObject(with: bodyData!, options: []) as? [String: Any]
         XCTAssertNotNil(json)
         XCTAssertEqual(json?["remark"] as? String, "การจองได้รับการยืนยันแล้ว")
-        XCTAssertEqual(json?["url"] as? String, "https://hotel.example.com/confirmation/512")
     }
     
-    // MARK: - Test ReservationContacts
+    // MARK: - Test Reservation.Contacts
     
     func test_reservationContacts_init() {
         // Test with all fields
-        let contacts = ReservationContacts(
+        let contacts = Reservation.Contacts(
             title: "นาย",
             fullname: "วิชาญ เก่งดี",
             email: "wichan@example.com",
@@ -432,11 +499,11 @@ class ReservationServiceRequestTests: XCTestCase {
         XCTAssertEqual(contacts.tel, "0898765432")
         
         // Test with minimal fields
-        let minimalContacts = ReservationContacts(fullname: "สมชาย")
-        XCTAssertNil(minimalContacts.title)
+        let minimalContacts = Reservation.Contacts(fullname: "สมชาย")
+        XCTAssertEqual(minimalContacts.title, "")
         XCTAssertEqual(minimalContacts.fullname, "สมชาย")
-        XCTAssertNil(minimalContacts.email)
-        XCTAssertNil(minimalContacts.tel)
+        XCTAssertEqual(minimalContacts.email, "")
+        XCTAssertEqual(minimalContacts.tel, "")
     }
     
     // MARK: - Test Edge Cases
@@ -445,11 +512,11 @@ class ReservationServiceRequestTests: XCTestCase {
         // Arrange
         let request = ReservationServiceRequest.FetchReservations(
             hotelId: 105,
+            status: .confirmed,
             page: 0, // Should not be encoded as it's < 1
             perPage: .twenty,
             sortedBy: .id,
-            sortedOrder: .ascending,
-            status: nil
+            sortedOrder: .ascending
         )
         
         // Act
@@ -467,11 +534,5 @@ class ReservationServiceRequestTests: XCTestCase {
         XCTAssertEqual(ReservationServiceRequest.SortedBy.checkOutDate.rawValue, "CHECK_OUT_DATE")
         XCTAssertEqual(ReservationServiceRequest.SortedBy.createdAt.rawValue, "CREATED_AT")
         XCTAssertEqual(ReservationServiceRequest.SortedBy.updatedAt.rawValue, "UPDATED_AT")
-        XCTAssertEqual(ReservationServiceRequest.SortedBy.status.rawValue, "STATUS")
-        XCTAssertEqual(ReservationServiceRequest.SortedBy.contactName.rawValue, "CONTACT_NAME")
-        XCTAssertEqual(ReservationServiceRequest.SortedBy.totalCost.rawValue, "TOTAL_COST")
-        XCTAssertEqual(ReservationServiceRequest.SortedBy.totalPaid.rawValue, "TOTAL_PAID")
-        XCTAssertEqual(ReservationServiceRequest.SortedBy.remainCost.rawValue, "REMAIN_COST")
-        XCTAssertEqual(ReservationServiceRequest.SortedBy.nightCount.rawValue, "NIGHT_COUNT")
     }
 } 

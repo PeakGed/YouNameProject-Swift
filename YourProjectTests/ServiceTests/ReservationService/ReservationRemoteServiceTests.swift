@@ -34,11 +34,11 @@ class ReservationRemoteServiceTests: XCTestCase {
         // Arrange
         let request = ReservationServiceRequest.FetchReservations(
             hotelId: 105,
+            status: .confirmed,
             page: 1,
             perPage: .twenty,
             sortedBy: .id,
-            sortedOrder: .ascending,
-            status: "CONFIRMED"
+            sortedOrder: .ascending
         )
         
         let expectedReservations = createMockReservationsPaginator()
@@ -63,11 +63,11 @@ class ReservationRemoteServiceTests: XCTestCase {
         // Arrange
         let request = ReservationServiceRequest.FetchReservations(
             hotelId: 105,
+            status: .confirmed,
             page: 1,
             perPage: .twenty,
             sortedBy: .id,
-            sortedOrder: .ascending,
-            status: "CONFIRMED"
+            sortedOrder: .ascending
         )
         
         let error = APIError.unknownError(title: "Stub Error",
@@ -75,7 +75,7 @@ class ReservationRemoteServiceTests: XCTestCase {
                                           underlying: nil)
         given(mockAPIManager)
             .request(router: .any, requiredAuthorization: .any)
-            .willProduce { (a, b) -> Paginator<Reservations> in
+            .willProduce { (a, b) -> Paginator<Reservation> in
                 throw error
             }
         
@@ -103,7 +103,7 @@ class ReservationRemoteServiceTests: XCTestCase {
         // Arrange
         let request = ReservationServiceRequest.FetchReservationsByFlags(
             hotelId: 105,
-            flags: "FLAG_RED,FLAG_BLUE",
+            flags: [.red, .blue],
             page: 1,
             perPage: .fifty,
             sortedBy: .checkInDate,
@@ -157,6 +157,36 @@ class ReservationRemoteServiceTests: XCTestCase {
             .called(1)
     }
     
+    // MARK: - Test fetchReservationsByCompany
+    
+    func test_fetchReservationsByCompany_success() async throws {
+        // Arrange
+        let request = ReservationServiceRequest.FetchReservationsByCompany(
+            hotelId: 105,
+            companyId: 456,
+            page: 1,
+            perPage: .twenty,
+            sortedBy: .checkInDate,
+            sortedOrder: .descending
+        )
+        
+        let expectedReservations = createMockReservationsPaginator()
+        
+        given(mockAPIManager)
+            .request(router: .any, requiredAuthorization: .any)
+            .willReturn(expectedReservations)
+        
+        // Act
+        let result = try await sut.fetchReservationsByCompany(request: request)
+        
+        // Assert
+        XCTAssertEqual(result.totalItems, expectedReservations.totalItems)
+        
+        verify(mockAPIManager)
+            .request(router: .any, requiredAuthorization: .value(true))
+            .called(1)
+    }
+    
     // MARK: - Test fetchReservationsByPeriod
     
     func test_fetchReservationsByPeriod_success() async throws {
@@ -168,7 +198,7 @@ class ReservationRemoteServiceTests: XCTestCase {
         let request = ReservationServiceRequest.FetchReservationsByPeriod(
             hotelId: 105,
             period: period,
-            status: "CHECKED_IN",
+            status: .checkedIn,
             page: 1,
             perPage: .hundred,
             sortedBy: .checkOutDate,
@@ -192,17 +222,81 @@ class ReservationRemoteServiceTests: XCTestCase {
             .called(1)
     }
     
+    // MARK: - Test fetchReservationsByCreatedAt
+    
+    func test_fetchReservationsByCreatedAt_success() async throws {
+        // Arrange
+        let startDate = Date()
+        let endDate = Calendar.current.date(byAdding: .day, value: 7, to: startDate)!
+        let period = PeriodDate(start: startDate, end: endDate)
+        
+        let request = ReservationServiceRequest.FetchReservationsByCreatedAt(
+            hotelId: 105,
+            period: period,
+            page: 1,
+            perPage: .twenty,
+            sortedBy: .createdAt,
+            sortedOrder: .descending
+        )
+        
+        let expectedReservations = createMockReservationsPaginator()
+        
+        given(mockAPIManager)
+            .request(router: .any, requiredAuthorization: .any)
+            .willReturn(expectedReservations)
+        
+        // Act
+        let result = try await sut.fetchReservationsByCreatedAt(request: request)
+        
+        // Assert
+        XCTAssertEqual(result.totalItems, expectedReservations.totalItems)
+        
+        verify(mockAPIManager)
+            .request(router: .any, requiredAuthorization: .value(true))
+            .called(1)
+    }
+    
+    // MARK: - Test fetchReservationsByTags
+    
+    func test_fetchReservationsByTags_success() async throws {
+        // Arrange
+        let request = ReservationServiceRequest.FetchReservationsByTags(
+            hotelId: 105,
+            tags: ["VIP", "Corporate"],
+            page: 1,
+            perPage: .fifty,
+            sortedBy: .checkInDate,
+            sortedOrder: .ascending
+        )
+        
+        let expectedReservations = createMockReservationsPaginator()
+        
+        given(mockAPIManager)
+            .request(router: .any, requiredAuthorization: .any)
+            .willReturn(expectedReservations)
+        
+        // Act
+        let result = try await sut.fetchReservationsByTags(request: request)
+        
+        // Assert
+        XCTAssertEqual(result.totalItems, expectedReservations.totalItems)
+        
+        verify(mockAPIManager)
+            .request(router: .any, requiredAuthorization: .value(true))
+            .called(1)
+    }
+    
     // MARK: - Test fetchReservationsByKeyword
     
     func test_fetchReservationsByKeyword_success() async throws {
         // Arrange
         let request = ReservationServiceRequest.FetchReservationsByKeyword(
             hotelId: 105,
-            keyword: "Somchai",
-            page: nil,
-            perPage: nil,
-            sortedBy: nil,
-            sortedOrder: nil
+            keyword: "John Smith",
+            page: 1,
+            perPage: .twenty,
+            sortedBy: .checkInDate,
+            sortedOrder: .ascending
         )
         
         let expectedReservations = createMockReservationsPaginator()
@@ -249,36 +343,11 @@ class ReservationRemoteServiceTests: XCTestCase {
             .called(1)
     }
     
-    // MARK: - Test createReservation
+    // MARK: - Test fetchReservation
     
-    func test_createReservation_success() async throws {
+    func test_fetchReservation_success() async throws {
         // Arrange
-        let checkInDate = Date()
-        let checkOutDate = Calendar.current.date(byAdding: .day, value: 3, to: checkInDate)!
-        let contacts = ReservationContacts(
-            title: "คุณ",
-            fullname: "สมชาย ใจดี",
-            email: "somchai@example.com",
-            tel: "0812345678"
-        )
-        
-        let request = ReservationServiceRequest.CreateReservation(
-            hotelId: 105,
-            roomTypeId: 5,
-            roomId: 101,
-            checkInDate: checkInDate,
-            checkOutDate: checkOutDate,
-            adultNumber: 2,
-            extraAdultNumber: 0,
-            childNumber: 1,
-            contacts: contacts,
-            note: "ห้องติดกัน",
-            otaBookingId: nil,
-            relatedReservationId: nil,
-            guestComment: "ต้องการห้องชั้นสูง",
-            channelId: 1,
-            subChannelId: nil
-        )
+        let request = ReservationServiceRequest.FetchById(id: 512)
         
         let expectedReservation = createMockReservation()
         
@@ -287,7 +356,7 @@ class ReservationRemoteServiceTests: XCTestCase {
             .willReturn(expectedReservation)
         
         // Act
-        let result = try await sut.createReservation(request: request)
+        let result = try await sut.fetchReservation(request: request)
         
         // Assert
         XCTAssertEqual(result.id, expectedReservation.id)
@@ -363,13 +432,13 @@ class ReservationRemoteServiceTests: XCTestCase {
             .called(1)
     }
     
-    // MARK: - Test Customer Management
+    // MARK: - Test Guest Management
     
-    func test_appendCustomer_success() async throws {
+    func test_appendGuest_success() async throws {
         // Arrange
-        let request = ReservationServiceRequest.AppendCustomer(
+        let request = ReservationServiceRequest.AppendGuest(
             id: 512,
-            customerId: 789
+            guestId: 789
         )
         let expectedReservation = createMockReservation()
         
@@ -378,7 +447,7 @@ class ReservationRemoteServiceTests: XCTestCase {
             .willReturn(expectedReservation)
         
         // Act
-        let result = try await sut.appendCustomer(request: request)
+        let result = try await sut.appendGuest(request: request)
         
         // Assert
         XCTAssertEqual(result.id, expectedReservation.id)
@@ -388,37 +457,69 @@ class ReservationRemoteServiceTests: XCTestCase {
             .called(1)
     }
     
-    // MARK: - Test deleteReservation
+    // MARK: - Test noShow
     
-    func test_deleteReservation_success() async throws {
+    func test_noShow_success() async throws {
         // Arrange
-        let request = ReservationServiceRequest.DeleteReservation(id: 512)
+        let request = ReservationServiceRequest.NoShow(id: 512)
+        let expectedReservation = createMockReservation()
         
         given(mockAPIManager)
-            .requestACK(router: .any, requiredAuthorization: .any)
-            .willReturn(())
+            .request(router: .any, requiredAuthorization: .any)
+            .willReturn(expectedReservation)
         
         // Act
-        try await sut.deleteReservation(request: request)
+        let result = try await sut.noShow(request: request)
         
         // Assert
+        XCTAssertEqual(result.id, expectedReservation.id)
+        
         verify(mockAPIManager)
-            .requestACK(router: .any, requiredAuthorization: .value(true))
+            .request(router: .any, requiredAuthorization: .value(true))
+            .called(1)
+    }
+    
+    // MARK: - Test fetchConfirmation
+    
+    func test_fetchConfirmation_success() async throws {
+        // Arrange
+        let request = ReservationServiceRequest.FetchConfirmation(id: 512)
+        
+        let expectedConfirmation = ReservationServiceResponse.ConfirmationInfo(
+            createdAt: "2023-11-15T10:30:00Z",
+            remark: "Confirmation for reservation #512",
+            url: "https://example.com/confirmation/512"
+        )
+        
+        given(mockAPIManager)
+            .request(router: .any, requiredAuthorization: .any)
+            .willReturn(expectedConfirmation)
+        
+        // Act
+        let result = try await sut.fetchConfirmation(request: request)
+        
+        // Assert
+        XCTAssertEqual(result.createdAt, expectedConfirmation.createdAt)
+        XCTAssertEqual(result.remark, expectedConfirmation.remark)
+        XCTAssertEqual(result.url, expectedConfirmation.url)
+        
+        verify(mockAPIManager)
+            .request(router: .any, requiredAuthorization: .value(true))
             .called(1)
     }
     
     // MARK: - Helper Methods
     
-    private func createMockReservationsPaginator() -> Paginator<Reservations> {
+    private func createMockReservationsPaginator() -> Paginator<Reservation> {
         let reservation = createMockReservation()
-        let reservations = Reservations(reservations: [reservation])
+        let collection = Reservations(array: [reservation])
         
-        return Paginator<Reservations>(
-            page: 1,
-            perPage: 20,
-            totalPages: 1,
+        return Paginator<Reservation>(
+            items: collection,
             totalItems: 1,
-            items: [reservations]
+            totalPages: 1,
+            perPage: 20,
+            page: 1
         )
     }
     
@@ -429,15 +530,15 @@ class ReservationRemoteServiceTests: XCTestCase {
         let updatedAt = Date()
         
         let contacts = Reservation.Contacts(
-            title: "คุณ",
-            fullname: "สมชาย ใจดี",
-            email: "somchai@example.com",
-            tel: "0812345678"
+            title: "Mr.",
+            fullname: "John Smith",
+            email: "john.smith@example.com",
+            tel: "+66123456789"
         )
         
         return Reservation(
             id: 512,
-            uid: "rsvt_thai_booking_001",
+            uid: "rsvt_5la15znqpb30lz5rmqj",
             status: .confirmed,
             checkInDate: checkInDate,
             checkOutDate: checkOutDate,
@@ -445,12 +546,12 @@ class ReservationRemoteServiceTests: XCTestCase {
             extraAdultNumber: 0,
             childNumber: 1,
             contacts: contacts,
-            note: "ห้องติดกัน",
+            note: "Adjacent rooms requested",
             canceledReason: nil,
             documentPhotos: nil,
             otaBookingId: "",
             relatedReservationId: nil,
-            guestComment: "ต้องการห้องชั้นสูง",
+            guestComment: "High floor room preferred",
             markers: [],
             flags: [.red],
             tags: ["VIP"],

@@ -23,11 +23,12 @@ final class ReservationServiceRouterTests: XCTestCase {
     func testFetchReservationsRequest() throws {
         // Given
         let req = ReservationServiceRequest.FetchReservations(
+            hotelId: 105,
+            status: .confirmed,
             page: 1,
-            perPage: 20,
-            sortedBy: "ID",
-            sortedOrder: "ASC",
-            hotelId: 105
+            perPage: .twenty,
+            sortedBy: .id,
+            sortedOrder: .ascending
         )
         let router = ReservationServiceRouter.fetchReservations(request: req)
         
@@ -52,6 +53,7 @@ final class ReservationServiceRouterTests: XCTestCase {
         XCTAssertTrue(queryItems.contains { $0.name == "sorted_by" && $0.value == "ID" })
         XCTAssertTrue(queryItems.contains { $0.name == "sorted_order" && $0.value == "ASC" })
         XCTAssertTrue(queryItems.contains { $0.name == "hotel_id" && $0.value == "105" })
+        XCTAssertTrue(queryItems.contains { $0.name == "status" && $0.value == "CONFIRMED" })
         
         XCTAssertEqual(urlRequest.httpMethod, HTTPMethod.get.rawValue)
     }
@@ -59,8 +61,12 @@ final class ReservationServiceRouterTests: XCTestCase {
     func testFetchReservationsByFlagsRequest() throws {
         // Given
         let req = ReservationServiceRequest.FetchReservationsByFlags(
-            flags: ["checked_in", "confirmed"],
-            hotelId: 105
+            hotelId: 105,
+            flags: [.red, .blue],
+            page: 1,
+            perPage: .fifty,
+            sortedBy: .checkInDate,
+            sortedOrder: .descending
         )
         let router = ReservationServiceRouter.fetchReservationsByFlags(request: req)
         
@@ -70,6 +76,13 @@ final class ReservationServiceRouterTests: XCTestCase {
         // Then
         XCTAssertTrue(urlRequest.url?.absoluteString.contains(baseURL + "/v4/reservations/flags") == true)
         XCTAssertEqual(urlRequest.httpMethod, HTTPMethod.get.rawValue)
+        
+        // Check individual parameters
+        let urlComponents = URLComponents(url: urlRequest.url!, resolvingAgainstBaseURL: false)
+        let queryItems = urlComponents?.queryItems ?? []
+        
+        XCTAssertTrue(queryItems.contains { $0.name == "flags" && $0.value == "FLAG_RED,FLAG_BLUE" })
+        XCTAssertTrue(queryItems.contains { $0.name == "hotel_id" && $0.value == "105" })
     }
     
     func testFetchReservationByIdRequest() throws {
@@ -85,105 +98,27 @@ final class ReservationServiceRouterTests: XCTestCase {
         XCTAssertEqual(urlRequest.httpMethod, HTTPMethod.get.rawValue)
     }
     
-    func testCreateReservationRequest() throws {
+    func testFetchReservationByUidRequest() throws {
         // Given
-        let req = ReservationServiceRequest.CreateReservation(
-            roomTypeId: 10,
-            checkInDate: "2024-06-15",
-            checkOutDate: "2024-06-17",
-            numberOfGuests: 2,
-            firstName: "John",
-            lastName: "Doe",
-            nationality: "THA",
-            email: "john.doe@example.com",
-            phoneNumber: "+66123456789",
-            hotelId: 105
+        let req = ReservationServiceRequest.FetchReservationByUid(
+            hotelId: 105,
+            uid: "rsvt_5la15znqpb30lz5rmqj"
         )
-        let router = ReservationServiceRouter.createReservation(request: req)
+        let router = ReservationServiceRouter.fetchReservationByUid(request: req)
         
         // When
         let urlRequest = try router.asURLRequest()
         
         // Then
-        XCTAssertEqual(urlRequest.url?.absoluteString, baseURL + "/v4/reservations")
-        XCTAssertEqual(urlRequest.httpMethod, HTTPMethod.post.rawValue)
+        XCTAssertTrue(urlRequest.url?.absoluteString.contains(baseURL + "/v4/reservations/uid") == true)
+        XCTAssertEqual(urlRequest.httpMethod, HTTPMethod.get.rawValue)
         
-        // Test parameters
-        if let body = urlRequest.httpBody {
-            do {
-                if let json = try JSONSerialization.jsonObject(with: body, options: []) as? [String: Any] {
-                    XCTAssertEqual(json["room_type_id"] as? Int, 10)
-                    XCTAssertEqual(json["check_in_date"] as? String, "2024-06-15")
-                    XCTAssertEqual(json["check_out_date"] as? String, "2024-06-17")
-                    XCTAssertEqual(json["number_of_guests"] as? Int, 2)
-                    XCTAssertEqual(json["first_name"] as? String, "John")
-                    XCTAssertEqual(json["last_name"] as? String, "Doe")
-                    XCTAssertEqual(json["nationality"] as? String, "THA")
-                    XCTAssertEqual(json["email"] as? String, "john.doe@example.com")
-                    XCTAssertEqual(json["phone_number"] as? String, "+66123456789")
-                    XCTAssertEqual(json["hotel_id"] as? Int, 105)
-                } else {
-                    XCTFail("JSON is not a dictionary")
-                }
-            } catch {
-                XCTFail("Failed to parse JSON: \(error)")
-            }
-        } else {
-            XCTFail("HTTP body is nil")
-        }
-    }
-    
-    func testUpdateReservationRequest() throws {
-        // Given
-        let req = ReservationServiceRequest.UpdateReservation(
-            id: 123,
-            roomTypeId: 11,
-            checkInDate: "2024-06-16",
-            checkOutDate: "2024-06-18",
-            numberOfGuests: 3
-        )
-        let router = ReservationServiceRouter.updateReservation(request: req)
+        // Check parameters
+        let urlComponents = URLComponents(url: urlRequest.url!, resolvingAgainstBaseURL: false)
+        let queryItems = urlComponents?.queryItems ?? []
         
-        // When
-        let urlRequest = try router.asURLRequest()
-        
-        // Then
-        XCTAssertEqual(urlRequest.url?.absoluteString, baseURL + "/v4/reservations/123")
-        XCTAssertEqual(urlRequest.httpMethod, HTTPMethod.put.rawValue)
-        
-        // Test body
-        if let body = urlRequest.httpBody {
-            do {
-                if let json = try JSONSerialization.jsonObject(with: body, options: []) as? [String: Any] {
-                    XCTAssertEqual(json["room_type_id"] as? Int, 11)
-                    XCTAssertEqual(json["check_in_date"] as? String, "2024-06-16")
-                    XCTAssertEqual(json["check_out_date"] as? String, "2024-06-18")
-                    XCTAssertEqual(json["number_of_guests"] as? Int, 3)
-                    // id should not be in the JSON body
-                    XCTAssertNil(json["id"])
-                } else {
-                    XCTFail("JSON is not a dictionary")
-                }
-            } catch {
-                XCTFail("Failed to parse JSON: \(error)")
-            }
-        } else {
-            XCTFail("HTTP body is nil")
-        }
-    }
-    
-    func testDeleteReservationRequest() throws {
-        // Given
-        let req = ReservationServiceRequest.DeleteReservation(id: 123)
-        let router = ReservationServiceRouter.deleteReservation(request: req)
-        
-        // When
-        let urlRequest = try router.asURLRequest()
-        
-        // Then
-        XCTAssertEqual(urlRequest.url?.absoluteString, baseURL + "/v4/reservations/123")
-        XCTAssertEqual(urlRequest.httpMethod, HTTPMethod.delete.rawValue)
-        XCTAssertNil(urlRequest.httpBody)
+        XCTAssertTrue(queryItems.contains { $0.name == "uid" && $0.value == "rsvt_5la15znqpb30lz5rmqj" })
+        XCTAssertTrue(queryItems.contains { $0.name == "hotel_id" && $0.value == "105" })
     }
     
     func testCheckInRequest() throws {
@@ -240,7 +175,7 @@ final class ReservationServiceRouterTests: XCTestCase {
     
     func testGetFirstGuestRequest() throws {
         // Given
-        let req = ReservationServiceRequest.GetFirstGuest(id: 123)
+        let req = ReservationServiceRequest.SetFirstGuest(id: 123)
         let router = ReservationServiceRouter.getFirstGuest(request: req)
         
         // When
@@ -253,7 +188,7 @@ final class ReservationServiceRouterTests: XCTestCase {
     
     func testGetConfirmationRequest() throws {
         // Given
-        let req = ReservationServiceRequest.GetConfirmation(id: 123)
+        let req = ReservationServiceRequest.FetchConfirmation(id: 123)
         let router = ReservationServiceRouter.getConfirmation(request: req)
         
         // When
@@ -264,38 +199,29 @@ final class ReservationServiceRouterTests: XCTestCase {
         XCTAssertEqual(urlRequest.httpMethod, HTTPMethod.get.rawValue)
     }
     
-    func testGetFolioRequest() throws {
-        // Given
-        let req = ReservationServiceRequest.GetFolio(id: 123)
-        let router = ReservationServiceRouter.getFolio(request: req)
-        
-        // When
-        let urlRequest = try router.asURLRequest()
-        
-        // Then
-        XCTAssertEqual(urlRequest.url?.absoluteString, baseURL + "/v4/reservations/123/folio")
-        XCTAssertEqual(urlRequest.httpMethod, HTTPMethod.get.rawValue)
-    }
-    
-    func testFetchCMBookingsRequest() throws {
-        // Given
-        let req = ReservationServiceRequest.FetchReservationByCMBooking(
-            page: 1,
-            perPage: 10,
-            hotelId: 105
+    // MARK: - Helper Methods
+    private func createMockReservationsPaginator() -> Paginator<Reservation> {
+        let reservation = Reservation(
+            id: 512,
+            uid: "rsvt_5la15znqpb30lz5rmqj",
+            status: .checkedOut,
+            checkInDate: Date(),
+            checkOutDate: Date(),
+            hotelId: 105,
+            creatorId: 38,
+            channelId: 9,
+            createdAt: Date(),
+            updatedAt: Date()
         )
-        let router = ReservationServiceRouter.fetchCMBookings(request: req)
         
-        // When
-        let urlRequest = try router.asURLRequest()
+        let reservations = Reservations(array: [reservation])
         
-        // Then
-        guard let url = urlRequest.url else {
-            XCTFail("URL should not be nil")
-            return
-        }
-        
-        XCTAssertTrue(url.absoluteString.contains(baseURL + "/v4/reservations/cm-bookings"))
-        XCTAssertEqual(urlRequest.httpMethod, HTTPMethod.get.rawValue)
+        return Paginator<Reservation>(
+            items: reservations,
+            totalItems: 1,
+            totalPages: 1,
+            perPage: 20,
+            page: 1
+        )
     }
 } 

@@ -37,11 +37,11 @@ enum ReservationServiceRouter: AlamofireBaseRouterProtocol {
     case cancel(request: ReservationServiceRequest.Cancel)
     case noShow(request: ReservationServiceRequest.NoShow)
     
-    // MARK: - Customer Management Cases
+    // MARK: - Guest Management Cases
     case getFirstGuest(request: ReservationServiceRequest.SetFirstGuest)
-    case dropCustomer(request: ReservationServiceRequest.DropCustomer)
-    case appendCustomer(request: ReservationServiceRequest.AppendCustomer)
-    case replaceCustomers(request: ReservationServiceRequest.ReplaceCustomers)
+    case dropGuest(request: ReservationServiceRequest.DropGuest)
+    case appendGuest(request: ReservationServiceRequest.AppendGuest)
+    case replaceGuests(request: ReservationServiceRequest.ReplaceGuests)
     
     // MARK: - Additional Cases
     case getConfirmation(request: ReservationServiceRequest.FetchConfirmation)
@@ -101,14 +101,14 @@ enum ReservationServiceRouter: AlamofireBaseRouterProtocol {
         case .noShow(let request):
             return "/v4/reservations/\(request.id)/no-show"
             
-        // Customer management endpoints
+        // Guest management endpoints
         case .getFirstGuest(let request):
             return "/v4/reservations/\(request.id)/first-guest"
-        case .dropCustomer(let request):
+        case .dropGuest(let request):
             return "/v4/reservations/\(request.id)/drop-guest"
-        case .appendCustomer(let request):
+        case .appendGuest(let request):
             return "/v4/reservations/\(request.id)/append-guest"
-        case .replaceCustomers(let request):
+        case .replaceGuests(let request):
             return "/v4/reservations/\(request.id)/replace-guests"
             
         // Additional endpoints
@@ -133,15 +133,15 @@ enum ReservationServiceRouter: AlamofireBaseRouterProtocol {
             
         // POST methods
         case .createReservationByCMBooking, .createReservation, .checkIn, .checkOut,
-             .cancel, .noShow, .appendCustomer, .createConfirmation, .splitReservation:
+             .cancel, .noShow, .appendGuest, .createConfirmation, .splitReservation:
             return .post
             
         // PUT methods
-        case .updateReservation, .replaceCustomers:
+        case .updateReservation, .replaceGuests:
             return .put
             
         // DELETE methods
-        case .dropCustomer:
+        case .dropGuest:
             return .delete
         }
     }
@@ -189,11 +189,11 @@ enum ReservationServiceRouter: AlamofireBaseRouterProtocol {
             return request.body
         case .updateReservation(let request):
             return request.body
-        case .dropCustomer(let request):
+        case .dropGuest(let request):
             return request.body
-        case .appendCustomer(let request):
+        case .appendGuest(let request):
             return request.body
-        case .replaceCustomers(let request):
+        case .replaceGuests(let request):
             return request.body
         case .createConfirmation(let request):
             return request.body

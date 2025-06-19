@@ -502,7 +502,7 @@ struct ReservationServiceRequest {
             case subChannelId = "sub_channel_id"            
             case otaBookingId = "ota_booking_id"
             case relatedReservationId = "related_reservation_id"
-            case guestIds = "customers"
+            case guestIds = "guest_ids"
         }
         
         func encode(to encoder: Encoder) throws {
@@ -571,7 +571,7 @@ struct ReservationServiceRequest {
             case subChannelId = "sub_channel_id"            
             case otaBookingId = "ota_booking_id"
             case relatedReservationId = "related_reservation_id"
-            case guestIds = "customers"
+            case guestIds = "guest_ids"
         }
         
         func encode(to encoder: Encoder) throws {
@@ -620,6 +620,38 @@ struct ReservationServiceRequest {
             return try? JSONEncoder().encode(self)
         }
 
+        init(id: Int,
+             adultNumber: Int?,
+             extraAdultNumber: Int?,
+             contactName: String?,
+             contactEmail: String?,
+             contactTel: String?,
+             note: String?,
+             guestComment: String?,
+             flags: [Reservation.Flag]?,
+             emoji: String?,
+             channelId: Int,
+             subChannelId: Int?,
+             otaBookingId: String?,
+             relatedReservationId: Int?,
+             guestIds: [Int]?) {
+            self.id = id
+            self.adultNumber = adultNumber
+            self.extraAdultNumber = extraAdultNumber
+            self.contactName = contactName
+            self.contactEmail = contactEmail
+            self.contactTel = contactTel
+            self.note = note
+            self.guestComment = guestComment
+            self.flags = flags
+            self.emoji = emoji
+            self.channelId = channelId
+            self.subChannelId = subChannelId
+            self.otaBookingId = otaBookingId
+            self.relatedReservationId = relatedReservationId
+            self.guestIds = guestIds
+        }
+
         //encode
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)            
@@ -657,23 +689,23 @@ struct ReservationServiceRequest {
             case subChannelId = "sub_channel_id"            
             case otaBookingId = "ota_booking_id"            
             case relatedReservationId = "related_reservation_id"
-            case guestIds = "customers"            
+            case guestIds = "guest_ids"            
         }
         
     }
     
-    // MARK: - Customer Management
-    struct DropCustomer: Encodable {
+    // MARK: - Guest Management
+    struct DropGuest: Encodable {
         let id: Int
-        let customerId: Int
+        let guestId: Int
         
         enum CodingKeys: String, CodingKey {
-            case customerId = "customer_id"
+            case guestId = "guest_id"
         }
         
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(customerId, forKey: .customerId)
+            try container.encode(guestId, forKey: .guestId)
         }
         
         var body: Data? {
@@ -681,17 +713,17 @@ struct ReservationServiceRequest {
         }
     }
     
-    struct AppendCustomer: Encodable {
+    struct AppendGuest: Encodable {
         let id: Int
-        let customerId: Int
+        let guestId: Int
         
         enum CodingKeys: String, CodingKey {
-            case customerId = "customer_id"
+            case guestId = "guest_id"
         }
         
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(customerId, forKey: .customerId)
+            try container.encode(guestId, forKey: .guestId)
         }
         
         var body: Data? {
@@ -699,7 +731,7 @@ struct ReservationServiceRequest {
         }
     }
     
-    struct ReplaceCustomers: Encodable {
+    struct ReplaceGuests: Encodable {
         let id: Int
         let guestIds: [Int]
         
@@ -762,6 +794,20 @@ struct ReservationServiceRequest {
         let totalPrice: Double
         let priceCardId: Int?
         let data: ItemData
+
+        init(reservableId: Int,
+            reservableType: UnitReservableType,
+            reservedDate: Date,
+            totalPrice: Double,
+            priceCardId: Int?,            
+            data: ItemData) {
+            self.reservableId = reservableId
+            self.reservableType = reservableType
+            self.reservedDate = reservedDate
+            self.totalPrice = totalPrice
+            self.priceCardId = priceCardId
+            self.data = data
+        }
         
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
