@@ -105,11 +105,11 @@ enum ReservationServiceRouter: AlamofireBaseRouterProtocol {
         case .getFirstGuest(let request):
             return "/v4/reservations/\(request.id)/first-guest"
         case .dropCustomer(let request):
-            return "/v4/reservations/\(request.id)/drop-customer"
+            return "/v4/reservations/\(request.id)/drop-guest"
         case .appendCustomer(let request):
-            return "/v4/reservations/\(request.id)/append-customer"
+            return "/v4/reservations/\(request.id)/append-guest"
         case .replaceCustomers(let request):
-            return "/v4/reservations/\(request.id)/replace-customers"
+            return "/v4/reservations/\(request.id)/replace-guests"
             
         // Additional endpoints
         case .getConfirmation(let request):

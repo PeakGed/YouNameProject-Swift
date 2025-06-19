@@ -234,6 +234,7 @@
 				Services/ReservationItemService/ReservationItemServiceRouter.swift,
 				Services/ReservationService/ReservationRemoteService.swift,
 				Services/ReservationService/ReservationServiceRequest.swift,
+				Services/ReservationService/ReservationServiceResponse.swift,
 				"Services/ReservationService/ReservationServiceRouter .swift",
 				Services/RoomService/RoomRemoteService.swift,
 				Services/RoomService/RoomServiceRequest.swift,

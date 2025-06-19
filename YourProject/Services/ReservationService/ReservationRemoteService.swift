@@ -43,8 +43,8 @@ protocol ReservationServiceProtocol: AnyObject {
     func replaceCustomers(request: ReservationServiceRequest.ReplaceCustomers) async throws -> Reservation
     
     // MARK: - Additional Operations
-    func fetchConfirmation(request: ReservationServiceRequest.FetchConfirmation) async throws -> Reservation.ConfirmationInfo
-    func createConfirmation(request: ReservationServiceRequest.CreateConfirmation) async throws -> Reservation.ConfirmationInfo
+    func fetchConfirmation(request: ReservationServiceRequest.FetchConfirmation) async throws -> RerservationServiceResponse.ConfirmationInfo
+    func createConfirmation(request: ReservationServiceRequest.CreateConfirmation) async throws -> RerservationServiceResponse.ConfirmationInfo
     func splitReservation(request: ReservationServiceRequest.SplitReservation) async throws -> Reservations
 }
 
@@ -186,12 +186,12 @@ class ReservationRemoteService: ReservationServiceProtocol {
     
     // MARK: - Additional Operations
     
-    func fetchConfirmation(request: ReservationServiceRequest.FetchConfirmation) async throws -> Reservation.ConfirmationInfo {
+    func fetchConfirmation(request: ReservationServiceRequest.FetchConfirmation) async throws -> RerservationServiceResponse.ConfirmationInfo {
         let router = ReservationServiceRouter.getConfirmation(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
-    func createConfirmation(request: ReservationServiceRequest.CreateConfirmation) async throws -> Reservation.ConfirmationInfo {
+    func createConfirmation(request: ReservationServiceRequest.CreateConfirmation) async throws -> RerservationServiceResponse.ConfirmationInfo {
         let router = ReservationServiceRouter.createConfirmation(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
