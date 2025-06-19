@@ -6,6 +6,10 @@
 //
 import Foundation
 
+enum UnitReservableType: String, Codable {
+    case room = "Room"
+}
+
 struct Room: Codable {
     let id: Int
     let roomTypeId: Int

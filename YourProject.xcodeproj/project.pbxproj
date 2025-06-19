@@ -250,6 +250,15 @@
 			);
 			target = 36B587D42BF73F1900D523D0 /* YourProjectTests */;
 		};
+		0F85458E2E03FDFA007F1B88 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ServiceTests/ReservationService/ReservationRemoteServiceTests.swift,
+				ServiceTests/ReservationService/ReservationServiceRequestTests.swift,
+				ServiceTests/ReservationService/ReservationServiceRouterTests.swift,
+			);
+			target = 36B587D42BF73F1900D523D0 /* YourProjectTests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
@@ -265,7 +274,7 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		0F8140142D4BC79F0025B2B0 /* YourProject */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (0F81401F2D4BC79F0025B2B0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 0F8140202D4BC79F0025B2B0 /* PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet */, 0F819EEB2D4E08070025B2B0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = YourProject; sourceTree = "<group>"; };
-		0F8140222D4BC7A30025B2B0 /* YourProjectTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = YourProjectTests; sourceTree = "<group>"; };
+		0F8140222D4BC7A30025B2B0 /* YourProjectTests */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (0F85458E2E03FDFA007F1B88 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = YourProjectTests; sourceTree = "<group>"; };
 		0F8140262D4BC7A50025B2B0 /* YourProjectUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = YourProjectUITests; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 

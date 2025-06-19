@@ -10,6 +10,7 @@ import Foundation
 
 enum ReservationServiceRouter: AlamofireBaseRouterProtocol {
     
+    // MARK: - Fetch Cases
     case fetchReservations(request: ReservationServiceRequest.FetchReservations)
     case fetchReservationsByFlags(request: ReservationServiceRequest.FetchReservationsByFlags)
     case fetchReservationsByGuest(request: ReservationServiceRequest.FetchReservationsByGuest)
@@ -20,13 +21,33 @@ enum ReservationServiceRouter: AlamofireBaseRouterProtocol {
     case fetchReservationsByKeyword(request: ReservationServiceRequest.FetchReservationsByKeyword)
     case fetchReservationsByBatchIds(request: ReservationServiceRequest.FetchReservationsByBatchIds)
     case fetchReservationByUid(request: ReservationServiceRequest.FetchReservationByUid)
-    case fetchReservation(request: ReservationServiceRequest.FetchReservation)
+    case fetchReservation(request: ReservationServiceRequest.FetchById)
+    
+    // MARK: - CM Cases
+    case fetchReservationByCMBooking(request: ReservationServiceRequest.FetchReservationByCMBooking)
+    case createReservationByCMBooking(request: ReservationServiceRequest.CreateReservationByCMBooking)
+    
+    // MARK: - CRUD Cases
     case createReservation(request: ReservationServiceRequest.CreateReservation)
     case updateReservation(request: ReservationServiceRequest.UpdateReservation)
-    case deleteReservation(request: ReservationServiceRequest.DeleteReservation)
     
+    // MARK: - Status Change Cases
     case checkIn(request: ReservationServiceRequest.CheckIn)
     case checkOut(request: ReservationServiceRequest.CheckOut)
+    case cancel(request: ReservationServiceRequest.Cancel)
+    case noShow(request: ReservationServiceRequest.NoShow)
+    
+    // MARK: - Customer Management Cases
+    case getFirstGuest(request: ReservationServiceRequest.SetFirstGuest)
+    case dropCustomer(request: ReservationServiceRequest.DropCustomer)
+    case appendCustomer(request: ReservationServiceRequest.AppendCustomer)
+    case replaceCustomers(request: ReservationServiceRequest.ReplaceCustomers)
+    
+    // MARK: - Additional Cases
+    case getConfirmation(request: ReservationServiceRequest.FetchConfirmation)
+    case createConfirmation(request: ReservationServiceRequest.CreateConfirmation)
+    
+    case splitReservation(request: ReservationServiceRequest.SplitReservation)
     
     var domain: String {
         return AppConfiguration.shared.baseURL
@@ -34,80 +55,127 @@ enum ReservationServiceRouter: AlamofireBaseRouterProtocol {
     
     var path: String {
         switch self {
+        // Basic fetch endpoints
         case .fetchReservations:
-            return "/api/v4/reservations"
+            return "/v4/reservations"
         case .fetchReservationsByFlags:
-            return "/api/v4/reservations/flags"
+            return "/v4/reservations/flags"
         case .fetchReservationsByGuest:
-            return "/api/v4/reservations/guest"
+            return "/v4/reservations/guest"
         case .fetchReservationsByCompany:
-            return "/api/v4/reservations/company"
+            return "/v4/reservations/company"
         case .fetchReservationsByPeriod:
-            return "/api/v4/reservations/period"
+            return "/v4/reservations/period"
         case .fetchReservationsByCreatedAt:
-            return "/api/v4/reservations/created_at"
+            return "/v4/reservations/created-at"
         case .fetchReservationsByTags:
-            return "/api/v4/reservations/tags"
+            return "/v4/reservations/tags"
         case .fetchReservationsByKeyword:
-            return "/api/v4/reservations/keyword"
+            return "/v4/reservations/keyword"
         case .fetchReservationsByBatchIds:
-            return "/api/v4/reservations/batch_ids"
+            return "/v4/reservations/batch-ids"
         case .fetchReservationByUid:
-            return "/api/v4/reservations/uid"
+            return "/v4/reservations/uid"
         case .fetchReservation(let request):
-            return "/api/v4/reservations/\(request.id)"
-        case .updateReservation(let request):
-            return "/api/v4/reservations/\(request.id)"
-        case .deleteReservation(let request):
-            return "/api/v4/reservations/\(request.id)"
+            return "/v4/reservations/\(request.id)"
+            
+        // CM endpoints
+        case .fetchReservationByCMBooking:
+            return "/v4/reservations/cm-booking"
+        case .createReservationByCMBooking:
+            return "/v4/reservations/cm-bookings"
+            
+        // CRUD endpoints
         case .createReservation:
-            return "/api/v4/reservations"
+            return "/v4/reservations"
+        case .updateReservation(let request):
+            return "/v4/reservations/\(request.id)"
+            
+        // Status change endpoints
         case .checkIn(let request):
-            return "/api/v4/reservations/\(request.id)/check_in"
+            return "/v4/reservations/\(request.id)/check-in"
         case .checkOut(let request):
-            return "/api/v4/reservations/\(request.id)/check_out"
+            return "/v4/reservations/\(request.id)/check-out"
+        case .cancel(let request):
+            return "/v4/reservations/\(request.id)/cancel"
+        case .noShow(let request):
+            return "/v4/reservations/\(request.id)/no-show"
+            
+        // Customer management endpoints
+        case .getFirstGuest(let request):
+            return "/v4/reservations/\(request.id)/first-guest"
+        case .dropCustomer(let request):
+            return "/v4/reservations/\(request.id)/drop-customer"
+        case .appendCustomer(let request):
+            return "/v4/reservations/\(request.id)/append-customer"
+        case .replaceCustomers(let request):
+            return "/v4/reservations/\(request.id)/replace-customers"
+            
+        // Additional endpoints
+        case .getConfirmation(let request):
+            return "/v4/reservations/\(request.id)/confirmation"
+        case .createConfirmation(let request):
+            return "/v4/reservations/\(request.id)/confirmation"
+        case .splitReservation(let request):
+            return "/v4/reservations/\(request.id)/split"
         }
     }
     
     var method: Alamofire.HTTPMethod {
         switch self {
-        case .fetchReservations, .fetchReservationsByFlags, .fetchReservationsByGuest, .fetchReservationsByCompany, .fetchReservationsByPeriod, .fetchReservationsByCreatedAt, .fetchReservationsByTags, .fetchReservationsByKeyword, .fetchReservationsByBatchIds, .fetchReservationByUid, .fetchReservation:
+        // GET methods
+        case .fetchReservations, .fetchReservationsByFlags, .fetchReservationsByGuest,
+             .fetchReservationsByCompany, .fetchReservationsByPeriod, .fetchReservationsByCreatedAt,
+             .fetchReservationsByTags, .fetchReservationsByKeyword, .fetchReservationsByBatchIds,
+             .fetchReservationByUid, .fetchReservation, .fetchReservationByCMBooking, .getFirstGuest,
+             .getConfirmation:
             return .get
-        case .createReservation, .checkIn, .checkOut:
+            
+        // POST methods
+        case .createReservationByCMBooking, .createReservation, .checkIn, .checkOut,
+             .cancel, .noShow, .appendCustomer, .createConfirmation, .splitReservation:
             return .post
-        case .updateReservation:
+            
+        // PUT methods
+        case .updateReservation, .replaceCustomers:
             return .put
-        case .deleteReservation:
+            
+        // DELETE methods
+        case .dropCustomer:
             return .delete
         }
     }
     
     var headers: [String: String]? {
-        return ["Content-Type": "application/json"]
+        return [
+            "Content-Type": "application/json"
+        ]
     }
     
     var parameters: [String: Any]? {
         switch self {
         case .fetchReservations(let request):
-            return request.toDictionary()
+            return request.parameters
         case .fetchReservationsByFlags(let request):
-            return request.toDictionary()
+            return request.parameters
         case .fetchReservationsByGuest(let request):
-            return request.toDictionary()
+            return request.parameters
         case .fetchReservationsByCompany(let request):
-            return request.toDictionary()
+            return request.parameters
         case .fetchReservationsByPeriod(let request):
-            return request.toDictionary()
+            return request.parameters
         case .fetchReservationsByCreatedAt(let request):
-            return request.toDictionary()
+            return request.parameters
         case .fetchReservationsByTags(let request):
-            return request.toDictionary()
+            return request.parameters
         case .fetchReservationsByKeyword(let request):
-            return request.toDictionary()
+            return request.parameters
         case .fetchReservationsByBatchIds(let request):
-            return request.toDictionary()
+            return request.parameters
         case .fetchReservationByUid(let request):
-            return request.toDictionary()
+            return request.parameters
+        case .fetchReservationByCMBooking(let request):
+            return request.parameters
         default:
             return nil
         }
@@ -115,10 +183,22 @@ enum ReservationServiceRouter: AlamofireBaseRouterProtocol {
     
     var body: Data? {
         switch self {
+        case .createReservationByCMBooking(let request):
+            return request.body
         case .createReservation(let request):
-            return try? JSONEncoder().encode(request)
+            return request.body
         case .updateReservation(let request):
-            return try? JSONEncoder().encode(request)
+            return request.body
+        case .dropCustomer(let request):
+            return request.body
+        case .appendCustomer(let request):
+            return request.body
+        case .replaceCustomers(let request):
+            return request.body
+        case .createConfirmation(let request):
+            return request.body
+        case .splitReservation(let request):
+            return request.body
         default:
             return nil
         }
@@ -135,11 +215,9 @@ enum ReservationServiceRouter: AlamofireBaseRouterProtocol {
         request.httpBody = body
         
         headers?.forEach {
-            request.addValue($0.value,
-                             forHTTPHeaderField: $0.key)
+            request.addValue($0.value, forHTTPHeaderField: $0.key)
         }
         
-        return try encoding.encode(request,
-                                   with: parameters)
+        return try encoding.encode(request, with: parameters)
     }
 } 
