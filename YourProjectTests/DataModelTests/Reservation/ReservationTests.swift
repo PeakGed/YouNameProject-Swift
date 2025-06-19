@@ -69,20 +69,20 @@ final class ReservationTests: XCTestCase {
         XCTAssertEqual(reservation.contacts.tel, "1234567890")
     }
     
-    func test_initWithConfirmationInfo() throws {
-        // Arrange & Act
-        let reservation = createSampleReservation()
-        
-        // Assert
-        XCTAssertNil(reservation.confirmationInfo.createdAt)
-        XCTAssertNil(reservation.confirmationInfo.remark)
-        XCTAssertNil(reservation.confirmationInfo.url)
-    }
+//    func test_initWithConfirmationInfo() throws {
+//        // Arrange & Act
+//        let reservation = createSampleReservation()
+//        
+//        // Assert
+//        XCTAssertNil(reservation.confirmationInfo.createdAt)
+//        XCTAssertNil(reservation.confirmationInfo.remark)
+//        XCTAssertNil(reservation.confirmationInfo.url)
+//    }
     
     // MARK: - Status Tests
     
     func test_statusDescription() throws {
-        XCTAssertEqual(Reservation.Status.booked.description, "Booked")
+        XCTAssertEqual(Reservation.Status.created.description, "Created")
         XCTAssertEqual(Reservation.Status.checkedIn.description, "Checked-in")
         XCTAssertEqual(Reservation.Status.checkedOut.description, "Checked-out")
         XCTAssertEqual(Reservation.Status.confirmed.description, "Confirmed")
@@ -91,12 +91,12 @@ final class ReservationTests: XCTestCase {
     }
     
     func test_statusRawValues() throws {
-        XCTAssertEqual(Reservation.Status.booked.rawValue, "created")
-        XCTAssertEqual(Reservation.Status.checkedIn.rawValue, "checked_in")
-        XCTAssertEqual(Reservation.Status.checkedOut.rawValue, "checked_out")
-        XCTAssertEqual(Reservation.Status.confirmed.rawValue, "confirmed")
-        XCTAssertEqual(Reservation.Status.canceled.rawValue, "canceled")
-        XCTAssertEqual(Reservation.Status.noShown.rawValue, "no_showed")
+        XCTAssertEqual(Reservation.Status.created.rawValue, "CREATED")
+        XCTAssertEqual(Reservation.Status.checkedIn.rawValue, "CHECKED_IN")
+        XCTAssertEqual(Reservation.Status.checkedOut.rawValue, "CHECKED_OUT")
+        XCTAssertEqual(Reservation.Status.confirmed.rawValue, "CONFIRMED")
+        XCTAssertEqual(Reservation.Status.canceled.rawValue, "CANCELED")
+        XCTAssertEqual(Reservation.Status.noShown.rawValue, "NO_SHOWED")
     }
     
     // MARK: - Flag Tests
@@ -119,7 +119,7 @@ final class ReservationTests: XCTestCase {
         {
             "id": 512,
             "uid": "rsvt_5la15znqpb30lz5rmqj",
-            "status": "checked_out",
+            "status": "CHECKED_OUT",
             "check_in_date": "2019-11-28",
             "check_out_date": "2019-12-01",
             "adult_number": 1,
@@ -148,11 +148,6 @@ final class ReservationTests: XCTestCase {
             "created_at": "2019-11-28T13:43:02.888+07:00",
             "updated_at": "2020-08-27T21:58:06.595+07:00",
             "hotel_channel_reservation_id": null,
-            "confirmation_info": {
-                "created_at": null,
-                "remark": null,
-                "url": null
-            },
             "hotel_id": 105,
             "creator_id": 38,
             "channel_id": 9,
@@ -187,9 +182,6 @@ final class ReservationTests: XCTestCase {
         XCTAssertNil(reservation.emoji)
         XCTAssertNil(reservation.hotelChannelReservationId)
         XCTAssertNil(reservation.subChannelId)
-        XCTAssertNil(reservation.confirmationInfo.createdAt)
-        XCTAssertNil(reservation.confirmationInfo.remark)
-        XCTAssertNil(reservation.confirmationInfo.url)
         XCTAssertEqual(reservation.hotelId, 105)
         XCTAssertEqual(reservation.creatorId, 38)
         XCTAssertEqual(reservation.channelId, 9)
@@ -213,12 +205,6 @@ final class ReservationTests: XCTestCase {
             fullname: "abc",
             email: "avc@email.com",
             tel: "1234567890"
-        )
-        
-        let confirmationInfo = Reservation.ConfirmationInfo(
-            createdAt: nil,
-            remark: nil,
-            url: nil
         )
         
         let dateFormatter = DateFormatter()
@@ -245,7 +231,6 @@ final class ReservationTests: XCTestCase {
             tags: [],
             emoji: nil,
             hotelChannelReservationId: nil,
-            confirmationInfo: confirmationInfo,
             hotelId: 105,
             creatorId: 38,
             channelId: 9,

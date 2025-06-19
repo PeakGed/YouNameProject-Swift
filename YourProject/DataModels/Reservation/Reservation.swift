@@ -28,7 +28,6 @@ struct Reservation: Codable {
     let emoji: String?
     
     let hotelChannelReservationId: Int?
-    let confirmationInfo: ConfirmationInfo
     let hotelId: Int
     let creatorId: Int
     let channelId: Int
@@ -54,16 +53,6 @@ struct Reservation: Codable {
         checkOutDate.toDateString(FormConfig.DateFormat.yyyyMMdd)
     }()
         
-    // roomIDs
-//    var uniqueUnitIDs: Set<Int> {
-//        items.bedIDs.union(items.roomIDs)
-//    }
-    
-    // MARK:- Status flag
-
-//    var isExistCustomer: Bool {
-//        guests.count > 0
-//    }
     var numberOfNight: Int {
         checkInDate.numberOfDaysUntilDateTime(checkOutDate)
     }
@@ -93,7 +82,6 @@ struct Reservation: Codable {
         case tags
         case emoji        
         case hotelChannelReservationId = "hotel_channel_reservation_id"
-        case confirmationInfo = "confirmation_info"
         case hotelId = "hotel_id"
         case creatorId = "creator_id"
         case channelId = "channel_id"
@@ -129,7 +117,6 @@ struct Reservation: Codable {
         emoji = try container.decodeIfPresent(String.self, forKey: .emoji)
         
         hotelChannelReservationId = try container.decodeIfPresent(Int.self, forKey: .hotelChannelReservationId)
-        confirmationInfo = try container.decode(ConfirmationInfo.self, forKey: .confirmationInfo)
         hotelId = try container.decode(Int.self, forKey: .hotelId)
         creatorId = try container.decode(Int.self, forKey: .creatorId)
         channelId = try container.decode(Int.self, forKey: .channelId)
@@ -164,7 +151,6 @@ struct Reservation: Codable {
          tags: [String] = [],
          emoji: String? = nil,         
          hotelChannelReservationId: Int? = nil,
-         confirmationInfo: ConfirmationInfo = .init(),
          hotelId: Int,
          creatorId: Int,
          channelId: Int,
@@ -201,7 +187,6 @@ struct Reservation: Codable {
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.hotelChannelReservationId = hotelChannelReservationId
-        self.confirmationInfo = confirmationInfo
         self.hotelId = hotelId
         self.creatorId = creatorId
         self.channelId = channelId
@@ -238,7 +223,6 @@ struct Reservation: Codable {
         try container.encode(tags, forKey: .tags)
         try container.encodeIfPresent(emoji, forKey: .emoji)
         try container.encodeIfPresent(hotelChannelReservationId, forKey: .hotelChannelReservationId)
-        try container.encode(confirmationInfo, forKey: .confirmationInfo)
         try container.encode(hotelId, forKey: .hotelId)
         try container.encode(creatorId, forKey: .creatorId)
         try container.encode(channelId, forKey: .channelId)
@@ -294,17 +278,17 @@ extension Reservation {
     }
     
     enum Status: String, Codable ,CaseIterable {
-        case booked = "created"
-        case checkedIn = "checked_in"
-        case checkedOut = "checked_out"
-        case confirmed = "confirmed"
-        case canceled = "canceled"
-        case noShown = "no_showed"
+        case created = "CREATED"
+        case checkedIn = "CHECKED_IN"
+        case checkedOut = "CHECKED_OUT"
+        case confirmed = "CONFIRMED"
+        case canceled = "CANCELED"
+        case noShown = "NO_SHOWED"
         
         var description: String {
             switch self {
-            case .booked:
-                return "Booked"
+            case .created:
+                return "Created"
             case .checkedIn:
                 return "Checked-in"
             case .checkedOut:
@@ -448,7 +432,7 @@ extension Reservation {
  {
  "id": 512,
  "uid": "rsvt_5la15znqpb30lz5rmqj",
- "status": "checked_out",
+ "status": "CHECKED_OUT",
  "check_in_date": "2019-11-28",
  "check_out_date": "2019-12-01",
  "adult_number": 1,
@@ -477,56 +461,9 @@ extension Reservation {
  "created_at": "2019-11-28T13:43:02.888+07:00",
  "updated_at": "2020-08-27T21:58:06.595+07:00",
  "hotel_channel_reservation_id": null,
- "confirmation_info": {
- "created_at": null,
- "remark": null,
- "url": null
- },
  "hotel_id": 105,
  "creator_id": 38,
  "channel_id": 9,
- "sub_channel_id": null
- },
- {
- "id": 528,
- "uid": "rsvt_5la15zp03yyhsxbvsl5",
- "status": "checked_out",
- "check_in_date": "2020-01-21",
- "check_out_date": "2020-01-22",
- "adult_number": 1,
- "extra_adult_number": 0,
- "child_number": 0,
- "contacts": {
- "title": null,
- "fullname": "test",
- "email": "",
- "tel": ""
- },
- "note": "",
- "canceled_reason": null,
- "document_photos": null,
- "ota_booking_id": "",
- "related_reservation_id": null,
- "guest_comment": null,
- "markers": [],
- "flags": [],
- "tags": [],
- "emoji": null,
- "checked_in_at": "2020-01-21T12:04:47.827+07:00",
- "checked_out_at": "2020-02-01T16:15:17.793+07:00",
- "canceled_at": null,
- "no_showed_at": null,
- "created_at": "2020-01-21T12:01:19.993+07:00",
- "updated_at": "2020-02-01T16:15:17.797+07:00",
- "hotel_channel_reservation_id": null,
- "confirmation_info": {
- "created_at": null,
- "remark": null,
- "url": null
- },
- "hotel_id": 105,
- "creator_id": 38,
- "channel_id": 8,
  "sub_channel_id": null
  }
  */
