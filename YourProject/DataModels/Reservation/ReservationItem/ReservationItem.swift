@@ -122,7 +122,7 @@ extension ReservationItem {
     }
     
     enum ReservableType: String, Codable {
-        case room = "Room"
+        case room = "ROOM"
     }
     
     struct Data: Codable {
@@ -297,32 +297,32 @@ extension ReservationItem {
 
 
 /*
-{
-        "id": "4119",
-        "reserved_date": "2024-05-23", 
-        "total_price": "1390.77",
-        "reservable_type": "Room",
-        "data": {
-            "child_meal_limit": "0",
-            "adult_meal_limit": "0",
-            "extra_person_rate": "999",
-            "child_meal_rate": "0",
-            "extra_child_meal_number": "0", 
-            "extra_adult_meal_number": "0",
-            "extra_bed_rate": "888",
-            "extra_adult_meal_rate": "0",
-            "extra_bed_number": "0",
-            "is_custom_rate": true,
-            "extra_person_number": "0",
-            "extra_child_meal_rate": "0",
-            "meal_included": false,
-            "adult_meal_rate": "0",
-            "price_card_rate": "1390.77"
-        },
-        "created_at": "2024-06-01T08:19:07.185+07:00",
-        "updated_at": "2024-06-01T08:19:07.185+07:00", 
-        //"price_card": null,
-        "reservable_id": "623",
-        "price_card_id": null
-    }
-    */
+new response rev2
+ {
+     "id": 4119,
+     "reserved_date": "2024-05-23",
+     "total_price": "1390.77",
+     "reservable_type": "ROOM",
+     "data": {
+         "child_meal_limit": 0,
+         "adult_meal_limit": 0,
+         "extra_person_rate": "999.0",
+         "child_meal_rate": "0.0",
+         "extra_child_meal_number": 0,
+         "extra_adult_meal_number": 0,
+         "extra_bed_rate": "888.0",
+         "extra_adult_meal_rate": "0.0",
+         "extra_bed_number": 0,
+         "is_custom_rate": true,
+         "extra_person_number": 0,
+         "extra_child_meal_rate": "0.0",
+         "meal_included": false,
+         "adult_meal_rate": "0.0",
+         "price_card_rate": "1390.77"
+     },
+     "created_at": "2024-06-01T08:19:07.185+07:00",
+     "updated_at": "2024-06-01T08:19:07.185+07:00",
+     "reservable_id": 623,
+     "price_card_id": null
+ }
+ */

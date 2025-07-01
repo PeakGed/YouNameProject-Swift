@@ -107,7 +107,7 @@ final class ReservationItemTests: XCTestCase {
             "id": 4119,
             "reserved_date": "2024-05-23",
             "total_price": "1390.77",
-            "reservable_type": "Room",
+            "reservable_type": "ROOM",
             "data": {
                 "child_meal_limit": "2",
                 "adult_meal_limit": "3", 
@@ -176,8 +176,8 @@ final class ReservationItemTests: XCTestCase {
         XCTAssertTrue(jsonString.contains("\"id\" : 123"))
         XCTAssertTrue(jsonString.contains("\"reserved_date\" : \"2024-06-01\""))
         XCTAssertTrue(jsonString.contains("\"total_price\" : 2000"))
-        XCTAssertTrue(jsonString.contains("\"reservable_type\" : \"Room\""))
-        XCTAssertTrue(jsonString.contains("\"price_card_id\" : 1"))        
+        XCTAssertTrue(jsonString.contains("\"reservable_type\" : \"ROOM\""))
+        XCTAssertTrue(jsonString.contains("\"price_card_id\" : 1"))
     }
     
     // MARK: - ReservationItem.Data Tests
