@@ -90,8 +90,8 @@ struct Additional: Codable {
 extension Additional {
     
     enum Status: String, Codable {
-        case active = "active"
-        case void = "void"
+        case active = "ACTIVE"
+        case void = "VOID"
     }
 }
 
@@ -99,7 +99,7 @@ extension Additional {
  json response
  {
              "id": 273,
-             "status": "active",
+             "status": "ACTIVE",
              "note": "",
              "date_issue": "2024-04-21T00:00:00.000+07:00",
              "total_amount": "111.11",

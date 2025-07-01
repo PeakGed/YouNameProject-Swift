@@ -153,6 +153,7 @@
 				DataModels/Reservation/ReservationLog/ReservationLogs.swift,
 				DataModels/Reservation/Reservations.swift,
 				DataModels/SortOrder.swift,
+				DataModels/User/Creator.swift,
 				DataModels/User/Device/Device.swift,
 				DataModels/User/Device/Devices.swift,
 				DataModels/User/Me.swift,
