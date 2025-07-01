@@ -187,7 +187,9 @@ extension Hotel {
     }
     
     enum Status: String, Codable {
-        case created = "created"
+        case created = "CREATED"
+        case banned = "BANNED"        
+        case blocked = "BLOCKED"
     }
 }
 
@@ -195,7 +197,7 @@ extension Hotel {
  {
  "id": 105,
  "name": "โอมเมดเสตย์",
- "status": "created",
+ "status": "CREATED",
  "information": "dddddddd",
  "address": "127/4 ถ. สุขุมวิท แขวง พระโขนงเหนือ เขตวัฒนา กรุงเทพมหานคร 10110 ประเทศไทย",
  "geolocation": null,

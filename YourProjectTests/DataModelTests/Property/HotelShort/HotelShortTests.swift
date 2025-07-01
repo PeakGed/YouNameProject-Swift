@@ -57,7 +57,7 @@ final class HotelShortTests: XCTestCase {
         let json = """
         {
             "id": 107,
-            "status": "created",
+            "status": "CREATED",
             "name": "HMS2",
             "hotel_logo_300": null,
             "header_logo_photos": [],

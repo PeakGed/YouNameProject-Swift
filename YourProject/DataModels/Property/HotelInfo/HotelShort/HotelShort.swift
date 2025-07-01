@@ -122,14 +122,16 @@ extension HotelShort {
     }
     
     enum Status: String, Codable {
-        case created = "created"
+        case created = "CREATED"
+        case banned = "BANNED"        
+        case blocked = "BLOCKED"
     }
 }
 
 /*
 {
         "id": 107,
-        "status": "created",
+        "status": "CREATED",
         "name": "HMS2",
         "hotel_logo_300": null,
         "photos": [],
