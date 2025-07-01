@@ -41,6 +41,62 @@ final class GuestTests: XCTestCase {
         )
     }
 
+    private func sampleGuestWithNilGender() -> Guest {
+        Guest(
+            id: 2,
+            titleCode: "MS",
+            firstName: "Jane",
+            midName: "",
+            lastName: "Smith",
+            nickName: "Janie",
+            nationalityCode: "THA",
+            countryCode: "THA",
+            birthdate: sampleDate("1995-06-15"),
+            citizenCardID: "9876543210987",
+            passportNo: "",
+            gender: nil,
+            email: "jane@email.com",
+            phone: "0887654321",
+            note: "Regular guest",
+            hotelId: 101,
+            companyId: nil,
+            isFirst: false,
+            isHidden: false,
+            address: sampleAddress(),
+            occupation: "Teacher",
+            createdAt: Date(),
+            updatedAt: Date()
+        )
+    }
+
+    private func sampleMinimalGuest() -> Guest {
+        Guest(
+            id: 3,
+            titleCode: nil,
+            firstName: "Min",
+            midName: "",
+            lastName: "User",
+            nickName: "",
+            nationalityCode: "THA",
+            countryCode: "THA",
+            birthdate: nil,
+            citizenCardID: "",
+            passportNo: "",
+            gender: nil,
+            email: "",
+            phone: "",
+            note: "",
+            hotelId: 0,
+            companyId: nil,
+            isFirst: false,
+            isHidden: false,
+            address: sampleAddress(),
+            occupation: "",
+            createdAt: Date(),
+            updatedAt: Date()
+        )
+    }
+
     // MARK: - Initialization Tests
     func test_initWithAllProperties() {
         let guest = sampleGuest()
@@ -218,9 +274,221 @@ final class GuestTests: XCTestCase {
     func test_genderTitleAndLogoImageName() {
         XCTAssertEqual(Guest.Gender.male.title, "Male")
         XCTAssertEqual(Guest.Gender.female.title, "Female")
-        XCTAssertEqual(Guest.Gender.unknow.title, "")
         XCTAssertEqual(Guest.Gender.male.logoImageName, "icon-customer-male")
         XCTAssertEqual(Guest.Gender.female.logoImageName, "icon-customer-female")
-        XCTAssertNil(Guest.Gender.unknow.logoImageName)
+    }
+
+    // MARK: - Gender Nil Tests
+    func test_initWithNilGender() {
+        let guest = sampleGuestWithNilGender()
+        XCTAssertEqual(guest.id, 2)
+        XCTAssertEqual(guest.firstName, "Jane")
+        XCTAssertEqual(guest.lastName, "Smith")
+        XCTAssertNil(guest.gender)
+        XCTAssertEqual(guest.nationalityCode, "THA")
+        XCTAssertEqual(guest.countryCode, "THA")
+    }
+
+    func test_genderNilProperties() {
+        let guest = sampleGuestWithNilGender()
+        // Gender being nil should not affect other computed properties
+        XCTAssertEqual(guest.fullName, "Jane Smith")
+        XCTAssertEqual(guest.identityID, "9876543210987")
+        XCTAssertTrue(guest.isThaiCitizen)
+        XCTAssertFalse(guest.isForeigner)
+    }
+
+    func test_encodingDecodingWithNilGender() throws {
+        let guest = sampleGuestWithNilGender()
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        let data = try encoder.encode(guest)
+        
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let decoded = try decoder.decode(Guest.self, from: data)
+        
+        XCTAssertEqual(decoded.id, guest.id)
+        XCTAssertEqual(decoded.firstName, guest.firstName)
+        XCTAssertEqual(decoded.lastName, guest.lastName)
+        XCTAssertNil(decoded.gender)
+        XCTAssertEqual(decoded.nationalityCode, guest.nationalityCode)
+        XCTAssertEqual(decoded.countryCode, guest.countryCode)
+    }
+
+    // MARK: - Advanced Encoder/Decoder Tests
+    func test_decodingWithMissingOptionalFields() throws {
+        let jsonString = """
+        {
+            "id": 100,
+            "first_name": "Test",
+            "middle_name": "",
+            "last_name": "User",
+            "nickname": "",
+            "nationality": "THA",
+            "country": "THA",
+            "id_card_no": "",
+            "passport_no": "",
+            "email": "",
+            "phone": "",
+            "address": "",
+            "district": "",
+            "province": "",
+            "zip_code": "",
+            "note": "",
+            "hotel_id": 1,
+            "hidden": false,
+            "first_guest": false,
+            "created_at": "2022-11-21T21:40:42.072+07:00",
+            "updated_at": "2022-11-21T21:40:42.072+07:00",
+            "occupation": ""
+        }
+        """
+        
+        let data = jsonString.data(using: .utf8)!
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let guest = try decoder.decode(Guest.self, from: data)
+        
+        XCTAssertEqual(guest.id, 100)
+        XCTAssertEqual(guest.occupation, "")
+    }
+
+    func test_decodingWithInvalidGenderValue() throws {
+        let jsonString = """
+        {
+            "id": 101,
+            "first_name": "Invalid",
+            "middle_name": "",
+            "last_name": "Gender",
+            "nickname": "",
+            "nationality": "THA",
+            "country": "THA",
+            "gender": "INVALID_GENDER",
+            "id_card_no": "",
+            "passport_no": "",
+            "email": "",
+            "phone": "",
+            "address": "",
+            "district": "",
+            "province": "",
+            "zip_code": "",
+            "note": "",
+            "hotel_id": 1,
+            "hidden": false,
+            "first_guest": false,
+            "created_at": "2022-11-21T21:40:42.072+07:00",
+            "updated_at": "2022-11-21T21:40:42.072+07:00",
+            "occupation": ""
+        }
+        """
+        
+        let data = jsonString.data(using: .utf8)!
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        
+        let guest = try decoder.decode(Guest.self, from: data)
+        XCTAssertEqual(guest.id, 101)
+        XCTAssertEqual(guest.firstName, "Invalid")
+        XCTAssertNil(guest.gender) // Should be nil due to invalid value
+    }
+
+    func test_encodingWithMinimalRequiredFields() throws {
+        let guest = sampleMinimalGuest()
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        let data = try encoder.encode(guest)
+        
+        // Verify it can be encoded without throwing
+        XCTAssertGreaterThan(data.count, 0)
+        
+        // Verify it can be decoded back
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let decoded = try decoder.decode(Guest.self, from: data)
+        
+        XCTAssertEqual(decoded.id, guest.id)
+        XCTAssertEqual(decoded.firstName, guest.firstName)
+        XCTAssertNil(decoded.gender)
+        XCTAssertNil(decoded.titleCode)
+        XCTAssertNil(decoded.birthdate)
+        XCTAssertNil(decoded.companyId)
+    }
+
+    func test_decodingWithNilDates() throws {
+        let jsonString = """
+        {
+            "id": 102,
+            "first_name": "No",
+            "middle_name": "",
+            "last_name": "Birthdate",
+            "nickname": "",
+            "nationality": "THA",
+            "country": "THA",
+            "date_of_birth": null,
+            "id_card_no": "",
+            "passport_no": "",
+            "email": "",
+            "phone": "",
+            "address": "",
+            "district": "",
+            "province": "",
+            "zip_code": "",
+            "note": "",
+            "hotel_id": 1,
+            "hidden": false,
+            "first_guest": false,
+            "created_at": "2022-11-21T21:40:42.072+07:00",
+            "updated_at": "2022-11-21T21:40:42.072+07:00",
+            "occupation": ""
+        }
+        """
+        
+        let data = jsonString.data(using: .utf8)!
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let guest = try decoder.decode(Guest.self, from: data)
+        
+        XCTAssertEqual(guest.id, 102)
+        XCTAssertEqual(guest.firstName, "No")
+        XCTAssertNil(guest.birthdate)
+        XCTAssertNil(guest.age) // Age should be nil when birthdate is nil
+    }
+
+    func test_codingKeysMapping() throws {
+        let guest = sampleGuest()
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        let data = try encoder.encode(guest)
+        
+        // Convert to dictionary to verify key mapping
+        let json = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
+        
+        // Verify that Swift property names are correctly mapped to JSON keys
+        XCTAssertNotNil(json["first_name"])
+        XCTAssertNotNil(json["last_name"])
+        XCTAssertNotNil(json["middle_name"])
+        XCTAssertNotNil(json["nationality"])
+        XCTAssertNotNil(json["country"])
+        XCTAssertNotNil(json["date_of_birth"])
+        XCTAssertNotNil(json["id_card_no"])
+        XCTAssertNotNil(json["passport_no"])
+        XCTAssertNotNil(json["hotel_id"])
+        XCTAssertNotNil(json["company_id"])
+        XCTAssertNotNil(json["first_guest"])
+        XCTAssertNotNil(json["created_at"])
+        XCTAssertNotNil(json["updated_at"])
+        XCTAssertNotNil(json["zip_code"])
+        
+        // Verify that values match expected mappings
+        XCTAssertEqual(json["first_name"] as? String, "John")
+        XCTAssertEqual(json["nationality"] as? String, "THA")
+        XCTAssertEqual(json["hotel_id"] as? Int, 101)
+        XCTAssertEqual(json["first_guest"] as? Bool, true)
+    }
+
+    func test_ageWithNilBirthdate() {
+        let guest = sampleMinimalGuest()
+        XCTAssertNil(guest.age)
     }
 } 

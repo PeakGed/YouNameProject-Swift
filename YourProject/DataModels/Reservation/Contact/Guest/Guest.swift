@@ -21,7 +21,7 @@ struct Guest: Codable {
     let birthdate: Date?
     let citizenCardID: String
     let passportNo: String
-    let gender: Gender
+    let gender: Gender?
     let email: String
     let phone: String
     let address: Address
@@ -115,7 +115,7 @@ struct Guest: Codable {
          birthdate: Date?,
          citizenCardID: String,
          passportNo: String,
-         gender: Gender,
+         gender: Gender?,
          email: String,
          phone: String,
          note: String,
@@ -151,20 +151,7 @@ struct Guest: Codable {
         self.createdAt = createdAt
         self.updatedAt = updatedAt
     }
-    
-    mutating func setTHNation() {
-        nationalityCode = "THA" //"🇹🇭 Thailand"
-    }
-    
-    mutating func setUSNation() {
-        nationalityCode = "USA" //"🇺🇸 United States"
-    }
-    
-}
-
-// encode & decode
-extension Guest {
-    
+   
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
             
@@ -189,7 +176,7 @@ extension Guest {
         self.titleCode = (try? container.decode(String.self, forKey: .title))
                 
         self.birthdate = try? container.decode(String.self, forKey: .birthdate).tryToDate(FormConfig.DateFormat.yyyyMMdd)
-        self.gender = (try? container.decode(Gender.self, forKey: .gender)) ?? Gender.unknow
+        self.gender = (try? container.decode(Gender.self, forKey: .gender)) ?? nil
         
         self.email = (try? container.decode(String.self, forKey: .email)) ?? ""
         self.phone = (try? container.decode(String.self, forKey: .phone)) ?? ""
@@ -237,7 +224,7 @@ extension Guest {
         
         try container.encode(citizenCardID, forKey: .citizenCardID)
         try container.encode(passportNo, forKey: .passportNo)
-        try container.encode(gender.rawValue, forKey: .gender)
+        try container.encodeIfPresent(gender?.rawValue, forKey: .gender)
         
         try container.encode(email, forKey: .email)
         try container.encode(phone, forKey: .phone)
@@ -253,7 +240,7 @@ extension Guest {
         try container.encode(hotelId, forKey: .hotelId)
         try container.encode(companyId, forKey: .companyId)
         
-        try container.encode(isHidden, forKey: .isHidden)        
+        try container.encode(isHidden, forKey: .isHidden)
         try container.encode(isFirst, forKey: .isFirst)
         
         let dateFormat = FormConfig.DateFormat.datetimeISO
@@ -262,7 +249,20 @@ extension Guest {
         try container.encode(updatedAt.toDateString(dateFormat),
                              forKey: .updatedAt)
     }
+        
+    mutating func setTHNation() {
+        nationalityCode = "THA" //"🇹🇭 Thailand"
+    }
     
+    mutating func setUSNation() {
+        nationalityCode = "USA" //"🇺🇸 United States"
+    }
+    
+    
+}
+
+// encode & decode
+extension Guest {
     
     private enum CodingKeys: String, CodingKey {
         case id
@@ -331,21 +331,16 @@ extension Guest {
 extension Guest {
     
     enum Gender: String, Codable {
-        case male = "male"
-        case female = "female"
-        case unknow = ""
+        case male = "MALE"
+        case female = "FEMALE"
         
         // need to support localize
         var title: String {
             switch self {
             case .male:
                 return "Male"
-                
             case .female:
                 return "Female"
-                
-            default:
-                return ""
             }
         }
         
@@ -353,28 +348,20 @@ extension Guest {
             switch self {
             case .male:
                 return "icon-customer-male"
-                
             case .female:
                 return "icon-customer-female"
-                
-            default:
-                return nil
             }
+                
         }
         
         var logoImage: UIImage? {
             switch self {
             case .male:
                 return UIImage(named: "icon-customer-male")
-                
             case .female:
                 return UIImage(named: "icon-customer-female")
-                
-            default:
-                return nil
             }
         }
-        
     }
     
 }
