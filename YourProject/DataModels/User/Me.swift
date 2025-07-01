@@ -14,7 +14,7 @@ struct Me: Codable {
     let firstName: String
     let lastName: String
     let phoneNumber: String
-    let role: String
+    let role: Role?
     let idCard: String
     let logoImage: String?
     let signSignatureImage: String?
@@ -51,7 +51,7 @@ struct Me: Codable {
         firstName = try container.decode(String.self, forKey: .firstName)
         lastName = try container.decode(String.self, forKey: .lastName)
         phoneNumber = try container.decode(String.self, forKey: .phoneNumber)
-        role = try container.decode(String.self, forKey: .role)
+        role = try? container.decode(Role.self, forKey: .role)
         idCard = try container.decode(String.self, forKey: .idCard)
         logoImage = try container.decodeIfPresent(String.self, forKey: .logoImage)
         signSignatureImage = try container.decodeIfPresent(String.self, forKey: .signSignatureImage)
@@ -63,14 +63,14 @@ struct Me: Codable {
         
         self.createdAt = try container.decode(String.self, forKey: .createdAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
         self.updatedAt = try container.decode(String.self, forKey: .updatedAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
-    }
-    
+    }    
+
     init(id: Int,
          email: String,
          firstName: String,
          lastName: String,
          phoneNumber: String,
-         role: String,
+         role: Role?,
          idCard: String,
          logoImage: String?,
          signSignatureImage: String?,
@@ -108,7 +108,7 @@ struct Me: Codable {
         try container.encode(firstName, forKey: .firstName)
         try container.encode(lastName, forKey: .lastName)
         try container.encode(phoneNumber, forKey: .phoneNumber)
-        try container.encode(role, forKey: .role)
+        try container.encodeIfPresent(role?.rawValue, forKey: .role)
         try container.encode(idCard, forKey: .idCard)
         try container.encodeIfPresent(logoImage, forKey: .logoImage)
         try container.encodeIfPresent(signSignatureImage, forKey: .signSignatureImage)
@@ -122,6 +122,16 @@ struct Me: Codable {
     }
 }
 
+extension Me {
+    enum Role: String, Codable {
+        case frontDesk = "FRONT_DESK"
+        case manager = "MANAGER"
+        case user = "ROLE_USER"
+        case admin = "ROLE_ADMIN"
+        case superAdmin = "ROLE_SUPER_ADMIN"
+        case supportSuperAdmin = "ROLE_SUPPORT_SUPER_ADMIN"
+    }
+}
 
 /*
  {

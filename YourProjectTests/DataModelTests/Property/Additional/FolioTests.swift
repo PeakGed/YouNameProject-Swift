@@ -69,7 +69,7 @@ final class FolioTests: XCTestCase {
             "barcode": null,
             "code": null,
             "category_id": null,
-            "status": "available",
+            "status": "AVAILABLE",
             "description": "",
             "vat_included": false,
             "created_at": "2019-11-29T08:20:26.443+07:00",
@@ -114,7 +114,7 @@ final class FolioTests: XCTestCase {
         XCTAssertTrue(jsonString.contains("\"amount_before_vat\" : \"467.29\""))
         XCTAssertTrue(jsonString.contains("\"vat_amount\" : \"32.71\""))
         XCTAssertTrue(jsonString.contains("\"barcode\" : \"123456789\""))
-        XCTAssertTrue(jsonString.contains("\"status\" : \"available\""))
+        XCTAssertTrue(jsonString.contains("\"status\" : \"AVAILABLE\""))
         XCTAssertTrue(jsonString.contains("\"vat_included\" : true"))
         XCTAssertTrue(jsonString.contains("\"hotel_id\" : 105"))
     }

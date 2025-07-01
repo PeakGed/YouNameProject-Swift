@@ -128,13 +128,13 @@ extension Folio {
     }
     
     enum Status: String, Codable {
-        case available = "available"
-        case unavailable = "unavailable"
+        case available = "AVAILABLE"
+        case unavailable = "UNAVAILABLE"
     }
 }
 
 /*
- json response
+ revise rev2
  {
              "id": 115,
              "name": "รับส่ง",
@@ -144,11 +144,12 @@ extension Folio {
              "barcode": null,
              "code": null,
              "category_id": null,
-             "status": "available",
+             "status": "AVAILABLE",
+             "amount_vat_option": null,
              "description": "",
              "vat_included": false,
              "created_at": "2019-11-29T08:20:26.443+07:00",
              "updated_at": "2023-08-25T11:25:01.734+07:00",
              "hotel_id": 105
-         }
+         
  */
