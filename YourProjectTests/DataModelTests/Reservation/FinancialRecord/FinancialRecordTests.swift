@@ -81,7 +81,7 @@ final class FinancialRecordTests: XCTestCase {
             "timestamp": "2024-04-21T13:33:54.748+07:00",
             "amount": "2111.11",
             "recordable_id": 1067,
-            "recordable_type": "Reservation",
+            "recordable_type": "RESERVATION",
             "created_at": "2024-04-21T13:33:54.756+07:00",
             "updated_at": "2024-04-21T13:33:54.756+07:00",
             "hotel_id": 105,
@@ -120,7 +120,7 @@ final class FinancialRecordTests: XCTestCase {
         XCTAssertTrue(jsonString.contains("\"payment_method\" : \"Bank Transfer\""))
         XCTAssertTrue(jsonString.contains("\"amount\" : \"2111.11\""))
         XCTAssertTrue(jsonString.contains("\"recordable_id\" : 1067"))
-        XCTAssertTrue(jsonString.contains("\"recordable_type\" : \"Reservation\""))
+        XCTAssertTrue(jsonString.contains("\"recordable_type\" : \"RESERVATION\""))
         XCTAssertTrue(jsonString.contains("\"hotel_id\" : 105"))
     }
     

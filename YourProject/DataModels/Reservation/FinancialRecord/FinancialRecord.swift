@@ -117,25 +117,26 @@ extension FinancialRecord {
 
     
     enum RecordType: String, Codable {
-        case reservation = "Reservation"
-        case accountItem = "AccountItem"
-        case additional = "Additional"
+        case reservation = "RESERVATION"
+        case accountItem = "ACCOUNT_ITEM"
+        case additional = "ADDITIONAL" 
     }
     
 }
 
 /*
+ new response
  {
-             "id": 439,
+             "id": 440,
              "name": "PAYMENT",
              "payment_method": "Bank Transfer",
              "note": null,
-             "timestamp": "2024-04-16T15:52:17.285+07:00",
-             "amount": "3940.0",
-             "recordable_id": 1061,
-             "recordable_type": "Reservation",
-             "created_at": "2024-04-16T15:52:17.286+07:00",
-             "updated_at": "2024-04-16T15:52:17.286+07:00",
+             "timestamp": "2024-04-21T13:33:54.748+07:00",
+             "amount": "2111.0",
+             "recordable_id": 1067,
+             "recordable_type": "RESERVATION",
+             "created_at": "2024-04-21T13:33:54.756+07:00",
+             "updated_at": "2024-04-21T13:33:54.756+07:00",
              "hotel_id": 105,
              "bank_account_id": null
          }
