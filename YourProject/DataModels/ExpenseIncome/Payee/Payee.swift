@@ -66,9 +66,11 @@ struct Payee: Codable {
 }
 
 extension Payee {
+    //no_vat 7_percent 10_percent
     enum VatType: String, Codable {
         case sevenPercent = "7_PERCENT"
-        // Add other VAT types as needed
+        case noVat = "NO_VAT"
+        case tenPercent = "10_PERCENT"
     }
 }
 
