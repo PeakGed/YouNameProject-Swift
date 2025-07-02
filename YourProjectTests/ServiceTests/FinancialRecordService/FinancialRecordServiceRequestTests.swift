@@ -228,7 +228,7 @@ final class FinancialRecordServiceRequestTests: XCTestCase {
         XCTAssertEqual(json?["timestamp"] as? String, "2024-04-16T15:02:17.000+07:00")
         XCTAssertEqual(json?["amount"] as? String, "1250.5")
         XCTAssertEqual(json?["recordable_id"] as? Int, 1001)
-        XCTAssertEqual(json?["recordable_type"] as? String, "Reservation")
+        XCTAssertEqual(json?["recordable_type"] as? String, "RESERVATION")
         XCTAssertEqual(json?["bank_account_id"] as? Int, 42)
     }
     
@@ -264,7 +264,7 @@ final class FinancialRecordServiceRequestTests: XCTestCase {
         XCTAssertNotNil(json?["timestamp"]) // Should have timestamp
         XCTAssertEqual(json?["amount"] as? String, "100.0")
         XCTAssertEqual(json?["recordable_id"] as? Int, 1001)
-        XCTAssertEqual(json?["recordable_type"] as? String, "AccountItem")
+        XCTAssertEqual(json?["recordable_type"] as? String, "ACCOUNT_ITEM")
         XCTAssertNil(json?["bank_account_id"]) // Should be nil
     }
     
@@ -303,7 +303,7 @@ final class FinancialRecordServiceRequestTests: XCTestCase {
         XCTAssertEqual(json?["timestamp"] as? String, "2024-04-16T15:02:17.000+07:00")
         XCTAssertEqual(json?["amount"] as? String, "2500.75")
         XCTAssertEqual(json?["recordable_id"] as? Int, 2002)
-        XCTAssertEqual(json?["recordable_type"] as? String, "Additional")
+        XCTAssertEqual(json?["recordable_type"] as? String, "ADDITIONAL")
         XCTAssertEqual(json?["bank_account_id"] as? Int, 99)
     }
     

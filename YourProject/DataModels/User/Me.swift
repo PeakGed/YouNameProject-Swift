@@ -115,7 +115,8 @@ struct Me: Codable {
         try container.encodeIfPresent(verifiedAt, forKey: .verifiedAt)
         try container.encodeIfPresent(passwordChangedAt, forKey: .passwordChangedAt)        
         try container.encode(authProviders, forKey: .authProviders)
-        try container.encode(images, forKey: .images)        
+        try container.encode(images, forKey: .images)
+        try container.encodeIfPresent(staffId, forKey: .staffId)
         
         try container.encode(createdAt.toDateString(FormConfig.DateFormat.datetimeISO), forKey: .createdAt)
         try container.encode(updatedAt.toDateString(FormConfig.DateFormat.datetimeISO), forKey: .updatedAt)

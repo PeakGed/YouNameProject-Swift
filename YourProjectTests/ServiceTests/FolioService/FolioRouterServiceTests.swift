@@ -38,7 +38,7 @@ final class FolioServiceRouterTests: XCTestCase {
         
         // Then
         XCTAssertEqual(urlRequest.url?.absoluteString,
-                       baseURL + "/v4/folios?hotel_id=101&page=1&per_page=20&sorted_by=ID&sorted_order=ASC&status=available")
+                       baseURL + "/v4/folios?hotel_id=101&page=1&per_page=20&sorted_by=ID&sorted_order=ASC&status=AVAILABLE")
         XCTAssertEqual(urlRequest.httpMethod,
                        HTTPMethod.get.rawValue)
     }

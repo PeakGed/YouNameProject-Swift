@@ -34,7 +34,7 @@ class AdditionalServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["sorted_by"] as? String, "ID")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "ASC")
         XCTAssertEqual(parameters?["reservation_id"] as? Int, 1067)
-        XCTAssertEqual(parameters?["status"] as? String, "active")
+        XCTAssertEqual(parameters?["status"] as? String, "ACTIVE")
     }
     
     func test_fetchAdditionals_withMinimalParameters_correctSerialization() throws {
@@ -192,7 +192,7 @@ class AdditionalServiceRequestTests: XCTestCase {
         XCTAssertEqual(items?[0]["price"] as? String, "111.11")
         XCTAssertEqual(items?[0]["quantity"] as? Int, 1)
         XCTAssertEqual(items?[0]["itemable_id"] as? Int, 130)
-        XCTAssertEqual(items?[0]["itemable_type"] as? String, "Folio")
+        XCTAssertEqual(items?[0]["itemable_type"] as? String, "FOLIO")
     }
     
     // MARK: - UpdateAdditional Tests
@@ -259,7 +259,7 @@ class AdditionalServiceRequestTests: XCTestCase {
         XCTAssertEqual(items?[0]["price"] as? String, "222.22")
         XCTAssertEqual(items?[0]["quantity"] as? Int, 2)
         XCTAssertEqual(items?[0]["itemable_id"] as? Int, 131)
-        XCTAssertEqual(items?[0]["itemable_type"] as? String, "Folio")
+        XCTAssertEqual(items?[0]["itemable_type"] as? String, "FOLIO")
     }
     
     // MARK: - Item Tests
@@ -283,7 +283,7 @@ class AdditionalServiceRequestTests: XCTestCase {
         XCTAssertEqual(decodedData?["price"] as? String, "15.0")
         XCTAssertEqual(decodedData?["quantity"] as? Int, 2)
         XCTAssertEqual(decodedData?["itemable_id"] as? Int, 134)
-        XCTAssertEqual(decodedData?["itemable_type"] as? String, "Folio")
+        XCTAssertEqual(decodedData?["itemable_type"] as? String, "FOLIO")
         XCTAssertEqual(decodedData?["total_amount"] as? String, "30.0") // 15.0 * 2
     }
 } 

@@ -73,7 +73,7 @@ final class ReservationItemServiceRequestTests: XCTestCase {
         if let body = body,
            let json = try? JSONSerialization.jsonObject(with: body) as? [String: Any] {
             XCTAssertEqual(json["reservation_id"] as? Int, 1092)
-            XCTAssertEqual(json["reservation_type"] as? String, "Room")
+            XCTAssertEqual(json["reservation_type"] as? String, "ROOM")
             XCTAssertEqual(json["total_price"] as? String, "4200.0")
             XCTAssertEqual(json["price_card_id"] as? Int, 2)
             XCTAssertNotNil(json["data"])
@@ -139,7 +139,7 @@ final class ReservationItemServiceRequestTests: XCTestCase {
             
                          if let items = json["items"] as? [[String: Any]], let firstItem = items.first {
                  XCTAssertEqual(firstItem["reserved_date"] as? String, "2024-04-15")
-                 XCTAssertEqual(firstItem["reservable_type"] as? String, "Room")
+                 XCTAssertEqual(firstItem["reservable_type"] as? String, "ROOM")
                  XCTAssertEqual(firstItem["reservable_id"] as? Int, 101)
                  XCTAssertEqual(firstItem["total_price"] as? String, "2800.0")
                  XCTAssertEqual(firstItem["price_card_id"] as? Int, 2)
@@ -189,7 +189,7 @@ final class ReservationItemServiceRequestTests: XCTestCase {
         // Then
         XCTAssertNotNil(json)
         XCTAssertEqual(json?["reserved_date"] as? String, "2024-04-15")
-        XCTAssertEqual(json?["reservable_type"] as? String, "Room")
+        XCTAssertEqual(json?["reservable_type"] as? String, "ROOM")
         XCTAssertEqual(json?["reservable_id"] as? Int, 101)
         XCTAssertEqual(json?["total_price"] as? String, "2800.0")
         XCTAssertEqual(json?["price_card_id"] as? Int, 2)

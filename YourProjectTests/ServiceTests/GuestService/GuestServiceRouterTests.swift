@@ -87,7 +87,7 @@ final class GuestServiceRouterTests: XCTestCase {
             let json = try JSONSerialization.jsonObject(with: body, options: []) as? [String: Any]
             XCTAssertEqual(json?["first_name"] as? String, "John")
             XCTAssertEqual(json?["last_name"] as? String, "Doe")
-            XCTAssertEqual(json?["gender"] as? String, "male")
+            XCTAssertEqual(json?["gender"] as? String, "MALE")
             XCTAssertEqual(json?["date_of_birth"] as? String, "1990-01-01")
         } else {
             XCTFail("HTTP body is nil")
@@ -129,7 +129,7 @@ final class GuestServiceRouterTests: XCTestCase {
             let json = try JSONSerialization.jsonObject(with: body, options: []) as? [String: Any]
             XCTAssertEqual(json?["first_name"] as? String, "John")
             XCTAssertEqual(json?["last_name"] as? String, "Doe")
-            XCTAssertEqual(json?["gender"] as? String, "male")
+            XCTAssertEqual(json?["gender"] as? String, "MALE")
             XCTAssertEqual(json?["date_of_birth"] as? String, "1990-01-01")
             // id should not be in the JSON body
             XCTAssertNil(json?["id"])

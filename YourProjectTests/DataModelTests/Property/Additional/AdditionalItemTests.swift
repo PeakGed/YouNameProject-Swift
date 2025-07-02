@@ -17,7 +17,7 @@ final class AdditionalItemTests: XCTestCase {
             "quantity": 2,
             "total_amount": "30.0",
             "itemable_id": 134,
-            "itemable_type": "Folio",
+            "itemable_type": "FOLIO",
             "created_at": "2024-03-19T05:54:36.214+07:00",
             "updated_at": "2024-03-19T05:54:36.214+07:00",
             "additional_id": 261
@@ -69,7 +69,7 @@ final class AdditionalItemTests: XCTestCase {
         XCTAssertTrue(jsonString.contains("\"quantity\" : 2"))
         XCTAssertTrue(jsonString.contains("\"total_amount\" : \"30.0\""))
         XCTAssertTrue(jsonString.contains("\"itemable_id\" : 134"))
-        XCTAssertTrue(jsonString.contains("\"itemable_type\" : \"Folio\""))
+        XCTAssertTrue(jsonString.contains("\"itemable_type\" : \"FOLIO\""))
         XCTAssertTrue(jsonString.contains("\"additional_id\" : 261"))
         XCTAssertTrue(jsonString.contains("\"created_at\" : \"2024-03-19T05:54:36.214+07:00\""))
         XCTAssertTrue(jsonString.contains("\"updated_at\" : \"2024-03-19T05:54:36.214+07:00\""))

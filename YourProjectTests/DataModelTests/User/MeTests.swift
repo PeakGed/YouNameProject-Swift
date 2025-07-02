@@ -128,9 +128,9 @@ final class MeTests: XCTestCase {
         XCTAssertEqual(jsonObject?["phone_number"] as? String, "1234567890")
         XCTAssertEqual(jsonObject?["role"] as? String, "ROLE_SUPPORT_SUPER_ADMIN")
         XCTAssertEqual(jsonObject?["id_card"] as? String, "1232323232333")
-        XCTAssertTrue(jsonObject?["logo_image"] is NSNull)
-        XCTAssertTrue(jsonObject?["sign_signature_image"] is NSNull)
-        XCTAssertTrue(jsonObject?["verified_at"] is NSNull)
+        XCTAssertNil(jsonObject?["logo_image"])
+        XCTAssertNil(jsonObject?["sign_signature_image"])
+        XCTAssertNil(jsonObject?["verified_at"])
         XCTAssertNotNil(jsonObject?["password_changed_at"])
         XCTAssertNotNil(jsonObject?["created_at"])
         XCTAssertNotNil(jsonObject?["updated_at"])
@@ -141,14 +141,14 @@ final class MeTests: XCTestCase {
         let images = jsonObject?["images"] as? [String]
         XCTAssertEqual(images, [])
         
-        XCTAssertTrue(jsonObject?["staff_id"] is NSNull)
+        XCTAssertNil(jsonObject?["staff_id"])
     }
     
     // MARK: - Helper Methods
     
     private func createSampleMe() -> Me {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
+        dateFormatter.dateFormat = FormConfig.DateFormat.datetimeISO
         
         return Me(
             id: 38,
@@ -169,4 +169,4 @@ final class MeTests: XCTestCase {
             updatedAt: dateFormatter.date(from: "2025-02-26T05:35:58.313+07:00")!
         )
     }
-} 
+}

@@ -37,7 +37,7 @@ class AdditionalRouterServiceTests: XCTestCase {
         XCTAssertTrue(urlRequest.url?.absoluteString.contains("sorted_by=ID") ?? false)
         XCTAssertTrue(urlRequest.url?.absoluteString.contains("sorted_order=ASC") ?? false)
         XCTAssertTrue(urlRequest.url?.absoluteString.contains("reservation_id=1067") ?? false)
-        XCTAssertTrue(urlRequest.url?.absoluteString.contains("status=active") ?? false)
+        XCTAssertTrue(urlRequest.url?.absoluteString.contains("status=ACTIVE") ?? false)
     }
     
     func test_fetchAdditionals_withMinimalParameters_correctPath() throws {
@@ -116,7 +116,7 @@ class AdditionalRouterServiceTests: XCTestCase {
         XCTAssertTrue(urlRequest.url?.absoluteString.contains("sorted_order=ASC") ?? false)
         XCTAssertTrue(urlRequest.url?.absoluteString.contains("start_at=") ?? false)
         XCTAssertTrue(urlRequest.url?.absoluteString.contains("end_at=") ?? false)
-        XCTAssertTrue(urlRequest.url?.absoluteString.contains("status=active") ?? false)
+        XCTAssertTrue(urlRequest.url?.absoluteString.contains("status=ACTIVE") ?? false)
     }
     
     // MARK: - Test fetchAdditionalsByDateIssue
@@ -151,7 +151,7 @@ class AdditionalRouterServiceTests: XCTestCase {
         XCTAssertTrue(urlRequest.url?.absoluteString.contains("sorted_order=DESC") ?? false)
         XCTAssertTrue(urlRequest.url?.absoluteString.contains("start_at=") ?? false)
         XCTAssertTrue(urlRequest.url?.absoluteString.contains("end_at=") ?? false)
-        XCTAssertTrue(urlRequest.url?.absoluteString.contains("status=active") ?? false)
+        XCTAssertTrue(urlRequest.url?.absoluteString.contains("status=ACTIVE") ?? false)
     }
     
     // MARK: - Test createAdditional

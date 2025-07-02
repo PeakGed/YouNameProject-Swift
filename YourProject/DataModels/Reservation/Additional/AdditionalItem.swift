@@ -83,7 +83,7 @@ struct AdditionalItem: Codable {
 
 extension AdditionalItem {
     enum ItemType: String, Codable {
-        case foilo = "Folio"
+        case foilo = "FOLIO"
     }
 }
 
@@ -94,7 +94,7 @@ extension AdditionalItem {
    "quantity": 2,
    "total_amount": "30.0",
    "itemable_id": 134,
-   "itemable_type": "Folio",
+   "itemable_type": "FOLIO",
    "created_at": "2024-03-19T05:54:36.214+07:00",
    "updated_at": "2024-03-19T05:54:36.214+07:00",
    "additional_id": 261
