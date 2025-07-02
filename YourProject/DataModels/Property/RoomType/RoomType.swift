@@ -28,7 +28,6 @@ struct RoomType: Codable {
     let createdAt: Date
     let updatedAt: Date
 
-    //init
     init(id: Int,
          order: Int = 0,
          hotelId: Int,
@@ -59,7 +58,6 @@ struct RoomType: Codable {
         self.updatedAt = updatedAt
     }
 
-    //decode
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(Int.self, forKey: .id)
@@ -78,7 +76,6 @@ struct RoomType: Codable {
         self.updatedAt = try container.decode(String.self, forKey: .updatedAt).tryToDate(dateFormat: FormConfig.DateFormat.datetimeISO)
     }
     
-    //encode
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
@@ -99,7 +96,6 @@ struct RoomType: Codable {
                              forKey: .updatedAt)
     }
 
-    //keys
     enum CodingKeys: String, CodingKey {
         case id
         case hotelId = "hotel_id"
@@ -157,96 +153,24 @@ extension RoomType {
         "created_at": "2019-11-28T11:08:41.259+07:00",
         "updated_at": "2024-05-23T14:12:58.166+07:00",
         "hotel_id": 105
-    },
-    {
-        "id": 180,
-        "name": "City View",
-        "base_rate": "500.00",
-        "base_guest_number": 1,
-        "extra_bed_rate": "999.00",
-        "extra_guest_rate": "888.00",
-        "max_extra_bed_number": 2,
-        "max_extra_guest_number": 2,
-        "limited_number_of_cm_units": null,
-        "description": "",
-        "tags": [],
-        "data": null,
-        "order": 1,
-        "created_at": "2020-01-15T20:27:46.577+07:00",
-        "updated_at": "2024-06-13T18:26:32.372+07:00",
-        "hotel_id": 105
-    },
-    {
-        "id": 182,
-        "name": "uu",
-        "base_rate": "100.00",
-        "base_guest_number": 2,
-        "extra_bed_rate": "200.00",
-        "extra_guest_rate": "300.00",
-        "max_extra_bed_number": 1,
-        "max_extra_guest_number": 1,
-        "limited_number_of_cm_units": null,
-        "description": "",
-        "tags": [],
-        "data": null,
-        "order": 2,
-        "created_at": "2021-01-03T13:06:56.259+07:00",
-        "updated_at": "2024-06-13T18:26:32.377+07:00",
-        "hotel_id": 105
-    },
-    {
-        "id": 183,
-        "name": "oo",
-        "base_rate": "100.00",
-        "base_guest_number": 3,
-        "extra_bed_rate": "200.00",
-        "extra_guest_rate": "300.00",
-        "max_extra_bed_number": 2,
-        "max_extra_guest_number": 1,
-        "limited_number_of_cm_units": null,
-        "description": "oo",
-        "tags": [],
-        "data": null,
-        "order": 3,
-        "created_at": "2021-01-03T13:10:46.923+07:00",
-        "updated_at": "2024-06-13T18:26:32.386+07:00",
-        "hotel_id": 105
-    },
-    {
-        "id": 184,
-        "name": "ii",
-        "base_rate": "100.00",
-        "base_guest_number": 2,
-        "extra_bed_rate": "200.00",
-        "extra_guest_rate": "300.00",
-        "max_extra_bed_number": 1,
-        "max_extra_guest_number": 1,
-        "limited_number_of_cm_units": null,
-        "description": "ii",
-        "tags": [],
-        "data": null,
-        "order": 4,
-        "created_at": "2021-01-03T13:13:02.619+07:00",
-        "updated_at": "2024-06-13T18:26:32.392+07:00",
-        "hotel_id": 105
-    },
-    {
-        "id": 185,
-        "name": "yy",
-        "base_rate": "200.00",
-        "base_guest_number": 2,
-        "extra_bed_rate": "200.00",
-        "extra_guest_rate": "300.00",
-        "max_extra_bed_number": 1,
-        "max_extra_guest_number": 1,
-        "limited_number_of_cm_units": null,
-        "description": "yy",
-        "tags": [],
-        "data": null,
-        "order": 5,
-        "created_at": "2021-01-03T15:48:06.872+07:00",
-        "updated_at": "2024-06-13T18:26:32.398+07:00",
-        "hotel_id": 105
     }
-]
+ 
+ {
+         "id": 182,
+         "name": "uu",
+         "base_rate": "100.0",
+         "base_guest_number": 2,
+         "extra_bed_rate": "200.0",
+         "extra_guest_rate": "300.0",
+         "max_extra_bed_number": 1,
+         "max_extra_guest_number": 1,
+         "limited_number_of_cm_units": null,
+         "description": "",
+         "tags": [],
+         "data": null,
+         "order": 2,
+         "created_at": "2021-01-03T13:06:56.259+07:00",
+         "updated_at": "2024-06-13T18:26:32.377+07:00",
+         "hotel_id": 105
+     }
  */

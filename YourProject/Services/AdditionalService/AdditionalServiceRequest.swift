@@ -15,12 +15,13 @@ struct AdditionalServiceRequest {
     
     struct ByID { let id: Int }
     
-    // MARK: - Enums
+    // MARK: - Enums    
     enum SortedBy: String {
         case id = "ID"
         case createdAt = "CREATED_AT"
         case updatedAt = "UPDATED_AT"
         case dateIssue = "DATE_ISSUE"
+        case status = "STATUS"
     }
     
     // MARK: - Request Structures

@@ -21,6 +21,8 @@ struct GuestServiceRequest {
 
     enum SortedBy: String {
         case id = "ID"
+        case firstName = "FIRST_NAME"
+        case lastName = "LAST_NAME"
         case createdAt = "CREATED_AT"
         case updatedAt = "UPDATED_AT"
     }

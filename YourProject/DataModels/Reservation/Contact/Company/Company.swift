@@ -167,8 +167,8 @@ struct Company: Codable {
 extension Company {
     
     enum BusinessType: String, Codable {
-        case corporate = "corporate"
-        case individual = "individual"
+        case corporate = "CORPORATE" 
+        case individual = "INDIVIDUAL"
         
         var description: String {
             switch self {

@@ -36,7 +36,7 @@ class CompanyServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["sorted_order"] as? String, "ASC")
         XCTAssertEqual(parameters?["query"] as? String, "Test Company")
         XCTAssertEqual(parameters?["only_hidden"] as? Bool, false)
-        XCTAssertEqual(parameters?["business_type"] as? String, "corporate")
+        XCTAssertEqual(parameters?["business_type"] as? String, "CORPORATE")
     }
     
     func test_fetchByHotel_withMinimalParameters_correctSerialization() throws {
@@ -92,7 +92,7 @@ class CompanyServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["sorted_order"] as? String, "DESC")
         XCTAssertEqual(parameters?["query"] as? String, "Search Term")
         XCTAssertEqual(parameters?["only_hidden"] as? Bool, true)
-        XCTAssertEqual(parameters?["business_type"] as? String, "individual")
+        XCTAssertEqual(parameters?["business_type"] as? String, "INDIVIDUAL")
     }
     
     // MARK: - FetchByGuest Tests
@@ -118,7 +118,7 @@ class CompanyServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["per_page"] as? String, "100")
         XCTAssertEqual(parameters?["sorted_by"] as? String, "CREATED_AT")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "ASC")
-        XCTAssertEqual(parameters?["business_type"] as? String, "corporate")
+        XCTAssertEqual(parameters?["business_type"] as? String, "CORPORATE")
     }
     
     func test_fetchByGuest_withMinimalParameters_correctSerialization() throws {
@@ -180,7 +180,7 @@ class CompanyServiceRequestTests: XCTestCase {
         XCTAssertNotNil(json)
         XCTAssertEqual(json?["user_id"] as? Int, 38)
         XCTAssertEqual(json?["hotel_id"] as? Int, 105)
-        XCTAssertEqual(json?["business_type"] as? String, "corporate")
+        XCTAssertEqual(json?["business_type"] as? String, "CORPORATE")
         XCTAssertEqual(json?["contact_id"] as? Int, 123)
         XCTAssertEqual(json?["name"] as? String, "Test Company Ltd.")
         XCTAssertEqual(json?["address"] as? String, "992/1")
@@ -231,7 +231,7 @@ class CompanyServiceRequestTests: XCTestCase {
         XCTAssertNotNil(json)
         XCTAssertNil(json?["user_id"])
         XCTAssertEqual(json?["hotel_id"] as? Int, 105)
-        XCTAssertEqual(json?["business_type"] as? String, "individual")
+        XCTAssertEqual(json?["business_type"] as? String, "INDIVIDUAL")
         XCTAssertNil(json?["contact_id"])
         XCTAssertEqual(json?["name"] as? String, "Individual Company")
         XCTAssertEqual(json?["address"] as? String, "123 Individual Street")
@@ -283,7 +283,7 @@ class CompanyServiceRequestTests: XCTestCase {
         let json = try JSONSerialization.jsonObject(with: body!, options: []) as? [String: Any]
         XCTAssertNotNil(json)
         XCTAssertEqual(json?["user_id"] as? Int, 38)
-        XCTAssertEqual(json?["business_type"] as? String, "corporate")
+        XCTAssertEqual(json?["business_type"] as? String, "CORPORATE")
         XCTAssertNil(json?["contact_id"])
         XCTAssertEqual(json?["name"] as? String, "Updated Company Name")
         XCTAssertNil(json?["address"])

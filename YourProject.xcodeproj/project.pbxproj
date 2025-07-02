@@ -58,6 +58,7 @@
 				DataModels/AppConfiguration.swift,
 				DataModels/AuthTokenResponse.swift,
 				DataModels/Collection.swift,
+				DataModels/ExpenseIncome/Account/Account.swift,
 				"DataModels/Extension/Date+.swift",
 				DataModels/Extension/DateHelper.swift,
 				"DataModels/Extension/Double+.swift",
