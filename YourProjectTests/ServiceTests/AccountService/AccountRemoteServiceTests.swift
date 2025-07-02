@@ -34,13 +34,11 @@ class AccountRemoteServiceTests: XCTestCase {
         // Arrange
         let request = AccountServiceRequest.FetchAccounts(
             hotelId: 105,
-            kind: "SAVINGS",
-            currency: "THB",
-            isDefault: nil,
+            kind: .savings,
             page: 1,
-            perPage: 20,
-            sortedBy: "ID",
-            sortedOrder: "ASC"
+            perPage: .twenty,
+            sortedBy: .id,
+            sortedOrder: .ascending
         )
         
         let expectedAccounts = createMockAccountsPaginator()
@@ -66,12 +64,10 @@ class AccountRemoteServiceTests: XCTestCase {
         let request = AccountServiceRequest.FetchAccounts(
             hotelId: 105,
             kind: nil,
-            currency: nil,
-            isDefault: nil,
             page: 1,
-            perPage: 20,
-            sortedBy: "ID",
-            sortedOrder: "ASC"
+            perPage: .twenty,
+            sortedBy: .id,
+            sortedOrder: .ascending
         )
         
         let error = APIError.unknownError(title: "Stub Error",
@@ -130,11 +126,12 @@ class AccountRemoteServiceTests: XCTestCase {
         // Arrange
         let request = AccountServiceRequest.FetchAccountBalance(
             id: 123,
-            limitDatetime: "2020-12-31T23:59:59.999+07:00"
+            limitDatetime: Date(timeIntervalSince1970: 1609430399.999) // 2020-12-31T23:59:59.999+07:00
         )
         let expectedBalance = AccountServiceResponse.BalanceInfo(
-            balance: "1000.00",
-            limitDatetime: "2020-12-31T23:59:59.999+07:00"
+            id: 123,
+            name: "Test Account",
+            balance: 1000.00
         )
         
         given(mockAPIManager)
@@ -145,8 +142,9 @@ class AccountRemoteServiceTests: XCTestCase {
         let result = try await sut.fetchAccountBalance(request: request)
         
         // Assert
+        XCTAssertEqual(result.id, expectedBalance.id)
+        XCTAssertEqual(result.name, expectedBalance.name)
         XCTAssertEqual(result.balance, expectedBalance.balance)
-        XCTAssertEqual(result.limitDatetime, expectedBalance.limitDatetime)
         
         verify(mockAPIManager)
             .request(router: .any, requiredAuthorization: .value(true))
@@ -157,12 +155,13 @@ class AccountRemoteServiceTests: XCTestCase {
     
     func test_createAccount_success() async throws {
         // Arrange
+        let openDate = Date(timeIntervalSince1970: 1589001600) // 2020-05-09
         let request = AccountServiceRequest.CreateAccount(
             name: "Test Account",
-            startBalance: "1000.00",
-            kind: "SAVINGS",
+            startBalance: 1000.0,
+            kind: .savings,
             currency: "THB",
-            openDate: "2020-05-09",
+            openDate: openDate,
             isDefault: false,
             colorRef: 0,
             iconRef: 0,
@@ -193,11 +192,7 @@ class AccountRemoteServiceTests: XCTestCase {
         let request = AccountServiceRequest.UpdateAccount(
             id: 123,
             name: "Updated Account",
-            startBalance: "2000.00",
-            kind: "CHECKING",
-            currency: "USD",
-            openDate: "2020-06-01",
-            isDefault: true,
+            kind: .checking,
             colorRef: 1,
             iconRef: 1
         )

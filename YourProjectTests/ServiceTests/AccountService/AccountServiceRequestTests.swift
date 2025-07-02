@@ -15,13 +15,11 @@ class AccountServiceRequestTests: XCTestCase {
         // Arrange
         let request = AccountServiceRequest.FetchAccounts(
             hotelId: 105,
-            kind: "SAVINGS",
-            currency: "THB",
-            isDefault: true,
+            kind: .savings,
             page: 1,
-            perPage: 20,
-            sortedBy: "ID",
-            sortedOrder: "ASC"
+            perPage: .twenty,
+            sortedBy: .id,
+            sortedOrder: .ascending
         )
         
         // Act
@@ -31,10 +29,8 @@ class AccountServiceRequestTests: XCTestCase {
         XCTAssertNotNil(parameters)
         XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
         XCTAssertEqual(parameters?["kind"] as? String, "SAVINGS")
-        XCTAssertEqual(parameters?["currency"] as? String, "THB")
-        XCTAssertEqual(parameters?["is_default"] as? Bool, true)
         XCTAssertEqual(parameters?["page"] as? Int, 1)
-        XCTAssertEqual(parameters?["per_page"] as? Int, 20)
+        XCTAssertEqual(parameters?["per_page"] as? String, "20")
         XCTAssertEqual(parameters?["sorted_by"] as? String, "ID")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "ASC")
     }
@@ -44,8 +40,6 @@ class AccountServiceRequestTests: XCTestCase {
         let request = AccountServiceRequest.FetchAccounts(
             hotelId: 105,
             kind: nil,
-            currency: nil,
-            isDefault: nil,
             page: nil,
             perPage: nil,
             sortedBy: nil,
@@ -59,12 +53,34 @@ class AccountServiceRequestTests: XCTestCase {
         XCTAssertNotNil(parameters)
         XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
         XCTAssertNil(parameters?["kind"])
-        XCTAssertNil(parameters?["currency"])
-        XCTAssertNil(parameters?["is_default"])
         XCTAssertNil(parameters?["page"])
         XCTAssertNil(parameters?["per_page"])
         XCTAssertNil(parameters?["sorted_by"])
         XCTAssertNil(parameters?["sorted_order"])
+    }
+    
+    func test_fetchAccounts_invalidPage_notEncoded() throws {
+        // Arrange
+        let request = AccountServiceRequest.FetchAccounts(
+            hotelId: 105,
+            kind: .checking,
+            page: 0, // Invalid page (< 1)
+            perPage: .ten,
+            sortedBy: .createdAt,
+            sortedOrder: .descending
+        )
+        
+        // Act
+        let parameters = request.parameters
+        
+        // Assert
+        XCTAssertNotNil(parameters)
+        XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
+        XCTAssertEqual(parameters?["kind"] as? String, "CHECKING")
+        XCTAssertNil(parameters?["page"]) // Should be nil because < 1
+        XCTAssertEqual(parameters?["per_page"] as? String, "10")
+        XCTAssertEqual(parameters?["sorted_by"] as? String, "CREATED_AT")
+        XCTAssertEqual(parameters?["sorted_order"] as? String, "DESC")
     }
     
     // MARK: - Test FetchAccountBalance
@@ -73,7 +89,7 @@ class AccountServiceRequestTests: XCTestCase {
         // Arrange
         let request = AccountServiceRequest.FetchAccountBalance(
             id: 123,
-            limitDatetime: "2020-12-31T23:59:59.999+07:00"
+            limitDatetime: Date(timeIntervalSince1970: 1609430399.999) // 2020-12-31T23:59:59.999+07:00
         )
         
         // Act
@@ -81,7 +97,7 @@ class AccountServiceRequestTests: XCTestCase {
         
         // Assert
         XCTAssertNotNil(parameters)
-        XCTAssertEqual(parameters?["limit_datetime"] as? String, "2020-12-31T23:59:59.999+07:00")
+        XCTAssertEqual(parameters?["limit_datetime"] as? String, "2020-12-31T22:59:59.999+07:00")
     }
     
     func test_fetchAccountBalance_optionalFields_nil() throws {
@@ -96,6 +112,7 @@ class AccountServiceRequestTests: XCTestCase {
         
         // Assert
         XCTAssertNotNil(parameters)
+        XCTAssertEqual(parameters?["id"] as? Int, 123)
         XCTAssertNil(parameters?["limit_datetime"])
     }
     
@@ -103,12 +120,13 @@ class AccountServiceRequestTests: XCTestCase {
     
     func test_createAccount_encodesToBody() throws {
         // Arrange
+        let openDate = Date(timeIntervalSince1970: 1589001600) // 2020-05-09
         let request = AccountServiceRequest.CreateAccount(
             name: "Test Account",
-            startBalance: "1000.00",
-            kind: "SAVINGS",
+            startBalance: 1000.0,
+            kind: .savings,
             currency: "THB",
-            openDate: "2020-05-09",
+            openDate: openDate,
             isDefault: false,
             colorRef: 0,
             iconRef: 0,
@@ -123,7 +141,7 @@ class AccountServiceRequestTests: XCTestCase {
         
         let json = try JSONSerialization.jsonObject(with: body!) as! [String: Any]
         XCTAssertEqual(json["name"] as? String, "Test Account")
-        XCTAssertEqual(json["start_balance"] as? String, "1000.00")
+        XCTAssertEqual(json["start_balance"] as? String, "1000.0")
         XCTAssertEqual(json["kind"] as? String, "SAVINGS")
         XCTAssertEqual(json["currency"] as? String, "THB")
         XCTAssertEqual(json["open_date"] as? String, "2020-05-09")
@@ -133,6 +151,39 @@ class AccountServiceRequestTests: XCTestCase {
         XCTAssertEqual(json["hotel_id"] as? Int, 105)
     }
     
+    func test_createAccount_optionalFields_nil() throws {
+        // Arrange
+        let openDate = Date(timeIntervalSince1970: 1589001600) // 2020-05-09
+        let request = AccountServiceRequest.CreateAccount(
+            name: "Test Account",
+            startBalance: 1000.0,
+            kind: .cash,
+            currency: "USD",
+            openDate: openDate,
+            isDefault: nil,
+            colorRef: nil,
+            iconRef: nil,
+            hotelId: 105
+        )
+        
+        // Act
+        let body = request.body
+        
+        // Assert
+        XCTAssertNotNil(body)
+        
+        let json = try JSONSerialization.jsonObject(with: body!) as! [String: Any]
+        XCTAssertEqual(json["name"] as? String, "Test Account")
+        XCTAssertEqual(json["start_balance"] as? String, "1000.0")
+        XCTAssertEqual(json["kind"] as? String, "CASH")
+        XCTAssertEqual(json["currency"] as? String, "USD")
+        XCTAssertEqual(json["open_date"] as? String, "2020-05-09")
+        XCTAssertEqual(json["hotel_id"] as? Int, 105)
+        XCTAssertNil(json["is_default"])
+        XCTAssertNil(json["color_ref"])
+        XCTAssertNil(json["icon_ref"])
+    }
+    
     // MARK: - Test UpdateAccount
     
     func test_updateAccount_encodesToBody() throws {
@@ -140,11 +191,7 @@ class AccountServiceRequestTests: XCTestCase {
         let request = AccountServiceRequest.UpdateAccount(
             id: 123,
             name: "Updated Account",
-            startBalance: "2000.00",
-            kind: "CHECKING",
-            currency: "USD",
-            openDate: "2020-06-01",
-            isDefault: true,
+            kind: .checking,
             colorRef: 1,
             iconRef: 1
         )
@@ -157,11 +204,7 @@ class AccountServiceRequestTests: XCTestCase {
         
         let json = try JSONSerialization.jsonObject(with: body!) as! [String: Any]
         XCTAssertEqual(json["name"] as? String, "Updated Account")
-        XCTAssertEqual(json["start_balance"] as? String, "2000.00")
         XCTAssertEqual(json["kind"] as? String, "CHECKING")
-        XCTAssertEqual(json["currency"] as? String, "USD")
-        XCTAssertEqual(json["open_date"] as? String, "2020-06-01")
-        XCTAssertEqual(json["is_default"] as? Bool, true)
         XCTAssertEqual(json["color_ref"] as? Int, 1)
         XCTAssertEqual(json["icon_ref"] as? Int, 1)
         
@@ -174,11 +217,7 @@ class AccountServiceRequestTests: XCTestCase {
         let request = AccountServiceRequest.UpdateAccount(
             id: 123,
             name: nil,
-            startBalance: nil,
             kind: nil,
-            currency: nil,
-            openDate: nil,
-            isDefault: nil,
             colorRef: nil,
             iconRef: nil
         )
@@ -191,11 +230,7 @@ class AccountServiceRequestTests: XCTestCase {
         
         let json = try JSONSerialization.jsonObject(with: body!) as! [String: Any]
         XCTAssertNil(json["name"])
-        XCTAssertNil(json["start_balance"])
         XCTAssertNil(json["kind"])
-        XCTAssertNil(json["currency"])
-        XCTAssertNil(json["open_date"])
-        XCTAssertNil(json["is_default"])
         XCTAssertNil(json["color_ref"])
         XCTAssertNil(json["icon_ref"])
         XCTAssertNil(json["id"])

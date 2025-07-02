@@ -15,23 +15,8 @@ class AccountServiceResponseTests: XCTestCase {
         // Arrange
         let json = """
         {
-            "balance": "1500.50",
-            "limit_datetime": "2020-12-31T23:59:59.999+07:00"
-        }
-        """.data(using: .utf8)!
-        
-        // Act
-        let balanceInfo = try JSONDecoder().decode(AccountServiceResponse.BalanceInfo.self, from: json)
-        
-        // Assert
-        XCTAssertEqual(balanceInfo.balance, "1500.50")
-        XCTAssertEqual(balanceInfo.limitDatetime, "2020-12-31T23:59:59.999+07:00")
-    }
-    
-    func test_balanceInfo_decodesCorrectly_withNilLimitDatetime() throws {
-        // Arrange
-        let json = """
-        {
+            "id": 123,
+            "name": "Test Account",
             "balance": "1500.50"
         }
         """.data(using: .utf8)!
@@ -40,39 +25,41 @@ class AccountServiceResponseTests: XCTestCase {
         let balanceInfo = try JSONDecoder().decode(AccountServiceResponse.BalanceInfo.self, from: json)
         
         // Assert
-        XCTAssertEqual(balanceInfo.balance, "1500.50")
-        XCTAssertNil(balanceInfo.limitDatetime)
+        XCTAssertEqual(balanceInfo.id, 123)
+        XCTAssertEqual(balanceInfo.name, "Test Account")
+        XCTAssertEqual(balanceInfo.balance, 1500.50)
     }
     
-    func test_balanceInfo_encodesCorrectly() throws {
+    func test_balanceInfo_decodesCorrectly_withInvalidBalance() throws {
         // Arrange
-        let balanceInfo = AccountServiceResponse.BalanceInfo(
-            balance: "2000.75",
-            limitDatetime: "2021-01-01T00:00:00.000+07:00"
-        )
+        let json = """
+        {
+            "id": 123,
+            "name": "Test Account",
+            "balance": "invalid"
+        }
+        """.data(using: .utf8)!
         
         // Act
-        let data = try JSONEncoder().encode(balanceInfo)
-        let json = try JSONSerialization.jsonObject(with: data) as! [String: Any]
+        let balanceInfo = try JSONDecoder().decode(AccountServiceResponse.BalanceInfo.self, from: json)
         
         // Assert
-        XCTAssertEqual(json["balance"] as? String, "2000.75")
-        XCTAssertEqual(json["limit_datetime"] as? String, "2021-01-01T00:00:00.000+07:00")
+        XCTAssertEqual(balanceInfo.id, 123)
+        XCTAssertEqual(balanceInfo.name, "Test Account")
+        XCTAssertEqual(balanceInfo.balance, 0.0) // Should default to 0 for invalid balance
     }
     
-    func test_balanceInfo_encodesCorrectly_withNilLimitDatetime() throws {
-        // Arrange
+    func test_balanceInfo_initializesCorrectly() throws {
+        // Arrange & Act
         let balanceInfo = AccountServiceResponse.BalanceInfo(
-            balance: "2000.75",
-            limitDatetime: nil
+            id: 789,
+            name: "Checking Account",
+            balance: 500.25
         )
         
-        // Act
-        let data = try JSONEncoder().encode(balanceInfo)
-        let json = try JSONSerialization.jsonObject(with: data) as! [String: Any]
-        
         // Assert
-        XCTAssertEqual(json["balance"] as? String, "2000.75")
-        XCTAssertFalse(json.keys.contains("limit_datetime"))
+        XCTAssertEqual(balanceInfo.id, 789)
+        XCTAssertEqual(balanceInfo.name, "Checking Account")
+        XCTAssertEqual(balanceInfo.balance, 500.25)
     }
 } 

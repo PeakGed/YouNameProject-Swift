@@ -50,9 +50,9 @@ enum AccountServiceRouter: AlamofireBaseRouterProtocol {
         switch self {
         case .fetchAccounts, .fetchAccount, .fetchAccountBalance:
             return .get
-        case .createAccount:
+        case .createAccount, .setAccountAsDefault:
             return .post
-        case .updateAccount, .setAccountAsDefault:
+        case .updateAccount:
             return .put
         case .deleteAccount:
             return .delete
