@@ -58,7 +58,7 @@ struct Payee: Codable {
         try container.encode(hotelId, forKey: .hotelId)
         try container.encode(accountItemCategoryId, forKey: .accountItemCategoryId)
         try container.encodeIfPresent(accountSubItemCategoryId, forKey: .accountSubItemCategoryId)
-        
+         
         let dateFormat = FormConfig.DateFormat.datetimeISO
         try container.encode(createdAt.toDateString(dateFormat), forKey: .createdAt)
         try container.encode(updatedAt.toDateString(dateFormat), forKey: .updatedAt)
