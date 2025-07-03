@@ -130,7 +130,7 @@ class ReceiptRemoteServiceTests: XCTestCase {
     
     func test_fetchByPeriod_success() async throws {
         // Arrange
-        let startDate = Date()
+        let startDate = Date(timeIntervalSince1970: 1669075200)
         let endDate = Calendar.current.date(byAdding: .day, value: 7, to: startDate)!
         let period = PeriodDate(start: startDate, end: endDate)
         
@@ -308,7 +308,7 @@ class ReceiptRemoteServiceTests: XCTestCase {
         let request = ReceiptServiceRequest.CreateFromFolioForm(
             hotelId: 105,
             folioFormId: 456,
-            paidDate: Date(),
+            paidDate: Date(timeIntervalSince1970: 1669075200),
             payerContactId: 4,
             receiverContactId: 4,
             remark: nil,
@@ -342,7 +342,7 @@ class ReceiptRemoteServiceTests: XCTestCase {
         let request = ReceiptServiceRequest.CreateFromFolioFormVat(
             hotelId: 105,
             folioFormId: 456,
-            paidDate: Date(),
+            paidDate: Date(timeIntervalSince1970: 1669075200),
             payerContactId: 4,
             receiverContactId: 4,
             remark: "VAT receipt",
@@ -417,7 +417,7 @@ class ReceiptRemoteServiceTests: XCTestCase {
         
         // Assert
         XCTAssertEqual(result.id, expectedReceipt.id)
-        XCTAssertEqual(result.status, .voided)
+        XCTAssertEqual(result.status, .void)
         
         verify(mockAPIManager)
             .request(router: .any, requiredAuthorization: .value(true))
@@ -541,36 +541,36 @@ class ReceiptRemoteServiceTests: XCTestCase {
         return Receipt(
             id: 3,
             status: .paid,
+            number: "RI20221100001",
+            vatIncluded: true,
+            vatPercentage: 7.0,
+            withholdingTaxIncluded: true,
+            withholdingTaxPercentage: 3.0,
+            occupiedTotalAmount: 500.0,
+            additionalTotalAmount: 0.0,
+            totalAmount: 500.0,
+            amountBeforeVat: 467.29,
+            vatAmount: 32.71,
+            holdingTaxAmount: 14.02,
+            totalReceiveAmount: 500.0,
+            paidBeforeAmount: 0.0,
+            paidDate: Date(timeIntervalSince1970: 1669075200),
+            currency: "THB",
+            remark: nil,
+            internalNote: nil,
             voidReason: nil,
             voidedAt: nil,
             cancelledAt: nil,
             cancelReason: nil,
             paidAt: nil,
-            number: "RI20221100001",
-            vatIncluded: true,
-            vatPercentage: "7.0",
-            withholdingTaxIncluded: true,
-            withholdingTaxPercentage: "3.0",
-            occupiedTotalAmount: "500.0",
-            additionalTotalAmount: "0.0",
-            totalAmount: "500.0",
-            amountBeforeVat: "467.29",
-            vatAmount: "32.71",
-            holdingTaxAmount: "14.02",
-            totalReceiveAmount: "500.0",
-            paidBeforeAmount: "0.0",
-            paidDate: Date(),
-            currency: "THB",
-            remark: nil,
-            internalNote: nil,
-            createdAt: Date(),
-            updatedAt: Date(),
             hotelId: 105,
             userId: 38,
             folioFormId: nil,
             payerContactId: 4,
             receiverContactId: 4,
-            financialRecordIds: [1, 2, 3]
+            financialRecordIds: [1, 2, 3],
+            createdAt: Date(timeIntervalSince1970: 1669075200),
+            updatedAt: Date(timeIntervalSince1970: 1669075200)
         )
     }
     
@@ -579,11 +579,6 @@ class ReceiptRemoteServiceTests: XCTestCase {
         return Receipt(
             id: receipt.id,
             status: .cancelled,
-            voidReason: receipt.voidReason,
-            voidedAt: receipt.voidedAt,
-            cancelledAt: Date(),
-            cancelReason: "Customer request",
-            paidAt: receipt.paidAt,
             number: receipt.number,
             vatIncluded: receipt.vatIncluded,
             vatPercentage: receipt.vatPercentage,
@@ -601,14 +596,19 @@ class ReceiptRemoteServiceTests: XCTestCase {
             currency: receipt.currency,
             remark: receipt.remark,
             internalNote: receipt.internalNote,
-            createdAt: receipt.createdAt,
-            updatedAt: receipt.updatedAt,
+            voidReason: receipt.voidReason,
+            voidedAt: receipt.voidedAt,
+            cancelledAt: Date(),
+            cancelReason: "Customer request",
+            paidAt: receipt.paidAt,
             hotelId: receipt.hotelId,
             userId: receipt.userId,
             folioFormId: receipt.folioFormId,
             payerContactId: receipt.payerContactId,
             receiverContactId: receipt.receiverContactId,
-            financialRecordIds: receipt.financialRecordIds
+            financialRecordIds: receipt.financialRecordIds,
+            createdAt: receipt.createdAt,
+            updatedAt: receipt.updatedAt
         )
     }
     
@@ -616,12 +616,7 @@ class ReceiptRemoteServiceTests: XCTestCase {
         var receipt = createMockReceipt()
         return Receipt(
             id: receipt.id,
-            status: .voided,
-            voidReason: "Error in calculation",
-            voidedAt: Date(),
-            cancelledAt: receipt.cancelledAt,
-            cancelReason: receipt.cancelReason,
-            paidAt: receipt.paidAt,
+            status: .void,
             number: receipt.number,
             vatIncluded: receipt.vatIncluded,
             vatPercentage: receipt.vatPercentage,
@@ -639,14 +634,19 @@ class ReceiptRemoteServiceTests: XCTestCase {
             currency: receipt.currency,
             remark: receipt.remark,
             internalNote: receipt.internalNote,
-            createdAt: receipt.createdAt,
-            updatedAt: receipt.updatedAt,
+            voidReason: "Error in calculation",
+            voidedAt: Date(),
+            cancelledAt: receipt.cancelledAt,
+            cancelReason: receipt.cancelReason,
+            paidAt: receipt.paidAt,
             hotelId: receipt.hotelId,
             userId: receipt.userId,
             folioFormId: receipt.folioFormId,
             payerContactId: receipt.payerContactId,
             receiverContactId: receipt.receiverContactId,
-            financialRecordIds: receipt.financialRecordIds
+            financialRecordIds: receipt.financialRecordIds,
+            createdAt: receipt.createdAt,
+            updatedAt: receipt.updatedAt,
         )
     }
 } 

@@ -9,47 +9,47 @@ import Foundation
 
 struct Receipt: Codable {
     let id: Int
-    let status: Status
+    let status: Status    
+    let number: String
+
+    let vatIncluded: Bool
+    let vatPercentage: Double
+    let withholdingTaxIncluded: Bool
+    let withholdingTaxPercentage: Double
+    let occupiedTotalAmount: Double
+    let additionalTotalAmount: Double
+    let totalAmount: Double
+    let amountBeforeVat: Double
+    let vatAmount: Double
+    let holdingTaxAmount: Double
+    let totalReceiveAmount: Double
+    let paidBeforeAmount: Double
+
+    let paidDate: Date
+    let currency: String
+    let remark: String?
+    let internalNote: String?    
+
     let voidReason: String?
     let voidedAt: Date?
     let cancelledAt: Date?
     let cancelReason: String?
     let paidAt: Date?
-    let number: String
-    let vatIncluded: Bool
-    let vatPercentage: String
-    let withholdingTaxIncluded: Bool
-    let withholdingTaxPercentage: String
-    let occupiedTotalAmount: String
-    let additionalTotalAmount: String
-    let totalAmount: String
-    let amountBeforeVat: String
-    let vatAmount: String
-    let holdingTaxAmount: String
-    let totalReceiveAmount: String
-    let paidBeforeAmount: String
-    let paidDate: Date
-    let currency: String
-    let remark: String?
-    let internalNote: String?
-    let createdAt: Date
-    let updatedAt: Date
+    
     let hotelId: Int
     let userId: Int
     let folioFormId: Int?
     let payerContactId: Int
     let receiverContactId: Int
     let financialRecordIds: [Int]
+    let createdAt: Date
+    let updatedAt: Date
     
     enum CodingKeys: String, CodingKey {
         case id
         case status
-        case voidReason = "void_reason"
-        case voidedAt = "voided_at"
-        case cancelledAt = "cancelled_at"
-        case cancelReason = "cancel_reason"
-        case paidAt = "paid_at"
         case number
+
         case vatIncluded = "vat_included"
         case vatPercentage = "vat_percentage"
         case withholdingTaxIncluded = "withholding_tax_included"
@@ -62,59 +62,62 @@ struct Receipt: Codable {
         case holdingTaxAmount = "holding_tax_amount"
         case totalReceiveAmount = "total_receive_amount"
         case paidBeforeAmount = "paid_before_amount"
+
         case paidDate = "paid_date"
         case currency
         case remark
         case internalNote = "internal_note"
-        case createdAt = "created_at"
-        case updatedAt = "updated_at"
+
+        case voidReason = "void_reason"
+        case voidedAt = "voided_at"
+        case cancelledAt = "cancelled_at"
+        case cancelReason = "cancel_reason"
+        case paidAt = "paid_at"
+
         case hotelId = "hotel_id"
         case userId = "user_id"
         case folioFormId = "folio_form_id"
         case payerContactId = "payer_contact_id"
         case receiverContactId = "receiver_contact_id"
         case financialRecordIds = "financial_record_ids"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
     }
 
     init(id: Int,
          status: Status,
+         number: String,
+         vatIncluded: Bool,
+         vatPercentage: Double,
+         withholdingTaxIncluded: Bool,
+         withholdingTaxPercentage: Double,
+         occupiedTotalAmount: Double,
+         additionalTotalAmount: Double,
+         totalAmount: Double,
+         amountBeforeVat: Double,
+         vatAmount: Double,
+         holdingTaxAmount: Double,
+         totalReceiveAmount: Double,
+         paidBeforeAmount: Double,
+         paidDate: Date,
+         currency: String,
+         remark: String?,
+         internalNote: String?,
          voidReason: String?,
          voidedAt: Date?,
          cancelledAt: Date?,
          cancelReason: String?,
          paidAt: Date?,
-         number: String,
-         vatIncluded: Bool,
-         vatPercentage: String,
-         withholdingTaxIncluded: Bool,
-         withholdingTaxPercentage: String,
-         occupiedTotalAmount: String,
-         additionalTotalAmount: String,
-         totalAmount: String,
-         amountBeforeVat: String,
-         vatAmount: String,
-         holdingTaxAmount: String,
-         totalReceiveAmount: String,
-         paidBeforeAmount: String,
-         paidDate: Date,
-         currency: String,
-         remark: String?,
-         internalNote: String?,
-         createdAt: Date,
-         updatedAt: Date,
          hotelId: Int,
          userId: Int,
          folioFormId: Int?,
          payerContactId: Int,
          receiverContactId: Int,
-         financialRecordIds: [Int]) {
+         financialRecordIds: [Int],
+         createdAt: Date,
+         updatedAt: Date) {
         self.id = id
         self.status = status
-        self.voidReason = voidReason
-        self.voidedAt = voidedAt
-        self.cancelledAt = cancelledAt
-        self.cancelReason = cancelReason
-        self.paidAt = paidAt
         self.number = number
         self.vatIncluded = vatIncluded
         self.vatPercentage = vatPercentage
@@ -132,6 +135,11 @@ struct Receipt: Codable {
         self.currency = currency
         self.remark = remark
         self.internalNote = internalNote
+        self.voidReason = voidReason
+        self.voidedAt = voidedAt
+        self.cancelledAt = cancelledAt
+        self.cancelReason = cancelReason
+        self.paidAt = paidAt
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.hotelId = hotelId
@@ -145,100 +153,101 @@ struct Receipt: Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(Int.self, forKey: .id)
-        status = try container.decode(Status.self, forKey: .status)
-        voidReason = try container.decodeIfPresent(String.self, forKey: .voidReason)
-        
+        status = try container.decode(Status.self, forKey: .status)                
         let dateFormat = FormConfig.DateFormat.datetimeISO
-        voidedAt = try container.decodeIfPresent(String.self, forKey: .voidedAt)?.tryToDate(dateFormat: dateFormat)
-        cancelledAt = try container.decodeIfPresent(String.self, forKey: .cancelledAt)?.tryToDate(dateFormat: dateFormat)
-        cancelReason = try container.decodeIfPresent(String.self, forKey: .cancelReason)
-        paidAt = try container.decodeIfPresent(String.self, forKey: .paidAt)?.tryToDate(dateFormat: dateFormat)
         
         number = try container.decode(String.self, forKey: .number)
         vatIncluded = try container.decode(Bool.self, forKey: .vatIncluded)
-        vatPercentage = try container.decode(String.self, forKey: .vatPercentage)
+        vatPercentage = try container.decode(String.self, forKey: .vatPercentage).tryToDouble()
         withholdingTaxIncluded = try container.decode(Bool.self, forKey: .withholdingTaxIncluded)
-        withholdingTaxPercentage = try container.decode(String.self, forKey: .withholdingTaxPercentage)
-        occupiedTotalAmount = try container.decode(String.self, forKey: .occupiedTotalAmount)
-        additionalTotalAmount = try container.decode(String.self, forKey: .additionalTotalAmount)
-        totalAmount = try container.decode(String.self, forKey: .totalAmount)
-        amountBeforeVat = try container.decode(String.self, forKey: .amountBeforeVat)
-        vatAmount = try container.decode(String.self, forKey: .vatAmount)
-        holdingTaxAmount = try container.decode(String.self, forKey: .holdingTaxAmount)
-        totalReceiveAmount = try container.decode(String.self, forKey: .totalReceiveAmount)
-        paidBeforeAmount = try container.decode(String.self, forKey: .paidBeforeAmount)
+        withholdingTaxPercentage = try container.decode(String.self, forKey: .withholdingTaxPercentage).tryToDouble()
+        occupiedTotalAmount = try container.decode(String.self, forKey: .occupiedTotalAmount).tryToDouble()
+        additionalTotalAmount = try container.decode(String.self, forKey: .additionalTotalAmount).tryToDouble()
+        totalAmount = try container.decode(String.self, forKey: .totalAmount).tryToDouble()
+        amountBeforeVat = try container.decode(String.self, forKey: .amountBeforeVat).tryToDouble()
+        vatAmount = try container.decode(String.self, forKey: .vatAmount).tryToDouble()
+        holdingTaxAmount = try container.decode(String.self, forKey: .holdingTaxAmount).tryToDouble()
+        totalReceiveAmount = try container.decode(String.self, forKey: .totalReceiveAmount).tryToDouble()
+        paidBeforeAmount = try container.decode(String.self, forKey: .paidBeforeAmount).tryToDouble()
         
         paidDate = try container.decode(String.self, forKey: .paidDate).tryToDate(dateFormat: FormConfig.DateFormat.yyyyMMdd)
         currency = try container.decode(String.self, forKey: .currency)
         remark = try container.decodeIfPresent(String.self, forKey: .remark)
         internalNote = try container.decodeIfPresent(String.self, forKey: .internalNote)
-        
-        createdAt = try container.decode(String.self, forKey: .createdAt).tryToDate(dateFormat: dateFormat)
-        updatedAt = try container.decode(String.self, forKey: .updatedAt).tryToDate(dateFormat: dateFormat)
-        
+                        
+        voidReason = try container.decodeIfPresent(String.self, forKey: .voidReason)
+        voidedAt = try container.decodeIfPresent(String.self, forKey: .voidedAt)?.tryToDate(dateFormat: dateFormat)
+        cancelledAt = try container.decodeIfPresent(String.self, forKey: .cancelledAt)?.tryToDate(dateFormat: dateFormat)
+        cancelReason = try container.decodeIfPresent(String.self, forKey: .cancelReason)
+        paidAt = try container.decodeIfPresent(String.self, forKey: .paidAt)?.tryToDate(dateFormat: dateFormat)        
+
         hotelId = try container.decode(Int.self, forKey: .hotelId)
         userId = try container.decode(Int.self, forKey: .userId)
         folioFormId = try container.decodeIfPresent(Int.self, forKey: .folioFormId)
         payerContactId = try container.decode(Int.self, forKey: .payerContactId)
         receiverContactId = try container.decode(Int.self, forKey: .receiverContactId)
         financialRecordIds = try container.decode([Int].self, forKey: .financialRecordIds)
+
+        createdAt = try container.decode(String.self, forKey: .createdAt).tryToDate(dateFormat: dateFormat)
+        updatedAt = try container.decode(String.self, forKey: .updatedAt).tryToDate(dateFormat: dateFormat)
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(status, forKey: .status)
-        try container.encodeIfPresent(voidReason, forKey: .voidReason)
+        try container.encode(status, forKey: .status)        
         
-        let dateFormat = FormConfig.DateFormat.datetimeISO
-        try container.encodeIfPresent(voidedAt?.toDateString(dateFormat), forKey: .voidedAt)
-        try container.encodeIfPresent(cancelledAt?.toDateString(dateFormat), forKey: .cancelledAt)
-        try container.encodeIfPresent(cancelReason, forKey: .cancelReason)
-        try container.encodeIfPresent(paidAt?.toDateString(dateFormat), forKey: .paidAt)
+        let dateFormat = FormConfig.DateFormat.datetimeISO        
         
         try container.encode(number, forKey: .number)
         try container.encode(vatIncluded, forKey: .vatIncluded)
-        try container.encode(vatPercentage, forKey: .vatPercentage)
+        try container.encode(vatPercentage.toString(), forKey: .vatPercentage)
         try container.encode(withholdingTaxIncluded, forKey: .withholdingTaxIncluded)
-        try container.encode(withholdingTaxPercentage, forKey: .withholdingTaxPercentage)
-        try container.encode(occupiedTotalAmount, forKey: .occupiedTotalAmount)
-        try container.encode(additionalTotalAmount, forKey: .additionalTotalAmount)
-        try container.encode(totalAmount, forKey: .totalAmount)
-        try container.encode(amountBeforeVat, forKey: .amountBeforeVat)
-        try container.encode(vatAmount, forKey: .vatAmount)
-        try container.encode(holdingTaxAmount, forKey: .holdingTaxAmount)
-        try container.encode(totalReceiveAmount, forKey: .totalReceiveAmount)
-        try container.encode(paidBeforeAmount, forKey: .paidBeforeAmount)
+        try container.encode(withholdingTaxPercentage.toString(), forKey: .withholdingTaxPercentage)
+        try container.encode(occupiedTotalAmount.toString(), forKey: .occupiedTotalAmount)
+        try container.encode(additionalTotalAmount.toString(), forKey: .additionalTotalAmount)
+        try container.encode(totalAmount.toString(), forKey: .totalAmount)
+        try container.encode(amountBeforeVat.toString(), forKey: .amountBeforeVat)
+        try container.encode(vatAmount.toString(), forKey: .vatAmount)
+        try container.encode(holdingTaxAmount.toString(), forKey: .holdingTaxAmount)
+        try container.encode(totalReceiveAmount.toString(), forKey: .totalReceiveAmount)
+        try container.encode(paidBeforeAmount.toString(), forKey: .paidBeforeAmount)
         
         try container.encode(paidDate.toDateString(FormConfig.DateFormat.yyyyMMdd), forKey: .paidDate)
         try container.encode(currency, forKey: .currency)
         try container.encodeIfPresent(remark, forKey: .remark)
         try container.encodeIfPresent(internalNote, forKey: .internalNote)
         
-        try container.encode(createdAt.toDateString(dateFormat), forKey: .createdAt)
-        try container.encode(updatedAt.toDateString(dateFormat), forKey: .updatedAt)
-        
+        try container.encodeIfPresent(voidReason, forKey: .voidReason)
+        try container.encodeIfPresent(voidedAt?.toDateString(dateFormat), forKey: .voidedAt)
+        try container.encodeIfPresent(cancelledAt?.toDateString(dateFormat), forKey: .cancelledAt)
+        try container.encodeIfPresent(cancelReason, forKey: .cancelReason)
+        try container.encodeIfPresent(paidAt?.toDateString(dateFormat), forKey: .paidAt)
+
         try container.encode(hotelId, forKey: .hotelId)
         try container.encode(userId, forKey: .userId)
         try container.encodeIfPresent(folioFormId, forKey: .folioFormId)
         try container.encode(payerContactId, forKey: .payerContactId)
         try container.encode(receiverContactId, forKey: .receiverContactId)
         try container.encode(financialRecordIds, forKey: .financialRecordIds)
+
+        try container.encode(createdAt.toDateString(dateFormat), forKey: .createdAt)
+        try container.encode(updatedAt.toDateString(dateFormat), forKey: .updatedAt)
     }
     
 }
 
 extension Receipt {
     enum Status: String, Codable {
-        case paid = "paid"
-        case voided = "void"
-        case cancelled = "cancelled"
+        case paid = "PAID"
+        case void = "VOID"
+        case cancelled = "CANCELLED"
         
         var description: String {
             switch self {
             case .paid:
                 return "Paid"
-            case .voided:
+            case .void:
                 return "Voided"
             case .cancelled:
                 return "Cancelled"
@@ -251,7 +260,7 @@ extension Receipt {
 /*
  {
      "id": 3,
-     "status": "paid",
+     "status": "PAID",
      "void_reason": null,
      "voided_at": null,
      "cancelled_at": null,
