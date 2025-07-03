@@ -26,7 +26,7 @@ enum FolioServiceRouter: AlamofireBaseRouterProtocol {
         switch self {
         case .fetchFolios(_):
             return "/v4/folios"
-        case .fetchFoliosByCategory(let request):
+        case .fetchFoliosByCategory(_):
             return "/v4/folios/category"
         case .fetchFolio(let request):
             return "/v4/folios/\(request.id)"

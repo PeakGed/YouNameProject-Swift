@@ -29,7 +29,8 @@ final class FolioServiceRouterTests: XCTestCase {
             perPage: .twenty,
             sortedBy: .id,
             sortedOrder: .ascending,
-            status: .available
+            status: .available,
+            vatOption: .excludedVat
         )
         let router = FolioServiceRouter.fetchFolios(request: req)
         
@@ -38,7 +39,7 @@ final class FolioServiceRouterTests: XCTestCase {
         
         // Then
         XCTAssertEqual(urlRequest.url?.absoluteString,
-                       baseURL + "/v4/folios?hotel_id=101&page=1&per_page=20&sorted_by=ID&sorted_order=ASC&status=AVAILABLE")
+                       baseURL + "/v4/folios?hotel_id=101&page=1&per_page=20&sorted_by=ID&sorted_order=ASC&status=AVAILABLE&vat_option=EXCLUDED_VAT")
         XCTAssertEqual(urlRequest.httpMethod,
                        HTTPMethod.get.rawValue)
     }
@@ -56,7 +57,7 @@ final class FolioServiceRouterTests: XCTestCase {
         
         // Then
         XCTAssertEqual(urlRequest.url?.absoluteString,
-                       baseURL + "/v4/folios/category?hotel_id=101&category_id=5")
+                       baseURL + "/v4/folios/category?category_id=5&hotel_id=101")
         XCTAssertEqual(urlRequest.httpMethod,
                        HTTPMethod.get.rawValue)
     }
@@ -104,7 +105,7 @@ final class FolioServiceRouterTests: XCTestCase {
                     XCTAssertEqual(json["hotel_id"] as? Int, 101)
                     XCTAssertEqual(json["amount"] as? String, "123.45")
                     XCTAssertEqual(json["category_id"] as? Int, 1)
-                    XCTAssertEqual(json["amount_vat_option"] as? String, "excluded_vat")
+                    XCTAssertEqual(json["amount_vat_option"] as? String, "EXCLUDED_VAT")
                     XCTAssertEqual(json["name"] as? String, "Name A")
                     XCTAssertEqual(json["description"] as? String, nil)                    
                 } else {
@@ -147,7 +148,7 @@ final class FolioServiceRouterTests: XCTestCase {
                     XCTAssertEqual(json["amount"] as? String, "200.0")
                     XCTAssertEqual(json["description"] as? String, "Updated Description")
                     XCTAssertEqual(json["category_id"] as? Int, 2)
-                    XCTAssertEqual(json["amount_vat_option"] as? String, "included_vat")
+                    XCTAssertEqual(json["amount_vat_option"] as? String, "INCLUDED_VAT")
                 } else {
                     XCTFail("JSON is not a dictionary")
                 }

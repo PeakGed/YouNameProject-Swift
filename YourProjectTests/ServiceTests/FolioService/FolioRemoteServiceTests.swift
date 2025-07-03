@@ -14,7 +14,7 @@ final class FolioRemoteServiceTests: XCTestCase {
 
     func testFetchFolios_WillGetValidResponse() async throws {
         // Given
-        let expectedPaginator = Paginator<Folios>(
+        let expectedPaginator = Paginator<Folio>(
             items: Collection(array: []),
             totalItems: 0,
             totalPages: 0,
@@ -34,7 +34,8 @@ final class FolioRemoteServiceTests: XCTestCase {
             perPage: .twenty,
             sortedBy: .id,
             sortedOrder: .ascending,
-            status: .available
+            status: .available,
+            vatOption: .includedVat
         )
 
         // When
@@ -60,7 +61,7 @@ final class FolioRemoteServiceTests: XCTestCase {
             categoryId: 1,
             description: "Test Description",
             vatIncluded: true,
-            createdAt: Date(),
+            createdAt: Date(timeIntervalSince1970: 1714857600),
             updatedAt: Date()
         )
         given(apiManager)
@@ -93,7 +94,7 @@ final class FolioRemoteServiceTests: XCTestCase {
             categoryId: 2,
             description: "Created Description",
             vatIncluded: false,
-            createdAt: Date(),
+            createdAt: Date(timeIntervalSince1970: 1714857600),
             updatedAt: Date()
         )
         given(apiManager)
@@ -133,8 +134,8 @@ final class FolioRemoteServiceTests: XCTestCase {
             categoryId: 3,
             description: "Updated Description",
             vatIncluded: true,
-            createdAt: Date(),
-            updatedAt: Date()
+            createdAt: Date(timeIntervalSince1970: 1714857600),
+            updatedAt: Date(timeIntervalSince1970: 1714857600)
         )
         given(apiManager)
             .request(router: .any, requiredAuthorization: .any)
@@ -173,8 +174,8 @@ final class FolioRemoteServiceTests: XCTestCase {
             categoryId: 5,
             description: "Test folio for category 5",
             vatIncluded: true,
-            createdAt: Date(),
-            updatedAt: Date()
+            createdAt: Date(timeIntervalSince1970: 1714857600),
+            updatedAt: Date(timeIntervalSince1970: 1714857600)
         )
         
         let folio2 = Folio(
@@ -190,8 +191,8 @@ final class FolioRemoteServiceTests: XCTestCase {
             categoryId: 5,
             description: "Another test folio for category 5",
             vatIncluded: true,
-            createdAt: Date(),
-            updatedAt: Date()
+            createdAt: Date(timeIntervalSince1970: 1714857600),
+            updatedAt: Date(timeIntervalSince1970: 1714857600)
         )
         
         let expectedFolios = Collection(array: [folio1, folio2])

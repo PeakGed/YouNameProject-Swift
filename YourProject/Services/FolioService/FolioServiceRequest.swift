@@ -20,10 +20,11 @@ struct FolioServiceRequest {
     }
     
     enum VatOption: String, Codable {
-        case excludedVat = "excluded_vat"
-        case includedVat = "included_vat"
-        case zeroVat = "zero_vat"
-        case noVat = "no_vat"
+        
+        case excludedVat = "EXCLUDED_VAT"
+        case includedVat = "INCLUDED_VAT"
+        case zeroVat = "ZERO_VAT"
+        case noVat = "NO_VAT"
     }
     
     struct FetchFolios: Encodable {
@@ -33,6 +34,7 @@ struct FolioServiceRequest {
         let sortedBy: SortedBy?
         let sortedOrder: ServiceSortedOrder?
         let status: Folio.Status?
+        let vatOption: VatOption?
         
         enum CodingKeys: String, CodingKey {
             case hotelId = "hotel_id"
@@ -41,6 +43,7 @@ struct FolioServiceRequest {
             case sortedBy = "sorted_by"
             case sortedOrder = "sorted_order"
             case status
+            case vatOption = "vat_option"
         }
         
         func encode(to encoder: Encoder) throws {
@@ -60,6 +63,9 @@ struct FolioServiceRequest {
             }
             if let status = status {
                 try container.encode(status.rawValue, forKey: .status)
+            }
+            if let vatOption = vatOption {
+                try container.encode(vatOption.rawValue, forKey: .vatOption)
             }
         }
         

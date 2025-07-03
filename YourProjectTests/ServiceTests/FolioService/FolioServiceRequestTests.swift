@@ -19,7 +19,8 @@ class FolioServiceRequestTests: XCTestCase {
             perPage: .twenty,
             sortedBy: .id,
             sortedOrder: .ascending,
-            status: .available
+            status: .available,
+            vatOption: .zeroVat
         )
         
         // Act
@@ -33,6 +34,7 @@ class FolioServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["sorted_by"] as? String, "ID")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "ASC")
         XCTAssertEqual(parameters?["status"] as? String, "AVAILABLE")
+        XCTAssertEqual(parameters?["vat_option"] as? String, "ZERO_VAT")
     }
     
     func test_fetchFolios_withMinimalParameters_correctSerialization() throws {
@@ -43,7 +45,8 @@ class FolioServiceRequestTests: XCTestCase {
             perPage: nil,
             sortedBy: nil,
             sortedOrder: nil,
-            status: nil
+            status: nil,
+            vatOption: nil
         )
         
         // Act
@@ -56,7 +59,8 @@ class FolioServiceRequestTests: XCTestCase {
         XCTAssertNil(parameters?["per_page"])
         XCTAssertNil(parameters?["sorted_by"])
         XCTAssertNil(parameters?["sorted_order"])
-        XCTAssertNil(parameters?["status"])        
+        XCTAssertNil(parameters?["status"])
+        XCTAssertNil(parameters?["vat_option"])
     }
     
     func test_fetchFolios_withDifferentSortOptions_correctSerialization() throws {
@@ -67,7 +71,8 @@ class FolioServiceRequestTests: XCTestCase {
             perPage: .fifty,
             sortedBy: .name,
             sortedOrder: .descending,
-            status: .available
+            status: .available,
+            vatOption: .excludedVat
         )
         
         // Act
@@ -81,6 +86,7 @@ class FolioServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["sorted_by"] as? String, "NAME")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "DESC")
         XCTAssertEqual(parameters?["status"] as? String, "AVAILABLE")
+        XCTAssertEqual(parameters?["vat_option"] as? String, "EXCLUDED_VAT")
     }
     
     func test_fetchFolios_withCreatedAtSort_correctSerialization() throws {
@@ -91,7 +97,8 @@ class FolioServiceRequestTests: XCTestCase {
             perPage: .hundred,
             sortedBy: .createdAt,
             sortedOrder: .ascending,
-            status: .available
+            status: .available,
+            vatOption: .includedVat
         )
         
         // Act
@@ -101,6 +108,7 @@ class FolioServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["sorted_by"] as? String, "CREATED_AT")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "ASC")
         XCTAssertEqual(parameters?["status"] as? String, "AVAILABLE")
+        XCTAssertEqual(parameters?["vat_option"] as? String, "INCLUDED_VAT")
     }
     
     func test_fetchFolios_withUpdatedAtSort_correctSerialization() throws {
@@ -111,7 +119,8 @@ class FolioServiceRequestTests: XCTestCase {
             perPage: .ten,
             sortedBy: .updatedAt,
             sortedOrder: .descending,
-            status: .available
+            status: .available,
+            vatOption: .zeroVat
         )
         
         // Act
@@ -121,6 +130,7 @@ class FolioServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["sorted_by"] as? String, "UPDATED_AT")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "DESC")
         XCTAssertEqual(parameters?["status"] as? String, "AVAILABLE")
+        XCTAssertEqual(parameters?["vat_option"] as? String, "ZERO_VAT")
     }
     
     // MARK: - FetchFoliosByCategory Tests
