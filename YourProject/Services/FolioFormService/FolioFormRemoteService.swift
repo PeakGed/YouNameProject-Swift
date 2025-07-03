@@ -11,7 +11,7 @@ protocol FolioFormServiceProtocol: AnyObject {
     func fetchByHotel(request: FolioFormServiceRequest.FetchByHotel) async throws -> Paginator<FolioForm>
     func fetchByQuery(request: FolioFormServiceRequest.FetchByQuery) async throws -> Paginator<FolioForm>
     func fetchByPeriod(request: FolioFormServiceRequest.FetchByPeriod) async throws -> Paginator<FolioForm>
-    func fetchByReservation(request: FolioFormServiceRequest.FetchByReservation) async throws -> Paginator<FolioForm>
+    func fetchByReservation(request: FolioFormServiceRequest.FetchByReservation) async throws -> FolioForms
     
     func fetchById(request: FolioFormServiceRequest.FetchById) async throws -> FolioForm
     func createFolioFormReservation(request: FolioFormServiceRequest.CreateFolioFormReservation) async throws -> FolioForm
@@ -49,7 +49,7 @@ class FolioFormRemoteService: FolioFormServiceProtocol {
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }
     
-    func fetchByReservation(request: FolioFormServiceRequest.FetchByReservation) async throws -> Paginator<FolioForm> {
+    func fetchByReservation(request: FolioFormServiceRequest.FetchByReservation) async throws -> FolioForms {
         let router = FolioFormServiceRouter.fetchByReservation(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }

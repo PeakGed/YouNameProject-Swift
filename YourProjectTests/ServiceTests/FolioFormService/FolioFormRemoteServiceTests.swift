@@ -167,7 +167,10 @@ final class FolioFormRemoteServiceTests: XCTestCase {
             sortedBy: .id,
             sortedOrder: .ascending
         )
-        let expectedResponse = createMockPaginator()
+        
+        let expectedResponse: FolioForms = .init(array: [
+            createMockFolioForm(status: .active)
+        ])
         
         given(apiManager)
             .request(router: .any, requiredAuthorization: .any)
@@ -177,9 +180,7 @@ final class FolioFormRemoteServiceTests: XCTestCase {
         let result = try await service.fetchByReservation(request: request)
         
         // Then
-        XCTAssertEqual(result.totalItems, expectedResponse.totalItems)
-        XCTAssertEqual(result.items.first?.id, expectedResponse.items.first?.id)
-        XCTAssertEqual(result.page, expectedResponse.page)
+        XCTAssertEqual(result.count, expectedResponse.count)
         
         verify(apiManager)
             .request(router: .any, requiredAuthorization: .value(true))
@@ -248,7 +249,8 @@ final class FolioFormRemoteServiceTests: XCTestCase {
         // Given
         let request = FolioFormServiceRequest.CreateFolioFormReservation(
             hotelId: 105,
-            hotelContactId: 8,  
+            reservationId: 179,
+            hotelContactId: 8,
             customerContactId: 6,
             vatIncluded: false,
             remark: "test remark",
@@ -280,6 +282,7 @@ final class FolioFormRemoteServiceTests: XCTestCase {
         // Given
         let request = FolioFormServiceRequest.CreateFolioFormReservation(
             hotelId: 105,
+            reservationId: 179,
             hotelContactId: 8,
             customerContactId: 6,
             vatIncluded: false,

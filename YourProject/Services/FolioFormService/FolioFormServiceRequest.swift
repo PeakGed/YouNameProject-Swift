@@ -17,7 +17,6 @@ struct FolioFormServiceRequest {
 
     enum SortedBy: String {
         case id = "ID"
-        case name = "NAME"
         case createdAt = "CREATED_AT"
         case updatedAt = "UPDATED_AT"
     }
@@ -202,6 +201,7 @@ struct FolioFormServiceRequest {
        /*
         {
           "hotel_id": 1,
+          "reservation_id" : {{reservation_id}},
           "hotel_contact_id": "<integer>",
           "customer_contact_id": "<integer>",
           "vat_included": "<boolean>",
@@ -214,29 +214,32 @@ struct FolioFormServiceRequest {
         */
 
         let hotelId: Int
+        let reservationId: Int
         let hotelContactId: Int
         let customerContactId: Int
         let vatIncluded: Bool
         let remark: String?
         let internalNote: String?
-        let paymentInfo: String
-        let groupRoomCharge: Bool
-        let groupAdditionalItem: Bool
+        let paymentInfo: String?
+        let groupRoomCharge: Bool?
+        let groupAdditionalItem: Bool?
         
         var body: Data? {
             try? JSONEncoder().encode(self)
         }
-
+        
         init(hotelId: Int,
-         hotelContactId: Int, 
-         customerContactId: Int,
-          vatIncluded: Bool, 
-          remark: String?,
-           internalNote: String?,
-            paymentInfo: String, 
-            groupRoomCharge: Bool, 
-            groupAdditionalItem: Bool) {
+             reservationId: Int,
+             hotelContactId: Int,
+             customerContactId: Int,
+             vatIncluded: Bool,
+             remark: String?,
+             internalNote: String?,
+             paymentInfo: String?,
+             groupRoomCharge: Bool?,
+             groupAdditionalItem: Bool?) {
             self.hotelId = hotelId
+            self.reservationId = reservationId
             self.hotelContactId = hotelContactId
             self.customerContactId = customerContactId
             self.vatIncluded = vatIncluded
@@ -247,29 +250,31 @@ struct FolioFormServiceRequest {
             self.groupAdditionalItem = groupAdditionalItem
         }
 
-       enum CodingKeys: String, CodingKey {
-        case hotelId = "hotel_id"
-        case hotelContactId = "hotel_contact_id"
-        case customerContactId = "customer_contact_id"
-        case vatIncluded = "vat_included"
-        case remark = "remark"
-        case internalNote = "internal_note"
-        case paymentInfo = "payment_info"
-        case groupRoomCharge = "group_room_charge"
-        case groupAdditionalItem = "group_additional_item"
-       }
+        enum CodingKeys: String, CodingKey {
+            case hotelId = "hotel_id"
+            case reservationId = "reservation_id"
+            case hotelContactId = "hotel_contact_id"
+            case customerContactId = "customer_contact_id"
+            case vatIncluded = "vat_included"
+            case remark = "remark"
+            case internalNote = "internal_note"
+            case paymentInfo = "payment_info"
+            case groupRoomCharge = "group_room_charge"
+            case groupAdditionalItem = "group_additional_item"
+        }
 
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(hotelId, forKey: .hotelId)
+            try container.encode(reservationId, forKey: .reservationId)
             try container.encode(hotelContactId, forKey: .hotelContactId)
             try container.encode(customerContactId, forKey: .customerContactId)
             try container.encode(vatIncluded, forKey: .vatIncluded)
             try container.encodeIfPresent(remark, forKey: .remark)
             try container.encodeIfPresent(internalNote, forKey: .internalNote)
-            try container.encode(paymentInfo, forKey: .paymentInfo)
-            try container.encode(groupRoomCharge, forKey: .groupRoomCharge)
-            try container.encode(groupAdditionalItem, forKey: .groupAdditionalItem)
+            try container.encodeIfPresent(paymentInfo, forKey: .paymentInfo)
+            try container.encodeIfPresent(groupRoomCharge, forKey: .groupRoomCharge)
+            try container.encodeIfPresent(groupAdditionalItem, forKey: .groupAdditionalItem)
         }
        
     }

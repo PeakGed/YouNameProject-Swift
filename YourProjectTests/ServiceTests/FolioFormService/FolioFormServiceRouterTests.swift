@@ -193,6 +193,7 @@ final class FolioFormServiceRouterTests: XCTestCase {
         // Given
         let req = FolioFormServiceRequest.CreateFolioFormReservation(
             hotelId: 105,
+            reservationId: 179,
             hotelContactId: 8,
             customerContactId: 6,
             vatIncluded: false,
@@ -216,6 +217,7 @@ final class FolioFormServiceRouterTests: XCTestCase {
             do {
                 if let json = try JSONSerialization.jsonObject(with: body, options: []) as? [String: Any] {
                     XCTAssertEqual(json["hotel_id"] as? Int, 105)
+                    XCTAssertEqual(json["reservation_id"] as? Int, 179)
                     XCTAssertEqual(json["hotel_contact_id"] as? Int, 8)
                     XCTAssertEqual(json["customer_contact_id"] as? Int, 6)
                     XCTAssertEqual(json["vat_included"] as? Bool, false)

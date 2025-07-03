@@ -168,6 +168,7 @@ final class FolioFormServiceRequestTests: XCTestCase {
         // Given
         let request = FolioFormServiceRequest.CreateFolioFormReservation(
             hotelId: 105,
+            reservationId: 179,
             hotelContactId: 8,
             customerContactId: 6,
             vatIncluded: false,
@@ -189,6 +190,7 @@ final class FolioFormServiceRequestTests: XCTestCase {
         
         XCTAssertNotNil(json)
         XCTAssertEqual(json?["hotel_id"] as? Int, 105)
+        XCTAssertEqual(json?["reservation_id"] as? Int, 179)
         XCTAssertEqual(json?["hotel_contact_id"] as? Int, 8)
         XCTAssertEqual(json?["customer_contact_id"] as? Int, 6)
         XCTAssertEqual(json?["vat_included"] as? Bool, false)
@@ -203,6 +205,7 @@ final class FolioFormServiceRequestTests: XCTestCase {
         // Given
         let request = FolioFormServiceRequest.CreateFolioFormReservation(
             hotelId: 105,
+            reservationId: 179,
             hotelContactId: 8,
             customerContactId: 6,
             vatIncluded: true,
@@ -224,6 +227,7 @@ final class FolioFormServiceRequestTests: XCTestCase {
         
         XCTAssertNotNil(json)
         XCTAssertEqual(json?["hotel_id"] as? Int, 105)
+        XCTAssertEqual(json?["reservation_id"] as? Int, 179)
         XCTAssertEqual(json?["hotel_contact_id"] as? Int, 8)
         XCTAssertEqual(json?["customer_contact_id"] as? Int, 6)
         XCTAssertEqual(json?["vat_included"] as? Bool, true)
@@ -319,7 +323,6 @@ final class FolioFormServiceRequestTests: XCTestCase {
     
     func testSortedBy_WillHaveCorrectRawValues() {
         XCTAssertEqual(FolioFormServiceRequest.SortedBy.id.rawValue, "ID")
-        XCTAssertEqual(FolioFormServiceRequest.SortedBy.name.rawValue, "NAME")
         XCTAssertEqual(FolioFormServiceRequest.SortedBy.createdAt.rawValue, "CREATED_AT")
         XCTAssertEqual(FolioFormServiceRequest.SortedBy.updatedAt.rawValue, "UPDATED_AT")
     }
