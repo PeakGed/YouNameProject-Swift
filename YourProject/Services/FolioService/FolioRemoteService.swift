@@ -11,6 +11,7 @@ import Mockable
 @Mockable
 protocol FolioServiceProtocol: AnyObject {
     func fetchFolios(request: FolioServiceRequest.FetchFolios) async throws -> Paginator<Folios>
+    func fetchFoliosByCategory(request: FolioServiceRequest.FetchFoliosByCategory) async throws -> Folios
     func fetchFolio(request: FolioServiceRequest.FetchFolio) async throws -> Folio
     func createFolio(request: FolioServiceRequest.CreateFolio) async throws -> Folio
     func updateFolio(request: FolioServiceRequest.UpdateFolio) async throws -> Folio
@@ -30,6 +31,12 @@ class FolioRemoteService: FolioServiceProtocol {
     
     func fetchFolios(request: FolioServiceRequest.FetchFolios) async throws -> Paginator<Folios> {
         let router = FolioServiceRouter.fetchFolios(request: request)
+        return try await apiManager.request(router: router,
+                                           requiredAuthorization: true)
+    }
+    
+    func fetchFoliosByCategory(request: FolioServiceRequest.FetchFoliosByCategory) async throws -> Folios {
+        let router = FolioServiceRouter.fetchFoliosByCategory(request: request)
         return try await apiManager.request(router: router,
                                            requiredAuthorization: true)
     }

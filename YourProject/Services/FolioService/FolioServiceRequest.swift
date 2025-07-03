@@ -72,6 +72,30 @@ struct FolioServiceRequest {
         }
     }
     
+    struct FetchFoliosByCategory: Encodable {
+        let hotelId: Int
+        let categoryId: Int
+        
+        enum CodingKeys: String, CodingKey {
+            case hotelId = "hotel_id"
+            case categoryId = "category_id"
+        }
+        
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(hotelId, forKey: .hotelId)
+            try container.encode(categoryId, forKey: .categoryId)
+        }
+        
+        var parameters: [String: Any]? {
+            guard let data = try? JSONEncoder().encode(self),
+                  let dict = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+                return nil
+            }
+            return dict
+        }
+    }
+    
     struct CreateFolio: Encodable {
         let hotelId: Int
         let name: String

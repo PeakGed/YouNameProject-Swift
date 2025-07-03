@@ -11,6 +11,8 @@ import Foundation
 enum FolioServiceRouter: AlamofireBaseRouterProtocol {
     
     case fetchFolios(request: FolioServiceRequest.FetchFolios)
+    case fetchFoliosByCategory(request: FolioServiceRequest.FetchFoliosByCategory)
+
     case fetchFolio(request: FolioServiceRequest.FetchFolio)
     case createFolio(request: FolioServiceRequest.CreateFolio)
     case updateFolio(request: FolioServiceRequest.UpdateFolio)
@@ -24,6 +26,8 @@ enum FolioServiceRouter: AlamofireBaseRouterProtocol {
         switch self {
         case .fetchFolios(_):
             return "/v4/folios"
+        case .fetchFoliosByCategory(let request):
+            return "/v4/folios/category"
         case .fetchFolio(let request):
             return "/v4/folios/\(request.id)"
         case .createFolio(_):
@@ -38,6 +42,8 @@ enum FolioServiceRouter: AlamofireBaseRouterProtocol {
     var method: Alamofire.HTTPMethod {
         switch self {
         case .fetchFolios(_), .fetchFolio(_):
+            return .get
+        case .fetchFoliosByCategory(_):
             return .get
         case .createFolio(_):
             return .post
@@ -57,6 +63,8 @@ enum FolioServiceRouter: AlamofireBaseRouterProtocol {
     var parameters: [String: Any]? {
         switch self {
         case .fetchFolios(let request):
+            return request.parameters
+        case .fetchFoliosByCategory(let request):
             return request.parameters
         default:
             return nil
