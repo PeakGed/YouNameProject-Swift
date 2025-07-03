@@ -32,6 +32,29 @@ struct Payee: Codable {
         case updatedAt = "updated_at"
     }
     
+    
+    init(id: Int,
+         name: String,
+         memo: String,
+         buyVatType: VatType,
+         sellVatType: VatType,
+         hotelId: Int,
+         accountItemCategoryId: Int,
+         accountSubItemCategoryId: Int? = nil,
+         createdAt: Date,
+         updatedAt: Date) {
+        self.id = id
+        self.name = name
+        self.memo = memo
+        self.buyVatType = buyVatType
+        self.sellVatType = sellVatType
+        self.hotelId = hotelId
+        self.accountItemCategoryId = accountItemCategoryId
+        self.accountSubItemCategoryId = accountSubItemCategoryId
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
+    }
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(Int.self, forKey: .id)
@@ -58,7 +81,7 @@ struct Payee: Codable {
         try container.encode(hotelId, forKey: .hotelId)
         try container.encode(accountItemCategoryId, forKey: .accountItemCategoryId)
         try container.encodeIfPresent(accountSubItemCategoryId, forKey: .accountSubItemCategoryId)
-         
+        
         let dateFormat = FormConfig.DateFormat.datetimeISO
         try container.encode(createdAt.toDateString(dateFormat), forKey: .createdAt)
         try container.encode(updatedAt.toDateString(dateFormat), forKey: .updatedAt)
@@ -76,16 +99,16 @@ extension Payee {
 
 /*
  {
-   "id": 1,
-   "name": "ค่าไฟ้า",
-   "memo": "memo",
-   "buy_vat_type": "7_PERCENT",
-   "sell_vat_type": "7_PERCENT",
-   "created_at": "2020-05-10T06:28:39.742+07:00",
-   "updated_at": "2020-06-04T10:56:19.759+07:00",
-   "hotel_id": 105,
-   "account_item_category_id": 5,
-   "account_sub_item_category_id": null
+ "id": 1,
+ "name": "ค่าไฟ้า",
+ "memo": "memo",
+ "buy_vat_type": "7_PERCENT",
+ "sell_vat_type": "7_PERCENT",
+ "created_at": "2020-05-10T06:28:39.742+07:00",
+ "updated_at": "2020-06-04T10:56:19.759+07:00",
+ "hotel_id": 105,
+ "account_item_category_id": 5,
+ "account_sub_item_category_id": null
  }
-
+ 
  */
