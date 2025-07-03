@@ -234,7 +234,7 @@ class FolioServiceRequestTests: XCTestCase {
         XCTAssertEqual(json?["amount"] as? String, "150.75")
         XCTAssertEqual(json?["description"] as? String, "Test Description")
         XCTAssertEqual(json?["category_id"] as? Int, 5)
-        XCTAssertEqual(json?["amount_vat_option"] as? String, "included_vat")
+        XCTAssertEqual(json?["amount_vat_option"] as? String, "INCLUDED_VAT")
     }
     
     func test_createFolio_withMinimalParameters_correctEncoding() throws {
@@ -259,7 +259,7 @@ class FolioServiceRequestTests: XCTestCase {
         XCTAssertEqual(json?["amount"] as? String, "100.0")
         XCTAssertNil(json?["description"])
         XCTAssertNil(json?["category_id"])
-        XCTAssertEqual(json?["amount_vat_option"] as? String, "excluded_vat")
+        XCTAssertEqual(json?["amount_vat_option"] as? String, "EXCLUDED_VAT")
     }
     
     func test_createFolio_withZeroVatOption_correctEncoding() throws {
@@ -278,7 +278,7 @@ class FolioServiceRequestTests: XCTestCase {
         let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
         
         // Assert
-        XCTAssertEqual(json?["amount_vat_option"] as? String, "zero_vat")
+        XCTAssertEqual(json?["amount_vat_option"] as? String, "ZERO_VAT")
     }
     
     func test_createFolio_withNoVatOption_correctEncoding() throws {
@@ -297,7 +297,7 @@ class FolioServiceRequestTests: XCTestCase {
         let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
         
         // Assert
-        XCTAssertEqual(json?["amount_vat_option"] as? String, "no_vat")
+        XCTAssertEqual(json?["amount_vat_option"] as? String, "NO_VAT")
     }
     
     // MARK: - UpdateFolio Tests
@@ -323,7 +323,7 @@ class FolioServiceRequestTests: XCTestCase {
         XCTAssertEqual(json?["amount"] as? String, "250.5")
         XCTAssertEqual(json?["description"] as? String, "Updated Description")
         XCTAssertEqual(json?["category_id"] as? Int, 8)
-        XCTAssertEqual(json?["amount_vat_option"] as? String, "included_vat")
+        XCTAssertEqual(json?["amount_vat_option"] as? String, "INCLUDED_VAT")
         // ID should not be in the encoded JSON as it's used in URL path
         XCTAssertNil(json?["id"])
     }
@@ -398,10 +398,10 @@ class FolioServiceRequestTests: XCTestCase {
     
     func test_vatOption_allCases_correctRawValues() throws {
         // Assert
-        XCTAssertEqual(FolioServiceRequest.VatOption.excludedVat.rawValue, "excluded_vat")
-        XCTAssertEqual(FolioServiceRequest.VatOption.includedVat.rawValue, "included_vat")
-        XCTAssertEqual(FolioServiceRequest.VatOption.zeroVat.rawValue, "zero_vat")
-        XCTAssertEqual(FolioServiceRequest.VatOption.noVat.rawValue, "no_vat")
+        XCTAssertEqual(FolioServiceRequest.VatOption.excludedVat.rawValue, "EXCLUDED_VAT")
+        XCTAssertEqual(FolioServiceRequest.VatOption.includedVat.rawValue, "INCLUDED_VAT")
+        XCTAssertEqual(FolioServiceRequest.VatOption.zeroVat.rawValue, "ZERO_VAT")
+        XCTAssertEqual(FolioServiceRequest.VatOption.noVat.rawValue, "NO_VAT")
     }
     
     // MARK: - Edge Cases Tests

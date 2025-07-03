@@ -331,11 +331,9 @@ final class LinkUnitTypeTests: XCTestCase {
         roomTypeIds: [Int] = [],
         hotelId: Int = 105
     ) -> LinkUnitType {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = FormConfig.DateFormat.datetimeISO
-        
-        let createdAt = dateFormatter.date(from: "2020-04-26T17:34:40.863+07:00")!
-        let updatedAt = dateFormatter.date(from: "2020-04-26T17:34:40.863+07:00")!
+        let timestamp = 1587899680.863 // 2020-04-26T17:34:40.863+07:00
+        let createdAt = Date(timeIntervalSince1970: timestamp)
+        let updatedAt = Date(timeIntervalSince1970: timestamp)
         
         return LinkUnitType(
             id: id,

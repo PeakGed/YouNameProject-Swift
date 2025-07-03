@@ -65,8 +65,8 @@ final class FolioFormTests: XCTestCase {
     }
     
     func test_statusRawValues() throws {
-        XCTAssertEqual(FolioForm.Status.active.rawValue, "active")
-        XCTAssertEqual(FolioForm.Status.cancelled.rawValue, "cancelled")
+        XCTAssertEqual(FolioForm.Status.active.rawValue, "ACTIVE")
+        XCTAssertEqual(FolioForm.Status.cancelled.rawValue, "CANCELLED")
     }
     
     // MARK: - Codable Tests
@@ -76,7 +76,7 @@ final class FolioFormTests: XCTestCase {
         let json = """
         {
             "id": 1,
-            "status": "active",
+            "status": "ACTIVE",
             "cancelled_at": null,
             "number": "F20230600001",
             "vat_included": false,
@@ -144,7 +144,7 @@ final class FolioFormTests: XCTestCase {
         
         // Assert
         XCTAssertTrue(jsonString.contains("\"id\" : 1"))
-        XCTAssertTrue(jsonString.contains("\"status\" : \"active\""))
+        XCTAssertTrue(jsonString.contains("\"status\" : \"ACTIVE\""))
         XCTAssertTrue(jsonString.contains("\"number\" : \"F20230600001\""))
         XCTAssertTrue(jsonString.contains("\"vat_included\" : false"))
         XCTAssertTrue(jsonString.contains("\"vat_percentage\" : 7"))
@@ -170,7 +170,7 @@ final class FolioFormTests: XCTestCase {
         let json = """
         {
             "id": 2,
-            "status": "cancelled",
+            "status": "CANCELLED",
             "cancelled_at": "2023-06-10T14:35:57.177+07:00",
             "number": "F20230600002",
             "vat_included": true,

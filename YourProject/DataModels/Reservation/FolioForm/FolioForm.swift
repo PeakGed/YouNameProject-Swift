@@ -177,8 +177,8 @@ struct FolioForm: Codable {
 
 extension FolioForm {
     enum Status: String, Codable {
-        case active = "active"
-        case cancelled = "cancelled"
+        case active = "ACTIVE"
+        case cancelled = "CANCELLED"
         
         var title: String {
             switch self {
@@ -198,29 +198,30 @@ extension FolioForm {
 
 /*
  {
- "id": 1,
- "status": "cancelled",
- "cancelled_at": "2023-06-10T14:35:57.177+07:00",
- "number": "F20230600001",
- "vat_included": false,
- "vat_percentage": 7,
- "occupied_total_amount": "1500.0",
- "additional_total_amount": "0.0",
- "total_amount": "1500.0",
- "amount_before_vat": "0.0",
- "vat_amount": "0.0",
- "paid_before_amount": "0.0",
- "remain_amount": "1500.0",
- "remark": "testrrrsss",
- "internal_note": "testrrrwww",
- "payment_info": "2, 2 (111-1-11111-2)",
- "group_room_charge": true,
- "group_additional_item": false,
- "created_at": "2023-06-09T13:31:11.727+07:00",
- "updated_at": "2023-09-12T17:39:27.760+07:00",
- "receipt_ids": [],
- "hotel_id": 105,
- "hotel_contact_id": 8,
- "customer_contact_id": 6
+   "id": 1,
+   "status": "CANCELLED",
+   "cancelled_at": "2023-06-10T14:35:57.177+07:00",
+   "number": "F20230600001",
+   "vat_included": false,
+   "vat_percentage": 7,
+   "occupied_total_amount": "1500.0",
+   "additional_total_amount": "0.0",
+   "total_amount": "1500.0",
+   "amount_before_vat": "0.0",
+   "vat_amount": "0.0",
+   "paid_before_amount": "0.0",
+   "remain_amount": "1500.0",
+   "remark": "testrrrsss",
+   "internal_note": "testrrrwww",
+   "payment_info": "2, 2 (111-1-11111-2)",
+   "group_room_charge": true,
+   "group_additional_item": false,
+   "created_at": "2023-06-09T13:31:11.727+07:00",
+   "updated_at": "2023-09-12T17:39:27.760+07:00",
+   "receipt_ids": [],
+   "hotel_id": 105,
+   "hotel_contact_id": 8,
+   "customer_contact_id": 6
  }
+
  */

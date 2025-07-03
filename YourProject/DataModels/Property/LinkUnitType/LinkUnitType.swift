@@ -72,8 +72,8 @@ struct LinkUnitType: Codable {
         try container.encode(hotelId, forKey: .hotelId)
 
         let dateFormat = FormConfig.DateFormat.datetimeISO
-        try container.encode(createdAt.toDateString(dateFormat: dateFormat), forKey: .createdAt)
-        try container.encode(updatedAt.toDateString(dateFormat: dateFormat), forKey: .updatedAt)
+        try container.encode(createdAt.toDateString(dateFormat), forKey: .createdAt)
+        try container.encode(updatedAt.toDateString(dateFormat), forKey: .updatedAt)
     }
 }
 
