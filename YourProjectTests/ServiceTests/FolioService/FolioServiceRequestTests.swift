@@ -123,6 +123,73 @@ class FolioServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["status"] as? String, "AVAILABLE")
     }
     
+    // MARK: - FetchFoliosByCategory Tests
+    
+    func test_fetchFoliosByCategory_withValidParameters_correctSerialization() throws {
+        // Arrange
+        let request = FolioServiceRequest.FetchFoliosByCategory(
+            hotelId: 105,
+            categoryId: 5
+        )
+        
+        // Act
+        let parameters = request.parameters
+        
+        // Assert
+        XCTAssertNotNil(parameters)
+        XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
+        XCTAssertEqual(parameters?["category_id"] as? Int, 5)
+    }
+    
+    func test_fetchFoliosByCategory_withZeroValues_correctSerialization() throws {
+        // Arrange
+        let request = FolioServiceRequest.FetchFoliosByCategory(
+            hotelId: 0,
+            categoryId: 0
+        )
+        
+        // Act
+        let parameters = request.parameters
+        
+        // Assert
+        XCTAssertNotNil(parameters)
+        XCTAssertEqual(parameters?["hotel_id"] as? Int, 0)
+        XCTAssertEqual(parameters?["category_id"] as? Int, 0)
+    }
+    
+    func test_fetchFoliosByCategory_withLargeValues_correctSerialization() throws {
+        // Arrange
+        let request = FolioServiceRequest.FetchFoliosByCategory(
+            hotelId: 999999,
+            categoryId: 888888
+        )
+        
+        // Act
+        let parameters = request.parameters
+        
+        // Assert
+        XCTAssertNotNil(parameters)
+        XCTAssertEqual(parameters?["hotel_id"] as? Int, 999999)
+        XCTAssertEqual(parameters?["category_id"] as? Int, 888888)
+    }
+    
+    func test_fetchFoliosByCategory_encoding_correctFormat() throws {
+        // Arrange
+        let request = FolioServiceRequest.FetchFoliosByCategory(
+            hotelId: 105,
+            categoryId: 10
+        )
+        
+        // Act
+        let data = try JSONEncoder().encode(request)
+        let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
+        
+        // Assert
+        XCTAssertNotNil(json)
+        XCTAssertEqual(json?["hotel_id"] as? Int, 105)
+        XCTAssertEqual(json?["category_id"] as? Int, 10)
+    }
+    
     // MARK: - FetchFolio Tests
     
     func test_fetchFolio_withValidId_correctInitialization() throws {

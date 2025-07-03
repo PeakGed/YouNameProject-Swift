@@ -43,6 +43,24 @@ final class FolioServiceRouterTests: XCTestCase {
                        HTTPMethod.get.rawValue)
     }
     
+    func testFetchFoliosByCategory() throws {
+        // Given
+        let req = FolioServiceRequest.FetchFoliosByCategory(
+            hotelId: 101,
+            categoryId: 5
+        )
+        let router = FolioServiceRouter.fetchFoliosByCategory(request: req)
+        
+        // When
+        let urlRequest = try router.asURLRequest()
+        
+        // Then
+        XCTAssertEqual(urlRequest.url?.absoluteString,
+                       baseURL + "/v4/folios/category?hotel_id=101&category_id=5")
+        XCTAssertEqual(urlRequest.httpMethod,
+                       HTTPMethod.get.rawValue)
+    }
+
     func testFetchFolioRequest() throws {
         // Given
         let req = FolioServiceRequest.FetchFolio(id: 1)
