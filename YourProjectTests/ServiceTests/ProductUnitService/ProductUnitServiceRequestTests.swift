@@ -34,7 +34,7 @@ class ProductUnitServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["per_page"] as? String, "20")
         XCTAssertEqual(parameters?["sorted_by"] as? String, "UNIT")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "ASC")
-        XCTAssertEqual(parameters?["kind"] as? String, "Product")
+        XCTAssertEqual(parameters?["kind"] as? String, "PRODUCT")
         XCTAssertEqual(parameters?["q"] as? String, "test search")
     }
     
@@ -86,7 +86,7 @@ class ProductUnitServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["per_page"] as? String, "50")
         XCTAssertEqual(parameters?["sorted_by"] as? String, "KIND")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "DESC")
-        XCTAssertEqual(parameters?["kind"] as? String, "Service")
+        XCTAssertEqual(parameters?["kind"] as? String, "SERVICE")
         XCTAssertNil(parameters?["q"])
     }
     
@@ -134,7 +134,7 @@ class ProductUnitServiceRequestTests: XCTestCase {
         // Then
         XCTAssertNotNil(parameters)
         XCTAssertNil(parameters?["page"]) // Should be nil for invalid page
-        XCTAssertEqual(parameters?["kind"] as? String, "Product")
+        XCTAssertEqual(parameters?["kind"] as? String, "PRODUCT")
     }
     
     func testFetchByHotel_AllSortedByOptions() throws {
@@ -184,7 +184,7 @@ class ProductUnitServiceRequestTests: XCTestCase {
         XCTAssertNotNil(json)
         XCTAssertEqual(json?["hotel_id"] as? Int, 105)
         XCTAssertEqual(json?["unit"] as? String, "piece")
-        XCTAssertEqual(json?["kind"] as? String, "Product")
+        XCTAssertEqual(json?["kind"] as? String, "PRODUCT")
     }
     
     func testCreateProductUnit_EncodingWithServiceKind() throws {
@@ -205,7 +205,7 @@ class ProductUnitServiceRequestTests: XCTestCase {
         XCTAssertNotNil(json)
         XCTAssertEqual(json?["hotel_id"] as? Int, 105)
         XCTAssertEqual(json?["unit"] as? String, "hour")
-        XCTAssertEqual(json?["kind"] as? String, "Service")
+        XCTAssertEqual(json?["kind"] as? String, "SERVICE")
     }
     
     // MARK: - Test UpdateProductUnit
@@ -229,7 +229,7 @@ class ProductUnitServiceRequestTests: XCTestCase {
         XCTAssertNotNil(json)
         XCTAssertEqual(json?["hotel_id"] as? Int, 105)
         XCTAssertEqual(json?["unit"] as? String, "kg")
-        XCTAssertEqual(json?["kind"] as? String, "Product")
+        XCTAssertEqual(json?["kind"] as? String, "PRODUCT")
         // Note: id is not included in the body, it's in the URL path
     }
     

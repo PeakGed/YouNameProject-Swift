@@ -116,9 +116,9 @@ class ProductServiceRequestTests: XCTestCase {
         XCTAssertEqual(json?["code"] as? String, "PROD001")
         XCTAssertEqual(json?["category_id"] as? Int, 1)
         XCTAssertEqual(json?["selling_price"] as? String, "100.0")
-        XCTAssertEqual(json?["selling_vat_option"] as? String, "ExcludedVat")
+        XCTAssertEqual(json?["selling_vat_option"] as? String, "EXCLUDED_VAT")
         XCTAssertEqual(json?["buying_price"] as? String, "80.0")
-        XCTAssertEqual(json?["buying_vat_option"] as? String, "IncludedVat")
+        XCTAssertEqual(json?["buying_vat_option"] as? String, "INCLUDED_VAT")
     }
     
     func testCreateProduct_EncodingWithMinimalParameters() throws {
@@ -151,9 +151,9 @@ class ProductServiceRequestTests: XCTestCase {
         XCTAssertNil(json?["code"])
         XCTAssertNil(json?["category_id"])
         XCTAssertEqual(json?["selling_price"] as? String, "50.0")
-        XCTAssertEqual(json?["selling_vat_option"] as? String, "IncludedVat")
+        XCTAssertEqual(json?["selling_vat_option"] as? String, "INCLUDED_VAT")
         XCTAssertEqual(json?["buying_price"] as? String, "40.0")
-        XCTAssertEqual(json?["buying_vat_option"] as? String, "ExcludedVat")
+        XCTAssertEqual(json?["buying_vat_option"] as? String, "EXCLUDED_VAT")
     }
     
     // MARK: - Test UpdateProduct
@@ -189,9 +189,9 @@ class ProductServiceRequestTests: XCTestCase {
         XCTAssertEqual(json?["code"] as? String, "UPROD001")
         XCTAssertEqual(json?["category_id"] as? Int, 2)
         XCTAssertEqual(json?["selling_price"] as? String, "120.0")
-        XCTAssertEqual(json?["selling_vat_option"] as? String, "IncludedVat")
+        XCTAssertEqual(json?["selling_vat_option"] as? String, "INCLUDED_VAT")
         XCTAssertEqual(json?["buying_price"] as? String, "90.0")
-        XCTAssertEqual(json?["buying_vat_option"] as? String, "ExcludedVat")
+        XCTAssertEqual(json?["buying_vat_option"] as? String, "EXCLUDED_VAT")
     }
     
     // MARK: - Test SortedBy Enum

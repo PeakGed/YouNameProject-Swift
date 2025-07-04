@@ -14,8 +14,8 @@ final class StaffTest: XCTestCase {
         let jsonString = """
         {
             "id": 36,
-            "status": "active",
-            "role": "front_desk",
+            "status": "ACTIVE",
+            "role": "FRONT_DESK",
             "user_id": 127,
             "email": "demo_staff123@email.com",
             "first_name": "rrr",
@@ -97,8 +97,8 @@ final class StaffTest: XCTestCase {
     
     func testStaffStatusEnum() {
         // Test all cases
-        XCTAssertEqual(Staff.Status.active.rawValue, "active")
-        XCTAssertEqual(Staff.Status.inactive.rawValue, "deactive")
+        XCTAssertEqual(Staff.Status.active.rawValue, "ACTIVE")
+        XCTAssertEqual(Staff.Status.inactive.rawValue, "INACTIVE")
         
         // Test descriptions
         XCTAssertEqual(Staff.Status.active.description, "Active")
@@ -107,8 +107,8 @@ final class StaffTest: XCTestCase {
     
     func testStaffRoleEnum() {
         // Test all cases
-        XCTAssertEqual(Staff.Role.frontDesk.rawValue, "front_desk")
-        XCTAssertEqual(Staff.Role.manager.rawValue, "manager")
+        XCTAssertEqual(Staff.Role.frontDesk.rawValue, "FRONT_DESK")
+        XCTAssertEqual(Staff.Role.manager.rawValue, "MANAGER")
         XCTAssertEqual(Staff.Role.systemSupportSuperAdmin.rawValue, "ROLE_SUPPORT_SUPER_ADMIN")
         
         // Test descriptions

@@ -115,9 +115,9 @@ class ProductTests: XCTestCase {
             "code": "",
             "category_id": null,
             "selling_price": "11.11",
-            "selling_vat_option": "ExcludedVat",
+            "selling_vat_option": "EXCLUDED_VAT",
             "buying_price": "22.22",
-            "buying_vat_option": "IncludedVat",
+            "buying_vat_option": "INCLUDED_VAT",
             "created_at": "2025-06-18T11:18:16.296+07:00",
             "updated_at": "2025-06-18T11:18:16.296+07:00",
             "hotel_id": 105
@@ -154,9 +154,9 @@ class ProductTests: XCTestCase {
             "code": "PROD001",
             "category_id": 5,
             "selling_price": "99.99",
-            "selling_vat_option": "IncludedVat",
+            "selling_vat_option": "INCLUDED_VAT",
             "buying_price": "79.99",
-            "buying_vat_option": "ExcludedVat",
+            "buying_vat_option": "EXCLUDED_VAT",
             "created_at": "2025-06-18T11:18:16.296+07:00",
             "updated_at": "2025-06-18T11:18:16.296+07:00",
             "hotel_id": 105
@@ -215,9 +215,9 @@ class ProductTests: XCTestCase {
         XCTAssertEqual(json?["code"] as? String, "ENC001")
         XCTAssertEqual(json?["category_id"] as? Int, 3)
         XCTAssertEqual(json?["selling_price"] as? String, "75.5")
-        XCTAssertEqual(json?["selling_vat_option"] as? String, "IncludedVat")
+        XCTAssertEqual(json?["selling_vat_option"] as? String, "INCLUDED_VAT")
         XCTAssertEqual(json?["buying_price"] as? String, "60.25")
-        XCTAssertEqual(json?["buying_vat_option"] as? String, "ExcludedVat")
+        XCTAssertEqual(json?["buying_vat_option"] as? String, "EXCLUDED_VAT")
         XCTAssertEqual(json?["hotel_id"] as? Int, 105)
         XCTAssertNotNil(json?["created_at"])
         XCTAssertNotNil(json?["updated_at"])
@@ -226,8 +226,8 @@ class ProductTests: XCTestCase {
     // MARK: - Test VatOption Enum
     
     func testVatOption_RawValues() {
-        XCTAssertEqual(Product.VatOption.includedVat.rawValue, "IncludedVat")
-        XCTAssertEqual(Product.VatOption.excludedVat.rawValue, "ExcludedVat")
+        XCTAssertEqual(Product.VatOption.includedVat.rawValue, "INCLUDED_VAT")
+        XCTAssertEqual(Product.VatOption.excludedVat.rawValue, "EXCLUDED_VAT")
     }
     
     func testVatOption_Codable() throws {
@@ -241,8 +241,8 @@ class ProductTests: XCTestCase {
         let includedString = String(data: includedData, encoding: .utf8)
         let excludedString = String(data: excludedData, encoding: .utf8)
         
-        XCTAssertEqual(includedString, "\"IncludedVat\"")
-        XCTAssertEqual(excludedString, "\"ExcludedVat\"")
+        XCTAssertEqual(includedString, "\"INCLUDED_VAT\"")
+        XCTAssertEqual(excludedString, "\"EXCLUDED_VAT\"")
         
         // Test decoding
         let decodedIncluded = try JSONDecoder().decode(Product.VatOption.self, from: includedData)
@@ -265,9 +265,9 @@ class ProductTests: XCTestCase {
             "code": "",
             "category_id": null,
             "selling_price": "invalid_price",
-            "selling_vat_option": "ExcludedVat",
+            "selling_vat_option": "EXCLUDED_VAT",
             "buying_price": "22.22",
-            "buying_vat_option": "IncludedVat",
+            "buying_vat_option": "INCLUDED_VAT",
             "created_at": "2025-06-18T11:18:16.296+07:00",
             "updated_at": "2025-06-18T11:18:16.296+07:00",
             "hotel_id": 105
@@ -294,9 +294,9 @@ class ProductTests: XCTestCase {
             "code": "",
             "category_id": null,
             "selling_price": "11.11",
-            "selling_vat_option": "ExcludedVat",
+            "selling_vat_option": "EXCLUDED_VAT",
             "buying_price": "22.22",
-            "buying_vat_option": "IncludedVat",
+            "buying_vat_option": "INCLUDED_VAT",
             "created_at": "invalid_date",
             "updated_at": "2025-06-18T11:18:16.296+07:00",
             "hotel_id": 105

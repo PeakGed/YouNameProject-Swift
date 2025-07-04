@@ -83,8 +83,8 @@ final class ProductUnitTests: XCTestCase {
     // MARK: - Kind Tests
     
     func test_kindRawValues() throws {
-        XCTAssertEqual(ProductUnit.Kind.product.rawValue, "Product")
-        XCTAssertEqual(ProductUnit.Kind.service.rawValue, "Service")
+        XCTAssertEqual(ProductUnit.Kind.product.rawValue, "PRODUCT")
+        XCTAssertEqual(ProductUnit.Kind.service.rawValue, "SERVICE")
     }
     
     func test_kindCodable() throws {
@@ -98,8 +98,8 @@ final class ProductUnitTests: XCTestCase {
         let productString = String(data: productData, encoding: .utf8)
         let serviceString = String(data: serviceData, encoding: .utf8)
         
-        XCTAssertEqual(productString, "\"Product\"")
-        XCTAssertEqual(serviceString, "\"Service\"")
+        XCTAssertEqual(productString, "\"PRODUCT\"")
+        XCTAssertEqual(serviceString, "\"SERVICE\"")
         
         // Test decoding
         let decodedProduct = try JSONDecoder().decode(ProductUnit.Kind.self, from: productData)
@@ -117,7 +117,7 @@ final class ProductUnitTests: XCTestCase {
         {
             "id": 1,
             "unit": "pc",
-            "kind": "Product",
+            "kind": "PRODUCT",
             "created_at": "2025-06-18T13:36:40.901+07:00",
             "updated_at": "2025-06-18T13:36:40.901+07:00",
             "hotel_id": 105
@@ -142,7 +142,7 @@ final class ProductUnitTests: XCTestCase {
         {
             "id": 2,
             "unit": "hour",
-            "kind": "Service",
+            "kind": "SERVICE",
             "created_at": "2025-06-18T14:30:15.123+07:00",
             "updated_at": "2025-06-18T14:30:15.123+07:00",
             "hotel_id": 106
@@ -184,7 +184,7 @@ final class ProductUnitTests: XCTestCase {
         XCTAssertNotNil(json)
         XCTAssertEqual(json?["id"] as? Int, 1)
         XCTAssertEqual(json?["unit"] as? String, "pc")
-        XCTAssertEqual(json?["kind"] as? String, "Product")
+        XCTAssertEqual(json?["kind"] as? String, "PRODUCT")
         XCTAssertEqual(json?["hotel_id"] as? Int, 105)
         XCTAssertNotNil(json?["created_at"])
         XCTAssertNotNil(json?["updated_at"])
@@ -213,7 +213,7 @@ final class ProductUnitTests: XCTestCase {
         XCTAssertNotNil(json)
         XCTAssertEqual(json?["id"] as? Int, 2)
         XCTAssertEqual(json?["unit"] as? String, "hour")
-        XCTAssertEqual(json?["kind"] as? String, "Service")
+        XCTAssertEqual(json?["kind"] as? String, "SERVICE")
         XCTAssertEqual(json?["hotel_id"] as? Int, 106)
         XCTAssertNotNil(json?["created_at"])
         XCTAssertNotNil(json?["updated_at"])
@@ -229,7 +229,7 @@ final class ProductUnitTests: XCTestCase {
             {
                 "id": 1,
                 "unit": "\(unit)",
-                "kind": "Product",
+                "kind": "PRODUCT",
                 "created_at": "2025-06-18T13:36:40.901+07:00",
                 "updated_at": "2025-06-18T13:36:40.901+07:00",
                 "hotel_id": 105
@@ -249,7 +249,7 @@ final class ProductUnitTests: XCTestCase {
             {
                 "id": 1,
                 "unit": "pc",
-                "kind": "Product",
+                "kind": "PRODUCT",
                 "created_at": "2025-06-18T13:36:40.901+07:00",
                 "updated_at": "2025-06-18T13:36:40.901+07:00",
                 "hotel_id": \(hotelId)

@@ -171,7 +171,7 @@ class ProductUnitServiceRouterTests: XCTestCase {
         let json = try JSONSerialization.jsonObject(with: bodyData!, options: []) as? [String: Any]
         XCTAssertEqual(json?["hotel_id"] as? Int, 105)
         XCTAssertEqual(json?["unit"] as? String, "liter")
-        XCTAssertEqual(json?["kind"] as? String, "Service")
+        XCTAssertEqual(json?["kind"] as? String, "SERVICE")
     }
     
     func testCreateProductUnit_URLRequest() throws {
@@ -230,7 +230,7 @@ class ProductUnitServiceRouterTests: XCTestCase {
         let json = try JSONSerialization.jsonObject(with: bodyData!, options: []) as? [String: Any]
         XCTAssertEqual(json?["hotel_id"] as? Int, 105)
         XCTAssertEqual(json?["unit"] as? String, "kilogram")
-        XCTAssertEqual(json?["kind"] as? String, "Service")
+        XCTAssertEqual(json?["kind"] as? String, "SERVICE")
     }
     
     // MARK: - Test deleteProductUnit
@@ -283,7 +283,7 @@ class ProductUnitServiceRouterTests: XCTestCase {
         // Then
         XCTAssertNotNil(parameters)
         XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
-        XCTAssertEqual(parameters?["kind"] as? String, "Product")
+        XCTAssertEqual(parameters?["kind"] as? String, "PRODUCT")
         XCTAssertNil(parameters?["q"])
     }
     
@@ -333,7 +333,7 @@ class ProductUnitServiceRouterTests: XCTestCase {
         XCTAssertEqual(parameters?["per_page"] as? String, "100")
         XCTAssertEqual(parameters?["sorted_by"] as? String, "KIND")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "ASC")
-        XCTAssertEqual(parameters?["kind"] as? String, "Service")
+        XCTAssertEqual(parameters?["kind"] as? String, "SERVICE")
         XCTAssertEqual(parameters?["q"] as? String, "hour")
     }
     

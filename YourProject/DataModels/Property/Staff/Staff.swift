@@ -116,8 +116,8 @@ struct Staff: Codable {
 
 extension Staff {
     enum Status: String, Codable, CaseIterable {
-        case active = "active"
-        case inactive = "deactive"
+        case active = "ACTIVE"
+        case inactive = "INACTIVE"
         
         var description: String {
             switch self {
@@ -130,10 +130,12 @@ extension Staff {
     }
     
     enum Role: String, Codable, CaseIterable {
-        case frontDesk = "front_desk"
-        case manager = "manager"
-    
-        // sysytem role
+        case frontDesk = "FRONT_DESK"
+        case manager = "MANAGER"
+        case accountant = "ACCOUNTANT"
+        case maid = "MAID"        
+
+        // system role
         case systemUser = "ROLE_USER"
         case systemAdmin = "ROLE_ADMIN"
         case systemSuperAdmin = "ROLE_SUPER_ADMIN"
@@ -145,12 +147,18 @@ extension Staff {
                 return "Front Desk"
             case .manager:
                 return "Manager"
+            case .accountant:
+                return "Accountant"
+            case .maid:
+                return "Maid"
             case .systemUser:
                 return "User"
-            case .systemAdmin,
-                 .systemSuperAdmin,
-                 .systemSupportSuperAdmin:
+            case .systemAdmin:
                 return "Admin"
+            case .systemSuperAdmin:
+                return "Super Admin"
+            case .systemSupportSuperAdmin:
+                return "Support Super Admin"
             }
         }
     }
@@ -161,8 +169,8 @@ extension Staff {
  [
  {
  "id": 36,
- "status": "active",
- "role": "front_desk",
+ "status": "ACTIVE",
+ "role": "FRONT_DESK",
  "data": {},
  "created_at": "2021-11-16T13:17:05.109+07:00",
  "updated_at": "2021-11-16T13:17:05.109+07:00",

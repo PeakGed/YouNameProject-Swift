@@ -77,7 +77,7 @@ final class StaffServiceRouterTests: XCTestCase {
             XCTAssertEqual(json?["hotel_id"] as? Int, 105)
             XCTAssertEqual(json?["password"] as? String, "password123")
             XCTAssertEqual(json?["username"] as? String, "staff@example.com")
-            XCTAssertEqual(json?["role"] as? String, "front_desk")
+            XCTAssertEqual(json?["role"] as? String, "FRONT_DESK")
         } else {
             XCTFail("Request should have a body")
         }
@@ -201,7 +201,7 @@ final class StaffServiceRouterTests: XCTestCase {
         // Check JSON body
         if let body = urlRequest.httpBody {
             let json = try JSONSerialization.jsonObject(with: body) as? [String: Any]
-            XCTAssertEqual(json?["status"] as? String, "deactive")
+            XCTAssertEqual(json?["status"] as? String, "INACTIVE")
             XCTAssertNil(json?["id"]) // ID should not be in the body since it's in the URL
         } else {
             XCTFail("Request should have a body")

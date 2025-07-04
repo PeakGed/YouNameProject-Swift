@@ -65,8 +65,8 @@ struct ProductUnit: Codable {
 
 extension ProductUnit {
     enum Kind: String, Codable {
-        case product = "Product"
-        case service = "Service"
+        case product = "PRODUCT"
+        case service = "SERVICE"
     }
 }
 
@@ -74,7 +74,7 @@ extension ProductUnit {
  {
      "id": 1,
      "unit": "pc",
-     "kind": "Product",
+     "kind": "PRODUCT",
      "created_at": "2025-06-18T13:36:40.901+07:00",
      "updated_at": "2025-06-18T13:36:40.901+07:00",
      "hotel_id": 105

@@ -46,7 +46,7 @@ final class StaffServiceRequestTests: XCTestCase {
         XCTAssertEqual(json?["hotel_id"] as? Int, 105)
         XCTAssertEqual(json?["password"] as? String, "password123")
         XCTAssertEqual(json?["username"] as? String, "staffABC")
-        XCTAssertEqual(json?["role"] as? String, "front_desk")
+        XCTAssertEqual(json?["role"] as? String, "FRONT_DESK")
     }
     
     func testCreateStaffCodingKeys() throws {
@@ -69,7 +69,7 @@ final class StaffServiceRequestTests: XCTestCase {
         XCTAssertNotNil(json?["username"])
         XCTAssertNotNil(json?["role"])
         XCTAssertNil(json?["hotelId"]) // Should use snake_case
-        XCTAssertEqual(json?["role"] as? String, "manager")
+        XCTAssertEqual(json?["role"] as? String, "MANAGER")
     }
     
     func testUpdateStaffRequest() throws {
@@ -192,7 +192,7 @@ final class StaffServiceRequestTests: XCTestCase {
         let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
         
         // Then
-        XCTAssertEqual(json?["status"] as? String, "deactive")
+        XCTAssertEqual(json?["status"] as? String, "INACTIVE")
         XCTAssertNil(json?["id"]) // ID should not be encoded
     }
     
@@ -210,7 +210,7 @@ final class StaffServiceRequestTests: XCTestCase {
         
         // Then
         XCTAssertNotNil(json?["status"])
-        XCTAssertEqual(json?["status"] as? String, "active")
+        XCTAssertEqual(json?["status"] as? String, "ACTIVE")
         XCTAssertNil(json?["id"])
     }
     
