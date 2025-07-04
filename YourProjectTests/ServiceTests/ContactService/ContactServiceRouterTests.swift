@@ -39,7 +39,7 @@ class ContactServiceRouterTests: XCTestCase {
             companyId: 123,
             page: 1,
             perPage: .ten,
-            sortedBy: .name,
+            sortedBy: .companyName,
             sortedOrder: .ascending,
             businessType: nil,
             contactType: nil

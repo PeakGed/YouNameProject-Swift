@@ -104,9 +104,9 @@ final class ContactTests: XCTestCase {
         let json = """
         {
             "id": 18,
-            "business_type": "individual",
+            "business_type": "INDIVIDUAL",
             "company_name": "นายสมชาย ชาติทหาร",
-            "contact_type": "client",
+            "contact_type": "CLIENT",
             "contact_id": null,
             "address": "พระโขนง กรุงเทพฯ",
             "branch_name": "",
@@ -180,9 +180,9 @@ final class ContactTests: XCTestCase {
         let jsonString = String(data: jsonData, encoding: .utf8)!
         // Assert
         XCTAssertTrue(jsonString.contains("\"id\" : 1"))
-        XCTAssertTrue(jsonString.contains("\"business_type\" : \"individual\""))
+        XCTAssertTrue(jsonString.contains("\"business_type\" : \"INDIVIDUAL\""))
         XCTAssertTrue(jsonString.contains("\"company_name\" : \"Test Company\""))
-        XCTAssertTrue(jsonString.contains("\"contact_type\" : \"host\""))
+        XCTAssertTrue(jsonString.contains("\"contact_type\" : \"HOST\""))
         XCTAssertTrue(jsonString.contains("\"contact_id\" : 2"))
         XCTAssertTrue(jsonString.contains("\"address\" : \"123 Main St\""))
         XCTAssertTrue(jsonString.contains("\"branch_name\" : \"Branch A\""))

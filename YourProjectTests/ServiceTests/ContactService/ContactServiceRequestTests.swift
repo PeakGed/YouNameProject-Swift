@@ -33,8 +33,8 @@ class ContactServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["per_page"] as? String, "20")
         XCTAssertEqual(parameters?["sorted_by"] as? String, "ID")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "ASC")
-        XCTAssertEqual(parameters?["business_type"] as? String, "corporate")
-        XCTAssertEqual(parameters?["contact_type"] as? String, "client")
+        XCTAssertEqual(parameters?["business_type"] as? String, "CORPORATE")
+        XCTAssertEqual(parameters?["contact_type"] as? String, "CLIENT")
     }
     
     func test_fetchByHotel_withMinimalParameters_correctSerialization() throws {
@@ -85,8 +85,8 @@ class ContactServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["per_page"] as? String, "50")
         XCTAssertEqual(parameters?["sorted_by"] as? String, "ID")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "DESC")
-        XCTAssertEqual(parameters?["business_type"] as? String, "individual")
-        XCTAssertEqual(parameters?["contact_type"] as? String, "host")
+        XCTAssertEqual(parameters?["business_type"] as? String, "INDIVIDUAL")
+        XCTAssertEqual(parameters?["contact_type"] as? String, "HOST")
     }
     
     func test_fetchByHotel_withUpdatedAtSorting_correctSerialization() throws {
@@ -141,8 +141,8 @@ class ContactServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["per_page"] as? String, "100")
         XCTAssertEqual(parameters?["sorted_by"] as? String, "CREATED_AT")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "ASC")
-        XCTAssertEqual(parameters?["business_type"] as? String, "corporate")
-        XCTAssertEqual(parameters?["contact_type"] as? String, "client")
+        XCTAssertEqual(parameters?["business_type"] as? String, "CORPORATE")
+        XCTAssertEqual(parameters?["contact_type"] as? String, "CLIENT")
     }
     
     func test_fetchByCompany_withMinimalParameters_correctSerialization() throws {
@@ -197,8 +197,8 @@ class ContactServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["per_page"] as? String, "20")
         XCTAssertEqual(parameters?["sorted_by"] as? String, "UPDATED_AT")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "DESC")
-        XCTAssertEqual(parameters?["business_type"] as? String, "individual")
-        XCTAssertEqual(parameters?["contact_type"] as? String, "host")
+        XCTAssertEqual(parameters?["business_type"] as? String, "INDIVIDUAL")
+        XCTAssertEqual(parameters?["contact_type"] as? String, "HOST")
     }
     
     // MARK: - FetchByCustomer Tests
@@ -210,7 +210,7 @@ class ContactServiceRequestTests: XCTestCase {
             customerId: 789,
             page: 1,
             perPage: .ten,
-            sortedBy: .name,
+            sortedBy: .companyName,
             sortedOrder: .descending,
             businessType: .corporate,
             contactType: .client
@@ -225,10 +225,10 @@ class ContactServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters?["customer_id"] as? Int, 789)
         XCTAssertEqual(parameters?["page"] as? Int, 1)
         XCTAssertEqual(parameters?["per_page"] as? String, "10")
-        XCTAssertEqual(parameters?["sorted_by"] as? String, "NAME")
+        XCTAssertEqual(parameters?["sorted_by"] as? String, "COMPANY_NAME")
         XCTAssertEqual(parameters?["sorted_order"] as? String, "DESC")
-        XCTAssertEqual(parameters?["business_type"] as? String, "corporate")
-        XCTAssertEqual(parameters?["contact_type"] as? String, "client")
+        XCTAssertEqual(parameters?["business_type"] as? String, "CORPORATE")
+        XCTAssertEqual(parameters?["contact_type"] as? String, "CLIENT")
     }
     
     func test_fetchByCustomer_withMinimalParameters_correctSerialization() throws {
@@ -263,7 +263,7 @@ class ContactServiceRequestTests: XCTestCase {
         // Arrange & Act & Assert for each sorting option
         let sortingTests: [(ContactServiceRequest.SortedBy, String)] = [
             (.id, "ID"),
-            (.name, "NAME"),
+            (.companyName, "COMPANY_NAME"),
             (.createdAt, "CREATED_AT"),
             (.updatedAt, "UPDATED_AT")
         ]
@@ -295,7 +295,7 @@ class ContactServiceRequestTests: XCTestCase {
             hotelId: 105,
             page: 1,
             perPage: .twenty,
-            sortedBy: .name,
+            sortedBy: .companyName,
             sortedOrder: .ascending,
             businessType: .individual,
             contactType: .host
@@ -307,8 +307,8 @@ class ContactServiceRequestTests: XCTestCase {
         // Assert
         XCTAssertNotNil(parameters)
         XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
-        XCTAssertEqual(parameters?["business_type"] as? String, "individual")
-        XCTAssertEqual(parameters?["contact_type"] as? String, "host")
+        XCTAssertEqual(parameters?["business_type"] as? String, "INDIVIDUAL")
+        XCTAssertEqual(parameters?["contact_type"] as? String, "HOST")
     }
     
     func test_fetchByCompany_withFilterParameters_correctSerialization() throws {
@@ -331,8 +331,8 @@ class ContactServiceRequestTests: XCTestCase {
         XCTAssertNotNil(parameters)
         XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
         XCTAssertEqual(parameters?["company_id"] as? Int, 123)
-        XCTAssertEqual(parameters?["business_type"] as? String, "corporate")
-        XCTAssertEqual(parameters?["contact_type"] as? String, "client")
+        XCTAssertEqual(parameters?["business_type"] as? String, "CORPORATE")
+        XCTAssertEqual(parameters?["contact_type"] as? String, "CLIENT")
     }
     
     func test_fetchByCustomer_withFilterParameters_correctSerialization() throws {
@@ -355,8 +355,8 @@ class ContactServiceRequestTests: XCTestCase {
         XCTAssertNotNil(parameters)
         XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
         XCTAssertEqual(parameters?["customer_id"] as? Int, 456)
-        XCTAssertEqual(parameters?["business_type"] as? String, "individual")
-        XCTAssertEqual(parameters?["contact_type"] as? String, "host")
+        XCTAssertEqual(parameters?["business_type"] as? String, "INDIVIDUAL")
+        XCTAssertEqual(parameters?["contact_type"] as? String, "HOST")
     }
     
     // MARK: - CreateContact Tests
@@ -391,9 +391,9 @@ class ContactServiceRequestTests: XCTestCase {
         
         let json = try JSONSerialization.jsonObject(with: body!, options: []) as? [String: Any]
         XCTAssertNotNil(json)
-        XCTAssertEqual(json?["business_type"] as? String, "corporate")
+        XCTAssertEqual(json?["business_type"] as? String, "CORPORATE")
         XCTAssertEqual(json?["company_name"] as? String, "Test Company Ltd.")
-        XCTAssertEqual(json?["contact_type"] as? String, "client")
+        XCTAssertEqual(json?["contact_type"] as? String, "CLIENT")
         XCTAssertEqual(json?["contact_id"] as? Int, 123)
         XCTAssertEqual(json?["address"] as? String, "123 Test Street, Bangkok")
         XCTAssertEqual(json?["branch_name"] as? String, "Main Branch")
@@ -440,9 +440,9 @@ class ContactServiceRequestTests: XCTestCase {
         
         let json = try JSONSerialization.jsonObject(with: body!, options: []) as? [String: Any]
         XCTAssertNotNil(json)
-        XCTAssertEqual(json?["business_type"] as? String, "individual")
+        XCTAssertEqual(json?["business_type"] as? String, "INDIVIDUAL")
         XCTAssertEqual(json?["company_name"] as? String, "John Doe")
-        XCTAssertEqual(json?["contact_type"] as? String, "host")
+        XCTAssertEqual(json?["contact_type"] as? String, "HOST")
         XCTAssertNil(json?["contact_id"])
         XCTAssertEqual(json?["address"] as? String, "456 Individual Street")
         XCTAssertNil(json?["branch_name"])
@@ -491,7 +491,7 @@ class ContactServiceRequestTests: XCTestCase {
         
         let json = try JSONSerialization.jsonObject(with: body!, options: []) as? [String: Any]
         XCTAssertNotNil(json)
-        XCTAssertEqual(json?["business_type"] as? String, "corporate")
+        XCTAssertEqual(json?["business_type"] as? String, "CORPORATE")
         XCTAssertEqual(json?["company_name"] as? String, "Updated Company Name")
         XCTAssertNil(json?["contact_type"])
         XCTAssertNil(json?["contact_id"])

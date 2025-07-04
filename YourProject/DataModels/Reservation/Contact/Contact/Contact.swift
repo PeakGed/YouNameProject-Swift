@@ -156,9 +156,10 @@ struct Contact: Codable {
 }
 
 extension Contact {
+
     enum BusinessType: String, Codable {
-        case corporate = "corporate"
-        case individual = "individual"
+        case corporate = "CORPORATE"
+        case individual = "INDIVIDUAL"
         
         var description: String {
             switch self {
@@ -172,8 +173,23 @@ extension Contact {
     }
     
     enum ContactType: String, Codable {
-        case client = "client"
-        case host = "host"
+        case client = "CLIENT"
+        case host = "HOST"
+        case supplier = "SUPPLIER"
+        case supplierAndClient = "SUPPLIER_AND_CLIENT"
+        
+        var description: String {
+            switch self {
+            case .client:
+                return "Client"
+            case .host:
+                return "Host"
+            case .supplier:
+                return "Supplier"
+            case .supplierAndClient:
+                return "Supplier and Client"
+            }
+        }
     }
     
 }

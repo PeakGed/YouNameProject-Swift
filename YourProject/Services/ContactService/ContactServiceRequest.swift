@@ -15,7 +15,7 @@ struct ContactServiceRequest {
 
     enum SortedBy: String {
         case id = "ID"
-        case name = "NAME"
+        case companyName = "COMPANY_NAME"
         case createdAt = "CREATED_AT"
         case updatedAt = "UPDATED_AT"
     }
