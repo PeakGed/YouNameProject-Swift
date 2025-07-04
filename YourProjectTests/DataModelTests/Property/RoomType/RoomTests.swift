@@ -32,7 +32,7 @@ final class RoomTests: XCTestCase {
         {
             "id": 644,
             "code": "5",
-            "status": "available", 
+            "status": "AVAILABLE", 
             "need_cleaning": true,
             "order": 0,
             "created_at": "2022-01-11T00:50:21.937+07:00",
@@ -68,7 +68,7 @@ final class RoomTests: XCTestCase {
         XCTAssertTrue(jsonString.contains("\"room_type_id\" : 180"))
         XCTAssertTrue(jsonString.contains("\"code\" : \"Test Room\""))
         XCTAssertTrue(jsonString.contains("\"order\" : 1"))
-        XCTAssertTrue(jsonString.contains("\"status\" : \"available\""))
+        XCTAssertTrue(jsonString.contains("\"status\" : \"AVAILABLE\""))
         XCTAssertTrue(jsonString.contains("\"need_cleaning\" : true"))
     }
     

@@ -50,19 +50,19 @@ final class NotificationItemTests: XCTestCase {
     // MARK: - NotificationType Tests
     
     func test_notificationTypeRawValues() throws {
-        XCTAssertEqual(NotificationItem.NotificationType.newCmBooking.rawValue, "new_cm_booking")
-        XCTAssertEqual(NotificationItem.NotificationType.updatedCmBooking.rawValue, "cm_booking_was_updated")
-        XCTAssertEqual(NotificationItem.NotificationType.cancelledCmBooking.rawValue, "cm_booking_was_cancelled")
-        XCTAssertEqual(NotificationItem.NotificationType.newHmsReservation.rawValue, "new_hms_reservation")
-        XCTAssertEqual(NotificationItem.NotificationType.updatedHmsReservation.rawValue, "hms_reservation_was_updated")
-        XCTAssertEqual(NotificationItem.NotificationType.cancelledHmsReservation.rawValue, "hms_reservation_was_cancelled")
+        XCTAssertEqual(NotificationItem.NotificationType.newCmBooking.rawValue, "NEW_CM_BOOKING")
+        XCTAssertEqual(NotificationItem.NotificationType.updatedCmBooking.rawValue, "CM_BOOKING_WAS_UPDATED")
+        XCTAssertEqual(NotificationItem.NotificationType.cancelledCmBooking.rawValue, "CM_BOOKING_WAS_CANCELLED")
+        XCTAssertEqual(NotificationItem.NotificationType.newHmsReservation.rawValue, "NEW_HMS_RESERVATION")
+        XCTAssertEqual(NotificationItem.NotificationType.updatedHmsReservation.rawValue, "HMS_RESERVATION_WAS_UPDATED")
+        XCTAssertEqual(NotificationItem.NotificationType.cancelledHmsReservation.rawValue, "HMS_RESERVATION_WAS_CANCELLED")
     }
     
     // MARK: - ItemKind Tests
     
     func test_itemKindRawValues() throws {
-        XCTAssertEqual(NotificationItem.ItemKind.reservation.rawValue, "Reservation")
-        XCTAssertEqual(NotificationItem.ItemKind.cmBooking.rawValue, "CmBooking")
+        XCTAssertEqual(NotificationItem.ItemKind.reservation.rawValue, "RESERVATION")
+        XCTAssertEqual(NotificationItem.ItemKind.cmBooking.rawValue, "CM_BOOKING")
     }
     
     // MARK: - Codable Tests
@@ -72,11 +72,11 @@ final class NotificationItemTests: XCTestCase {
         let json = """
         {
             "id": 3566,
-            "notification_type": "new_hms_reservation",
+            "notification_type": "NEW_HMS_RESERVATION",
             "check_in_date": "2024-05-14",
             "check_out_date": "2024-05-15",
             "notifiable_id": 1089,
-            "notifiable_type": "Reservation",
+            "notifiable_type": "RESERVATION",
             "readed": true,
             "readed_at": "2024-06-09T07:43:44.953Z",
             "channel_id": null,
@@ -109,11 +109,11 @@ final class NotificationItemTests: XCTestCase {
         let json = """
         {
             "id": 3560,
-            "notification_type": "new_cm_booking",
+            "notification_type": "NEW_CM_BOOKING",
             "check_in_date": "2024-05-31",
             "check_out_date": "2024-05-31",
             "notifiable_id": 83,
-            "notifiable_type": "CmBooking",
+            "notifiable_type": "CM_BOOKING",
             "readed": false,
             "readed_at": null,
             "channel_id": 5,
@@ -151,11 +151,11 @@ final class NotificationItemTests: XCTestCase {
         
         // Assert
         XCTAssertEqual(json["id"] as? Int, 3566)
-        XCTAssertEqual(json["notification_type"] as? String, "new_hms_reservation")
+        XCTAssertEqual(json["notification_type"] as? String, "NEW_HMS_RESERVATION")
         XCTAssertEqual(json["check_in_date"] as? String, "2024-05-14")
         XCTAssertEqual(json["check_out_date"] as? String, "2024-05-15")
         XCTAssertEqual(json["notifiable_id"] as? Int, 1089)
-        XCTAssertEqual(json["notifiable_type"] as? String, "Reservation")
+        XCTAssertEqual(json["notifiable_type"] as? String, "RESERVATION")
         XCTAssertEqual(json["readed"] as? Bool, true)
         XCTAssertNotNil(json["readed_at"])
         XCTAssertNil(json["channel_id"])
@@ -169,11 +169,11 @@ final class NotificationItemTests: XCTestCase {
         let json = """
         {
             "id": 3591,
-            "notification_type": "new_cm_booking",
+            "notification_type": "NEW_CM_BOOKING",
             "check_in_date": "2024-06-14",
             "check_out_date": "2024-06-14",
             "notifiable_id": 85,
-            "notifiable_type": "CmBooking",
+            "notifiable_type": "CM_BOOKING",
             "readed": false,
             "readed_at": null,
             "channel_id": null,
@@ -219,7 +219,7 @@ final class NotificationItemTests: XCTestCase {
             "check_in_date": "2024-05-14",
             "check_out_date": "2024-05-15",
             "notifiable_id": 1089,
-            "notifiable_type": "Reservation",
+            "notifiable_type": "RESERVATION",
             "readed": true,
             "readed_at": "2024-06-09T07:43:44.953Z",
             "channel_id": null,
@@ -238,7 +238,7 @@ final class NotificationItemTests: XCTestCase {
         let json = """
         {
             "id": 3566,
-            "notification_type": "new_hms_reservation",
+            "notification_type": "NEW_HMS_RESERVATION",
             "check_in_date": "2024-05-14",
             "check_out_date": "2024-05-15",
             "notifiable_id": 1089,
@@ -262,11 +262,11 @@ final class NotificationItemTests: XCTestCase {
         let json = """
         {
             "id": 3566,
-            "notification_type": "new_hms_reservation",
+            "notification_type": "NEW_HMS_RESERVATION",
             "check_in_date": "2024-05-14",
             "check_out_date": "2024-05-15",
             "notifiable_id": 1089,
-            "notifiable_type": "Reservation",
+            "notifiable_type": "RESERVATION",
             "readed": true,
             "readed_at": "2024-06-09T07:43:44.953+07:00",
             "channel_id": null,
@@ -283,11 +283,11 @@ final class NotificationItemTests: XCTestCase {
         let json = """
         {
             "id": 3591,
-            "notification_type": "new_cm_booking",
+            "notification_type": "NEW_CM_BOOKING",
             "check_in_date": "2024-06-14",
             "check_out_date": "2024-06-14",
             "notifiable_id": 85,
-            "notifiable_type": "CmBooking",
+            "notifiable_type": "CM_BOOKING",
             "readed": false,
             "readed_at": null,
             "channel_id": null,

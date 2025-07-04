@@ -7,7 +7,7 @@
 import Foundation
 
 enum ReservableType: String, Codable {
-    case roomType = "RoomType"
+    case roomType = "ROOM_TYPE"
 }
 
 struct RoomType: Codable {

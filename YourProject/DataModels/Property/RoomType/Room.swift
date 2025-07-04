@@ -7,7 +7,7 @@
 import Foundation
 
 enum UnitReservableType: String, Codable {
-    case room = "Room"
+    case room = "ROOM"
 }
 
 struct Room: Codable {
@@ -93,23 +93,23 @@ extension Room {
     }
 
     enum Status: String, Codable {
-        case available = "available"
-        case unavailable = "unavailable"
+        case available = "AVAILABLE"
+        case unavailable = "UNAVAILABLE"
         //case needCleaning = "need_cleaning"
     }
 }
 
 /*
-{
-                     "id": 644,
-                     "code": "5",
-                     "status": "available",
-                     "need_cleaning": true,
-                     "data": {},
-                     "order": 0,
-                     "created_at": "2022-01-11T00:50:21.937+07:00",
-                     "updated_at": "2023-06-24T15:40:31.474+07:00",
-                     "room_type_id": 180,
-                     "images": []
-                 }
-                 */
+ {
+   "id": 644,
+   "code": "5",
+   "status": "AVAILABLE",
+   "need_cleaning": true,
+   "data": {},
+   "order": 0,
+   "created_at": "2022-01-11T00:50:21.937+07:00",
+   "updated_at": "2023-06-24T15:40:31.474+07:00",
+   "room_type_id": 180,
+   "images": []
+ }
+*/

@@ -20,10 +20,10 @@ struct ReceiptServiceRequest {
 
     enum SortedBy: String {
         case id = "ID"
-        case number = "NUMBER" // new
+        case number = "NUMBER"
         case createdAt = "CREATED_AT"
         case updatedAt = "UPDATED_AT"
-        case paidDate = "PAID_DATE" // new 
+        case paidDate = "PAID_DATE"
     }
 
     struct FetchByHotel: Encodable {
@@ -332,6 +332,51 @@ struct ReceiptServiceRequest {
 }
         */
     }
+
+    struct CreateFromReservation: Encodable {
+        let hotelId: Int
+        let reservationId: Int
+        let paidDate: Date
+        let payerContactId: Int
+        let receiverContactId: Int
+        let remark: String?
+        let internalNote: String?
+        let roomItemGrouped: Bool?
+        let additionalItemGrouped: Bool?
+        let otherItemGrouped: Bool?
+        
+        enum CodingKeys: String, CodingKey {
+            case hotelId = "hotel_id"
+            case reservationId = "reservation_id"
+            case paidDate = "paid_date"
+            case payerContactId = "payer_id"
+            case receiverContactId = "receiver_id"
+            case remark
+            case internalNote = "internal_note"
+            case roomItemGrouped = "room_item_grouped"
+            case additionalItemGrouped = "additional_item_grouped"
+            case otherItemGrouped = "other_item_grouped"
+        }
+        
+        var body: Data? {
+            return try? JSONEncoder().encode(self)
+        }
+
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(hotelId, forKey: .hotelId)
+                try container.encode(reservationId, forKey: .reservationId)
+            try container.encode(paidDate.toDateString(FormConfig.DateFormat.yyyyMMdd), forKey: .paidDate)
+            try container.encode(payerContactId, forKey: .payerContactId)
+            try container.encode(receiverContactId, forKey: .receiverContactId)
+            try container.encodeIfPresent(remark, forKey: .remark)
+            try container.encodeIfPresent(internalNote, forKey: .internalNote)
+            try container.encodeIfPresent(roomItemGrouped, forKey: .roomItemGrouped)
+            try container.encodeIfPresent(additionalItemGrouped, forKey: .additionalItemGrouped)
+            try container.encodeIfPresent(otherItemGrouped, forKey: .otherItemGrouped)
+        }
+        
+    }
     
     struct CreateFromFolioForm: Encodable {
         let hotelId: Int
@@ -341,9 +386,9 @@ struct ReceiptServiceRequest {
         let receiverContactId: Int
         let remark: String?
         let internalNote: String?
-        let roomItemGrouped: Bool
-        let additionalItemGrouped: Bool
-        let otherItemGrouped: Bool
+        let roomItemGrouped: Bool?
+        let additionalItemGrouped: Bool?
+        let otherItemGrouped: Bool?
 
         enum CodingKeys: String, CodingKey {
             case hotelId = "hotel_id"
@@ -369,11 +414,11 @@ struct ReceiptServiceRequest {
             try container.encode(paidDate.toDateString(FormConfig.DateFormat.yyyyMMdd), forKey: .paidDate)
             try container.encode(payerContactId, forKey: .payerContactId)
             try container.encode(receiverContactId, forKey: .receiverContactId)
-            try container.encode(remark, forKey: .remark)
-            try container.encode(internalNote, forKey: .internalNote)
-            try container.encode(roomItemGrouped, forKey: .roomItemGrouped)
-            try container.encode(additionalItemGrouped, forKey: .additionalItemGrouped)
-            try container.encode(otherItemGrouped, forKey: .otherItemGrouped)
+            try container.encodeIfPresent(remark, forKey: .remark)
+            try container.encodeIfPresent(internalNote, forKey: .internalNote)
+            try container.encodeIfPresent(roomItemGrouped, forKey: .roomItemGrouped)
+            try container.encodeIfPresent(additionalItemGrouped, forKey: .additionalItemGrouped)
+            try container.encodeIfPresent(otherItemGrouped, forKey: .otherItemGrouped)
         }
         
         /*
@@ -392,66 +437,7 @@ struct ReceiptServiceRequest {
          */
     }
     
-    struct CreateFromFolioFormVat: Encodable {
-       let hotelId: Int
-       let folioFormId: Int
-       let paidDate: Date
-       let payerContactId: Int
-       let receiverContactId: Int
-       let remark: String?
-       let internalNote: String?
-       let roomItemGrouped: Bool
-       let additionalItemGrouped: Bool
-       let otherItemGrouped: Bool
-
-        enum CodingKeys: String, CodingKey {
-        
-            case hotelId = "hotel_id"
-            case folioFormId = "folio_form_id"
-            case paidDate = "paid_date"
-            case payerContactId = "payer_id"
-            case receiverContactId = "receiver_id"
-            case remark
-            case internalNote = "internal_note"
-            case roomItemGrouped = "room_item_grouped"
-            case additionalItemGrouped = "additional_item_grouped"
-            case otherItemGrouped = "other_item_grouped"
-        }
-        
-        var body: Data? {
-            return try? JSONEncoder().encode(self)
-        }
-
-        //encode to json
-        func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(hotelId, forKey: .hotelId)
-            try container.encode(folioFormId, forKey: .folioFormId)
-            try container.encode(paidDate.toDateString(FormConfig.DateFormat.yyyyMMdd), forKey: .paidDate)
-            try container.encode(payerContactId, forKey: .payerContactId)
-            try container.encode(receiverContactId, forKey: .receiverContactId)
-            try container.encode(remark, forKey: .remark)
-            try container.encode(internalNote, forKey: .internalNote)
-            try container.encode(roomItemGrouped, forKey: .roomItemGrouped)
-            try container.encode(additionalItemGrouped, forKey: .additionalItemGrouped)
-            try container.encode(otherItemGrouped, forKey: .otherItemGrouped)
-        }   
-        
-        /*
-         {
-           "hotel_id": "1",
-           "folio_form_id": "<integer>",
-           "paid_date": "2025-04-26",
-           "payer_id": "<integer>",
-           "receiver_id": "<integer>",
-           "remark": "<string>",
-           "internal_note": "<string>",
-           "room_item_grouped": "<boolean>",
-           "additional_item_grouped": "<boolean>",
-           "other_item_grouped": "<boolean>"
-         }
-         */
-    }
+    typealias CreateFromFolioFormVat = CreateFromFolioForm
     
     struct VoidReceiptRequest: Encodable {
         let id: Int

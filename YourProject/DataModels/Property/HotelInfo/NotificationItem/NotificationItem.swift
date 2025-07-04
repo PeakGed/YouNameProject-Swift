@@ -108,186 +108,41 @@ struct NotificationItem: Codable {
 extension NotificationItem {
     
     public enum NotificationType: String, Decodable {
-        case newCmBooking = "new_cm_booking"
-        case updatedCmBooking = "cm_booking_was_updated"
-        case cancelledCmBooking = "cm_booking_was_cancelled"
+        case newCmBooking = "NEW_CM_BOOKING"
+        case updatedCmBooking = "CM_BOOKING_WAS_UPDATED"
+        case cancelledCmBooking = "CM_BOOKING_WAS_CANCELLED"
         
-        case newHmsReservation = "new_hms_reservation"
-        case updatedHmsReservation = "hms_reservation_was_updated"
-        case cancelledHmsReservation = "hms_reservation_was_cancelled"
+        case newHmsReservation = "NEW_HMS_RESERVATION"
+        case updatedHmsReservation = "HMS_RESERVATION_WAS_UPDATED"
+        case cancelledHmsReservation = "HMS_RESERVATION_WAS_CANCELLED"
+
+        case adminBroadcastMessage = "ADMIN_BROADCAST_MESSAGE"
+        case systemBroadcastMessage = "SYSTEM_BROADCAST_MESSAGE"
+        case operatorBroadcastMessage = "OPERATOR_BROADCAST_MESSAGE"        
     }
     
     enum ItemKind: String, Decodable {
-        case reservation = "Reservation"
-        case cmBooking = "CmBooking"
-        
+        case reservation = "RESERVATION"
+        case cmBooking = "CM_BOOKING"        
+        case broadcastMessage = "BROADCAST_MESSAGE"
     }
 }
 
 
 /*
  {
-     "items": [
-         {
-             "id": 3560,
-             "notification_type": "new_cm_booking",
-             "check_in_date": null,
-             "check_out_date": null,
-             "first_night_date": "2024-05-31",
-             "last_night_date": "2024-05-31",
-             "notifiable_id": 83,
-             "notifiable_type": "CmBooking",
-             "channel_name": null,
-             "sub_channel_name": null,
-             "readed": true,
-             "readed_at": "2024-06-09T07:43:44.953Z",
-             "data": {},
-             "created_at": "2024-05-23T08:32:02.592+07:00",
-             "updated_at": "2024-06-03T15:43:19.014+07:00"
-         },
-         {
-             "id": 3566,
-             "notification_type": "new_hms_reservation",
-             "check_in_date": "2024-05-14",
-             "check_out_date": "2024-05-15",
-             "first_night_date": null,
-             "last_night_date": null,
-             "notifiable_id": 1089,
-             "notifiable_type": "Reservation",
-             "channel_name": "Online Travel Agent (OTA)",
-             "sub_channel_name": "Beds24",
-             "readed": true,
-             "readed_at": "2024-06-09T07:43:44.953Z",
-             "data": {},
-             "created_at": "2024-05-23T08:56:25.854+07:00",
-             "updated_at": "2024-06-03T15:43:19.052+07:00"
-         },
-         {
-             "id": 3571,
-             "notification_type": "new_hms_reservation",
-             "check_in_date": "2020-01-16",
-             "check_out_date": "2020-01-18",
-             "first_night_date": null,
-             "last_night_date": null,
-             "notifiable_id": 1090,
-             "notifiable_type": "Reservation",
-             "channel_name": "Online Travel Agent (OTA)",
-             "sub_channel_name": "Beds24",
-             "readed": true,
-             "readed_at": "2024-06-09T07:43:25.871Z",
-             "data": {},
-             "created_at": "2024-05-23T08:56:47.632+07:00",
-             "updated_at": "2024-06-03T15:43:19.056+07:00"
-         }
-         {
-             "id": 3591,
-             "notification_type": "new_cm_booking",
-             "check_in_date": null,
-             "check_out_date": null,
-             "first_night_date": "2024-06-14",
-             "last_night_date": "2024-06-14",
-             "notifiable_id": 85,
-             "notifiable_type": "CmBooking",
-             "channel_name": null,
-             "sub_channel_name": null,
-             "readed": false,
-             "readed_at": null,
-             "data": {
-                 "bookId": "56138458",
-                 "roomId": "232710",
-                 "unitId": "1",
-                 "roomQty": "1",
-                 "status": "2",
-                 "substatus": "0",
-                 "firstNight": "2024-06-14",
-                 "lastNight": "2024-06-14",
-                 "numAdult": "2",
-                 "numChild": "0",
-                 "guestTitle": "",
-                 "guestFirstName": "Ingrid",
-                 "guestName": "Tufts",
-                 "guestEmail": "",
-                 "guestPhone": "",
-                 "guestMobile": "",
-                 "guestFax": "",
-                 "guestCompany": "",
-                 "guestAddress": "",
-                 "guestCity": "",
-                 "guestState": "",
-                 "guestPostcode": "",
-                 "guestCountry": "",
-                 "guestCountry2": "",
-                 "guestArrivalTime": "",
-                 "guestVoucher": "",
-                 "guestComments": "",
-                 "notes": "",
-                 "message": "",
-                 "groupNote": "",
-                 "custom1": "",
-                 "custom2": "",
-                 "custom3": "",
-                 "custom4": "",
-                 "custom5": "",
-                 "custom6": "",
-                 "custom7": "",
-                 "custom8": "",
-                 "custom9": "",
-                 "custom10": "",
-                 "flagColor": "",
-                 "flagText": "",
-                 "statusCode": "0",
-                 "lang": "",
-                 "price": "3500.00",
-                 "deposit": "0.00",
-                 "tax": "0.00",
-                 "commission": "0.00",
-                 "currency": "THB",
-                 "rateDescription": "2024-06-14 Rate (41477992) THB 3500\r\n",
-                 "offerId": "0",
-                 "referer": "homemadestay",
-                 "refererEditable": "Booking.com",
-                 "reference": "",
-                 "apiSource": "0",
-                 "apiReference": "",
-                 "apiMessage": "Imported booking summary\r\nroom meal_plan=อาหารเช้ารวมในราคาห้องพัก",
-                 "allowChannelUpdate": "1",
-                 "allowAutoAction": "1",
-                 "allowReview": "1",
-                 "cancelUntil": "-1",
-                 "stripeToken": "",
-                 "propId": "102230",
-                 "ownerId": "56401",
-                 "invoiceeId": "",
-                 "bookingTime": "2024-06-09 08:02:22",
-                 "modified": "2024-06-09 08:02:52",
-                 "cancelTime": "",
-                 "masterId": "",
-                 "invoiceNumber": "",
-                 "invoiceDate": "",
-                 "invoice": [
-                     {
-                         "invoiceId": "94821838",
-                         "description": "Duluxe Room Friday, 14 June, 2024 - Saturday, 15 June, 2024",
-                         "status": "",
-                         "qty": "1",
-                         "price": "3500.00",
-                         "vatRate": "0.00",
-                         "type": "8",
-                         "type2": "0",
-                         "invoiceeId": "",
-                         "createBy": "56401",
-                         "createTime": "2024-06-09 08:02:22"
-                     }
-                 ],
-                 "infoItems": []
-             },
-             "created_at": "2024-06-09T15:03:03.123+07:00",
-             "updated_at": "2024-06-09T15:03:03.123+07:00"
-         }
-     ],
-     "total_items": 5,
-     "total_pages": 1,
-     "per_page": 20,
-     "page": 1
+   "id": 3560,
+   "notification_type": "NEW_CM_BOOKING",
+   "check_in_date": "2024-05-31",
+   "check_out_date": "2024-06-01",
+   "notifiable_id": 83,
+   "notifiable_type": "CM_BOOKING",
+   "channel_id": null,
+   "sub_channel_id": null,
+   "readed": true,
+   "readed_at": "2025-06-12T09:13:21.297Z",
+   "created_at": "2024-05-23T08:32:02.592+07:00",
+   "updated_at": "2024-06-03T15:43:19.014+07:00"
  }
+
  */
