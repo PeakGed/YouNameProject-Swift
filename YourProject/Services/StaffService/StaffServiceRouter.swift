@@ -14,6 +14,7 @@ enum StaffServiceRouter: AlamofireBaseRouterProtocol {
     case fetchStaff(request: StaffServiceRequest.FetchStaff)
     case createStaff(request: StaffServiceRequest.CreateStaff)
     case updateStaff(request: StaffServiceRequest.UpdateStaff)
+    case changeStaffUsername(request: StaffServiceRequest.ChangeStaffUsername)
     case deleteStaff(request: StaffServiceRequest.DeleteStaff)
     case changeHotel(request: StaffServiceRequest.ChangeHotel)
     case changePassword(request: StaffServiceRequest.ChangePassword)
@@ -34,6 +35,8 @@ enum StaffServiceRouter: AlamofireBaseRouterProtocol {
             return "/v4/staffs"
         case .updateStaff(let request):
             return "/v4/staffs/\(request.id)"
+        case .changeStaffUsername(let request):
+            return "/v4/staffs/\(request.id)/username"
         case .deleteStaff(let request):
             return "/v4/staffs/\(request.id)"
         case .changeHotel(let request):
@@ -53,7 +56,7 @@ enum StaffServiceRouter: AlamofireBaseRouterProtocol {
             return .get
         case .createStaff(_), .verifyPin(_):
             return .post
-        case .updateStaff(_), .changeHotel(_), .changePassword(_), .updateStatus(_):
+        case .updateStaff(_), .changeHotel(_), .changePassword(_), .updateStatus(_), .changeStaffUsername(_):
             return .put
         case .deleteStaff(_):
             return .delete
@@ -78,6 +81,8 @@ enum StaffServiceRouter: AlamofireBaseRouterProtocol {
         case .createStaff(let request):
             return try? JSONEncoder().encode(request)
         case .updateStaff(let request):
+            return try? JSONEncoder().encode(request)
+        case .changeStaffUsername(let request):
             return try? JSONEncoder().encode(request)
         case .changeHotel(let request):
             return try? JSONEncoder().encode(request)

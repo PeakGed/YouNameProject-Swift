@@ -12,11 +12,12 @@ struct Staff: Codable {
     let status: Status
     let role: Role
     let userId: Int
-    let email: String
-    let firstName: String
-    let lastName: String
-    let phoneNumber: String
-    let idCard: String
+    let username: String
+    let firstName: String?
+    let lastName: String?
+    let phoneNumber: String?
+    let idCard: String?
+    let email: String?
     let logoImage: String?
     let signSignatureImage: String?
     let hotelId: Int
@@ -29,11 +30,12 @@ struct Staff: Codable {
         case status
         case role
         case userId = "user_id"
-        case email
+        case username
         case firstName = "first_name"
         case lastName = "last_name"
         case phoneNumber = "phone_number"
         case idCard = "id_card"
+        case email
         case logoImage = "logo_image"
         case signSignatureImage = "sign_signature_image"
         case hotelId = "hotel_id"
@@ -48,11 +50,12 @@ struct Staff: Codable {
         role = try container.decode(Role.self, forKey: .role)
         
         userId = try container.decode(Int.self, forKey: .userId)
-        email = try container.decode(String.self, forKey: .email)
-        firstName = try container.decode(String.self, forKey: .firstName)
-        lastName = try container.decode(String.self, forKey: .lastName)
-        phoneNumber = try container.decode(String.self, forKey: .phoneNumber)
-        idCard = try container.decode(String.self, forKey: .idCard)
+        username = try container.decode(String.self, forKey: .username)
+        email = try container.decodeIfPresent(String.self, forKey: .email)
+        firstName = try container.decodeIfPresent(String.self, forKey: .firstName)
+        lastName = try container.decodeIfPresent(String.self, forKey: .lastName)
+        phoneNumber = try container.decodeIfPresent(String.self, forKey: .phoneNumber)
+        idCard = try container.decodeIfPresent(String.self, forKey: .idCard)
         logoImage = try container.decodeIfPresent(String.self, forKey: .logoImage)
         signSignatureImage = try container.decodeIfPresent(String.self, forKey: .signSignatureImage)
         hotelId = try container.decode(Int.self, forKey: .hotelId)
@@ -66,11 +69,12 @@ struct Staff: Codable {
          status: Status,
          role: Role,
          userId: Int,
-         email: String,
-         firstName: String,
-         lastName: String,
-         phoneNumber: String,
-         idCard: String,
+         username: String,
+         email: String?,
+         firstName: String?,
+         lastName: String?,
+         phoneNumber: String?,
+         idCard: String?,
          logoImage: String?,
          signSignatureImage: String?,
          hotelId: Int,
@@ -80,9 +84,10 @@ struct Staff: Codable {
         self.status = status
         self.role = role
         self.userId = userId
+        self.username = username
         self.email = email
         self.firstName = firstName
-        self.lastName = lastName
+        self.lastName = lastName        
         self.phoneNumber = phoneNumber
         self.idCard = idCard
         self.logoImage = logoImage
@@ -99,11 +104,12 @@ struct Staff: Codable {
         try container.encode(role, forKey: .role)
         
         try container.encode(userId, forKey: .userId)
-        try container.encode(email, forKey: .email)
-        try container.encode(firstName, forKey: .firstName)
-        try container.encode(lastName, forKey: .lastName)
-        try container.encode(phoneNumber, forKey: .phoneNumber)
-        try container.encode(idCard, forKey: .idCard)
+        try container.encode(username, forKey: .username)
+        try container.encodeIfPresent(email, forKey: .email)
+        try container.encodeIfPresent(firstName, forKey: .firstName)
+        try container.encodeIfPresent(lastName, forKey: .lastName)
+        try container.encodeIfPresent(phoneNumber, forKey: .phoneNumber)
+        try container.encodeIfPresent(idCard, forKey: .idCard)
         try container.encodeIfPresent(logoImage, forKey: .logoImage)
         try container.encodeIfPresent(signSignatureImage, forKey: .signSignatureImage)
         try container.encode(hotelId, forKey: .hotelId)
@@ -166,23 +172,21 @@ extension Staff {
 
 /*
  json response
- [
  {
- "id": 36,
- "status": "ACTIVE",
- "role": "FRONT_DESK",
- "data": {},
- "created_at": "2021-11-16T13:17:05.109+07:00",
- "updated_at": "2021-11-16T13:17:05.109+07:00",
- "user_id": 127,
- "email": "demo_staff123@email.com",
- "first_name": "rrr",
- "last_name": "fff",
- "phone_number": "[[rpr[e",
- "id_card": "3434434",
- "logo_image": "https://hms-heroku.s3.ap-southeast-1.amazonaws.com/documents/65f988f3-b52c-47dc-8e82-5bddf1c47b8b/F9FD7BD0-356A-407C-892B-946C9EBAB000.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2I7XJ7WJNRHU7NRV%2F20250510%2Fap-southeast-1%2Fs3%2Faws4_request&X-Amz-Date=20250510T064208Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=c501957d51376b8ed9983231f8edc771606d4c5db1bb89ff340aa65f037ac6c3",
- "sign_signature_image": null,
- "hotel_id": 105
+         "id": 36,
+         "status": "ACTIVE",
+         "role": "FRONT_DESK",
+         "created_at": "2021-11-16T13:17:05.109+07:00",
+         "updated_at": "2021-11-16T13:17:05.109+07:00",
+         "user_id": 127,
+         "email": "demo_staff123@email.com",
+         "first_name": "rrr",
+         "last_name": "fff",
+         "phone_number": "[[rpr[e",
+         "id_card": "3434434",
+         "logo_image": "https://hms-heroku.s3.ap-southeast-1.amazonaws.com/documents/65f988f3-b52c-47dc-8e82-5bddf1c47b8b/F9FD7BD0-356A-407C-892B-946C9EBAB000.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2I7XJ7WJNRHU7NRV%2F20250704%2Fap-southeast-1%2Fs3%2Faws4_request&X-Amz-Date=20250704T102920Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=d20a28c3aeca8615d7fc9114cfe68ee47e9415e1f5b2fc9aa670fe0cb1b3dac3",
+         "sign_signature_image": null,
+         "username": "demo_staff123@email.com",
+         "hotel_id": 105
  }
- ]
  */

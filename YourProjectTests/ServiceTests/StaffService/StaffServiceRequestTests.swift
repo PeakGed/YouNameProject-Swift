@@ -33,9 +33,10 @@ final class StaffServiceRequestTests: XCTestCase {
         // Given
         let request = StaffServiceRequest.CreateStaff(
             hotelId: 105,
-            password: "password123",
             username: "staffABC",
-            role: .frontDesk
+            password: "password123",
+            role: .frontDesk,
+            email: "abc@email.com"
         )
         
         // When
@@ -47,15 +48,17 @@ final class StaffServiceRequestTests: XCTestCase {
         XCTAssertEqual(json?["password"] as? String, "password123")
         XCTAssertEqual(json?["username"] as? String, "staffABC")
         XCTAssertEqual(json?["role"] as? String, "FRONT_DESK")
+        XCTAssertEqual(json?["email"] as? String, "abc@email.com")
     }
     
     func testCreateStaffCodingKeys() throws {
         // Given
         let request = StaffServiceRequest.CreateStaff(
             hotelId: 105,
-            password: "password123",
             username: "staffABC",
-            role: .manager
+            password: "password123",
+            role: .manager,
+            email: "abc@email.com"
         )
         
         // When
@@ -68,6 +71,7 @@ final class StaffServiceRequestTests: XCTestCase {
         XCTAssertNotNil(json?["password"])
         XCTAssertNotNil(json?["username"])
         XCTAssertNotNil(json?["role"])
+        XCTAssertNotNil(json?["email"])
         XCTAssertNil(json?["hotelId"]) // Should use snake_case
         XCTAssertEqual(json?["role"] as? String, "MANAGER")
     }
@@ -80,7 +84,8 @@ final class StaffServiceRequestTests: XCTestCase {
             lastName: "Doe",
             phoneNumber: "123-456-7890",
             pinCode: "1234",
-            idCard: "1234567890123"
+            idCard: "1234567890123",
+            email: "abc@email.com"
         )
         
         // When
@@ -94,6 +99,7 @@ final class StaffServiceRequestTests: XCTestCase {
         XCTAssertEqual(json?["pin_code"] as? String, "1234")
         XCTAssertEqual(json?["id_card"] as? String, "1234567890123")
         XCTAssertNil(json?["id"]) // ID should not be encoded
+        XCTAssertEqual(json?["email"] as? String, "abc@email.com")
     }
     
     func testUpdateStaffCodingKeys() throws {
@@ -104,7 +110,8 @@ final class StaffServiceRequestTests: XCTestCase {
             lastName: "Doe",
             phoneNumber: "123-456-7890",
             pinCode: nil,
-            idCard: nil
+            idCard: nil,
+            email: nil
         )
         
         // When
@@ -119,6 +126,40 @@ final class StaffServiceRequestTests: XCTestCase {
         XCTAssertNil(json?["firstName"]) // Should use snake_case
         XCTAssertNil(json?["lastName"])
         XCTAssertNil(json?["phoneNumber"])
+        XCTAssertNil(json?["id"])
+        XCTAssertNil(json?["email"])
+    }
+    
+    func testChangeStaffUsernameRequest() throws {
+        // Given
+        let request = StaffServiceRequest.ChangeStaffUsername(
+            id: 1,
+            username: "newusername@example.com"
+        )
+        
+        // When
+        let data = try JSONEncoder().encode(request)
+        let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
+        
+        // Then
+        XCTAssertEqual(json?["username"] as? String, "newusername@example.com")
+        XCTAssertNil(json?["id"]) // ID should not be encoded
+    }
+    
+    func testChangeStaffUsernameCodingKeys() throws {
+        // Given
+        let request = StaffServiceRequest.ChangeStaffUsername(
+            id: 1,
+            username: "newusername@example.com"
+        )
+        
+        // When
+        let encoder = JSONEncoder()
+        let data = try encoder.encode(request)
+        let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+        
+        // Then
+        XCTAssertNotNil(json?["username"])
         XCTAssertNil(json?["id"])
     }
     

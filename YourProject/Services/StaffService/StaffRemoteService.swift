@@ -14,8 +14,9 @@ protocol StaffServiceProtocol: AnyObject {
     func fetchStaff(request: StaffServiceRequest.FetchStaff) async throws -> Staff
     func createStaff(request: StaffServiceRequest.CreateStaff) async throws -> Staff
     func updateStaff(request: StaffServiceRequest.UpdateStaff) async throws -> Staff
+    func changeStaffUsername(request: StaffServiceRequest.ChangeStaffUsername) async throws -> Staff
     func deleteStaff(request: StaffServiceRequest.DeleteStaff) async throws
-    // New methods for additional endpoints
+    
     func changeHotel(request: StaffServiceRequest.ChangeHotel) async throws -> Staff
     func changePassword(request: StaffServiceRequest.ChangePassword) async throws -> Staff
     func updateStatus(request: StaffServiceRequest.UpdateStatus) async throws -> Staff
@@ -53,6 +54,12 @@ class StaffRemoteService: StaffServiceProtocol {
     
     func updateStaff(request: StaffServiceRequest.UpdateStaff) async throws -> Staff {
         let router = StaffServiceRouter.updateStaff(request: request)
+        return try await apiManager.request(router: router,
+                                            requiredAuthorization: true)
+    }
+    
+    func changeStaffUsername(request: StaffServiceRequest.ChangeStaffUsername) async throws -> Staff {
+        let router = StaffServiceRouter.changeStaffUsername(request: request)
         return try await apiManager.request(router: router,
                                             requiredAuthorization: true)
     }

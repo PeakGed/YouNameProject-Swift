@@ -17,6 +17,7 @@ final class StaffTest: XCTestCase {
             "status": "ACTIVE",
             "role": "FRONT_DESK",
             "user_id": 127,
+            "username": "demo_staff123@email.com",
             "email": "demo_staff123@email.com",
             "first_name": "rrr",
             "last_name": "fff",
@@ -40,6 +41,7 @@ final class StaffTest: XCTestCase {
         XCTAssertEqual(staff.status, .active)
         XCTAssertEqual(staff.role, .frontDesk)
         XCTAssertEqual(staff.userId, 127)
+        XCTAssertEqual(staff.username, "demo_staff123@email.com")
         XCTAssertEqual(staff.email, "demo_staff123@email.com")
         XCTAssertEqual(staff.firstName, "rrr")
         XCTAssertEqual(staff.lastName, "fff")
@@ -63,6 +65,7 @@ final class StaffTest: XCTestCase {
             status: .active,
             role: .frontDesk,
             userId: 127,
+            username: "demo_staff123@email.com",
             email: "demo_staff123@email.com",
             firstName: "rrr",
             lastName: "fff",
@@ -85,6 +88,7 @@ final class StaffTest: XCTestCase {
         XCTAssertEqual(decodedStaff.status, staff.status)
         XCTAssertEqual(decodedStaff.role, staff.role)
         XCTAssertEqual(decodedStaff.userId, staff.userId)
+        XCTAssertEqual(decodedStaff.username, staff.username)
         XCTAssertEqual(decodedStaff.email, staff.email)
         XCTAssertEqual(decodedStaff.firstName, staff.firstName)
         XCTAssertEqual(decodedStaff.lastName, staff.lastName)

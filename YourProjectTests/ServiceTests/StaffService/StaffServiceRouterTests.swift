@@ -57,9 +57,10 @@ final class StaffServiceRouterTests: XCTestCase {
         // Given
         let request = StaffServiceRequest.CreateStaff(
             hotelId: 105,
-            password: "password123",
             username: "staff@example.com",
-            role: .frontDesk
+            password: "password123",
+            role: .frontDesk,
+            email: "abc@email.com"
         )
         let router = StaffServiceRouter.createStaff(request: request)
         
@@ -78,6 +79,7 @@ final class StaffServiceRouterTests: XCTestCase {
             XCTAssertEqual(json?["password"] as? String, "password123")
             XCTAssertEqual(json?["username"] as? String, "staff@example.com")
             XCTAssertEqual(json?["role"] as? String, "FRONT_DESK")
+            XCTAssertEqual(json?["email"] as? String, "abc@email.com")
         } else {
             XCTFail("Request should have a body")
         }
@@ -91,7 +93,8 @@ final class StaffServiceRouterTests: XCTestCase {
             lastName: "Doe",
             phoneNumber: "123-456-7890",
             pinCode: "1234",
-            idCard: "1234567890123"
+            idCard: "1234567890123",
+            email: "abc@example.com"
         )
         let router = StaffServiceRouter.updateStaff(request: request)
         
@@ -111,6 +114,33 @@ final class StaffServiceRouterTests: XCTestCase {
             XCTAssertEqual(json?["phone_number"] as? String, "123-456-7890")
             XCTAssertEqual(json?["pin_code"] as? String, "1234")
             XCTAssertEqual(json?["id_card"] as? String, "1234567890123")
+            XCTAssertNil(json?["id"]) // ID should not be in the body since it's in the URL
+            XCTAssertEqual(json?["email"] as? String, "abc@example.com")
+        } else {
+            XCTFail("Request should have a body")
+        }
+    }
+    
+    func testChangeStaffUsernameRequest() throws {
+        // Given
+        let request = StaffServiceRequest.ChangeStaffUsername(
+            id: 1,
+            username: "newusername@example.com"
+        )
+        let router = StaffServiceRouter.changeStaffUsername(request: request)
+        
+        // When
+        let urlRequest = try router.asURLRequest()
+        
+        // Then
+        XCTAssertEqual(urlRequest.httpMethod, "PUT")
+        XCTAssertTrue(urlRequest.url?.absoluteString.contains("/v4/staffs/1/username") == true)
+        XCTAssertEqual(urlRequest.value(forHTTPHeaderField: "Content-Type"), "application/json")
+        
+        // Check JSON body
+        if let body = urlRequest.httpBody {
+            let json = try JSONSerialization.jsonObject(with: body) as? [String: Any]
+            XCTAssertEqual(json?["username"] as? String, "newusername@example.com")
             XCTAssertNil(json?["id"]) // ID should not be in the body since it's in the URL
         } else {
             XCTFail("Request should have a body")

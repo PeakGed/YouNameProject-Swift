@@ -20,6 +20,7 @@ final class StaffRemoteServiceTests: XCTestCase {
                 status: .active,
                 role: .frontDesk,
                 userId: 101,
+                username: "staff1@example.com",
                 email: "staff1@example.com",
                 firstName: "John",
                 lastName: "Doe",
@@ -34,6 +35,7 @@ final class StaffRemoteServiceTests: XCTestCase {
                 status: .inactive,
                 role: .manager,
                 userId: 102,
+                username: "staff2@example.com",
                 email: "staff2@example.com",
                 firstName: "Jane",
                 lastName: "Smith",
@@ -92,6 +94,7 @@ final class StaffRemoteServiceTests: XCTestCase {
             status: .active,
             role: .frontDesk,
             userId: 101,
+            username: "staff1@example.com",
             email: "staff1@example.com",
             firstName: "John",
             lastName: "Doe",
@@ -129,6 +132,7 @@ final class StaffRemoteServiceTests: XCTestCase {
             status: .active,
             role: .frontDesk,
             userId: 103,
+            username: "newstaff@example.com",
             email: "newstaff@example.com",
             firstName: "New",
             lastName: "Staff",
@@ -146,9 +150,10 @@ final class StaffRemoteServiceTests: XCTestCase {
                                         apiManager: apiManager)
         let request = StaffServiceRequest.CreateStaff(
             hotelId: 105,
-            password: "password123",
             username: "newstaff@example.com",
-            role: .frontDesk
+            password: "password123",
+            role: .frontDesk,
+            email: "abc@email.com"
         )
 
         // When
@@ -169,6 +174,7 @@ final class StaffRemoteServiceTests: XCTestCase {
             status: .active,
             role: .frontDesk,
             userId: 101,
+            username: "staff1@example.com",
             email: "staff1@example.com",
             firstName: "Updated John",
             lastName: "Updated Doe",
@@ -190,7 +196,8 @@ final class StaffRemoteServiceTests: XCTestCase {
             lastName: "Updated Doe",
             phoneNumber: "999-888-7777",
             pinCode: "1234",
-            idCard: "1234567890123"
+            idCard: "1234567890123",
+            email: "abc@email.com"
         )
 
         // When
@@ -200,7 +207,48 @@ final class StaffRemoteServiceTests: XCTestCase {
         XCTAssertEqual(result.id, expectedStaff.id)
         XCTAssertEqual(result.firstName, expectedStaff.firstName)
         XCTAssertEqual(result.lastName, expectedStaff.lastName)
-        XCTAssertEqual(result.phoneNumber, expectedStaff.phoneNumber)
+        XCTAssertEqual(result.phoneNumber, expectedStaff.phoneNumber)        
+        XCTAssertEqual(result.idCard, expectedStaff.idCard)
+        XCTAssertEqual(result.email, expectedStaff.email)
+    }
+
+    func testChangeStaffUsername_WillGetValidResponse() async throws {
+        // Given
+        let expectedStaff = Staff(
+            id: 1,
+            status: .active,
+            role: .frontDesk,
+            userId: 101,
+            username: "newusername@example.com",
+            email: "staff1@example.com",
+            firstName: "John",
+            lastName: "Doe",
+            phoneNumber: "123-456-7890",
+            idCard: "1234567890123",
+            logoImage: nil,
+            signSignatureImage: nil,
+            hotelId: 105
+        )
+        given(apiManager)
+            .request(router: .any, requiredAuthorization: .any)
+            .willReturn(expectedStaff)
+
+        let service = StaffRemoteService(localStorage: localStorage, 
+                                        apiManager: apiManager)
+        let request = StaffServiceRequest.ChangeStaffUsername(
+            id: 1,
+            username: "newusername@example.com"
+        )
+
+        // When
+        let result = try await service.changeStaffUsername(request: request)
+
+        // Then
+        XCTAssertEqual(result.id, expectedStaff.id)
+        XCTAssertEqual(result.username, expectedStaff.username)
+        XCTAssertEqual(result.email, expectedStaff.email)
+        XCTAssertEqual(result.firstName, expectedStaff.firstName)
+        XCTAssertEqual(result.lastName, expectedStaff.lastName)
     }
 
     func testDeleteStaff_WillSucceed() async throws {
@@ -229,6 +277,7 @@ final class StaffRemoteServiceTests: XCTestCase {
             status: .active,
             role: .frontDesk,
             userId: 101,
+            username: "staff1@example.com",
             email: "staff1@example.com",
             firstName: "John",
             lastName: "Doe",
@@ -264,6 +313,7 @@ final class StaffRemoteServiceTests: XCTestCase {
             status: .active,
             role: .frontDesk,
             userId: 101,
+            username: "staff1@example.com",
             email: "staff1@example.com",
             firstName: "John",
             lastName: "Doe",
@@ -299,6 +349,7 @@ final class StaffRemoteServiceTests: XCTestCase {
             status: .inactive,
             role: .frontDesk,
             userId: 101,
+            username: "staff1@example.com",
             email: "staff1@example.com",
             firstName: "John",
             lastName: "Doe",
@@ -334,6 +385,7 @@ final class StaffRemoteServiceTests: XCTestCase {
             status: .active,
             role: .frontDesk,
             userId: 101,
+            username: "staff1@example.com",
             email: "staff1@example.com",
             firstName: "John",
             lastName: "Doe",

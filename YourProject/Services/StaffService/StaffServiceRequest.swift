@@ -33,17 +33,17 @@ struct StaffServiceRequest {
     // MARK: - Create Staff
     struct CreateStaff: Encodable {
         let hotelId: Int
+        let username: String
         let password: String
-        //let email: String
-        let username: String // not use for now
         let role: Staff.Role
+        let email: String?
         
         enum CodingKeys: String, CodingKey {
             case hotelId = "hotel_id"
-            case password
-            //case email
             case username
+            case password
             case role
+            case email
         }
         
         //encode
@@ -51,10 +51,10 @@ struct StaffServiceRequest {
             var container = encoder.container(keyedBy: CodingKeys.self)
             
             try container.encode(hotelId, forKey: .hotelId)
+            try container.encode(username, forKey: .username)
             try container.encode(password, forKey: .password)
-            //try container.encode(email, forKey: .email)
-            try container.encode(username, forKey: .username) // not use for now
             try container.encode(role.rawValue, forKey: .role)
+            try container.encodeIfPresent(email, forKey: .email)
         }
     }
     
@@ -66,6 +66,7 @@ struct StaffServiceRequest {
         let phoneNumber: String?
         let pinCode: String?
         let idCard: String?
+        let email: String?
         
         enum CodingKeys: String, CodingKey {
             case firstName = "first_name"
@@ -73,7 +74,18 @@ struct StaffServiceRequest {
             case phoneNumber = "phone_number"
             case pinCode = "pin_code"
             case idCard = "id_card"
+            case email
             // id is not encoded as it's used in the URL path
+        }
+    }
+    
+    // MARK: - Update Staff Username
+    struct ChangeStaffUsername: Encodable {
+        let id: Int
+        let username: String
+        
+        enum CodingKeys: String, CodingKey {
+            case username = "username"
         }
     }
     
