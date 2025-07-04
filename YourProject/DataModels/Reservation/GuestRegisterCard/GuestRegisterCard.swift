@@ -10,7 +10,7 @@ import Foundation
 struct GuestRegisterCard: Codable {
     let id: Int
     let hotelId: Int
-    let customerId: Int
+    let guestId: Int
     let reservationId: Int
     let pdpaId: Int?
     
@@ -29,7 +29,7 @@ struct GuestRegisterCard: Codable {
     enum CodingKeys: String, CodingKey {
         case id
         case hotelId = "hotel_id"
-        case customerId = "customer_id"
+        case guestId = "guest_id"
         case reservationId = "reservation_id"
         case pdpaId = "pdpa_id"
         case purposeOfVisit = "purpose_of_visit"
@@ -46,7 +46,7 @@ struct GuestRegisterCard: Codable {
     
     init(id: Int,
          hotelId: Int,
-         customerId: Int,
+         guestId: Int,
          reservationId: Int,
          pdpaId: Int?,
          purposeOfVisit: PurposeOfVisit,
@@ -71,7 +71,7 @@ struct GuestRegisterCard: Codable {
         self.acceptedRulesAt = acceptedRulesAt
         self.acceptedPdpaAt = acceptedPdpaAt
         self.hotelId = hotelId
-        self.customerId = customerId
+        self.guestId = guestId
         self.reservationId = reservationId
         self.pdpaId = pdpaId
     }
@@ -89,7 +89,7 @@ struct GuestRegisterCard: Codable {
         nextCountry = try container.decodeIfPresent(String.self, forKey: .nextCountry)
         
         hotelId = try container.decode(Int.self, forKey: .hotelId)
-        customerId = try container.decode(Int.self, forKey: .customerId)
+        guestId = try container.decode(Int.self, forKey: .guestId)
         reservationId = try container.decode(Int.self, forKey: .reservationId)
         pdpaId = try container.decodeIfPresent(Int.self, forKey: .pdpaId)
 
@@ -113,7 +113,7 @@ struct GuestRegisterCard: Codable {
         try container.encode(nextCountry, forKey: .nextCountry)        
         
         try container.encode(hotelId, forKey: .hotelId)
-        try container.encode(customerId, forKey: .customerId)
+        try container.encode(guestId, forKey: .guestId)
         try container.encode(reservationId, forKey: .reservationId)
         try container.encode(pdpaId, forKey: .pdpaId)
         
@@ -127,30 +127,27 @@ struct GuestRegisterCard: Codable {
 
 extension GuestRegisterCard {
     enum PurposeOfVisit: String, Codable {
-        case leisure = "Leisure"
-        case business = "Business"
+        case leisure = "LEISURE"
+        case business = "BUSINESS"
     }
 }
 
 /*
  {
-             "id": 17,
-             "purpose_of_visit": "Leisure",
-             "from_address": null,
-             "next_address": null,
-             "remark": null,
-             //"guest_signature": "https://hms-heroku.s3.ap-southeast-1.amazonaws.com/documents/248d1e0f-252c-45ca-bc0c-860cc37d76c7/ED4250C1-C03A-4826-8E03-26A9AA28E558.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA2I7XJ7WJNRHU7NRV%2F20250617%2Fap-southeast-1%2Fs3%2Faws4_request&X-Amz-Date=20250617T100309Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=7edfffed461a65c342568257bcd8787100fa225873dec32f582a5cc9ab37d268",
-             //"guest_signature_updated_at": "2023-11-03T23:32:15.919+07:00",
-             //"report_rr3_info": {...}, // remove
-             "from_country": "THA",
-             "next_country": "THA",
-             "created_at": "2023-11-03T23:31:46.734+07:00",
-             "updated_at": "2023-11-03T23:32:39.120+07:00",
-             "accepted_rules_at": "2023-11-03T23:32:16.372+07:00",
-             "accepted_pdpa_at": "2023-11-03T23:32:16.685+07:00",
-             "hotel_id": 105,
-             "customer_id": 267,
-             "reservation_id": 987,
-             "pdpa_id": 1
-         }
+     "id": 1,
+     "purpose_of_visit": "LEISURE",
+     "from_address": null,
+     "next_address": null,
+     "remark": "123",
+     "from_country": null,
+     "next_country": null,
+     "created_at": "2022-06-17T07:19:28.708+07:00",
+     "updated_at": "2022-06-17T07:20:01.774+07:00",
+     "accepted_rules_at": null,
+     "accepted_pdpa_at": null,
+     "hotel_id": 105,
+     "guest_id": 288,
+     "reservation_id": 912,
+     "pdpa_id": null
+ }
  */

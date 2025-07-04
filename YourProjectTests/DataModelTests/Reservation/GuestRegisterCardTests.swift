@@ -18,7 +18,7 @@ final class GuestRegisterCardTests: XCTestCase {
         // Assert
         XCTAssertEqual(guestRegisterCard.id, 17)
         XCTAssertEqual(guestRegisterCard.hotelId, 105)
-        XCTAssertEqual(guestRegisterCard.customerId, 267)
+        XCTAssertEqual(guestRegisterCard.guestId, 267)
         XCTAssertEqual(guestRegisterCard.reservationId, 987)
         XCTAssertEqual(guestRegisterCard.purposeOfVisit, .leisure)
         XCTAssertNotNil(guestRegisterCard.createdAt)
@@ -52,8 +52,8 @@ final class GuestRegisterCardTests: XCTestCase {
     // MARK: - Purpose of Visit Tests
     
     func test_purposeOfVisitRawValues() throws {
-        XCTAssertEqual(GuestRegisterCard.PurposeOfVisit.leisure.rawValue, "Leisure")
-        XCTAssertEqual(GuestRegisterCard.PurposeOfVisit.business.rawValue, "Business")
+        XCTAssertEqual(GuestRegisterCard.PurposeOfVisit.leisure.rawValue, "LEISURE")
+        XCTAssertEqual(GuestRegisterCard.PurposeOfVisit.business.rawValue, "BUSINESS")
     }
     
     // MARK: - Codable Tests
@@ -63,7 +63,7 @@ final class GuestRegisterCardTests: XCTestCase {
         let json = """
         {
             "id": 17,
-            "purpose_of_visit": "Leisure",
+            "purpose_of_visit": "LEISURE",
             "from_address": null,
             "next_address": null,
             "remark": null,
@@ -74,7 +74,7 @@ final class GuestRegisterCardTests: XCTestCase {
             "accepted_rules_at": "2023-11-03T23:32:16.372+07:00",
             "accepted_pdpa_at": "2023-11-03T23:32:16.685+07:00",
             "hotel_id": 105,
-            "customer_id": 267,
+            "guest_id": 267,
             "reservation_id": 987,
             "pdpa_id": 1
         }
@@ -96,7 +96,7 @@ final class GuestRegisterCardTests: XCTestCase {
         XCTAssertNotNil(guestRegisterCard.acceptedRulesAt)
         XCTAssertNotNil(guestRegisterCard.acceptedPdpaAt)
         XCTAssertEqual(guestRegisterCard.hotelId, 105)
-        XCTAssertEqual(guestRegisterCard.customerId, 267)
+        XCTAssertEqual(guestRegisterCard.guestId, 267)
         XCTAssertEqual(guestRegisterCard.reservationId, 987)
         XCTAssertEqual(guestRegisterCard.pdpaId, 1)
     }
@@ -106,7 +106,7 @@ final class GuestRegisterCardTests: XCTestCase {
         let json = """
         {
             "id": 18,
-            "purpose_of_visit": "Business",
+            "purpose_of_visit": "BUSINESS",
             "from_address": null,
             "next_address": null,
             "remark": null,
@@ -117,7 +117,7 @@ final class GuestRegisterCardTests: XCTestCase {
             "accepted_rules_at": null,
             "accepted_pdpa_at": null,
             "hotel_id": 106,
-            "customer_id": 268,
+            "guest_id": 268,
             "reservation_id": 988,
             "pdpa_id": null
         }
@@ -139,7 +139,7 @@ final class GuestRegisterCardTests: XCTestCase {
         XCTAssertNil(guestRegisterCard.acceptedRulesAt)
         XCTAssertNil(guestRegisterCard.acceptedPdpaAt)
         XCTAssertEqual(guestRegisterCard.hotelId, 106)
-        XCTAssertEqual(guestRegisterCard.customerId, 268)
+        XCTAssertEqual(guestRegisterCard.guestId, 268)
         XCTAssertEqual(guestRegisterCard.reservationId, 988)
         XCTAssertNil(guestRegisterCard.pdpaId)
     }
@@ -149,7 +149,7 @@ final class GuestRegisterCardTests: XCTestCase {
         let json = """
         {
             "id": 19,
-            "purpose_of_visit": "Leisure",
+            "purpose_of_visit": "LEISURE",
             "from_address": "123 Main St, Bangkok, Thailand",
             "next_address": "456 Next Ave, Phuket, Thailand",
             "remark": "VIP guest with special requirements",
@@ -160,7 +160,7 @@ final class GuestRegisterCardTests: XCTestCase {
             "accepted_rules_at": "2023-11-05T14:21:00.789+07:00",
             "accepted_pdpa_at": "2023-11-05T14:21:30.012+07:00",
             "hotel_id": 107,
-            "customer_id": 269,
+            "guest_id": 269,
             "reservation_id": 989,
             "pdpa_id": 2
         }
@@ -182,7 +182,7 @@ final class GuestRegisterCardTests: XCTestCase {
         XCTAssertNotNil(guestRegisterCard.acceptedRulesAt)
         XCTAssertNotNil(guestRegisterCard.acceptedPdpaAt)
         XCTAssertEqual(guestRegisterCard.hotelId, 107)
-        XCTAssertEqual(guestRegisterCard.customerId, 269)
+        XCTAssertEqual(guestRegisterCard.guestId, 269)
         XCTAssertEqual(guestRegisterCard.reservationId, 989)
         XCTAssertEqual(guestRegisterCard.pdpaId, 2)
     }
@@ -197,11 +197,11 @@ final class GuestRegisterCardTests: XCTestCase {
         
         // Assert
         XCTAssertTrue(jsonString.contains("\"id\":17"))
-        XCTAssertTrue(jsonString.contains("\"purpose_of_visit\":\"Leisure\""))
+        XCTAssertTrue(jsonString.contains("\"purpose_of_visit\":\"LEISURE\""))
         XCTAssertTrue(jsonString.contains("\"from_country\":\"THA\""))
         XCTAssertTrue(jsonString.contains("\"next_country\":\"THA\""))
         XCTAssertTrue(jsonString.contains("\"hotel_id\":105"))
-        XCTAssertTrue(jsonString.contains("\"customer_id\":267"))
+        XCTAssertTrue(jsonString.contains("\"guest_id\":267"))
         XCTAssertTrue(jsonString.contains("\"reservation_id\":987"))
         XCTAssertTrue(jsonString.contains("\"pdpa_id\":1"))
     }
@@ -217,7 +217,7 @@ final class GuestRegisterCardTests: XCTestCase {
         let guestRegisterCard = GuestRegisterCard(
             id: 20,
             hotelId: 108,
-            customerId: 270,
+            guestId: 270,
             reservationId: 990,
             pdpaId: nil,
             purposeOfVisit: .business,
@@ -252,7 +252,7 @@ final class GuestRegisterCardTests: XCTestCase {
         let guestRegisterCard = GuestRegisterCard(
             id: 21,
             hotelId: 109,
-            customerId: 271,
+            guestId: 271,
             reservationId: 991,
             pdpaId: nil,
             purposeOfVisit: .leisure,
@@ -270,7 +270,7 @@ final class GuestRegisterCardTests: XCTestCase {
         // Assert
         XCTAssertEqual(guestRegisterCard.id, 21)
         XCTAssertEqual(guestRegisterCard.hotelId, 109)
-        XCTAssertEqual(guestRegisterCard.customerId, 271)
+        XCTAssertEqual(guestRegisterCard.guestId, 271)
         XCTAssertEqual(guestRegisterCard.reservationId, 991)
         XCTAssertNil(guestRegisterCard.pdpaId)
         XCTAssertEqual(guestRegisterCard.purposeOfVisit, .leisure)
@@ -294,7 +294,7 @@ final class GuestRegisterCardTests: XCTestCase {
         return GuestRegisterCard(
             id: 17,
             hotelId: 105,
-            customerId: 267,
+            guestId: 267,
             reservationId: 987,
             pdpaId: 1,
             purposeOfVisit: .leisure,

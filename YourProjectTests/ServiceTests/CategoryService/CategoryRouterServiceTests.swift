@@ -29,7 +29,7 @@ class CategoryRouterServiceTests: XCTestCase {
         XCTAssertTrue(urlRequest.url?.path.contains("/v4/categories") ?? false)
         XCTAssertTrue(urlRequest.url?.absoluteString.contains("hotel_id=105") ?? false)
         XCTAssertTrue(urlRequest.url?.absoluteString.contains("page=1") ?? false)
-        XCTAssertTrue(urlRequest.url?.absoluteString.contains("kind=product") ?? false)
+        XCTAssertTrue(urlRequest.url?.absoluteString.contains("kind=PRODUCT") ?? false)
     }
     
     func test_createCategory_correctPathAndBody() throws {

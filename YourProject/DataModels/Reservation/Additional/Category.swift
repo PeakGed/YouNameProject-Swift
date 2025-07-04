@@ -65,8 +65,8 @@ struct Category: Codable {
 
 extension Category {
     enum Kind: String, Codable, CaseIterable {
-        case product = "product"
-        case service = "folios"
+        case product = "PRODUCT"
+        case service = "FOLIOS"
         
         var description: String {
             switch self {

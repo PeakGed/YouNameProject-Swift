@@ -188,7 +188,7 @@ class GuestRegisterCardRouterServiceTests: XCTestCase {
         
         let json = try JSONSerialization.jsonObject(with: urlRequest.httpBody!, options: []) as? [String: Any]
         XCTAssertNotNil(json)
-        XCTAssertEqual(json?["purpose_of_visit"] as? String, "Business")
+        XCTAssertEqual(json?["purpose_of_visit"] as? String, "BUSINESS")
         XCTAssertEqual(json?["from_address"] as? String, "Test address")
         XCTAssertEqual(json?["from_country"] as? String, "THA")
         XCTAssertEqual(json?["next_address"] as? String, "Next address")

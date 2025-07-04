@@ -34,7 +34,7 @@ class CategoryServiceRequestTests: XCTestCase {
         XCTAssertEqual(parameters["per_page"] as? String, "20")
         XCTAssertEqual(parameters["sorted_by"] as? String, "ID")
         XCTAssertEqual(parameters["sorted_order"] as? String, "ASC")
-        XCTAssertEqual(parameters["kind"] as? String, "product")
+        XCTAssertEqual(parameters["kind"] as? String, "PRODUCT")
     }
     
     func test_fetchCategories_withMinimalParameters_correctSerialization() throws {
@@ -103,7 +103,7 @@ class CategoryServiceRequestTests: XCTestCase {
         XCTAssertNotNil(body)
         XCTAssertEqual(decodedData?["hotel_id"] as? Int, 105)
         XCTAssertEqual(decodedData?["name"] as? String, "Test Category")
-        XCTAssertEqual(decodedData?["kind"] as? String, "folios")
+        XCTAssertEqual(decodedData?["kind"] as? String, "FOLIOS")
     }
     
     // MARK: - UpdateCategory Tests
@@ -125,7 +125,7 @@ class CategoryServiceRequestTests: XCTestCase {
         // ID should not be in body as it's used in URL path
         XCTAssertNil(decodedData?["id"])
         XCTAssertEqual(decodedData?["name"] as? String, "Updated Category")
-        XCTAssertEqual(decodedData?["kind"] as? String, "product")
+        XCTAssertEqual(decodedData?["kind"] as? String, "PRODUCT")
     }
     
     func test_updateCategory_withPartialFields_correctSerialization() throws {

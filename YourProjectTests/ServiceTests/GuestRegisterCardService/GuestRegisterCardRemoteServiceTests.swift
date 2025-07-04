@@ -203,7 +203,7 @@ class GuestRegisterCardRemoteServiceTests: XCTestCase {
         
         // Assert
         XCTAssertEqual(result.id, expectedGuestRegisterCard.id)
-        XCTAssertEqual(result.customerId, expectedGuestRegisterCard.customerId)
+        XCTAssertEqual(result.guestId, expectedGuestRegisterCard.guestId)
         
         verify(mockAPIManager)
             .request(router: .any, requiredAuthorization: .value(true))
@@ -321,7 +321,7 @@ class GuestRegisterCardRemoteServiceTests: XCTestCase {
         return GuestRegisterCard(
             id: 17,
             hotelId: 105,
-            customerId: 267,
+            guestId: 267,
             reservationId: 987,
             pdpaId: 1,
             purposeOfVisit: .leisure,
