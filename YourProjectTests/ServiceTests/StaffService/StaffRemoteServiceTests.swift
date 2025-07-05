@@ -379,25 +379,10 @@ final class StaffRemoteServiceTests: XCTestCase {
     }
 
     func testVerifyPin_WillGetValidResponse() async throws {
-        // Given
-        let expectedStaff = Staff(
-            id: 1,
-            status: .active,
-            role: .frontDesk,
-            userId: 101,
-            username: "staff1@example.com",
-            email: "staff1@example.com",
-            firstName: "John",
-            lastName: "Doe",
-            phoneNumber: "123-456-7890",
-            idCard: "1234567890123",
-            logoImage: nil,
-            signSignatureImage: nil,
-            hotelId: 105
-        )
+        // Given      
         given(apiManager)
-            .request(router: .any, requiredAuthorization: .any)
-            .willReturn(expectedStaff)
+            .requestACK(router: .any, requiredAuthorization: .any)
+            .willReturn()
 
         let service = StaffRemoteService(localStorage: localStorage, 
                                         apiManager: apiManager)
@@ -407,10 +392,14 @@ final class StaffRemoteServiceTests: XCTestCase {
         )
 
         // When
-        let result = try await service.verifyPin(request: request)
-
+        do {
+            try await service.verifyPin(request: request)
+        }
+        catch {
+            XCTFail()
+        }
+                
         // Then
-        XCTAssertEqual(result.id, expectedStaff.id)
-        XCTAssertEqual(result.email, expectedStaff.email)
+        
     }
 } 

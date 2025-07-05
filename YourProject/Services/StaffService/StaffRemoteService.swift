@@ -20,7 +20,7 @@ protocol StaffServiceProtocol: AnyObject {
     func changeHotel(request: StaffServiceRequest.ChangeHotel) async throws -> Staff
     func changePassword(request: StaffServiceRequest.ChangePassword) async throws -> Staff
     func updateStatus(request: StaffServiceRequest.UpdateStatus) async throws -> Staff
-    func verifyPin(request: StaffServiceRequest.VerifyPin) async throws -> Staff
+    func verifyPin(request: StaffServiceRequest.VerifyPin) async throws
 }
 
 class StaffRemoteService: StaffServiceProtocol {
@@ -93,9 +93,9 @@ class StaffRemoteService: StaffServiceProtocol {
                                             requiredAuthorization: true)
     }
     
-    func verifyPin(request: StaffServiceRequest.VerifyPin) async throws -> Staff {
+    func verifyPin(request: StaffServiceRequest.VerifyPin) async throws {
         let router = StaffServiceRouter.verifyPin(request: request)
-        return try await apiManager.request(router: router,
-                                            requiredAuthorization: true)
+        return try await apiManager.requestACK(router: router,
+                                               requiredAuthorization: true)
     }
 } 
