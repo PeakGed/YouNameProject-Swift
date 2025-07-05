@@ -17,6 +17,7 @@ struct FormConfig {
         // 2020-01-13T09:18:23.976+07:00
         static let datetimeISO = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.SSSZZZZZ"
         static let yyyyMMdd = "yyyy-MM-dd"
+        static let yyyyMM = "yyyy-MM"
         static let yyyy = "yyyy"
         static let yyyyMMddHHmm = "yyyy-MM-dd HH:mm"
         static let EddMMMyyyy = "E dd MMM yyyy"
