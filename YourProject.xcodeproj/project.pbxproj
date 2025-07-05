@@ -45,6 +45,7 @@
 			membershipExceptions = (
 				/Localized/LaunchScreen.storyboard,
 				/Localized/Main.storyboard,
+				DataModels/Manager/FileService/UploadFileService.swift,
 				Info.plist,
 				Services/UserService/UserRemoteService.swift,
 				Services/UserService/UserServiceRequest.swift,
