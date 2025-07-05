@@ -11,6 +11,7 @@ import Foundation
 enum AccountItemServiceRouter: AlamofireBaseRouterProtocol {
     case fetchByPeriod(request: AccountItemServiceRequest.FetchByPeriod)
     case fetchByKeyword(request: AccountItemServiceRequest.FetchByKeyword)
+    
     case fetchById(request: AccountItemServiceRequest.FetchById)
     case createAccountItem(request: AccountItemServiceRequest.CreateAccountItem)
     case updateAccountItem(request: AccountItemServiceRequest.UpdateAccountItem)
