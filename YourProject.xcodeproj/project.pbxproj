@@ -106,6 +106,8 @@
 				DataModels/Property/HotelInfo/PDPA/Pdpa.swift,
 				DataModels/Property/HotelInfo/PDPA/Pdpas.swift,
 				DataModels/Property/HotelInfo/PropertyRule.swift,
+				DataModels/Property/HSDocuments/HSDocument.swift,
+				DataModels/Property/HSDocuments/HSDocuments.swift,
 				DataModels/Property/LinkUnitType/LinkUnitType.swift,
 				DataModels/Property/PriceCard/LocalPriceCard.swift,
 				DataModels/Property/PriceCard/LocalPriceCards.swift,
