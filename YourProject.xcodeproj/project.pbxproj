@@ -58,6 +58,7 @@
 			membershipExceptions = (
 				DataModels/AppConfiguration.swift,
 				DataModels/AuthTokenResponse.swift,
+				DataModels/Calendar/CalendarMonth.swift,
 				DataModels/Collection.swift,
 				DataModels/ExpenseIncome/Account/Account.swift,
 				DataModels/ExpenseIncome/Account/Accounts.swift,
@@ -207,6 +208,9 @@
 				Services/BookingChannelService/BookingChannelRemoteService.swift,
 				Services/BookingChannelService/BookingChannelServiceRequest.swift,
 				Services/BookingChannelService/BookingChannelServiceRouter.swift,
+				Services/CalendarService/CalendarRemoteService.swift,
+				Services/CalendarService/CalendarServiceRequest.swift,
+				Services/CalendarService/CalendarServiceRouter.swift,
 				Services/CategoryService/CategoryRemoteService.swift,
 				Services/CategoryService/CategoryServiceRequest.swift,
 				Services/CategoryService/CategoryServiceRouter.swift,
