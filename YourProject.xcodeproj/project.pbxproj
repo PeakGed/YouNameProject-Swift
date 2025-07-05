@@ -60,6 +60,7 @@
 				DataModels/AuthTokenResponse.swift,
 				DataModels/Calendar/CalendarAvailibility.swift,
 				DataModels/Calendar/CalendarMonth.swift,
+				DataModels/Calendar/ReservedDateRange.swift,
 				DataModels/Collection.swift,
 				DataModels/ExpenseIncome/Account/Account.swift,
 				DataModels/ExpenseIncome/Account/Accounts.swift,

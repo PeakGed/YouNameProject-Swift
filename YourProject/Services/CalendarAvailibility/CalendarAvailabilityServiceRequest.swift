@@ -51,8 +51,9 @@ struct CalendarAvailabilityServiceRequest {
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(hotelId, forKey: .hotelId)
-            try container.encode(checkInDate.toDateString("yyyy-MM-dd"), forKey: .checkInDate)
-            try container.encode(checkOutDate.toDateString("yyyy-MM-dd"), forKey: .checkOutDate)
+            let dateFormat = FormConfig.DateFormat.yyyyMMdd
+            try container.encode(checkInDate.toDateString(dateFormat), forKey: .checkInDate)
+            try container.encode(checkOutDate.toDateString(dateFormat), forKey: .checkOutDate)
             
             if let roomIds = roomIds, !roomIds.isEmpty {
                 let roomIdsString = roomIds.map { String($0) }.joined(separator: ",")
