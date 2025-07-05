@@ -134,7 +134,7 @@ final class StaffServiceRouterTests: XCTestCase {
         
         // Then
         XCTAssertEqual(urlRequest.httpMethod, "PUT")
-        XCTAssertTrue(urlRequest.url?.absoluteString.contains("/v4/staffs/1/username") == true)
+        XCTAssertTrue(urlRequest.url?.absoluteString.contains("/v4/staffs/1/change-username") == true)
         XCTAssertEqual(urlRequest.value(forHTTPHeaderField: "Content-Type"), "application/json")
         
         // Check JSON body

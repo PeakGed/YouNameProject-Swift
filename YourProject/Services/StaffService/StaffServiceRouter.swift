@@ -36,7 +36,7 @@ enum StaffServiceRouter: AlamofireBaseRouterProtocol {
         case .updateStaff(let request):
             return "/v4/staffs/\(request.id)"
         case .changeStaffUsername(let request):
-            return "/v4/staffs/\(request.id)/username"
+            return "/v4/staffs/\(request.id)/change-username"
         case .deleteStaff(let request):
             return "/v4/staffs/\(request.id)"
         case .changeHotel(let request):
