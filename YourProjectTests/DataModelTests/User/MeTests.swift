@@ -51,8 +51,6 @@ final class MeTests: XCTestCase {
     // MARK: - Role Tests
     
     func test_roleRawValues() throws {
-        XCTAssertEqual(Me.Role.frontDesk.rawValue, "FRONT_DESK")
-        XCTAssertEqual(Me.Role.manager.rawValue, "MANAGER")
         XCTAssertEqual(Me.Role.user.rawValue, "ROLE_USER")
         XCTAssertEqual(Me.Role.admin.rawValue, "ROLE_ADMIN")
         XCTAssertEqual(Me.Role.superAdmin.rawValue, "ROLE_SUPER_ADMIN")

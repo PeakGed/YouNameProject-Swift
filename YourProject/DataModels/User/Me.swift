@@ -124,9 +124,8 @@ struct Me: Codable {
 }
 
 extension Me {
+        
     enum Role: String, Codable {
-        case frontDesk = "FRONT_DESK"
-        case manager = "MANAGER"
         case user = "ROLE_USER"
         case admin = "ROLE_ADMIN"
         case superAdmin = "ROLE_SUPER_ADMIN"

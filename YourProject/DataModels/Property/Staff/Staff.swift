@@ -139,13 +139,7 @@ extension Staff {
         case frontDesk = "FRONT_DESK"
         case manager = "MANAGER"
         case accountant = "ACCOUNTANT"
-        case maid = "MAID"        
-
-        // system role
-        case systemUser = "ROLE_USER"
-        case systemAdmin = "ROLE_ADMIN"
-        case systemSuperAdmin = "ROLE_SUPER_ADMIN"
-        case systemSupportSuperAdmin = "ROLE_SUPPORT_SUPER_ADMIN"
+        case maid = "MAID"
         
         var description: String {
             switch self {
@@ -157,14 +151,6 @@ extension Staff {
                 return "Accountant"
             case .maid:
                 return "Maid"
-            case .systemUser:
-                return "User"
-            case .systemAdmin:
-                return "Admin"
-            case .systemSuperAdmin:
-                return "Super Admin"
-            case .systemSupportSuperAdmin:
-                return "Support Super Admin"
             }
         }
     }

@@ -54,8 +54,8 @@ final class ActivityLogRemoteServiceTests: XCTestCase {
             firstName: "Jane",
             lastName: "Smith",
             logoImage: nil,
-            staffId: "STAFF001",
-            role: .manager
+            staffId: 1,
+            role: .user
         )
         given(apiManager)
             .request(router: .any, requiredAuthorization: .any)
@@ -86,9 +86,9 @@ final class ActivityLogRemoteServiceTests: XCTestCase {
             email: "frontdesk@email.com",
             firstName: "Mike",
             lastName: "Johnson",
-            logoImage: "profile.jpg",
-            staffId: "STAFF002",
-            role: .frontDesk
+            logoImage: nil,
+            staffId: 2,
+            role: .user
         )
         given(apiManager)
             .request(router: .any, requiredAuthorization: .any)
@@ -153,7 +153,7 @@ final class ActivityLogRemoteServiceTests: XCTestCase {
             firstName: "Bob",
             lastName: "Wilson",
             logoImage: nil,
-            staffId: "STAFF003",
+            staffId: 3,
             role: .user
         )
         given(apiManager)

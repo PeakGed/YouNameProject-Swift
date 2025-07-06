@@ -13,17 +13,8 @@ struct Creator: Codable {
     let firstName: String
     let lastName: String
     let logoImage: String?
-    let staffId: String?
+    let staffId: Int?
     let role: Role?
-    
-    enum Role: String, Codable {
-        case frontDesk = "FRONT_DESK"
-        case manager = "MANAGER"
-        case user = "ROLE_USER"
-        case admin = "ROLE_ADMIN"
-        case superAdmin = "ROLE_SUPER_ADMIN"
-        case supportSuperAdmin = "ROLE_SUPPORT_SUPER_ADMIN"
-    }
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -40,7 +31,7 @@ struct Creator: Codable {
          firstName: String,
          lastName: String,
          logoImage: String? = nil,
-         staffId: String? = nil,
+         staffId: Int? = nil,
          role: Role? = nil) {
         self.id = id
         self.email = email
@@ -58,7 +49,7 @@ struct Creator: Codable {
         firstName = (try? container.decode(String.self, forKey: .firstName)) ?? ""
         lastName = (try? container.decode(String.self, forKey: .lastName)) ?? ""
         logoImage = try container.decodeIfPresent(String.self, forKey: .logoImage)
-        staffId = try container.decodeIfPresent(String.self, forKey: .staffId)
+        staffId = try container.decodeIfPresent(Int.self, forKey: .staffId)
         role = try container.decodeIfPresent(Role.self, forKey: .role)
     }
 
@@ -71,6 +62,15 @@ struct Creator: Codable {
         try container.encode(logoImage, forKey: .logoImage)
         try container.encode(staffId, forKey: .staffId)
         try container.encodeIfPresent(role?.rawValue, forKey: .role)
+    }
+}
+
+extension Creator {
+    enum Role: String, Codable {
+        case user = "ROLE_USER"
+        case admin = "ROLE_ADMIN"
+        case superAdmin = "ROLE_SUPER_ADMIN"
+        case supportSuperAdmin = "ROLE_SUPPORT_SUPER_ADMIN"
     }
 }
 

@@ -61,7 +61,7 @@ final class MeRemoteServiceTests: XCTestCase {
             firstName: "John",
             lastName: "Doe",
             phoneNumber: "1234567890",
-            role: .frontDesk,
+            role: .user,
             idCard: "1234567890123",
             logoImage: nil,
             signSignatureImage: nil,

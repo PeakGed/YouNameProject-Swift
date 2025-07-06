@@ -19,8 +19,8 @@ final class CreatorTests: XCTestCase {
             firstName: "John2",
             lastName: "Doe2",
             logoImage: "logo.png",
-            staffId: "STAFF001",
-            role: .supportSuperAdmin
+            staffId: 1,
+            role: .user
         )
         
         // Assert
@@ -29,8 +29,8 @@ final class CreatorTests: XCTestCase {
         XCTAssertEqual(creator.firstName, "John2")
         XCTAssertEqual(creator.lastName, "Doe2")
         XCTAssertEqual(creator.logoImage, "logo.png")
-        XCTAssertEqual(creator.staffId, "STAFF001")
-        XCTAssertEqual(creator.role, .supportSuperAdmin)
+        XCTAssertEqual(creator.staffId, 1)
+        XCTAssertEqual(creator.role, .user)
     }
     
     func test_initWithRequiredPropertiesOnly() throws {
@@ -69,8 +69,6 @@ final class CreatorTests: XCTestCase {
     // MARK: - Role Enum Tests
     
     func test_roleRawValues() throws {
-        XCTAssertEqual(Creator.Role.frontDesk.rawValue, "FRONT_DESK")
-        XCTAssertEqual(Creator.Role.manager.rawValue, "MANAGER")
         XCTAssertEqual(Creator.Role.user.rawValue, "ROLE_USER")
         XCTAssertEqual(Creator.Role.admin.rawValue, "ROLE_ADMIN")
         XCTAssertEqual(Creator.Role.superAdmin.rawValue, "ROLE_SUPER_ADMIN")
@@ -78,8 +76,6 @@ final class CreatorTests: XCTestCase {
     }
     
     func test_roleFromRawValue() throws {
-        XCTAssertEqual(Creator.Role(rawValue: "FRONT_DESK"), .frontDesk)
-        XCTAssertEqual(Creator.Role(rawValue: "MANAGER"), .manager)
         XCTAssertEqual(Creator.Role(rawValue: "ROLE_USER"), .user)
         XCTAssertEqual(Creator.Role(rawValue: "ROLE_ADMIN"), .admin)
         XCTAssertEqual(Creator.Role(rawValue: "ROLE_SUPER_ADMIN"), .superAdmin)
@@ -149,8 +145,8 @@ final class CreatorTests: XCTestCase {
             "first_name": null,
             "last_name": null,
             "logo_image": "logo.png",
-            "staff_id": "STAFF002",
-            "role": "MANAGER"
+            "staff_id": 1,
+            "role": "ROLE_USER"
         }
         """.data(using: .utf8)!
         
@@ -163,14 +159,12 @@ final class CreatorTests: XCTestCase {
         XCTAssertEqual(creator.firstName, "") // Should default to empty string
         XCTAssertEqual(creator.lastName, "") // Should default to empty string
         XCTAssertEqual(creator.logoImage, "logo.png")
-        XCTAssertEqual(creator.staffId, "STAFF002")
-        XCTAssertEqual(creator.role, .manager)
+        XCTAssertEqual(creator.staffId, 1)
+        XCTAssertEqual(creator.role, .user)
     }
     
     func test_decodingWithAllRoles() throws {
         let testCases: [(roleString: String, expectedRole: Creator.Role)] = [
-            ("FRONT_DESK", .frontDesk),
-            ("MANAGER", .manager),
             ("ROLE_USER", .user),
             ("ROLE_ADMIN", .admin),
             ("ROLE_SUPER_ADMIN", .superAdmin),
@@ -226,7 +220,7 @@ final class CreatorTests: XCTestCase {
             firstName: "Round",
             lastName: "Trip",
             logoImage: "test_logo.png",
-            staffId: "RT001",
+            staffId: 1,
             role: .admin
         )
         
