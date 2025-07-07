@@ -5,6 +5,87 @@
 //  Created by IntrodexMini on 5/7/2568 BE.
 //
 
+import Foundation
+
+struct AllotmentMonth: Codable {
+    let month: Date
+    let allotments: [UnitTypeAllotment]
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        month = try container.decode(String.self, forKey: .month).tryToDate(dateFormat: FormConfig.DateFormat.yyyyMM)
+        allotments = try container.decode([UnitTypeAllotment].self, forKey: .allotments)
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case month
+        case allotments
+    }
+}
+
+struct UnitTypeAllotment: Codable {
+    let reservedType: String
+    let reservedTypeId: Int
+    let date: Date
+    let hmsUnselectedReservedCount: Int
+    let hmsSelectedReservedCount: Int
+    let hmsReservedCount: Int
+    let cmReservedCount: Int
+    let availableUnitCount: Int
+    let unavailableUnitCount: Int
+    let blackoutUnitCount: Int
+    let totalUnits: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case reservedType = "reserved_type"
+        case reservedTypeId = "reserved_type_id"
+        case date
+        case hmsUnselectedReservedCount = "hms_unselected_reserved_count"
+        case hmsSelectedReservedCount = "hms_selected_reserved_count"
+        case hmsReservedCount = "hms_reserved_count"
+        case cmReservedCount = "cm_reserved_count"
+        case availableUnitCount = "available_unit_count"
+        case unavailableUnitCount = "unavailable_unit_count"
+        case blackoutUnitCount = "blackout_unit_count"
+        case totalUnits = "total_units"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        reservedType = try container.decode(String.self, forKey: .reservedType)
+        reservedTypeId = try container.decode(Int.self, forKey: .reservedTypeId)
+        date = try container.decode(String.self, forKey: .date).tryToDate(dateFormat: FormConfig.DateFormat.yyyyMMdd)
+        hmsUnselectedReservedCount = try container.decode(Int.self, forKey: .hmsUnselectedReservedCount)
+        hmsSelectedReservedCount = try container.decode(Int.self, forKey: .hmsSelectedReservedCount)
+        hmsReservedCount = try container.decode(Int.self, forKey: .hmsReservedCount)
+        cmReservedCount = try container.decode(Int.self, forKey: .cmReservedCount)
+        availableUnitCount = try container.decode(Int.self, forKey: .availableUnitCount)
+        unavailableUnitCount = try container.decode(Int.self, forKey: .unavailableUnitCount)
+        blackoutUnitCount = try container.decode(Int.self, forKey: .blackoutUnitCount)
+        totalUnits = try container.decode(Int.self, forKey: .totalUnits)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(reservedType, forKey: .reservedType)
+        try container.encode(reservedTypeId, forKey: .reservedTypeId)
+        try container.encode(date.toDateString(FormConfig.DateFormat.yyyyMMdd), forKey: .date)
+        try container.encode(hmsUnselectedReservedCount, forKey: .hmsUnselectedReservedCount)
+        try container.encode(hmsSelectedReservedCount, forKey: .hmsSelectedReservedCount)
+        try container.encode(hmsReservedCount, forKey: .hmsReservedCount)
+        try container.encode(cmReservedCount, forKey: .cmReservedCount)
+        try container.encode(availableUnitCount, forKey: .availableUnitCount)
+        try container.encode(unavailableUnitCount, forKey: .unavailableUnitCount)
+        try container.encode(blackoutUnitCount, forKey: .blackoutUnitCount)
+        try container.encode(totalUnits, forKey: .totalUnits)
+    }
+}
+
+extension UnitTypeAllotment {
+    enum ReservedType: String, Codable {
+        case roomType = "ROOM_TYPE"        
+    }
+}
 /*
  {
      "month": "2025-07",
