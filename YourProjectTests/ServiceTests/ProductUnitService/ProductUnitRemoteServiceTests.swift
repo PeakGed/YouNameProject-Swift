@@ -7,7 +7,7 @@
 
 import XCTest
 import Mockable
-@testable import YourProject
+
 
 class ProductUnitRemoteServiceTests: XCTestCase {
     
