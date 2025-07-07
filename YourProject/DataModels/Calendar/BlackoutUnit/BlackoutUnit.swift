@@ -92,6 +92,7 @@ struct BlackoutUnit: Codable {
 extension BlackoutUnit {
     enum UnitableType: String, Codable {
         case room = "ROOM"
+        case roomType = "ROOM_TYPE"
     }
 }
 /*
