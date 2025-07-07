@@ -62,6 +62,8 @@
 				DataModels/Calendar/AllotmentUnitType.swift,
 				DataModels/Calendar/BlackoutUnit/BlackoutUnit.swift,
 				DataModels/Calendar/BlackoutUnit/BlackoutUnits.swift,
+				DataModels/Calendar/CalendarEvent/CalendarEvent.swift,
+				DataModels/Calendar/CalendarEvent/CalendarEvents.swift,
 				DataModels/Calendar/CalendarMonth.swift,
 				DataModels/Calendar/ReservedDateRange.swift,
 				DataModels/Collection.swift,
