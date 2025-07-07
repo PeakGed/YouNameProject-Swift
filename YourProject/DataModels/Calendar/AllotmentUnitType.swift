@@ -8,59 +8,38 @@
 import Foundation
 
 struct AllotmentUnitType: Codable {
-    let roomType: RoomType
-    
-    init(roomType: RoomType) {
-        self.roomType = roomType
-    }
+    let id: Int
+    let name: String
+    let units: [Unit]
     
     enum CodingKeys: String, CodingKey {
-        case roomType = "room_type"
+        case id
+        case name
+        case units
+    }
+
+    init(id: Int, name: String, units: [Unit]) {
+        self.id = id
+        self.name = name
+        self.units = units
     }
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        roomType = try container.decode(RoomType.self, forKey: .roomType)
+        id = try container.decode(Int.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        units = try container.decode([Unit].self, forKey: .units)
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(roomType, forKey: .roomType)
+        try container.encode(id, forKey: .id)
+        try container.encode(name, forKey: .name)
+        try container.encode(units, forKey: .units)
     }
 }
 
 extension AllotmentUnitType {
-    struct RoomType: Codable {
-        let id: Int
-        let name: String
-        let units: [Unit]
-        
-        enum CodingKeys: String, CodingKey {
-            case id
-            case name
-            case units
-        }
-
-        init(id: Int, name: String, units: [Unit]) {
-            self.id = id
-            self.name = name
-            self.units = units
-        }
-        
-        init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            id = try container.decode(Int.self, forKey: .id)
-            name = try container.decode(String.self, forKey: .name)
-            units = try container.decode([Unit].self, forKey: .units)
-        }
-        
-        func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(id, forKey: .id)
-            try container.encode(name, forKey: .name)
-            try container.encode(units, forKey: .units)
-        }
-    }
     
     struct Unit: Codable {
         let id: Int
@@ -103,21 +82,40 @@ extension AllotmentUnitType {
 
 /*
  {
-     "room_type": {
-         "id": 179,
+               "id": 179,
          "name": "Duluxe Room",
          "units": [
              {
                  "id": 644,
                  "name": "5",
-                 "status": "AVAILABLE",
+                 "status": "available", // convert to UPPER_CASE
+                 "reservable_date_ranges": [
+                     "2020-01-01",
+                     "2020-01-02",
+                     "2020-01-03"
+                 ]
+             },
+             {
+                 "id": 643,
+                 "name": "4",
+                 "status": "available",  // convert to UPPER_CASE
+                 "reservable_date_ranges": [
+                     "2020-01-01",
+                     "2020-01-02",
+                     "2020-01-03"
+                 ]
+             },
+             {
+                 "id": 642,
+                 "name": "4",
+                 "status": "available",  // convert to UPPER_CASE
                  "reservable_date_ranges": [
                      "2020-01-01",
                      "2020-01-02",
                      "2020-01-03"
                  ]
              }
-         ]
-     }
+         ],
+         //"quotas": [] // remove
  }
  */

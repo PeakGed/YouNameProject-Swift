@@ -7,26 +7,11 @@
 
 import Foundation
 
-struct AllotmentMonth: Codable {
-    let month: Date
-    let allotments: [UnitTypeAllotment]
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        month = try container.decode(String.self, forKey: .month).tryToDate(dateFormat: FormConfig.DateFormat.yyyyMM)
-        allotments = try container.decode([UnitTypeAllotment].self, forKey: .allotments)
-    }
-    
-    enum CodingKeys: String, CodingKey {
-        case month
-        case allotments
-    }
-}
-
 struct UnitTypeAllotment: Codable {
-    let reservedType: String
+    let reservedType: ReservedType
     let reservedTypeId: Int
     let date: Date
+    
     let hmsUnselectedReservedCount: Int
     let hmsSelectedReservedCount: Int
     let hmsReservedCount: Int
@@ -52,9 +37,12 @@ struct UnitTypeAllotment: Codable {
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        reservedType = try container.decode(String.self, forKey: .reservedType)
+        reservedType = try container.decode(ReservedType.self, forKey: .reservedType)
         reservedTypeId = try container.decode(Int.self, forKey: .reservedTypeId)
-        date = try container.decode(String.self, forKey: .date).tryToDate(dateFormat: FormConfig.DateFormat.yyyyMMdd)
+        
+        let dataFormat = FormConfig.DateFormat.yyyyMMdd
+        date = try container.decode(String.self, forKey: .date).tryToDate(dataFormat)
+        
         hmsUnselectedReservedCount = try container.decode(Int.self, forKey: .hmsUnselectedReservedCount)
         hmsSelectedReservedCount = try container.decode(Int.self, forKey: .hmsSelectedReservedCount)
         hmsReservedCount = try container.decode(Int.self, forKey: .hmsReservedCount)
@@ -67,9 +55,11 @@ struct UnitTypeAllotment: Codable {
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(reservedType, forKey: .reservedType)
+        try container.encode(reservedType.rawValue, forKey: .reservedType)
         try container.encode(reservedTypeId, forKey: .reservedTypeId)
-        try container.encode(date.toDateString(FormConfig.DateFormat.yyyyMMdd), forKey: .date)
+        let dataFormat = FormConfig.DateFormat.yyyyMMdd
+        try container.encode(date.toDateString(dataFormat), forKey: .date)
+        
         try container.encode(hmsUnselectedReservedCount, forKey: .hmsUnselectedReservedCount)
         try container.encode(hmsSelectedReservedCount, forKey: .hmsSelectedReservedCount)
         try container.encode(hmsReservedCount, forKey: .hmsReservedCount)
@@ -83,7 +73,8 @@ struct UnitTypeAllotment: Codable {
 
 extension UnitTypeAllotment {
     enum ReservedType: String, Codable {
-        case roomType = "ROOM_TYPE"        
+        case roomType = "ROOM_TYPE"
+        case room = "ROOM"
     }
 }
 /*
