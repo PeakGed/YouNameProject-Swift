@@ -9,4 +9,8 @@ extension Int {
     func toString() -> String {
         return "\(self)"
     }
+    
+    func toBool() -> Bool {
+        return self != 0
+    }
 }
