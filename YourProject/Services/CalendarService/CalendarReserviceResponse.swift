@@ -1,33 +1,37 @@
 //
-//  CalendarMonth.swift
+//  CalendarReserviceResponse.swift
 //  YourProject
 //
-//  Created by IntrodexMini on 14/6/2568 BE.
+//  Created by IntrodexMini on 8/7/2568 BE.
 //
 import Foundation
 
-struct CalendarMonth: Codable {
-    let month: String
-    let reservedItems: [ReservedItem]
+struct CalendarReserviceResponse {
     
-    init(month: String, reservedItems: [ReservedItem]) {
-        self.month = month
-        self.reservedItems = reservedItems
+    struct CalendarMonth: Codable {
+        let month: String
+        let reservedItems: [ReservedItem]
+        
+        init(month: String, reservedItems: [ReservedItem]) {
+            self.month = month
+            self.reservedItems = reservedItems
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case month
+            case reservedItems = "reserved_items"
+        }
+
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            month = try container.decode(String.self, forKey: .month)
+            reservedItems = try container.decode([ReservedItem].self, forKey: .reservedItems)
+        }
     }
 
-    enum CodingKeys: String, CodingKey {
-        case month
-        case reservedItems = "reserved_items"
-    }
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        month = try container.decode(String.self, forKey: .month)
-        reservedItems = try container.decode([ReservedItem].self, forKey: .reservedItems)
-    }
 }
 
-extension CalendarMonth {
+extension CalendarReserviceResponse {
     
     struct ReservedItem: Codable {
         let reservationId: Int
@@ -95,6 +99,4 @@ extension CalendarMonth {
         case canceled = "CANCELED"
         case noShow = "NO_SHOW"
     }
-    
 }
-

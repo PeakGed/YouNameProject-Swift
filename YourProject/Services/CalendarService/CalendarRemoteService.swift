@@ -9,7 +9,7 @@ import Mockable
 
 @Mockable
 protocol CalendarServiceProtocol: AnyObject {
-    func fetchMonth(request: CalendarServiceRequest.FetchMonth) async throws -> CalendarMonth
+    func fetchMonth(request: CalendarServiceRequest.FetchMonth) async throws -> CalendarReserviceResponse.CalendarMonth
 }
 
 class CalendarRemoteService: CalendarServiceProtocol {
@@ -22,7 +22,7 @@ class CalendarRemoteService: CalendarServiceProtocol {
         self.apiManager = apiManager
     }
     
-    func fetchMonth(request: CalendarServiceRequest.FetchMonth) async throws -> CalendarMonth {
+    func fetchMonth(request: CalendarServiceRequest.FetchMonth) async throws -> CalendarReserviceResponse.CalendarMonth {
         let router = CalendarServiceRouter.fetchMonth(request: request)
         return try await apiManager.request(router: router, requiredAuthorization: true)
     }

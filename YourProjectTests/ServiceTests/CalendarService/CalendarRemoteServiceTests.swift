@@ -11,13 +11,16 @@ import Mockable
 final class CalendarRemoteServiceTests: XCTestCase {
     lazy var localStorage = MockLocalStorageManagerProtocal()
     lazy var apiManager = MockAPIManagerProtocal()
+    
+    typealias ReservedItem = CalendarReserviceResponse.ReservedItem
+    typealias CalendarMonth = CalendarReserviceResponse.CalendarMonth
 
     func testFetchMonth_WillGetValidResponse() async throws {
         // Given
         let expectedCalendarMonth = CalendarMonth(
             month: "2024-02",
             reservedItems: [
-                CalendarMonth.ReservedItem(
+                ReservedItem(
                     reservationId: 995,
                     status: .created,
                     checkInDate: Date(timeIntervalSince1970: 1709164800), // 2024-02-29
@@ -87,7 +90,7 @@ final class CalendarRemoteServiceTests: XCTestCase {
         let expectedCalendarMonth = CalendarMonth(
             month: "2024-02",
             reservedItems: [
-                CalendarMonth.ReservedItem(
+                ReservedItem(
                     reservationId: 993,
                     status: .created,
                     checkInDate: Date(timeIntervalSince1970: 1707609600), // 2024-02-11
@@ -97,7 +100,7 @@ final class CalendarRemoteServiceTests: XCTestCase {
                     reservedUnitId: 623,
                     emoji: nil
                 ),
-                CalendarMonth.ReservedItem(
+                ReservedItem(
                     reservationId: 994,
                     status: .created,
                     checkInDate: Date(timeIntervalSince1970: 1708819200), // 2024-02-25
