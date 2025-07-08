@@ -26,6 +26,12 @@ struct AllotmentServiceResponse {
             allotments = UnitTypeAllotments(array: unitTypeAllotments)
         }
         
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(month.toDateString(FormConfig.DateFormat.yyyyMM), forKey: .month)
+            try container.encode(allotments, forKey: .allotments)
+        }
+        
         enum CodingKeys: String, CodingKey {
             case month
             case allotments
