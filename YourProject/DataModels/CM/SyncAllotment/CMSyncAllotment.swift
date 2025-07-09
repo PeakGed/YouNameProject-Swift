@@ -1,5 +1,5 @@
 //
-//  CMSyncAllotment
+//  CMSyncAllotment.swift
 //  YourProject
 //
 //  Created by IntrodexMini on 9/7/2568 BE.
@@ -15,7 +15,7 @@ struct CMSyncAllotment: Codable {
     let endDate: Date
     let result: [String: Any]?
     let createdAt: Date
-    let updatedAt: Date    
+    let updatedAt: Date
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -91,7 +91,7 @@ extension CMSyncAllotment {
     
     enum Status: String, Codable, CaseIterable {
         case pending = "PENDING"
-        case done = "DONE"        
+        case done = "DONE"
     }
 }
 
