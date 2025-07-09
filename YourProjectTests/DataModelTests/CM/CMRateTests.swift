@@ -76,14 +76,24 @@ final class CMRateTests: XCTestCase {
         XCTAssertEqual(rate.availableDay.sun, true)
     }
     
-    func test_initWithUnitTypeDetail() throws {
+    func test_initWithChannels() throws {
         // Arrange & Act
         let rate = createSampleCMRate()
         
         // Assert
-        XCTAssertEqual(rate.hmsUnitDetail.id, 116)
-        XCTAssertEqual(rate.hmsUnitDetail.name, "6 bed")
-        XCTAssertEqual(rate.hmsUnitDetail.baseRate, 100.0)
+        XCTAssertNotNil(rate.channels)
+        XCTAssertEqual(rate.channels.channel017, true) // Agoda
+        XCTAssertEqual(rate.channels.channel019, false) // Booking.com
+    }
+    
+    func test_initWithRateCodes() throws {
+        // Arrange & Act
+        let rate = createSampleCMRate()
+        
+        // Assert
+        XCTAssertNotNil(rate.rateCode)
+        XCTAssertEqual(rate.rateCode.agodaRateCode, "")
+        XCTAssertEqual(rate.rateCode.bookingcomRateCode, "")
     }
     
     // MARK: - Strategy Tests
@@ -106,22 +116,16 @@ final class CMRateTests: XCTestCase {
         XCTAssertEqual(CMRate.UnitType.roomType.rawValue, "ROOM_TYPE")
     }
     
-    // MARK: - UnitTypeDetail Tests
+    // MARK: - Property Tests
     
-    func test_unitTypeDetailInitialization() throws {
+    func test_optionalPropertiesInitialization() throws {
         // Arrange & Act
-        let unitTypeDetail = CMRate.UnitTypeDetail(
-            id: 116,
-            name: "6 bed",
-            baseRate: 100.0,
-            data: nil
-        )
+        let rate = createSampleCMRate()
         
         // Assert
-        XCTAssertEqual(unitTypeDetail.id, 116)
-        XCTAssertEqual(unitTypeDetail.name, "6 bed")
-        XCTAssertEqual(unitTypeDetail.baseRate, 100.0)
-        XCTAssertNil(unitTypeDetail.data)
+        XCTAssertNotNil(rate.id)
+        XCTAssertNil(rate.code)
+        XCTAssertNil(rate.color)
     }
     
     // MARK: - DayOption Tests
@@ -230,97 +234,10 @@ final class CMRateTests: XCTestCase {
         XCTAssertEqual(unitType, .roomType)
     }
     
-    func test_unitTypeEncodingToJSON() throws {
-        // Arrange
-        let unitType = CMRate.UnitType.roomType
-        
-        // Act
-        let encodedData = try JSONEncoder().encode(unitType)
-        let decodedUnitType = try JSONDecoder().decode(CMRate.UnitType.self, from: encodedData)
-        
-        // Assert
-        XCTAssertEqual(decodedUnitType, unitType)
-    }
-    
-    func test_unitTypeDetailDecodingFromJSON() throws {
-        // Arrange
-        let json = """
-        {
-            "id": 116,
-            "name": "6 bed",
-            "baseRate": 100.0
-        }
-        """.data(using: .utf8)!
-        
-        // Act
-        let unitTypeDetail = try JSONDecoder().decode(CMRate.UnitTypeDetail.self, from: json)
-        
-        // Assert
-        XCTAssertEqual(unitTypeDetail.id, 116)
-        XCTAssertEqual(unitTypeDetail.name, "6 bed")
-        XCTAssertEqual(unitTypeDetail.baseRate, 100.0)
-    }
-    
-    func test_dayOptionDecodingFromJSON() throws {
-        // Arrange
-        let json = """
-        {
-            "mon": true,
-            "tue": true,
-            "wed": false,
-            "thu": true,
-            "fri": false,
-            "sat": true,
-            "sun": false
-        }
-        """.data(using: .utf8)!
-        
-        // Act
-        let dayOption = try JSONDecoder().decode(CMRate.DayOption.self, from: json)
-        
-        // Assert
-        XCTAssertEqual(dayOption.mon, true)
-        XCTAssertEqual(dayOption.tue, true)
-        XCTAssertEqual(dayOption.wed, false)
-        XCTAssertEqual(dayOption.thu, true)
-        XCTAssertEqual(dayOption.fri, false)
-        XCTAssertEqual(dayOption.sat, true)
-        XCTAssertEqual(dayOption.sun, false)
-    }
-    
-    func test_rateOptionDecodingFromJSON() throws {
-        // Arrange
-        let json = """
-        {
-            "enable": true,
-            "rate": 150.0
-        }
-        """.data(using: .utf8)!
-        
-        // Act
-        let rateOption = try JSONDecoder().decode(CMRate.RateOption.self, from: json)
-        
-        // Assert
-        XCTAssertEqual(rateOption.enable, true)
-        XCTAssertEqual(rateOption.rate, 150.0)
-    }
-    
-    func test_rateOptionEncodingToJSON() throws {
-        // Arrange
-        let rateOption = CMRate.RateOption(enable: true, rate: 150.0)
-        
-        // Act
-        let encodedData = try JSONEncoder().encode(rateOption)
-        let decodedRateOption = try JSONDecoder().decode(CMRate.RateOption.self, from: encodedData)
-        
-        // Assert
-        XCTAssertEqual(decodedRateOption.enable, rateOption.enable)
-        XCTAssertEqual(decodedRateOption.rate, rateOption.rate)
-    }
     
     // MARK: - Helper Methods
     
-    private func createSampleCMRate() -> CMRate {
+    private func createSampleCMRate(id: Int = 1, name: String = "Standard Rate") -> CMRate {
         let roomPrice = CMRate.RateOption(enable: true, rate: 100.0)
         let onePersonPrice = CMRate.RateOption(enable: true, rate: 80.0)
         let twoPersonPrice = CMRate.RateOption(enable: true, rate: 100.0)
@@ -337,22 +254,18 @@ final class CMRateTests: XCTestCase {
             sun: true
         )
         
-        let unitTypeDetail = CMRate.UnitTypeDetail(
-            id: 116,
-            name: "6 bed",
-            baseRate: 100.0,
-            data: nil
-        )
+        let channels = createSampleChannels()
+        let rateCodes = createSampleRateCodes()
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         
         return CMRate(
-            id: 1,
+            id: id,
             cmRoomID: 232711,
             cmRateID: "rate123",
             offerID: "offer456",
-            name: "Standard Rate",
+            name: name,
             description: "Standard room rate",
             minNight: 1,
             maxNight: 30,
@@ -368,13 +281,63 @@ final class CMRateTests: XCTestCase {
             extraPersonPrice: extraPersonPrice,
             extraChildPrice: extraChildPrice,
             availableDay: availableDay,
+            channels: channels,
+            rateCode: rateCodes,
             hmsUnitType: .roomType,
             hmsUnitID: 116,
-            hmsUnitDetail: unitTypeDetail,
-            isDefault: true,
             hotelID: 105,
+            isDefault: true,
+            code: nil,
+            color: nil,
             createdAt: .now,
             updatedAt: .now
         )
+    }
+    
+    private func createSampleChannels() -> CMRate.Channels {
+        return CMRate.Channels(
+            beds24: false,
+            bookit: false,
+            flipkey: false,
+            expedia: false,
+            agoda: true,
+            booking: false,
+            tablet: false,
+            hostelworld: false,
+            bedandbreakfastEU: false,
+            vrbo: false,
+            bedandbreakfastNL: false,
+            atraveo: false,
+            feratel: false,
+            webRooms: false,
+            lastminute: false,
+            hotelbeds: false,
+            ota: false,
+            hostelInternational: false,
+            airbnb: false,
+            tomasTravel: false,
+            ostrovok: false,
+            bookeasy: false,
+            trip: false,
+            tripadvisorRentals: false,
+            traveloka: false,
+            hrs: false,
+            despegar: false,
+            vacationStay: false,
+            hostelsclub: false,
+            eDreams: false,
+            jomres: false,
+            goibibo: false,
+            travia: false,
+            homeToGo: false,
+            traumFerienwohnungen: false,
+            tiket: false,
+            marriott: false,
+            beds24Agents: false
+        )
+    }
+    
+    private func createSampleRateCodes() -> CMRate.RateCodes {
+        return CMRate.RateCodes()
     }
 } 

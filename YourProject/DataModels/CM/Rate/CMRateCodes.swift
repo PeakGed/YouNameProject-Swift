@@ -24,6 +24,20 @@ struct CMRateCodes: Codable {
         traviaRateCode = []
     }
     
+    init (bookingcomRateCode: [CMRateCode],
+          agodacomRateCode: [CMRateCode],
+          ctripRateCode: [CMRateCode],
+          expediacomRateCode: [CMRateCode],
+          travelokacomRateCode: [CMRateCode],
+          traviaRateCode: [CMRateCode]) {
+        self.bookingcomRateCode = bookingcomRateCode
+        self.agodacomRateCode = agodacomRateCode
+        self.ctripRateCode = ctripRateCode
+        self.expediacomRateCode = expediacomRateCode
+        self.travelokacomRateCode = travelokacomRateCode
+        self.traviaRateCode = traviaRateCode
+    }
+    
     //decode
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -60,6 +74,12 @@ struct CMRateCodes: Codable {
 struct CMRateCode: Codable {
     let name: String
     let code: String
+    
+    init (name: String,
+          code: String) {
+        self.name = name
+        self.code = code
+    }
     
     //decode
     init(from decoder: Decoder) throws {

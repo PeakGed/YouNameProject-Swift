@@ -23,8 +23,8 @@ final class CMInvoiceTests: XCTestCase {
         XCTAssertEqual(invoice.price, 200.00)
         XCTAssertEqual(invoice.tax, 0.00)
         XCTAssertEqual(invoice.invoiceeID, "")
-        XCTAssertEqual(invoice.type, "t1")
-        XCTAssertEqual(invoice.type2, "t2")
+        XCTAssertEqual(invoice.type, "1")
+        XCTAssertEqual(invoice.type2, "0")
     }
     
     func test_initWithDifferentValues() throws {
@@ -37,8 +37,8 @@ final class CMInvoiceTests: XCTestCase {
             price: 150.50,
             tax: 15.05,
             invoiceeID: "guest123",
-            type: "t1",
-            type2: "t2"
+            type: "2",
+            type2: "1"
         )
         
         // Assert
@@ -49,8 +49,8 @@ final class CMInvoiceTests: XCTestCase {
         XCTAssertEqual(invoice.price, 150.50)
         XCTAssertEqual(invoice.tax, 15.05)
         XCTAssertEqual(invoice.invoiceeID, "guest123")
-        XCTAssertEqual(invoice.type, "t1")
-        XCTAssertEqual(invoice.type2, "t2")
+        XCTAssertEqual(invoice.type, "2")
+        XCTAssertEqual(invoice.type2, "1")
     }
     
     // MARK: - Codable Tests
@@ -168,8 +168,8 @@ final class CMInvoiceTests: XCTestCase {
             price: 100.00,
             tax: 10.00,
             invoiceeID: "guest456",
-            type: "t1",
-            type2: "t2"
+            type: "3",
+            type2: "2"
         )
         let invoices = [invoice1, invoice2]
         
@@ -189,6 +189,33 @@ final class CMInvoiceTests: XCTestCase {
         XCTAssertEqual(decodedInvoices[1].type2, invoice2.type2)
     }
     
+    func test_typeAndType2PropertiesFromActualJSON() throws {
+        // Arrange - Using actual JSON from the API
+        let json = """
+        {
+            "invoiceId": "24373826",
+            "description": "6 bed Wednesday, 15 January, 2020 - Thursday, 16 January, 2020",
+            "status": "",
+            "qty": "1",
+            "price": "200.00",
+            "vatRate": "0.00",
+            "type": "1",
+            "type2": "0",
+            "invoiceeId": ""
+        }
+        """.data(using: .utf8)!
+        
+        // Act
+        let invoice = try JSONDecoder().decode(CMInvoice.self, from: json)
+        
+        // Assert
+        XCTAssertEqual(invoice.type, "1")
+        XCTAssertEqual(invoice.type2, "0")
+        XCTAssertEqual(invoice.id, "24373826")
+        XCTAssertEqual(invoice.qty, 1)
+        XCTAssertEqual(invoice.price, 200.00)
+    }
+    
     // MARK: - Helper Methods
     
     private func createSampleCMInvoice() -> CMInvoice {
@@ -200,8 +227,8 @@ final class CMInvoiceTests: XCTestCase {
             price: 200.00,
             tax: 0.00,
             invoiceeID: "",
-            type: "t1",
-            type2: "t2"
+            type: "1",
+            type2: "0"
         )
     }
 } 
