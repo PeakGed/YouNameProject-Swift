@@ -9,25 +9,65 @@ import Foundation
 extension CMRate {
     
     struct RateCodes: Codable {
-        var otaRateCode: String
-        var ctripRateCode: String
-        var hrsdeRateCode: String
-        var odigeoRateCode: String
-        var traviaRateCode: String
-        var feratelRateCode: String
-        var agodaRateCode: String
-        var bookingcomRateCode: String
-        var expediaRateCode: String
-        var ostrovokruRateCode: String
-        var tomastravelRateCode: String
-        var hotelbedsRateCode: String
-        var lateroomsRateCode: String
-        var travelokaRateCode: String
-        var lastminuteRateCode: String
-        var hostelworldRateCode: String
-        var travelocityRateCode: String
-        var budgetplacesRateCode: String
-        var tablethotelsRateCode: String
+        let otaRateCode: String
+        let ctripRateCode: String
+        let hrsdeRateCode: String
+        let odigeoRateCode: String
+        let traviaRateCode: String
+        let feratelRateCode: String
+        let agodaRateCode: String
+        let bookingcomRateCode: String
+        let expediaRateCode: String
+        let ostrovokruRateCode: String
+        let tomastravelRateCode: String
+        let hotelbedsRateCode: String
+        let lateroomsRateCode: String
+        let travelokaRateCode: String
+        let lastminuteRateCode: String
+        let hostelworldRateCode: String
+        let travelocityRateCode: String
+        let budgetplacesRateCode: String
+        let tablethotelsRateCode: String
+
+        init(otaRateCode: String,
+             ctripRateCode: String,
+             hrsdeRateCode: String,
+             odigeoRateCode: String,
+             traviaRateCode: String,
+             feratelRateCode: String,
+             agodaRateCode: String,
+             bookingcomRateCode: String,
+             expediaRateCode: String,
+             ostrovokruRateCode: String,
+             tomastravelRateCode: String,
+             hotelbedsRateCode: String,
+             lateroomsRateCode: String,
+             travelokaRateCode: String,
+             lastminuteRateCode: String,
+             hostelworldRateCode: String,
+             travelocityRateCode: String,
+             budgetplacesRateCode: String,
+             tablethotelsRateCode: String) {
+            self.otaRateCode = otaRateCode
+            self.ctripRateCode = ctripRateCode
+            self.hrsdeRateCode = hrsdeRateCode
+            self.odigeoRateCode = odigeoRateCode
+            self.traviaRateCode = traviaRateCode
+            self.feratelRateCode = feratelRateCode
+            self.agodaRateCode = agodaRateCode
+            self.bookingcomRateCode = bookingcomRateCode
+            self.expediaRateCode = expediaRateCode
+            self.ostrovokruRateCode = ostrovokruRateCode
+            self.tomastravelRateCode = tomastravelRateCode
+            self.hotelbedsRateCode = hotelbedsRateCode
+            self.lateroomsRateCode = lateroomsRateCode
+            self.travelokaRateCode = travelokaRateCode
+            self.lastminuteRateCode = lastminuteRateCode
+            self.hostelworldRateCode = hostelworldRateCode
+            self.travelocityRateCode = travelocityRateCode
+            self.budgetplacesRateCode = budgetplacesRateCode
+            self.tablethotelsRateCode = tablethotelsRateCode
+        }
         
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)

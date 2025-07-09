@@ -212,17 +212,13 @@ final class CMBookingRemoteServiceTests: XCTestCase {
         
         let expectedCMBooking = CMBooking(
             id: 123,
-            hotelID: 105,
-            kind: .roomType,
-            unitTypeDetail: CMBooking.UnitTypeDetail(
-                id: 1,
-                name: "Standard Room",
-                baseRate: 1500.0
-            ),
+            hotelId: 105,
+            hmsUnitType: .roomType,
+            hmsUnitId: 179,
             firstNight: Date(timeIntervalSince1970: 1577836800),
             lastNight: Date(timeIntervalSince1970: 1577923200),
             cmBookID: "book123",
-            cmRoomID: "room456",
+            cmRoomId: "room456",
             cmStatus: .confirmed,
             raw: rawCMBooking,
             hmsReservationID: 789,
@@ -240,10 +236,11 @@ final class CMBookingRemoteServiceTests: XCTestCase {
 
         // Then
         XCTAssertEqual(result.id, expectedCMBooking.id)
-        XCTAssertEqual(result.hotelID, expectedCMBooking.hotelID)
-        XCTAssertEqual(result.kind, expectedCMBooking.kind)
+        XCTAssertEqual(result.hotelId, expectedCMBooking.hotelId)
+        XCTAssertEqual(result.hmsUnitType, expectedCMBooking.hmsUnitType)
+        XCTAssertEqual(result.hmsUnitId, expectedCMBooking.hmsUnitId)
         XCTAssertEqual(result.cmBookID, expectedCMBooking.cmBookID)
-        XCTAssertEqual(result.cmRoomID, expectedCMBooking.cmRoomID)
+        XCTAssertEqual(result.cmRoomId, expectedCMBooking.cmRoomId)
         XCTAssertEqual(result.cmStatus, expectedCMBooking.cmStatus)
         XCTAssertEqual(result.hmsReservationID, expectedCMBooking.hmsReservationID)
     }
