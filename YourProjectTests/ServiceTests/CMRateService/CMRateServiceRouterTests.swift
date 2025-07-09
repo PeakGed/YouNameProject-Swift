@@ -13,7 +13,7 @@ final class CMRateServiceRouterTests: XCTestCase {
     
     func testFetchByPeriodRouter_WillHaveCorrectParameters() throws {
         // Given
-        let startDate = Date(timeIntervalSince1970: 1714129200) // 2025-04-26
+        let startDate = Date(timeIntervalSince1970: 1714129200) // 2024-04-26
         let endDate = Date(timeIntervalSince1970: 1714215600) // 2025-04-27
         let request = CMRateServiceRequest.FetchByPeriod(
             hotelId: 105,
@@ -35,8 +35,8 @@ final class CMRateServiceRouterTests: XCTestCase {
         let parameters = router.parameters
         XCTAssertNotNil(parameters)
         XCTAssertEqual(parameters?["hotel_id"] as? Int, 105)
-        XCTAssertEqual(parameters?["start_date"] as? String, "2025-04-26")
-        XCTAssertEqual(parameters?["end_date"] as? String, "2025-04-27")
+        XCTAssertEqual(parameters?["start_date"] as? String, "2024-04-26")
+        XCTAssertEqual(parameters?["end_date"] as? String, "2024-04-27")
         XCTAssertEqual(parameters?["page"] as? Int, 1)
         XCTAssertEqual(parameters?["per_page"] as? String, "20")
         XCTAssertEqual(parameters?["sorted_by"] as? String, "ID")
