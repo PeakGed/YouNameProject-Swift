@@ -68,6 +68,7 @@
 				DataModels/CM/CMBooking.swift,
 				DataModels/CM/CMBookingRaw.swift,
 				DataModels/CM/CMBookings.swift,
+				DataModels/CM/CMCalendarItem.swift,
 				DataModels/CM/CMInvoice.swift,
 				DataModels/CM/Rate/CMRate.swift,
 				"DataModels/CM/Rate/CMRate+Channels.swift",
