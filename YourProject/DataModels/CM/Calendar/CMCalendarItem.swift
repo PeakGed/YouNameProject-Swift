@@ -14,9 +14,9 @@ struct CMCalendarItem: Codable {
     let checkInDate: Date
     let checkOutDate: Date
     let cmBookingId: Int
-    let cmBookingStatus: String
+    let cmBookingStatus: CMBookingRaw.Status
     let unitCount: Int
-    let reservationId: Int
+    let hmsReservationId: Int?
     
     enum CodingKeys: String, CodingKey {
         case date
@@ -27,7 +27,7 @@ struct CMCalendarItem: Codable {
         case cmBookingId = "cm_booking_id"
         case cmBookingStatus = "cm_booking_status"
         case unitCount = "unit_count"
-        case reservationId = "reservation_id"
+        case hmsReservationId = "reservation_id"
     }
     
     init(from decoder: Decoder) throws {
@@ -40,9 +40,9 @@ struct CMCalendarItem: Codable {
         checkInDate = try container.decode(String.self, forKey: .checkInDate).tryToDate(dateFormat: dateFormat)
         checkOutDate = try container.decode(String.self, forKey: .checkOutDate).tryToDate(dateFormat: dateFormat)
         cmBookingId = try container.decode(Int.self, forKey: .cmBookingId)
-        cmBookingStatus = try container.decode(String.self, forKey: .cmBookingStatus)
+        cmBookingStatus = try container.decode(CMBookingRaw.Status.self, forKey: .cmBookingStatus)
         unitCount = try container.decode(Int.self, forKey: .unitCount)
-        reservationId = try container.decode(Int.self, forKey: .reservationId)
+        hmsReservationId = try container.decodeIfPresent(Int.self, forKey: .hmsReservationId)
     }
     
     init(date: Date,
@@ -51,9 +51,9 @@ struct CMCalendarItem: Codable {
          checkInDate: Date,
          checkOutDate: Date,
          cmBookingId: Int,
-         cmBookingStatus: String,
+         cmBookingStatus: CMBookingRaw.Status,
          unitCount: Int,
-         reservationId: Int) {
+         hmsReservationId: Int?) {
         self.date = date
         self.reservedType = reservedType
         self.reservedTypeId = reservedTypeId
@@ -62,7 +62,7 @@ struct CMCalendarItem: Codable {
         self.cmBookingId = cmBookingId
         self.cmBookingStatus = cmBookingStatus
         self.unitCount = unitCount
-        self.reservationId = reservationId
+        self.hmsReservationId = hmsReservationId
     }
     
     func encode(to encoder: Encoder) throws {
@@ -75,23 +75,22 @@ struct CMCalendarItem: Codable {
         try container.encode(checkInDate.toDateString(dateFormat), forKey: .checkInDate)
         try container.encode(checkOutDate.toDateString(dateFormat), forKey: .checkOutDate)
         try container.encode(cmBookingId, forKey: .cmBookingId)
-        try container.encode(cmBookingStatus, forKey: .cmBookingStatus)
+        try container.encode(cmBookingStatus.rawValue, forKey: .cmBookingStatus)
         try container.encode(unitCount, forKey: .unitCount)
-        try container.encode(reservationId, forKey: .reservationId)
+        try container.encodeIfPresent(hmsReservationId, forKey: .hmsReservationId)
     }
 }
 
 extension CMCalendarItem {
   enum ReservedType: String, Codable {
     case roomType = "ROOM_TYPE"
-    case room = "ROOM"
   }
 }
 
 /* Example JSON Response:
  {
    "date": "2024-05-13",
-   "reserved_type": "RoomType",
+   "reserved_type": "ROOM_TYPE",
    "reserved_type_id": 179,
    "check_in_date": "2024-05-13",
    "check_out_date": "2024-05-14",
