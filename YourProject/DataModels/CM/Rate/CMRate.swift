@@ -10,9 +10,9 @@ import Foundation
 struct CMRate: Codable {
     
     let id: Int?
-    let cmRoomID: Int
-    let cmRateID: String
-    let offerID: String
+    let cmRoomId: Int
+    let cmRateId: String
+    let offerId: String
     let name: String
     let description: String
     let minNight: Int
@@ -37,8 +37,8 @@ struct CMRate: Codable {
     let rateCode: RateCodes
 
     let hmsUnitType: UnitType
-    let hmsUnitID: Int
-    let hotelID: Int
+    let hmsUnitId: Int
+    let hotelId: Int
 
     let isDefault: Bool
     let code: String?
@@ -48,9 +48,9 @@ struct CMRate: Codable {
     let updatedAt: Date
     
     init(id: Int,
-         cmRoomID: Int,
-         cmRateID: String,
-         offerID: String,
+         cmRoomId: Int,
+         cmRateId: String,
+         offerId: String,
          name: String,
          description: String,
          minNight: Int,
@@ -70,17 +70,17 @@ struct CMRate: Codable {
          channels: Channels,
          rateCode: RateCodes,
          hmsUnitType: UnitType,
-         hmsUnitID: Int,
-         hotelID: Int,
+         hmsUnitId: Int,
+         hotelId: Int,
          isDefault: Bool,
          code: String?,
          color: String?,
          createdAt: Date,
          updatedAt: Date) {
         self.id = id
-        self.cmRoomID = cmRoomID
-        self.cmRateID = cmRateID
-        self.offerID = offerID
+        self.cmRoomId = cmRoomId
+        self.cmRateId = cmRateId
+        self.offerId = offerId
         self.name = name
         self.description = description
         self.minNight = minNight
@@ -100,8 +100,8 @@ struct CMRate: Codable {
         self.channels = channels
         self.rateCode = rateCode
         self.hmsUnitType = hmsUnitType
-        self.hmsUnitID = hmsUnitID
-        self.hotelID = hotelID
+        self.hmsUnitId = hmsUnitId
+        self.hotelId = hotelId
         self.isDefault = isDefault
         self.code = code
         self.color = color
@@ -113,9 +113,9 @@ struct CMRate: Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(Int.self, forKey: .id)
-        cmRoomID = try container.decode(Int.self, forKey: .cmRoomID)
-        cmRateID = try container.decode(String.self, forKey: .cmRateID)
-        offerID = try container.decode(String.self, forKey: .offerID)
+        cmRoomId = try container.decode(Int.self, forKey: .cmRoomId)
+        cmRateId = try container.decode(String.self, forKey: .cmRateId)
+        offerId = try container.decode(String.self, forKey: .offerId)
         name = try container.decode(String.self, forKey: .name)
         description = try container.decode(String.self, forKey: .description)
         minNight = try container.decode(Int.self, forKey: .minNight)
@@ -160,8 +160,8 @@ struct CMRate: Codable {
         self.rateCode = try container.decode(RateCodes.self, forKey: .rateCode)
 
         self.hmsUnitType = try container.decode(UnitType.self, forKey: .hmsUnitType)
-        self.hmsUnitID = try container.decode(Int.self, forKey: .hmsUnitID)
-        self.hotelID = try container.decode(Int.self, forKey: .hotelID)
+        self.hmsUnitId = try container.decode(Int.self, forKey: .hmsUnitId)
+        self.hotelId = try container.decode(Int.self, forKey: .hotelId)
 
         self.isDefault = try container.decode(Bool.self, forKey: .isDefault)
         self.code = try container.decodeIfPresent(String.self, forKey: .code)
@@ -177,9 +177,9 @@ struct CMRate: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(id, forKey: .id)
-        try container.encode(cmRoomID, forKey: .cmRoomID)
-        try container.encode(cmRateID, forKey: .cmRateID)
-        try container.encode(offerID, forKey: .offerID)
+        try container.encode(cmRoomId, forKey: .cmRoomId)
+        try container.encode(cmRateId, forKey: .cmRateId)
+        try container.encode(offerId, forKey: .offerId)
         try container.encode(name, forKey: .name)
         try container.encode(description, forKey: .description)
         try container.encode(minNight, forKey: .minNight)
@@ -216,8 +216,8 @@ struct CMRate: Codable {
         try container.encode(rateCode, forKey: .rateCode)
         
         try container.encode(hmsUnitType, forKey: .hmsUnitType)
-        try container.encode(hmsUnitID, forKey: .hmsUnitID)
-        try container.encode(hotelID, forKey: .hotelID)
+        try container.encode(hmsUnitId, forKey: .hmsUnitId)
+        try container.encode(hotelId, forKey: .hotelId)
         
         try container.encode(isDefault, forKey: .isDefault)
         try container.encode(code, forKey: .code)
@@ -234,9 +234,9 @@ extension CMRate {
 
     enum CodingKeys: String, CodingKey {
         case id
-        case cmRoomID = "cm_room_id"
-        case cmRateID = "rate_id"
-        case offerID = "offer_id"
+        case cmRoomId = "cm_room_id"
+        case cmRateId = "rate_id"
+        case offerId = "offer_id"
         case name
         case description
         case minNight = "min_nights"
@@ -260,8 +260,8 @@ extension CMRate {
         case extraChildPriceEnable = "extra_child_price_enable"
 
         case hmsUnitType = "hms_unit_type"
-        case hmsUnitID = "hms_unit_id"
-        case hotelID = "hotel_id"
+        case hmsUnitId = "hms_unit_id"
+        case hotelId = "hotel_id"
 
         case channel = "channel"
         case rateCode = "rate_code"

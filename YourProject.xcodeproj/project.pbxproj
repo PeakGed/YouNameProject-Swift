@@ -40,6 +40,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		0F1648DD2E1E542A00CF243F /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ServiceTests/CMRateService/CMRateRemoteServiceTests.swift,
+				ServiceTests/CMRateService/CMRateServiceRequestTests.swift,
+				ServiceTests/CMRateService/CMRateServiceRouterTests.swift,
+			);
+			target = 36B587D42BF73F1900D523D0 /* YourProjectTests */;
+		};
 		0F81401F2D4BC79F0025B2B0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -247,6 +256,9 @@
 				Services/CMBookingService/CMBookingRemoteService.swift,
 				Services/CMBookingService/CMBookingServiceRequest.swift,
 				Services/CMBookingService/CMBookingServiceRouter.swift,
+				Services/CMRateService/CMRateRemoteService.swift,
+				Services/CMRateService/CMRateServiceRequest.swift,
+				Services/CMRateService/CMRateServiceRouter.swift,
 				Services/CompanyService/CompanyRemoteService.swift,
 				Services/CompanyService/CompanyServiceRequest.swift,
 				Services/CompanyService/CompanyServiceRouter.swift,
@@ -348,7 +360,7 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		0F8140142D4BC79F0025B2B0 /* YourProject */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (0F81401F2D4BC79F0025B2B0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 0F8140202D4BC79F0025B2B0 /* PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet */, 0F819EEB2D4E08070025B2B0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = YourProject; sourceTree = "<group>"; };
-		0F8140222D4BC7A30025B2B0 /* YourProjectTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = YourProjectTests; sourceTree = "<group>"; };
+		0F8140222D4BC7A30025B2B0 /* YourProjectTests */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (0F1648DD2E1E542A00CF243F /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = YourProjectTests; sourceTree = "<group>"; };
 		0F8140262D4BC7A50025B2B0 /* YourProjectUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = YourProjectUITests; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 

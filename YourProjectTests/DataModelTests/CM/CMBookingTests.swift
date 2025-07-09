@@ -17,15 +17,14 @@ final class CMBookingTests: XCTestCase {
         
         // Assert
         XCTAssertEqual(booking.id, 2)
-        XCTAssertEqual(booking.hotelID, 105)
-        XCTAssertEqual(booking.kind, .roomType)
-        XCTAssertEqual(booking.unitTypeDetail.id, 116)
-        XCTAssertEqual(booking.unitTypeDetail.name, "6 bed")
-        XCTAssertEqual(booking.unitTypeDetail.baseRate, 100.0)
+        XCTAssertEqual(booking.hotelId, 105)
+        XCTAssertEqual(booking.hmsUnitType, .roomType)
+        XCTAssertEqual(booking.hmsUnitId, 179)
+        
         XCTAssertEqual(booking.firstNight, "2020-01-15".toDate(FormConfig.DateFormat.yyyyMMdd))
         XCTAssertEqual(booking.lastNight, "2020-01-15".toDate(FormConfig.DateFormat.yyyyMMdd))
         XCTAssertEqual(booking.cmBookID, "16500820")
-        XCTAssertEqual(booking.cmRoomID, "232711")
+        XCTAssertEqual(booking.cmRoomId, "232711")
         XCTAssertEqual(booking.cmStatus, .confirmed)
     }
     
@@ -58,19 +57,7 @@ final class CMBookingTests: XCTestCase {
     // MARK: - Kind Tests
     
     func test_kindRawValues() throws {
-        XCTAssertEqual(CMBooking.Kind.roomType.rawValue, "ROOM_TYPE")
-    }
-    
-    // MARK: - UnitTypeDetail Tests
-    
-    func test_unitTypeDetailInitialization() throws {
-        // Arrange & Act
-        let unitDetail = CMBooking.UnitTypeDetail(id: 116, name: "6 bed", baseRate: 100.0)
-        
-        // Assert
-        XCTAssertEqual(unitDetail.id, 116)
-        XCTAssertEqual(unitDetail.name, "6 bed")
-        XCTAssertEqual(unitDetail.baseRate, 100.0)
+        XCTAssertEqual(CMBooking.ReservableType.roomType.rawValue, "ROOM_TYPE")
     }
     
     // MARK: - Codable Tests
@@ -83,13 +70,7 @@ final class CMBookingTests: XCTestCase {
             "book_id": "16500820",
             "room_id": "232711",
             "hms_unit_type": "ROOM_TYPE",
-            "hms_unit_id": 116,
-            "hms_unit_detail": {
-                "id": 116,
-                "name": "6 bed",
-                "base_rate": 100.0,
-                "data": null
-            },
+            "hms_unit_id": 116,            
             "hms_reservation_id": 512,
             "status": "1",
             "first_night": "2020-01-15",
@@ -175,14 +156,12 @@ final class CMBookingTests: XCTestCase {
         // Assert
         XCTAssertEqual(booking.id, 2)
         XCTAssertEqual(booking.cmBookID, "16500820")
-        XCTAssertEqual(booking.cmRoomID, "232711")
-        XCTAssertEqual(booking.kind, .roomType)
-        XCTAssertEqual(booking.unitTypeDetail.id, 116)
-        XCTAssertEqual(booking.unitTypeDetail.name, "6 bed")
-        XCTAssertEqual(booking.unitTypeDetail.baseRate, 100.0)
+        XCTAssertEqual(booking.cmRoomId, "232711")
+        XCTAssertEqual(booking.hmsUnitType, .roomType)
+        XCTAssertEqual(booking.hmsUnitId, 116)
         XCTAssertEqual(booking.cmStatus, .confirmed)
         XCTAssertEqual(booking.hmsReservationID, 512)
-        XCTAssertEqual(booking.hotelID, 105)
+        XCTAssertEqual(booking.hotelId, 105)
         XCTAssertNotNil(booking.createdAt)
         XCTAssertNotNil(booking.updatedAt)
         XCTAssertEqual(booking.period.numberOfNight, 1)
@@ -200,12 +179,9 @@ final class CMBookingTests: XCTestCase {
         // Assert
         XCTAssertEqual(decodedBooking.id, booking.id)
         XCTAssertEqual(decodedBooking.cmBookID, booking.cmBookID)
-        XCTAssertEqual(decodedBooking.cmRoomID, booking.cmRoomID)
-        XCTAssertEqual(decodedBooking.kind, booking.kind)
-        
-        XCTAssertEqual(decodedBooking.unitTypeDetail.id, booking.unitTypeDetail.id)
-        XCTAssertEqual(decodedBooking.unitTypeDetail.name, booking.unitTypeDetail.name)
-        XCTAssertEqual(decodedBooking.unitTypeDetail.baseRate, booking.unitTypeDetail.baseRate)
+        XCTAssertEqual(decodedBooking.cmRoomId, booking.cmRoomId)
+        XCTAssertEqual(decodedBooking.hmsUnitType, booking.hmsUnitType)
+        XCTAssertEqual(decodedBooking.hmsUnitId, booking.hmsUnitId)
         
         
         let dateFormat = FormConfig.DateFormat.yyyyMMdd
@@ -214,7 +190,7 @@ final class CMBookingTests: XCTestCase {
         
         XCTAssertEqual(decodedBooking.cmStatus, booking.cmStatus)
         XCTAssertEqual(decodedBooking.hmsReservationID, booking.hmsReservationID)
-        XCTAssertEqual(decodedBooking.hotelID, booking.hotelID)
+        XCTAssertEqual(decodedBooking.hotelId, booking.hotelId)
         XCTAssertEqual(decodedBooking.createdAt, booking.createdAt)
         XCTAssertEqual(decodedBooking.updatedAt, booking.updatedAt)
         XCTAssertEqual(decodedBooking.period.numberOfNight, booking.period.numberOfNight)
@@ -224,12 +200,7 @@ final class CMBookingTests: XCTestCase {
     // MARK: - Helper Methods
     
     private func createSampleCMBooking() -> CMBooking {
-        let unitTypeDetail = CMBooking.UnitTypeDetail(
-            id: 116,
-            name: "6 bed",
-            baseRate: 100.0
-        )
-        
+
         let guestInfo = CMBookingRaw.GuestInfo(
             title: "Mr",
             firstname: "John",
@@ -281,13 +252,13 @@ final class CMBookingTests: XCTestCase {
         
         return CMBooking(
             id: 2,
-            hotelID: 105,
-            kind: .roomType,
-            unitTypeDetail: unitTypeDetail,
+            hotelId: 105,
+            hmsUnitType: .roomType,
+            hmsUnitId: 179,
             firstNight: "2020-01-15".toDate(FormConfig.DateFormat.yyyyMMdd) ?? .now,
             lastNight: "2020-01-15".toDate(FormConfig.DateFormat.yyyyMMdd) ?? .now,
             cmBookID: "16500820",
-            cmRoomID: "232711",
+            cmRoomId: "232711",
             cmStatus: .confirmed,
             raw: rawBooking,
             hmsReservationID: 512,

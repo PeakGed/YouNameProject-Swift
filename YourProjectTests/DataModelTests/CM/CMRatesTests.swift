@@ -190,8 +190,8 @@ final class CMRatesTests: XCTestCase {
         XCTAssertEqual(rates.count, 1)
         XCTAssertEqual(rates.lists[0].id, 1)
         XCTAssertEqual(rates.lists[0].name, "Standard Rate")
-        XCTAssertEqual(rates.lists[0].cmRoomID, 232711)
-        XCTAssertEqual(rates.lists[0].cmRateID, "rate123")
+        XCTAssertEqual(rates.lists[0].cmRoomId, 232711)
+        XCTAssertEqual(rates.lists[0].cmRateId, "rate123")
         XCTAssertTrue(rates.lists[0].isDefault)
     }
     
@@ -250,9 +250,9 @@ final class CMRatesTests: XCTestCase {
         
         return CMRate(
             id: id,
-            cmRoomID: 232711,
-            cmRateID: "rate\(id)",
-            offerID: "offer\(id)",
+            cmRoomId: 232711,
+            cmRateId: "rate\(id)",
+            offerId: "offer\(id)",
             name: name,
             description: "\(name) description",
             minNight: 1,
@@ -272,8 +272,8 @@ final class CMRatesTests: XCTestCase {
             channels: channels,
             rateCode: rateCodes,
             hmsUnitType: .roomType,
-            hmsUnitID: 116,
-            hotelID: 105,
+            hmsUnitId: 116,
+            hotelId: 105,
             isDefault: isDefault,
             code: nil,
             color: nil,

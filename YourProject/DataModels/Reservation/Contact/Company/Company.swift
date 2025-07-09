@@ -10,10 +10,10 @@ import Foundation
 struct Company: Codable {
     
     let id: Int
-    let userID: Int?
-    let hotelID: Int?
+    let userId: Int?
+    let hotelId: Int?
     let busineseType: BusinessType
-    let contactID: Int?
+    let contactId: Int?
     let name: String
     let address: Address
     let taxID: String
@@ -29,10 +29,10 @@ struct Company: Codable {
     let updatedAt: Date
 
     init(id: Int,
-         userID: Int?,
-         hotelID: Int?,
+         userId: Int?,
+         hotelId: Int?,
          busineseType: BusinessType,
-         contactID: Int?,
+         contactId: Int?,
          name: String,
          address: Address,
          taxID: String,
@@ -47,10 +47,10 @@ struct Company: Codable {
          createdAt: Date,
          updatedAt: Date) {
         self.id = id
-        self.userID = userID
-        self.hotelID = hotelID
+        self.userId = userId
+        self.hotelId = hotelId
         self.busineseType = busineseType
-        self.contactID = contactID
+        self.contactId = contactId
         self.name = name
         self.address = address
         self.taxID = taxID
@@ -70,10 +70,10 @@ struct Company: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         self.id = try container.decode(Int.self, forKey: .id)
-        self.userID = try? container.decode(Int.self, forKey: .userID)
-        self.hotelID = try? container.decode(Int.self, forKey: .hotelID)
+        self.userId = try? container.decode(Int.self, forKey: .userId)
+        self.hotelId = try? container.decode(Int.self, forKey: .hotelId)
         self.busineseType = try container.decode(BusinessType.self, forKey: .busineseType)
-        self.contactID = try? container.decode(Int.self, forKey: .contactID)
+        self.contactId = try? container.decode(Int.self, forKey: .contactId)
         self.name = (try? container.decode(String.self, forKey: .name)) ?? ""
         self.taxID = (try? container.decode(String.self, forKey: .taxID)) ?? ""
         self.branchName = (try? container.decode(String.self, forKey: .branchName)) ?? ""
@@ -126,9 +126,9 @@ struct Company: Codable {
         try container.encode(address.zipCode, forKey: .zipCode)
         try container.encode(address.countryCode, forKey: .country)
         
-        try container.encode(contactID, forKey: .contactID)
-        try container.encode(userID, forKey: .userID)
-        try container.encode(hotelID, forKey: .hotelID)
+        try container.encode(contactId, forKey: .contactId)
+        try container.encode(userId, forKey: .userId)
+        try container.encode(hotelId, forKey: .hotelId)
         
         let dateFormat = FormConfig.DateFormat.datetimeISO
         try container.encode(createdAt.toDateString(dateFormat),
@@ -139,10 +139,10 @@ struct Company: Codable {
     
     private enum CodingKeys: String, CodingKey {
         case id
-        case userID = "user_id"
-        case hotelID = "hotel_id"
+        case userId = "user_id"
+        case hotelId = "hotel_id"
         case busineseType = "business_type"
-        case contactID = "contact_id"
+        case contactId = "contact_id"
         case name
         case address
         case district

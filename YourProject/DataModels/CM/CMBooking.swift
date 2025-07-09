@@ -11,9 +11,9 @@ struct CMBooking: Codable {
     
     let id: Int
     
-    let hotelID: Int
-    let kind: Kind
-    let unitTypeDetail: UnitTypeDetail
+    let hotelId: Int
+    let hmsUnitType: Self.ReservableType
+    let hmsUnitId: Int
     let firstNight: Date
     let lastNight: Date
 
@@ -23,7 +23,7 @@ struct CMBooking: Codable {
     }
     
     let cmBookID: String
-    let cmRoomID: String
+    let cmRoomId: String
     let cmStatus: CMBookingRaw.Status
     let raw: CMBookingRaw
     
@@ -37,26 +37,26 @@ struct CMBooking: Codable {
     }
     
     init(id: Int,
-         hotelID: Int,
-         kind: Kind,
-         unitTypeDetail: UnitTypeDetail,
+         hotelId: Int,
+         hmsUnitType: ReservableType,
+         hmsUnitId: Int,
          firstNight: Date,
          lastNight: Date,
          cmBookID: String,
-         cmRoomID: String,
+         cmRoomId: String,
          cmStatus: CMBookingRaw.Status,
          raw: CMBookingRaw,
          hmsReservationID: Int?,
          createdAt: Date,
          updatedAt: Date) {
         self.id = id
-        self.hotelID = hotelID
-        self.kind = kind
-        self.unitTypeDetail = unitTypeDetail
+        self.hotelId = hotelId
+        self.hmsUnitType = hmsUnitType
+        self.hmsUnitId = hmsUnitId
         self.firstNight = firstNight
         self.lastNight = lastNight
         self.cmBookID = cmBookID
-        self.cmRoomID = cmRoomID
+        self.cmRoomId = cmRoomId
         self.cmStatus = cmStatus
         self.raw = raw
         self.createdAt = createdAt
@@ -69,12 +69,12 @@ struct CMBooking: Codable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         id = try values.decode(Int.self, forKey: .id)
-        hotelID = try values.decode(Int.self, forKey: .hotelID)
-        kind = try values.decode(Kind.self, forKey: .kind)
-        unitTypeDetail = try values.decode(UnitTypeDetail.self, forKey: .unitTypeDetail)
+        hotelId = try values.decode(Int.self, forKey: .hotelId)
+        hmsUnitType = try values.decode(Self.ReservableType.self, forKey: .hmsUnitType)
+        hmsUnitId = try values.decode(Int.self, forKey: .hmsUnitId)
         
         cmBookID = try values.decode(String.self, forKey: .cmBookID)
-        cmRoomID = try values.decode(String.self, forKey: .cmRoomID)
+        cmRoomId = try values.decode(String.self, forKey: .cmRoomId)
         cmStatus = try values.decode(CMBookingRaw.Status.self, forKey: .cmStatus)
         raw = try values.decode(CMBookingRaw.self, forKey: .raw)
         
@@ -93,13 +93,13 @@ struct CMBooking: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(id, forKey: .id)
-        try container.encode(hotelID, forKey: .hotelID)
-        try container.encode(kind.rawValue, forKey: .kind)
-        try container.encode(unitTypeDetail, forKey: .unitTypeDetail)
+        try container.encode(hotelId, forKey: .hotelId)
+        try container.encode(hmsUnitType.rawValue, forKey: .hmsUnitType)
+        try container.encode(hmsUnitId, forKey: .hmsUnitId)
         try container.encode(firstNight.toDateString(FormConfig.DateFormat.yyyyMMdd), forKey: .firstNight)
         try container.encode(lastNight.toDateString(FormConfig.DateFormat.yyyyMMdd), forKey: .lastNight)
         try container.encode(cmBookID, forKey: .cmBookID)
-        try container.encode(cmRoomID, forKey: .cmRoomID)
+        try container.encode(cmRoomId, forKey: .cmRoomId)
         try container.encode(cmStatus.rawValue, forKey: .cmStatus)
         try container.encode(raw, forKey: .raw)
         try container.encode(createdAt.toDateString(FormConfig.DateFormat.datetimeISO), forKey: .createdAt)
@@ -110,13 +110,13 @@ struct CMBooking: Codable {
     // enum
     enum CodingKeys: String, CodingKey {
         case id
-        case hotelID = "hotel_id"
-        case kind = "hms_unit_type"
-        case unitTypeDetail = "hms_unit_detail"
+        case hotelId = "hotel_id"
+        case hmsUnitType = "hms_unit_type"
+        case hmsUnitId = "hms_unit_id"
         case firstNight = "first_night"
         case lastNight = "last_night"
         case cmBookID = "book_id"
-        case cmRoomID = "room_id"
+        case cmRoomId = "room_id"
         case cmStatus = "status"
         case raw = "raw_response"
         case createdAt = "created_at"
@@ -127,46 +127,8 @@ struct CMBooking: Codable {
 
 extension CMBooking {
     
-    enum Kind: String, Codable {
-        case roomType = "ROOM_TYPE"        
+    enum ReservableType: String, Codable {
+        case roomType = "ROOM_TYPE"
     }
-    
-    struct UnitTypeDetail: Codable {
-        var id: Int
-        var name: String
-        var baseRate: Double
-        
-        init(id: Int,
-             name: String,
-             baseRate: Double) {
-            self.id = id
-            self.name = name
-            self.baseRate = baseRate
-        }
-
-        // decode
-        init(from decoder: Decoder) throws {
-            let values = try decoder.container(keyedBy: CodingKeys.self)
-            
-            id = try values.decode(Int.self, forKey: .id)
-            name = try values.decode(String.self, forKey: .name)
-            baseRate = try values.decode(Double.self, forKey: .baseRate)
-        }
-        
-        //encode
-        func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            
-            try container.encode(id, forKey: .id)
-            try container.encode(name, forKey: .name)
-            try container.encode(baseRate, forKey: .baseRate)
-        }
-        
-        //enum
-        enum CodingKeys: String, CodingKey {
-            case id
-            case name
-            case baseRate = "base_rate"
-        }
-    }
+   
 }

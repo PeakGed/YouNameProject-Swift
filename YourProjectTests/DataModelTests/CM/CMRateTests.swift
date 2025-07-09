@@ -17,9 +17,9 @@ final class CMRateTests: XCTestCase {
         
         // Assert
         XCTAssertEqual(rate.id, 1)
-        XCTAssertEqual(rate.cmRoomID, 232711)
-        XCTAssertEqual(rate.cmRateID, "rate123")
-        XCTAssertEqual(rate.offerID, "offer456")
+        XCTAssertEqual(rate.cmRoomId, 232711)
+        XCTAssertEqual(rate.cmRateId, "rate123")
+        XCTAssertEqual(rate.offerId, "offer456")
         XCTAssertEqual(rate.name, "Standard Rate")
         XCTAssertEqual(rate.description, "Standard room rate")
         XCTAssertEqual(rate.minNight, 1)
@@ -29,9 +29,9 @@ final class CMRateTests: XCTestCase {
         XCTAssertEqual(rate.strategy, ._default)
         XCTAssertEqual(rate.roomPriceGuest, 2.0)
         XCTAssertEqual(rate.hmsUnitType, .roomType)
-        XCTAssertEqual(rate.hmsUnitID, 116)
+        XCTAssertEqual(rate.hmsUnitId, 116)
         XCTAssertEqual(rate.isDefault, true)
-        XCTAssertEqual(rate.hotelID, 105)
+        XCTAssertEqual(rate.hotelId, 105)
     }
     
     func test_initWithDates() throws {
@@ -262,9 +262,9 @@ final class CMRateTests: XCTestCase {
         
         return CMRate(
             id: id,
-            cmRoomID: 232711,
-            cmRateID: "rate123",
-            offerID: "offer456",
+            cmRoomId: 232711,
+            cmRateId: "rate123",
+            offerId: "offer456",
             name: name,
             description: "Standard room rate",
             minNight: 1,
@@ -284,8 +284,8 @@ final class CMRateTests: XCTestCase {
             channels: channels,
             rateCode: rateCodes,
             hmsUnitType: .roomType,
-            hmsUnitID: 116,
-            hotelID: 105,
+            hmsUnitId: 116,
+            hotelId: 105,
             isDefault: true,
             code: nil,
             color: nil,

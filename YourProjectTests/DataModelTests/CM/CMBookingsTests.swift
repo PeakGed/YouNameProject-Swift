@@ -151,12 +151,7 @@ final class CMBookingsTests: XCTestCase {
     // MARK: - Helper Methods
     
     private func createSampleCMBooking(id: Int, bookID: String) -> CMBooking {
-        let unitTypeDetail = CMBooking.UnitTypeDetail(
-            id: 116,
-            name: "6 bed",
-            baseRate: 100.0
-        )
-        
+      
         let guestInfo = CMBookingRaw.GuestInfo(
             title: "Mr",
             firstname: "John",
@@ -211,13 +206,13 @@ final class CMBookingsTests: XCTestCase {
         
         return CMBooking(
             id: id,
-            hotelID: 105,
-            kind: .roomType,
-            unitTypeDetail: unitTypeDetail,
+            hotelId: 105,
+            hmsUnitType: .roomType,
+            hmsUnitId: 179,
             firstNight: "2020-01-15".toDate(FormConfig.DateFormat.yyyyMMdd) ?? .now,
             lastNight: "2020-01-15".toDate(FormConfig.DateFormat.yyyyMMdd) ?? .now,
             cmBookID: bookID,
-            cmRoomID: "232711",
+            cmRoomId: "232711",
             cmStatus: .confirmed,
             raw: rawBooking,
             hmsReservationID: 512,
