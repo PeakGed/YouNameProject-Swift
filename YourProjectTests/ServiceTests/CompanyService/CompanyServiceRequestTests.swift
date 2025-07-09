@@ -150,10 +150,10 @@ class CompanyServiceRequestTests: XCTestCase {
     func test_createCompany_withAllParameters_correctSerialization() throws {
         // Arrange
         let request = CompanyServiceRequest.CreateCompany(
-            userID: 38,
-            hotelID: 105,
+            userId: 38,
+            hotelId: 105,
             businessType: .corporate,
-            contactID: 123,
+            contactId: 123,
             name: "Test Company Ltd.",
             address: "992/1",
             district: "Bang Bua Thong",
@@ -201,10 +201,10 @@ class CompanyServiceRequestTests: XCTestCase {
     func test_createCompany_withMinimalParameters_correctSerialization() throws {
         // Arrange
         let request = CompanyServiceRequest.CreateCompany(
-            userID: nil,
-            hotelID: 105,
+            userId: nil,
+            hotelId: 105,
             businessType: .individual,
-            contactID: nil,
+            contactId: nil,
             name: "Individual Company",
             address: "123 Individual Street",
             district: "Test District",
@@ -255,9 +255,9 @@ class CompanyServiceRequestTests: XCTestCase {
         // Arrange
         let request = CompanyServiceRequest.UpdateCompany(
             id: 6,
-            userID: 38,
+            userId: 38,
             businessType: .corporate,
-            contactID: nil,
+            contactId: nil,
             name: "Updated Company Name",
             address: nil,
             district: nil,

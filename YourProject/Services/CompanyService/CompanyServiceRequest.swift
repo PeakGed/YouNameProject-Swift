@@ -125,10 +125,10 @@ struct CompanyServiceRequest {
     }
     
     struct CreateCompany: Encodable {
-        let userID: Int?
-        let hotelID: Int
+        let userId: Int?
+        let hotelId: Int
         let businessType: Company.BusinessType
-        let contactID: Int?
+        let contactId: Int?
         let name: String
         let address: String
         let district: String
@@ -145,10 +145,10 @@ struct CompanyServiceRequest {
         let logoUrl: String?
         
         enum CodingKeys: String, CodingKey {
-            case userID = "user_id"
-            case hotelID = "hotel_id"
+            case userId = "user_id"
+            case hotelId = "hotel_id"
             case businessType = "business_type"
-            case contactID = "contact_id"
+            case contactId = "contact_id"
             case name
             case address
             case district
@@ -167,10 +167,10 @@ struct CompanyServiceRequest {
         
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encodeIfPresent(userID, forKey: .userID)
-            try container.encode(hotelID, forKey: .hotelID)
+            try container.encodeIfPresent(userId, forKey: .userId)
+            try container.encode(hotelId, forKey: .hotelId)
             try container.encode(businessType.rawValue, forKey: .businessType)
-            try container.encodeIfPresent(contactID, forKey: .contactID)
+            try container.encodeIfPresent(contactId, forKey: .contactId)
             try container.encode(name, forKey: .name)
             try container.encode(address, forKey: .address)
             try container.encode(district, forKey: .district)
@@ -194,9 +194,9 @@ struct CompanyServiceRequest {
     
     struct UpdateCompany: Encodable {
         let id: Int
-        let userID: Int?
+        let userId: Int?
         let businessType: Company.BusinessType?
-        let contactID: Int?
+        let contactId: Int?
         let name: String?
         let address: String?
         let district: String?
@@ -213,9 +213,9 @@ struct CompanyServiceRequest {
         let logoUrl: String?
         
         enum CodingKeys: String, CodingKey {
-            case userID = "user_id"
+            case userId = "user_id"
             case businessType = "business_type"
-            case contactID = "contact_id"
+            case contactId = "contact_id"
             case name
             case address
             case district
@@ -234,9 +234,9 @@ struct CompanyServiceRequest {
         
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encodeIfPresent(userID, forKey: .userID)
+            try container.encodeIfPresent(userId, forKey: .userId)
             try container.encodeIfPresent(businessType?.rawValue, forKey: .businessType)
-            try container.encodeIfPresent(contactID, forKey: .contactID)
+            try container.encodeIfPresent(contactId, forKey: .contactId)
             try container.encodeIfPresent(name, forKey: .name)
             try container.encodeIfPresent(address, forKey: .address)
             try container.encodeIfPresent(district, forKey: .district)

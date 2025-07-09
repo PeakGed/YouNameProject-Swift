@@ -70,10 +70,10 @@ class CompanyServiceRouterTests: XCTestCase {
     func test_createCompany_hasCorrectPath() throws {
         // Arrange
         let request = CompanyServiceRequest.CreateCompany(
-            userID: 38,
-            hotelID: 105,
+            userId: 38,
+            hotelId: 105,
             businessType: .corporate,
-            contactID: nil,
+            contactId: nil,
             name: "Test Company Ltd.",
             address: "992/1",
             district: "Bang Bua Thong",
@@ -104,9 +104,9 @@ class CompanyServiceRouterTests: XCTestCase {
         // Arrange
         let request = CompanyServiceRequest.UpdateCompany(
             id: 6,
-            userID: 38,
+            userId: 38,
             businessType: .corporate,
-            contactID: nil,
+            contactId: nil,
             name: "Updated Company Name",
             address: nil,
             district: nil,
@@ -188,10 +188,10 @@ class CompanyServiceRouterTests: XCTestCase {
             businessType: nil
         )
         let createRequest = CompanyServiceRequest.CreateCompany(
-            userID: nil,
-            hotelID: 105,
+            userId: nil,
+            hotelId: 105,
             businessType: .individual,
-            contactID: nil,
+            contactId: nil,
             name: "Test",
             address: "Test Address",
             district: "Test District",
@@ -222,9 +222,9 @@ class CompanyServiceRouterTests: XCTestCase {
             .createCompany(request: createRequest),
             .updateCompany(request: CompanyServiceRequest.UpdateCompany(
                 id: 1,
-                userID: nil,
+                userId: nil,
                 businessType: nil,
-                contactID: nil,
+                contactId: nil,
                 name: nil,
                 address: nil,
                 district: nil,
@@ -282,10 +282,10 @@ class CompanyServiceRouterTests: XCTestCase {
     func test_createCompany_asURLRequest_isValid() throws {
         // Arrange
         let request = CompanyServiceRequest.CreateCompany(
-            userID: nil,
-            hotelID: 105,
+            userId: nil,
+            hotelId: 105,
             businessType: .corporate,
-            contactID: nil,
+            contactId: nil,
             name: "Test Company",
             address: "Test Address",
             district: "Test District",

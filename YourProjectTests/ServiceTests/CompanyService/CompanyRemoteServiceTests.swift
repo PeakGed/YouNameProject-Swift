@@ -284,10 +284,10 @@ class CompanyRemoteServiceTests: XCTestCase {
     func test_createCompany_callsAPIManagerWithCorrectRouter() async throws {
         // Arrange
         let request = CompanyServiceRequest.CreateCompany(
-            userID: 38,
-            hotelID: 105,
+            userId: 38,
+            hotelId: 105,
             businessType: .corporate,
-            contactID: nil,
+            contactId: nil,
             name: "New Company Ltd.",
             address: "123 New Street",
             district: "New District",
@@ -315,7 +315,7 @@ class CompanyRemoteServiceTests: XCTestCase {
         
         // Assert
         XCTAssertEqual(result.busineseType, .corporate)
-        XCTAssertEqual(result.hotelID, 105)
+        XCTAssertEqual(result.hotelId, 105)
         
         verify(mockAPIManager)
             .request(router: .any, requiredAuthorization: .value(true))
@@ -328,9 +328,9 @@ class CompanyRemoteServiceTests: XCTestCase {
         // Arrange
         let request = CompanyServiceRequest.UpdateCompany(
             id: 6,
-            userID: 38,
+            userId: 38,
             businessType: .corporate,
-            contactID: nil,
+            contactId: nil,
             name: "Updated Company Name",
             address: nil,
             district: nil,
@@ -438,10 +438,10 @@ extension CompanyRemoteServiceTests {
     enum CompanyStub {
         static let corporate = Company(
             id: 6,
-            userID: 38,
-            hotelID: 105,
+            userId: 38,
+            hotelId: 105,
             busineseType: .corporate,
-            contactID: nil,
+            contactId: nil,
             name: "Test Company Ltd.",
             address: Address(
                 houseNumber: "992/1",
@@ -465,10 +465,10 @@ extension CompanyRemoteServiceTests {
         
         static let individual = Company(
             id: 7,
-            userID: nil,
-            hotelID: 105,
+            userId: nil,
+            hotelId: 105,
             busineseType: .individual,
-            contactID: nil,
+            contactId: nil,
             name: "Individual Company",
             address: Address(
                 houseNumber: "123 Individual Street",
